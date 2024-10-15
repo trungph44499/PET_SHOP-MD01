@@ -15,7 +15,11 @@ import SliderShow from "./components/SliderShow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+<<<<<<< Updated upstream
 export const URL = "http://192.168.1.6";
+=======
+export const URL = 'http://192.168.1.4:3000';
+>>>>>>> Stashed changes
 // 10.24.33.19
 // 192.168.1.29
 const { width: screenWidth } = Dimensions.get("window");
