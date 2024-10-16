@@ -5,6 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../Layout/HomeScreen';
 import ProfileScreen from '../Layout/ProfileScreen';
 import DetailProduct from '../Layout/DetailProduct';
+import CatScreen from '../Layout/CatScreen';
+import DogScreen from '../Layout/DogScreen';
+import PhuKienScreen from '../Layout/PhuKienScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -54,6 +57,9 @@ const MainNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Home' component={Home} />
             <Stack.Screen name='DetailProduct' component={DetailProduct} />
+            <Stack.Screen name='DogScreen' component={DogScreen} />
+            <Stack.Screen name='CatScreen' component={CatScreen} />
+            <Stack.Screen name='PhuKienScreen' component={PhuKienScreen} />
 
         </Stack.Navigator>
     )
