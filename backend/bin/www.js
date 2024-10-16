@@ -22,7 +22,7 @@ app.set("port", port);
 
 var server = http.createServer(app);
 mongoose
-  .connect("mongodb://127.0.0.1:27017/pet_shop")
+  .connect("mongodb+srv://admin01:dbQb3mrqrJisSqFF@mydatabase.bnquf.mongodb.net/pet_shop")
   .then(() => console.log("Conneted Pet Shop"))
   .catch((err) => console.log(err));
 
