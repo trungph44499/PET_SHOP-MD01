@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../Layout/HomeScreen';
 import ProfileScreen from '../Layout/ProfileScreen';
+import DetailProduct from '../Layout/DetailProduct';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -52,6 +53,8 @@ const MainNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Home' component={Home} />
+            <Stack.Screen name='DetailProduct' component={DetailProduct} />
+
         </Stack.Navigator>
     )
 }
