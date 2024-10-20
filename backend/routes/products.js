@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const animalModel = require("../models/animalModel");
+const productModel = require("../models/productModel");
 
 router.get("/", async (req, res) => {
   try {
-    const getAnimals = await animalModel.find({});
-    res.status(200).send({ response: getAnimals });
+    const getProducts = await productModel.find({});
+    res.status(200).send({ response: getProducts });
   } catch (error) {
     console.log(error);
   }

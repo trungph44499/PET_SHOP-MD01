@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const cartModel = require("../models/cartModel");
-const { response } = require("../app");
 
 router.post("/addToCart", async (req, res) => {
   const { _id, img, name, type, price, origin, size, quantity, description } =

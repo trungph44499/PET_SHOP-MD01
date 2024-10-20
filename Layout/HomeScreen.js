@@ -26,12 +26,12 @@ const HomeScreen = ({ navigation }) => {
   const [ListCats, setListCats] = useState([]);
   const [ListAccessory, setListAccessory] = useState([]);
 
-  async function getListAnimal() {
+  async function getListProduct() {
     try {
       const {
-        data: { response },
+        data: { response }, 
         status,
-      } = await axios.get(`${URL}/animals`);
+      } = await axios.get(`${URL}/products`);
       if (status == 200) {
         setListCats(response.filter((item) => item.type == "cat"));
         setListDogs(response.filter((item) => item.type == "dog"));
@@ -64,7 +64,7 @@ const HomeScreen = ({ navigation }) => {
   // };
 
   useEffect(() => {
-    getListAnimal();
+    getListProduct();
     // const data = [
     //  {
     //    image: <Image key={"0"} style={{width: screenWidth, height: 230,}} source={require('../Image/banner_pet01.png')} resizeMode='stretch'></Image>,
