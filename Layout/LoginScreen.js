@@ -35,7 +35,7 @@ const LoginScreen = (props) => {
       const {
         data: { response, type },
         status,
-      } = await axios.post(`${URL}/users/login`);
+      } = await axios.post(`${URL}/users/login`, { email, pass });
       if (status == 200) {
         ToastAndroid.show(response, ToastAndroid.SHORT);
         if (type) {

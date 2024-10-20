@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
       if (registerUser.length != 0) {
         res.status(200).json({ response: "Register complete", type: true });
       } else {
-        res.status(200).json({ response: "Error register", type: true });
+        res.status(200).json({ response: "Error register", type: false });
       }
     } else {
       res.status(200).json({ response: "User exist", type: false });
@@ -27,12 +27,14 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, pass } = req.body;
+
   try {
     const checkUserLogin = await userModel.find({ email: email, pass: pass });
-    if (checkUserLogin != 0) {
-      res.status(200).json({ response: "User incorrect", type: false });
-    } else {
+
+    if (checkUserLogin.length != 0) {
       res.status(200).json({ response: "Login complete", type: true });
+    } else {
+      res.status(200).json({ response: "User incorrect", type: false });
     }
   } catch (error) {
     console.log(error);
