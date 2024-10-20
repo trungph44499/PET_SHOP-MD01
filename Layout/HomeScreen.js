@@ -10,10 +10,10 @@ import {
   View,
   Dimensions,
 } from "react-native";
+import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import SliderShow from "./components/SliderShow";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { numberUtils } from "./utils/stringUtils";
 
 export const URL = "http://192.168.138.55";
 // 10.24.33.19
@@ -24,6 +24,7 @@ const HomeScreen = ({ navigation }) => {
   // const [isAdmin, setIsAdmin] = useState(false);
   const [ListDogs, setListDogs] = useState([]);
   const [ListCats, setListCats] = useState([]);
+  const [ListAccessory, setListAccessory] = useState([]);
 
   async function getListAnimal() {
     try {
@@ -34,6 +35,7 @@ const HomeScreen = ({ navigation }) => {
       if (status == 200) {
         setListCats(response.filter((item) => item.type == "cat"));
         setListDogs(response.filter((item) => item.type == "dog"));
+        setListAccessory(response.filter((item) => item.type == "accessory"));
       }
     } catch (error) {
       console.log(error);
@@ -117,6 +119,34 @@ const HomeScreen = ({ navigation }) => {
   //     Alert.alert('Lỗi', 'Không thể tải vai trò người dùng.');
   //   }
   // };
+  function goToClassifyScreen(type) {
+    navigation.navigate("ClassifyScreen", { type: type });
+  }
+
+  function goToDetailScreen(item) {
+    navigation.navigate("DetailScreen", { item: item });
+  }
+
+  function ItemList(item) {
+    return (
+      <TouchableOpacity
+        onPress={() => goToDetailScreen(item)}
+        style={styles.itemDog}
+      >
+        <Image source={{ uri: item.img }} style={styles.itemImage} />
+        <View style={styles.itemRow}>
+          <Text style={styles.itemName}>
+            {item.name}
+            {item.status === "New" && (
+              <Text style={styles.itemStatus}> {item.status}</Text>
+            )}
+          </Text>
+        </View>
+        <Text style={styles.itemStyle}>Mã SP: {item._id.slice(-5)}</Text>
+        <Text style={styles.price}>{numberUtils(item.price)}</Text>
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -159,10 +189,7 @@ const HomeScreen = ({ navigation }) => {
           )}
           </ScrollView> */}
           {/* <Image style={{ width: '100%', height: 230, justifyContent: 'center' }} source={require('../Image/banner_1.jpg')} /> */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DogsSceen", { data: ListDogs })}
-            style={styles.newSP}
-          >
+          <TouchableOpacity style={styles.newSP}>
             <Text
               style={{
                 fontSize: 17,
@@ -192,23 +219,11 @@ const HomeScreen = ({ navigation }) => {
           scrollEnabled={false}
           data={ListDogs.filter((item, index) => index < 4)}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("DetailScreen", { item: item })
-              }
-              style={styles.itemDogs}
-            >
-              <Image source={{ uri: item.img }} style={styles.itemImage} />
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemStyle}>ID: {item.type}</Text>
-              <Text style={styles.price}>{item.price} </Text>
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => ItemList(item)}
         />
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("DogsSceen", { data: ListDogs })}
+          onPress={() => goToClassifyScreen("dog")}
           style={styles.Xemthem}
         >
           <View />
@@ -234,22 +249,10 @@ const HomeScreen = ({ navigation }) => {
           scrollEnabled={false}
           data={ListCats.filter((item, index) => index < 4)}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("DetailProduct", { item: item })
-              }
-              style={styles.itemDogs}
-            >
-              <Image source={{ uri: item.img }} style={styles.itemImage} />
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemStyle}>Mã SP: {item.type}</Text>
-              <Text style={styles.price}>{item.price} </Text>
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => ItemList(item)}
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate("CatsSceen", { data: ListCats })}
+          onPress={() => goToClassifyScreen("cat")}
           style={styles.Xemthem}
         >
           <View />
@@ -279,25 +282,13 @@ const HomeScreen = ({ navigation }) => {
         <FlatList
           numColumns={2}
           scrollEnabled={false}
-          data={ListDogs.filter((item, index) => index < 4)}
+          data={ListAccessory.filter((item, index) => index < 4)}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("DetailProduct", { item: item })
-              }
-              style={styles.itemDogs}
-            >
-              <Image source={{ uri: item.img }} style={styles.itemImage} />
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemStyle}>ID: {item.type}</Text>
-              <Text style={styles.price}>{item.price} </Text>
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => ItemList(item)}
         />
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("DogsSceen", { data: ListDogs })}
+          onPress={() => goToClassifyScreen("accessory")}
           style={styles.Xemthem}
         >
           <View />
@@ -315,7 +306,7 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.cart}
-        onPress={() => navigation.navigate("CatScreen")}
+        onPress={() => navigation.navigate("CartScreen")}
       >
         <Image
           source={require("../Image/cart.png")}
@@ -347,7 +338,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 10,
   },
-  itemDogs: {
+  itemDog: {
     backgroundColor: "white",
     width: "45%",
     borderRadius: 12,
@@ -371,6 +362,15 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  itemStatus: {
+    fontSize: 18,
+    fontStyle: "italic",
+    color: "green",
+  },
+  itemRow: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   itemStyle: {
     fontSize: 13,

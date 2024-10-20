@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const animalSchema = new mongoose.Schema({
   img: String,
   name: String,
-  type: String,
-  price: Number,
+  price: String,
   origin: String,
-  size: String,
   quantity: Number,
+  status: String,
+  type: String,
   description: String,
 });
 
