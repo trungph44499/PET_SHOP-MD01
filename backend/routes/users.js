@@ -39,4 +39,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/getUser", async (req, res) => {
+  const { email } = req.body;
+  console.log(req.body);
+
+  try {
+    const result = await userModel.find({ email: email });
+    res.status(200).json({ response: result });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

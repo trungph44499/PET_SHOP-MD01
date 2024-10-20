@@ -4,10 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../Layout/HomeScreen';
 import ProfileScreen from '../Layout/ProfileScreen';
-import DetailProduct from '../Layout/DetailProduct';
-import CatScreen from '../Layout/CatScreen';
 import DogScreen from '../Layout/DogScreen';
 import PhuKienScreen from '../Layout/PhuKienScreen';
+import DetailScreen from '../Layout/DetailScreen';
+import CartScreen from '../Layout/CartScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -56,9 +56,9 @@ const MainNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name='Home' component={Home} />
-            <Stack.Screen name='DetailProduct' component={DetailProduct} />
+            <Stack.Screen name='DetailScreen' component={DetailScreen} />
             <Stack.Screen name='DogScreen' component={DogScreen} />
-            <Stack.Screen name='CatScreen' component={CatScreen} />
+            <Stack.Screen name='CartScreen' component={CartScreen} />
             <Stack.Screen name='PhuKienScreen' component={PhuKienScreen} />
 
         </Stack.Navigator>

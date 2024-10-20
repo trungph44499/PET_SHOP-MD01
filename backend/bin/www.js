@@ -13,6 +13,7 @@ var mongoose = require("mongoose");
  * Get port from environment and store in Express.
  */
 
+var URL_DATABASE = "mongodb://127.0.0.1:27017";
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 
@@ -21,9 +22,10 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+
 mongoose
-  .connect("mongodb+srv://admin01:dbQb3mrqrJisSqFF@mydatabase.bnquf.mongodb.net/pet_shop")
-  .then(() => console.log("Conneted Pet Shop"))
+  .connect(`${URL_DATABASE}/pet_shop`)
+  .then(() => console.log(`Conneted ${URL_DATABASE}`))
   .catch((err) => console.log(err));
 
 /**
