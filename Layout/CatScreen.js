@@ -13,7 +13,7 @@ import { URL } from "./HomeScreen";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
-const CartScreen = ({ navigation, route }) => {
+const CatScreen = ({ navigation, route }) => {
   // const [isAdmin, setIsAdmin] = useState(false);
   // const [data, setData] = useState(route.params?.data || []);
   const [data, setData] = useState([]);
@@ -95,7 +95,7 @@ const CartScreen = ({ navigation, route }) => {
           />
         </TouchableOpacity>
         <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          CARTS
+          CATS
         </Text>
         <TouchableOpacity
           style={{ width: 50 }}
@@ -146,7 +146,7 @@ const CartScreen = ({ navigation, route }) => {
   );
 };
 
-export default CartScreen;
+export default CatScreen;
 
 const styles = StyleSheet.create({
   container: {

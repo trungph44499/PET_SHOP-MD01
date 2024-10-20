@@ -7,7 +7,7 @@ import ProfileScreen from '../Layout/ProfileScreen';
 import DogScreen from '../Layout/DogScreen';
 import PhuKienScreen from '../Layout/PhuKienScreen';
 import DetailScreen from '../Layout/DetailScreen';
-import CartScreen from '../Layout/CartScreen';
+import CatScreen from '../Layout/CatScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -58,9 +58,8 @@ const MainNavigator = () => {
             <Stack.Screen name='Home' component={Home} />
             <Stack.Screen name='DetailScreen' component={DetailScreen} />
             <Stack.Screen name='DogScreen' component={DogScreen} />
-            <Stack.Screen name='CartScreen' component={CartScreen} />
+            <Stack.Screen name='CatScreen' component={CatScreen} />
             <Stack.Screen name='PhuKienScreen' component={PhuKienScreen} />
-
         </Stack.Navigator>
     )
 }

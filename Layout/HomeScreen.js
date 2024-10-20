@@ -315,7 +315,7 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.cart}
-        onPress={() => navigation.navigate("CartScreen")}
+        onPress={() => navigation.navigate("CatScreen")}
       >
         <Image
           source={require("../Image/cart.png")}
