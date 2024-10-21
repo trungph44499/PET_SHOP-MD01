@@ -1,7 +1,5 @@
 import {
-  Alert,
   Image,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,12 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
-import { addItem } from "../Redux/action";
-import store from "../Redux/store";
+import React from "react";
 import axios from "axios";
 import { URL } from "./HomeScreen";
+import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 
 const DetailScreen = ({ navigation, route }) => {
   const { item } = route.params;
@@ -50,7 +46,6 @@ const DetailScreen = ({ navigation, route }) => {
       if (status == 200) {
         ToastAndroid.show(response, ToastAndroid.SHORT);
       }
-      
     } catch (error) {
       console.log(error);
     }
@@ -98,12 +93,12 @@ const DetailScreen = ({ navigation, route }) => {
             }}
           >
             <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
-              {item.type}
+              {upperCaseFirstItem(item._id.slice(-5))}
             </Text>
           </View>
 
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#EB4F26" }}>
-            {item.price}{" "}
+            {numberUtils(item.price)}
           </Text>
 
           <ScrollView style={{ height: 200, padding: 1 }}>
