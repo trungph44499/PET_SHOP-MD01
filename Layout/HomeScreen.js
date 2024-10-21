@@ -15,7 +15,9 @@ import React, { useEffect, useState, useRef } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils } from "./utils/stringUtils";
 
-export const URL = "http://192.168.138.55";
+export const URL = "http://192.168.1.3";
+// 192.168.1.3
+// 192.168.138.55
 // 10.24.33.19
 // 192.168.1.29
 const { width: screenWidth } = Dimensions.get("window");
@@ -29,7 +31,7 @@ const HomeScreen = ({ navigation }) => {
   async function getListProduct() {
     try {
       const {
-        data: { response }, 
+        data: { response },
         status,
       } = await axios.get(`${URL}/products`);
       if (status == 200) {
@@ -41,9 +43,6 @@ const HomeScreen = ({ navigation }) => {
       console.log(error);
     }
   }
-
-  // const [imageList, setimageList] = useState([]);
-  // const [currentImage, setcurrentImage] = useState(0);
 
   // const getListDogs = async () => {
   //   await fetch(`${URL}/dogs`)
@@ -65,21 +64,6 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getListProduct();
-    // const data = [
-    //  {
-    //    image: <Image key={"0"} style={{width: screenWidth, height: 230,}} source={require('../Image/banner_pet01.png')} resizeMode='stretch'></Image>,
-    //  },
-    //  {
-    //   image: <Image style={{width: screenWidth, height: 230,}} source={require('../Image/banner_pet01.png')} resizeMode='stretch'></Image>,
-    // },
-    // {
-    //   image: <Image style={{width: screenWidth, height: 230,}} source={require('../Image/banner_pet01.png')} resizeMode='stretch'></Image>,
-    // },
-    // {
-    //   image: <Image style={{width: screenWidth, height: 230,}} source={require('../Image/banner_pet01.png')} resizeMode='stretch'></Image>,
-    // },
-    // ];
-    // setimageList(data);
 
     // getListDogs();
     // getListCats();
@@ -91,20 +75,6 @@ const HomeScreen = ({ navigation }) => {
     // });
   }, []);
 
-  // const handleScroll = (e) => {
-  //   if(!e) {
-  //     return;
-  //   }
-  //   const {nativeEvent} = e;
-  //   if(nativeEvent && nativeEvent.contenOffset) {
-  //     const currentOffset = nativeEvent.contenOffset.x;
-  //     let imageIndex = 0;
-  //     if(nativeEvent.contenOffset.x > 0 ) {
-  //       imageIndex = Math.floor((nativeEvent.contenOffset.x + screenWidth / 2) / screenWidth);
-  //     }
-  //     setcurrentImage(imageIndex);
-  //   }
-  // }
 
   // const checkUserRole = async () => {
   //   try {
@@ -388,16 +358,14 @@ const styles = StyleSheet.create({
     color: "red",
   },
   cart: {
-    width: 40,
-    height: 40,
-    padding: 26,
-    backgroundColor: "white",
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    top: 40, // Khoảng cách từ trên cùng
+    right: 30, // Khoảng cách từ bên trái
+    backgroundColor: 'white',
+    padding: 10,
     borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    right: 40,
-    bottom: 550,
   },
   adminAdd: {
     width: 40,

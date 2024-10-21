@@ -7,6 +7,8 @@ import ProfileScreen from "../Layout/ProfileScreen";
 import DetailScreen from "../Layout/DetailScreen";
 import ClassifyScreen from "../Layout/classify/ClassifyScreen";
 import CartScreen from "../Layout/CartScreen";
+import SearchScreen from '../Layout/SearchScreen';
+import NoticeScreen from '../Layout/NoticeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -37,7 +39,7 @@ function Home() {
 
       <Tab.Screen
         name="  "
-        component={HomeScreen}
+        component={SearchScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -52,7 +54,7 @@ function Home() {
 
       <Tab.Screen
         name="   "
-        component={HomeScreen}
+        component={NoticeScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -90,9 +92,9 @@ const MainNavigator = () => {
       <Stack.Screen name="DetailScreen" component={DetailScreen} />
       <Stack.Screen name="ClassifyScreen" component={ClassifyScreen} />
       <Stack.Screen name="CartScreen" component={CartScreen} />
-      {/* <Stack.Screen name='DogScreen' component={DogScreen} />
-            <Stack.Screen name='CatScreen' component={CatScreen} />
-            <Stack.Screen name='PhuKienScreen' component={PhuKienScreen} /> */}
+      <Stack.Screen name='SearchScreen' component={SearchScreen} />
+      <Stack.Screen name='NoticeScreen' component={NoticeScreen} />
+
     </Stack.Navigator>
   );
 };
