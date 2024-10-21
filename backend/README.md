@@ -4,6 +4,9 @@
 1. Sửa URL_DATABASE trong bin/www.js
 2. Với ai đang dùng mongodb ở bên web url có dạng mongodb+srv... thì vào Database Access chọn Edit chọn Built-in Role nếu nó là Only read any database thì sửa thành Read and write to any database
 
+# Tìm và sửa ip
+- Mở command gõ ipconfig tìm ipv4 sau đó sửa URL ở HomeScreen
+
 # Các bảng đang được sử dụng
 # Dữ liệu được đính kèm trong các thư mục, import vào mongodb là được
 - products
