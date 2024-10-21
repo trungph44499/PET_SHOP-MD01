@@ -39,10 +39,11 @@ const LoginScreen = (props) => {
       if (status == 200) {
         ToastAndroid.show(response, ToastAndroid.SHORT);
         if (type) {
+          await AsyncStorage.setItem("@UserLogin", email);
           if (checkRemember) {
-            await AsyncStorage.setItem("User", JSON.stringify({ email, pass }));
+            await AsyncStorage.setItem("User", email);
           }
-           props.navigation.navigate("Main");
+          props.navigation.navigate("Main");
         }
       }
     } catch (error) {
