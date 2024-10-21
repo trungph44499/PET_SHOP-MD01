@@ -6,70 +6,54 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState, useCallback } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { URL } from "./HomeScreen";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux"; // Thêm vào đầu file
 
-const CatScreen = ({ navigation, route }) => {
-  // const [isAdmin, setIsAdmin] = useState(false);
-  // const [data, setData] = useState(route.params?.data || []);
+const CatScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true); // Trạng thái loading
+// Lấy thông tin giỏ hàng từ Redux
+const cartItems = useSelector((state) => state.cart.items);
 
+// Hàm này giúp bạn tìm số lượng sản phẩm trong giỏ hàng
+const getQuantityInCart = (id) => {
+  const itemInCart = cartItems.find((item) => item.id === id);
+  return itemInCart ? itemInCart.quantity : 0; // Trả về số lượng hoặc 0 nếu không có
+};
   const getListCart = async () => {
+    setLoading(true); // Bắt đầu loading
     try {
-      const { status, data } = await axios.get(`${URL}/carts/getFromCart`);
-      if (status == 200) {
-        setData(data);
+      const response = await axios.get(`${URL}/carts/getFromCart`);
+      if (response.status === 200) {
+        setData(response.data);
       }
-      setData(data);
     } catch (err) {
+      Alert.alert("Lỗi", "Không thể tải dữ liệu.");
       console.log(err);
+    } finally {
+      setLoading(false); // Kết thúc loading
     }
   };
 
-  // const checkUserRole = async () => {
-  //     try {
-  //         const userInfo = await AsyncStorage.getItem('User');
-  //         if (userInfo) {
-  //             const { role } = JSON.parse(userInfo);
-  //             if (role === 'admin') {
-  //                 setIsAdmin(true);
-  //             }
-  //         }
-  //     } catch (error) {
-  //         Alert.alert('Lỗi', 'Không thể tải vai trò người dùng.');
-  //     }
-  // };
-
   useEffect(() => {
-    //checkUserRole();
     getListCart();
   }, []);
 
-  // useFocusEffect(
-  //     useCallback(() => {
-  //         getListCat();
-  //     }, [])
-  // );
-
   const handleDelete = async (id, type) => {
-    let url =
+    const url =
       type === "Dogs"
         ? `${URL}/dogs/${id}`
         : type === "Cats"
         ? `${URL}/cats/${id}`
         : type === "Phụ kiện"
         ? `${URL}/phukien/${id}`
-        : `${URL}/default/${id}`; // Giá trị mặc định nếu không khớp
+        : `${URL}/default/${id}`;
 
     try {
-      const response = await fetch(url, {
-        method: "DELETE",
-      });
-
+      const response = await fetch(url, { method: "DELETE" });
       if (response.ok) {
         Alert.alert("Xóa sản phẩm thành công");
         setData((prevData) => prevData.filter((item) => item.id !== id));
@@ -85,6 +69,29 @@ const CatScreen = ({ navigation, route }) => {
     navigation.navigate("EditScreen", { product: item });
   };
 
+  const renderProduct = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate("DetailScreen", { item })}
+      style={styles.item}
+    >
+      <Image source={{ uri: item.img }} style={styles.itemImage} />
+      <Text style={styles.itemName}>{item.name}</Text>
+      <Text style={styles.itemType}>Mã SP: {item.type}</Text>
+      <Text style={styles.price}>{item.price}</Text>
+      {/* Chức năng cho admin (nếu cần) */}
+      {/* {isAdmin && (
+        <View style={styles.adminActions}>
+          <TouchableOpacity onPress={() => handleEdit(item)}>
+            <Text style={styles.editButton}>Sửa</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleDelete(item.id, item.type)}>
+            <Text style={styles.deleteButton}>Xóa</Text>
+          </TouchableOpacity>
+        </View>
+      )} */}
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -94,9 +101,7 @@ const CatScreen = ({ navigation, route }) => {
             source={require("../Image/back.png")}
           />
         </TouchableOpacity>
-        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          CATS
-        </Text>
+        <Text style={styles.headerTitle}>CATS</Text>
         <TouchableOpacity
           style={{ width: 50 }}
           onPress={() => navigation.navigate("CartScreen")}
@@ -108,40 +113,24 @@ const CatScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection: "row", gap: 30, marginHorizontal: 20 }}>
-        <Text style={{ color: "red" }}>Tất cả</Text>
-        <Text>Hàng mới về</Text>
-        <Text>Hàng Sale</Text>
+      <View style={styles.filterContainer}>
+        <Text style={styles.filterText}>Tất cả</Text>
+        <Text style={styles.filterText}>Hàng mới về</Text>
+        <Text style={styles.filterText}>Hàng Sale</Text>
       </View>
 
-      <FlatList
-        numColumns={2}
-        data={data}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DetailProduct", { item: item })}
-            style={styles.itemDog}
-          >
-            <Image source={{ uri: item.img }} style={styles.itemImage} />
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemType}>Mã SP: {item.type}</Text>
-            <Text style={styles.price}>{item.price}</Text>
-            {/* {isAdmin && (
-              <View style={styles.adminActions}>
-                <TouchableOpacity onPress={() => handleEdit(item)}>
-                  <Text style={styles.editButton}>Sửa</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleDelete(item.id, item.type)}
-                >
-                  <Text style={styles.deleteButton}>Xóa</Text>
-                </TouchableOpacity>
-              </View>
-            )} */}
-          </TouchableOpacity>
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" /> // Hiển thị loading
+      ) : data.length > 0 ? (
+        <FlatList
+          numColumns={2}
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={renderProduct}
+        />
+      ) : (
+        <Text style={styles.noDataText}>Không có sản phẩm nào.</Text> // Thông báo không có sản phẩm
+      )}
     </View>
   );
 };
@@ -160,7 +149,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
   },
-  itemDog: {
+  headerTitle: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  filterContainer: {
+    flexDirection: "row",
+    gap: 30,
+    marginHorizontal: 20,
+  },
+  filterText: {
+    color: "red",
+  },
+  item: {
     backgroundColor: "white",
     width: "45%",
     borderRadius: 12,
@@ -194,15 +196,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "red",
   },
-  adminActions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  editButton: {
-    color: "blue",
-    marginRight: 10,
-  },
-  deleteButton: {
-    color: "red",
+  noDataText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "gray",
   },
 });

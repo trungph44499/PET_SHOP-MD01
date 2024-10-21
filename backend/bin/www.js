@@ -13,7 +13,7 @@ var mongoose = require("mongoose");
  * Get port from environment and store in Express.
  */
 
-var URL_DATABASE = "mongodb+srv://thuyltph35992:EedZRXGJ0Q6fkwVF@cluster0.smo2w.mongodb.net/PetsShop";
+var URL_DATABASE = "mongodb+srv://thuyltph35992:EedZRXGJ0Q6fkwVF@cluster0.smo2w.mongodb.net";
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 

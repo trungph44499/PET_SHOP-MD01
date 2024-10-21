@@ -249,7 +249,7 @@ const HomeScreen = ({ navigation }) => {
           )}
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate("CatsSceen", { data: ListCats })}
+          onPress={() => navigation.navigate("DogScreen", { data: ListCats })}
           style={styles.Xemthem}
         >
           <View />
@@ -284,7 +284,7 @@ const HomeScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("DetailProduct", { item: item })
+                navigation.navigate("CatScreen", { item: item })
               }
               style={styles.itemDogs}
             >
@@ -315,7 +315,7 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.cart}
-        onPress={() => navigation.navigate("CatScreen")}
+        onPress={() => navigation.navigate("PhuKienScreen")}
       >
         <Image
           source={require("../Image/cart.png")}

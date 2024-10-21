@@ -93,7 +93,7 @@ const PhuKienScreen = ({ navigation, route }) => {
                 data={data}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => navigation.navigate("DetailProduct", { item: item })}
+                    <TouchableOpacity onPress={() => navigation.navigate("DetailScreen", { item: item })}
                         style={styles.itemDog}>
                         <Image source={{ uri: item.img }} style={styles.itemImage} />
                         <Text style={styles.itemName}>{item.name}</Text>

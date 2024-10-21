@@ -1,180 +1,144 @@
-import {
-  Alert,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
-import { addItem } from "../Redux/action";
-import store from "../Redux/store";
-import axios from "axios";
-import { URL } from "./HomeScreen";
+import React, { useState } from 'react';
+import { Image, ScrollView, Text, ToastAndroid, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem, congItem } from '../Redux/action';
 
-const DetailScreen = ({ navigation, route }) => {
+const DetailProduct = ({ navigation, route }) => {
   const { item } = route.params;
-  // const [count, setcount] = useState(0);
-  // const [TongTien, setTongTien] = useState(0);
-  // console.log(item);
+  const [count, setCount] = useState(1);
+  const dispatch = useDispatch();
+  const cartItems = useSelector(state => state.cart.items);
 
-  // const dispatch = useDispatch();
-
-  // const handleTang = () => {
-  //   setcount(count + 1);
-  // };
-
-  // const handleGiam = () => {
-  //   count > 0 ? setcount(count - 1) : setcount(count);
-  // };
-
-  // const getTongTien = () => {
-  //   const Tong = Number(Number(item.price) * count);
-  //   setTongTien(Tong * 1000);
-  // };
-
-  // useEffect(() => {
-  //   getTongTien();
-  // }, [count]);
-  async function addToCart() {
-    try {
-      const {
-        status,
-        data: { response },
-      } = await axios.post(`${URL}/carts/addToCart`, item);
-
-      if (status == 200) {
-        ToastAndroid.show(response, ToastAndroid.SHORT);
-      }
-      
-    } catch (error) {
-      console.log(error);
+  const handleTang = () => {
+    if (count < item.quantity) {
+      setCount(count + 1);
+    } else {
+      ToastAndroid.show('Số lượng không được vượt quá số lượng có sẵn', ToastAndroid.SHORT);
     }
-  }
+  };
+  const formatPrice = (price) => {
+    return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+};
+  const handleGiam = () => setCount(count > 1 ? count - 1 : 1);
+
+  const handleAddToCart = () => {
+    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
+    if (existingItem) {
+      dispatch(congItem({ ...existingItem, quantity: existingItem.quantity + count }));
+    } else {
+      dispatch(addItem({ ...item, quantity: count }));
+    }
+    ToastAndroid.show('Đã thêm vào giỏ hàng', ToastAndroid.SHORT);
+  };
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              style={{ width: 20, height: 20 }}
-              source={require("../Image/back.png")}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
-          >
-            {item.name}
-          </Text>
-          <TouchableOpacity
-            style={{ width: 50 }}
-            onPress={() => navigation.navigate("CartScreen")}
-          >
-            <Image
-              style={{ width: 26, height: 26 }}
-              source={require("../Image/cart.png")}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <Image
-          source={{ uri: item.img }}
-          style={{ width: "100%", height: 300 }}
-        />
-
-        <View style={{ gap: 16, paddingHorizontal: 40 }}>
-          <View
-            style={{
-              width: 180,
-              padding: 8,
-              borderRadius: 10,
-              backgroundColor: "#825640",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
-              {item.type}
-            </Text>
-          </View>
-
-          <Text style={{ fontSize: 24, fontWeight: "bold", color: "#EB4F26" }}>
-            {item.price}{" "}
-          </Text>
-
-          <ScrollView style={{ height: 200, padding: 1 }}>
-            <Text>
-              Chi tiết sản phẩm
-              {"\n"}_______________________________________________
-            </Text>
-            {item.origin && (
-              <Text style={styles.txt}>
-                Xuất xứ: {item.origin}
-                {"\n"}_______________________________________________
-              </Text>
-            )}
-            <Text style={styles.txt}>
-              Số lượng:{" "}
-              <Text style={{ color: "green", fontWeight: "bold" }}>
-                còn {item.quantity} sp
-              </Text>
-              {"\n"}_______________________________________________{"\n"}
-            </Text>
-            <Text>Mô tả: {item.description}</Text>
-          </ScrollView>
-        </View>
-
-        <TouchableOpacity
-          onPress={addToCart}
-          style={{
-            borderRadius: 9,
-            padding: 12,
-            marginHorizontal: 20,
-            alignItems: "center",
-            backgroundColor: "#825640",
-            position: "relative",
-            bottom: 40,
-            width: "90%",
-            marginTop: 50,
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
-            Thêm vào giỏ hàng
-          </Text>
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image style={styles.icon} source={require('../Image/back.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('CartScreen')} style={styles.cartButton}>
+          <Image style={styles.cartIcon} source={require('../Image/cart.png')} />
+          {cartItems.length > 0 && <View style={styles.badge}><Text style={styles.badgeText}>{cartItems.length}</Text></View>}
         </TouchableOpacity>
       </View>
+
+      <Image source={{ uri: item.img }} style={styles.productImage} />
+
+      <View style={styles.counterContainer}>
+        <TouchableOpacity onPress={handleGiam} style={styles.counterButton}><Text>-</Text></TouchableOpacity>
+        <Text>{count}</Text>
+        <TouchableOpacity onPress={handleTang} style={styles.counterButton}><Text>+</Text></TouchableOpacity>
+      </View>
+
+      <View style={styles.details}>
+        <Text style={styles.productName}>{item.name}</Text>
+        <Text style={styles.itemPrice}>{formatPrice(item.price)}</Text>
+        <Text>Mô tả: {item.description}</Text>
+        {/* <Text>Kích cỡ: {item.size}</Text> */}
+        <Text>Xuất xứ: {item.origin}</Text>
+        <Text>Số lượng còn lại: {item.quantity}</Text>
+      </View>
+
+      <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartButton}>
+        <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
 
-export default DetailScreen;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    gap: 16,
-  },
+  container: { flex: 1 },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 20,
-    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20
   },
   icon: {
-    width: 10,
-    height: 10,
+    width: 20,
+    height: 20
   },
-  btn: {
-    padding: 7,
-    borderRadius: 4,
-    borderWidth: 1,
+  cartButton: {
+    position: 'relative'
   },
-  txt: {
-    marginTop: 10,
+  cartIcon: {
+    width: 24,
+    height: 24
   },
+  badge: {
+    position: 'absolute'
+    , top: -5,
+    right: -5,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    padding: 2,
+    minWidth: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 10
+  },
+  productImage: {
+    width: '100%',
+    height: 300
+  },
+  counterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 10
+  },
+  counterButton: {
+    padding: 10,
+    backgroundColor: '#ccc',
+    borderRadius: 5,
+    marginHorizontal: 10
+  },
+  details: {
+    padding: 20
+  },
+  productName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    
+  },
+  itemPrice: {
+    fontSize: 16,
+    color: 'red'
+  },
+  addToCartButton: {
+    backgroundColor: 'green',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    margin: 20
+  },
+  addToCartText: {
+    color: 'white',
+    fontSize: 16
+  }
 });
+
+export default DetailProduct;
