@@ -1,0 +1,24 @@
+# Những điều bạn cần biết về backend
+
+# Để chạy được
+1. Sửa URL_DATABASE trong bin/www.js
+2. Với ai đang dùng mongodb ở bên web url có dạng mongodb+srv... thì vào Database Access chọn Edit chọn Built-in Role nếu nó là Only read any database thì sửa thành Read and write to any database
+
+# Các bảng đang được sử dụng
+# Dữ liệu được đính kèm trong các thư mục, import vào mongodb là được
+- products
+- users
+- carts
+- admins
+
+# Các router
+- users/register (Đăng kí)
+- users/login (Đăng nhập)
+- users/getUser (Lấy thông tin người dùng)
+
+- products/ (Lấy danh sách sản phẩm)
+- carts/addToCart (Thêm vào giỏ hàng)
+- carts/getFromCart (Lấy sản phẩm từ giỏ hàng)
+- admins
+
+
