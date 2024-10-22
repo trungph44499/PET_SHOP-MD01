@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, Text, ToastAndroid, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Image, ScrollView, Text, ToastAndroid, TouchableOpacity, View, StyleSheet, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, congItem } from '../Redux/action';
 
@@ -11,25 +11,43 @@ const DetailProduct = ({ navigation, route }) => {
 
   const handleTang = () => {
     if (count < item.quantity) {
-      setCount(count + 1);
+      setCount(prevCount => prevCount + 1);
     } else {
       ToastAndroid.show('Số lượng không được vượt quá số lượng có sẵn', ToastAndroid.SHORT);
     }
   };
-  const formatPrice = (price) => {
-    return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-};
-  const handleGiam = () => setCount(count > 1 ? count - 1 : 1);
+
+  const handleGiam = () => setCount(prevCount => (prevCount > 1 ? prevCount - 1 : 1));
 
   const handleAddToCart = () => {
     const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-    if (existingItem) {
-      dispatch(congItem({ ...existingItem, quantity: existingItem.quantity + count }));
+    const newQuantity = existingItem ? existingItem.quantity + count : count;
+
+    if (newQuantity <= item.quantity) {
+      if (existingItem) {
+        dispatch(congItem({ ...existingItem, quantity: newQuantity }));
+      } else {
+        dispatch(addItem({ ...item, quantity: count }));
+      }
+      ToastAndroid.show('Đã thêm vào giỏ hàng', ToastAndroid.SHORT);
     } else {
-      dispatch(addItem({ ...item, quantity: count }));
+      ToastAndroid.show('Số lượng trong giỏ hàng không được vượt quá số lượng có sẵn', ToastAndroid.SHORT);
     }
-    ToastAndroid.show('Đã thêm vào giỏ hàng', ToastAndroid.SHORT);
   };
+
+  const handleTextInputChange = (text) => {
+    const value = Number(text);
+    if (value < 1) {
+      setCount(1);
+    } else if (value > item.quantity) {
+      ToastAndroid.show('Số lượng không được vượt quá số lượng có sẵn', ToastAndroid.SHORT);
+      setCount(item.quantity);
+    } else {
+      setCount(value);
+    }
+  };
+
+  const formatPrice = (price) => price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
   return (
     <ScrollView style={styles.container}>
@@ -37,7 +55,7 @@ const DetailProduct = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon} source={require('../Image/back.png')} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CartScreen')} style={styles.cartButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('CartScreen', { count })} style={styles.cartButton}>
           <Image style={styles.cartIcon} source={require('../Image/cart.png')} />
           {cartItems.length > 0 && <View style={styles.badge}><Text style={styles.badgeText}>{cartItems.length}</Text></View>}
         </TouchableOpacity>
@@ -47,7 +65,12 @@ const DetailProduct = ({ navigation, route }) => {
 
       <View style={styles.counterContainer}>
         <TouchableOpacity onPress={handleGiam} style={styles.counterButton}><Text>-</Text></TouchableOpacity>
-        <Text>{count}</Text>
+        <TextInput
+          style={styles.counterInput}
+          value={count.toString()}
+          keyboardType="numeric"
+          onChangeText={handleTextInputChange}
+        />
         <TouchableOpacity onPress={handleTang} style={styles.counterButton}><Text>+</Text></TouchableOpacity>
       </View>
 
@@ -55,7 +78,6 @@ const DetailProduct = ({ navigation, route }) => {
         <Text style={styles.productName}>{item.name}</Text>
         <Text style={styles.itemPrice}>{formatPrice(item.price)}</Text>
         <Text>Mô tả: {item.description}</Text>
-        {/* <Text>Kích cỡ: {item.size}</Text> */}
         <Text>Xuất xứ: {item.origin}</Text>
         <Text>Số lượng còn lại: {item.quantity}</Text>
       </View>
@@ -86,8 +108,8 @@ const styles = StyleSheet.create({
     height: 24
   },
   badge: {
-    position: 'absolute'
-    , top: -5,
+    position: 'absolute',
+    top: -5,
     right: -5,
     backgroundColor: 'red',
     borderRadius: 10,
@@ -116,13 +138,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 10
   },
+  counterInput: {
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    textAlign: 'center',
+  },
   details: {
     padding: 20
   },
   productName: {
     fontSize: 18,
-    fontWeight: 'bold',
-    
+    fontWeight: 'bold'
   },
   itemPrice: {
     fontSize: 16,

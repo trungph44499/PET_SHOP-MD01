@@ -15,7 +15,9 @@ import SliderShow from "./components/SliderShow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+
 export const URL = "http://192.168.1.5";
+
 // 10.24.33.19
 // 192.168.1.29
 const { width: screenWidth } = Dimensions.get("window");
@@ -249,7 +251,7 @@ const HomeScreen = ({ navigation }) => {
           )}
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate("DogScreen", { data: ListCats })}
+          onPress={() => navigation.navigate("CatsSceen", { data: ListCats })}
           style={styles.Xemthem}
         >
           <View />
@@ -284,7 +286,7 @@ const HomeScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("CatScreen", { item: item })
+                navigation.navigate("DetailProduct", { item: item })
               }
               style={styles.itemDogs}
             >
@@ -315,7 +317,7 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.cart}
-        onPress={() => navigation.navigate("PhuKienScreen")}
+        onPress={() => navigation.navigate("CatScreen")}
       >
         <Image
           source={require("../Image/cart.png")}
