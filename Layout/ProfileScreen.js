@@ -180,8 +180,6 @@ const styles = StyleSheet.create({
   background: {
     width: 200,
     height: 45,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: 'transparent',
     borderRadius: 10,
     overflow: 'hidden',

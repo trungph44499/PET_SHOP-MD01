@@ -142,20 +142,7 @@ const HomeScreen = ({ navigation }) => {
             </Text>
           </View>
           <SliderShow />
-          {/* <ScrollView
-           horizontal
-          //  pagingEnabled
-           contentContainerStyle={{width: screenWidth * imageList.length, height:230}}
-           onScroll={handleScroll}
-           scrollEventThrottle={16}
-           >
-            {imageList.map((e, index) => 
-            <View key={index.toString()}>
-              {e.image} 
-            </View>
-          )}
-          </ScrollView> */}
-          {/* <Image style={{ width: '100%', height: 230, justifyContent: 'center' }} source={require('../Image/banner_1.jpg')} /> */}
+       
           <TouchableOpacity style={styles.newSP}>
             <Text
               style={{
