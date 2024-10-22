@@ -8,7 +8,6 @@
 - Mở command gõ ipconfig tìm ipv4 sau đó sửa URL ở HomeScreen
 
 # Các bảng đang được sử dụng
-# Dữ liệu được đính kèm trong các thư mục, import vào mongodb là được
 - products
 - users
 - carts
