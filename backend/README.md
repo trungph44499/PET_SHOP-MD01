@@ -18,6 +18,10 @@
 - users/register (Đăng kí)
 - users/login (Đăng nhập)
 - users/getUser (Lấy thông tin người dùng)
+- users/getAllUser (Lấy toàn bộ danh sách người dùng)
+- users/update (Có thể update toàn bộ thông tin hoặc update riêng lẻ, nếu không muốn update thông tin nào
+thì không gửi thông tin đó lên, ví dụ chỉ muốn update mật khẩu thì chỉ cần gửi email và mật khẩu lên)
+- users/delete(Xoá người dùng dựa trên email)
 
 - products/ (Lấy danh sách sản phẩm)
 - carts/addToCart (Thêm vào giỏ hàng)
