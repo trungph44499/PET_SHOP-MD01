@@ -9,6 +9,7 @@ import ClassifyScreen from "../Layout/classify/ClassifyScreen";
 import CartScreen from "../Layout/CartScreen";
 import SearchScreen from '../Layout/SearchScreen';
 import NoticeScreen from '../Layout/NoticeScreen';
+import NewProductScreen from '../Layout/NewProductScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -94,7 +95,7 @@ const MainNavigator = () => {
       <Stack.Screen name="CartScreen" component={CartScreen} />
       <Stack.Screen name='SearchScreen' component={SearchScreen} />
       <Stack.Screen name='NoticeScreen' component={NoticeScreen} />
-
+      <Stack.Screen name="NewProductScreen" component={NewProductScreen} />
     </Stack.Navigator>
   );
 };

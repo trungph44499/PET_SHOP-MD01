@@ -14,11 +14,15 @@ var mongoose = require("mongoose");
  */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 var URL_DATABASE = "mongodb://localhost:27017";
 
 =======
 var URL_DATABASE = "mongodb+srv://hoangquan:WXtVprHBhv2skTNq@cluster0.m5rmad6.mongodb.net";
 >>>>>>> 945bce2e2c984fc02c13c192f462d243f5ad7a8d
+=======
+var URL_DATABASE = "mongodb+srv://hungnvvph32403:5ASB0m95pDFdpVS9@cluster0.cavbi.mongodb.net";
+>>>>>>> 11716df5152423fdf6618d0bb6ce70ac35441d88
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 

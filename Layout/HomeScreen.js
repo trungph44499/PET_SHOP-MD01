@@ -16,7 +16,11 @@ import SliderShow from "./components/SliderShow";
 import { numberUtils } from "./utils/stringUtils";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const URL = "http://192.168.1.3";
+=======
+export const URL = "http://192.168.55.104";
+>>>>>>> 11716df5152423fdf6618d0bb6ce70ac35441d88
 
 =======
 export const URL = "http://192.168.138.239";
@@ -148,19 +152,41 @@ const HomeScreen = ({ navigation }) => {
             </Text>
           </View>
           <SliderShow />
+<<<<<<< HEAD
        
           <TouchableOpacity style={styles.newSP}>
+=======
+          {/* <ScrollView
+           horizontal
+          //  pagingEnabled
+           contentContainerStyle={{width: screenWidth * imageList.length, height:230}}
+           onScroll={handleScroll}
+           scrollEventThrottle={16}
+           >
+            {imageList.map((e, index) => 
+            <View key={index.toString()}>
+              {e.image} 
+            </View>
+          )}
+          </ScrollView> */}
+          {/* <Image style={{ width: '100%', height: 230, justifyContent: 'center' }} source={require('../Image/banner_1.jpg')} /> */}
+          <TouchableOpacity
+            style={styles.newSP}
+            onPress={() => navigation.navigate('NewProductScreen')}
+          >
+>>>>>>> 11716df5152423fdf6618d0bb6ce70ac35441d88
             <Text
               style={{
                 fontSize: 17,
-                color: "black",
-                fontWeight: "bold",
-                textDecorationLine: "underline",
+                color: 'black',
+                fontWeight: 'bold',
+                textDecorationLine: 'underline',
               }}
             >
               Xem hàng mới về ➭
             </Text>
           </TouchableOpacity>
+
         </View>
 
         <Text
