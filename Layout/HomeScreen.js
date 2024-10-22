@@ -15,8 +15,14 @@ import React, { useEffect, useState, useRef } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils } from "./utils/stringUtils";
 
+<<<<<<< HEAD
 export const URL = "http://192.168.1.3";
 
+=======
+export const URL = "http://192.168.138.239";
+// 10.24.33.19
+// 192.168.1.29
+>>>>>>> 945bce2e2c984fc02c13c192f462d243f5ad7a8d
 const { width: screenWidth } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
