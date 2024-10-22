@@ -15,7 +15,7 @@ import React, { useEffect, useState, useRef } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils } from "./utils/stringUtils";
 
-export const URL = "http://192.168.1.3";
+export const URL = "http://192.168.55.104";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -156,18 +156,22 @@ const HomeScreen = ({ navigation }) => {
           )}
           </ScrollView> */}
           {/* <Image style={{ width: '100%', height: 230, justifyContent: 'center' }} source={require('../Image/banner_1.jpg')} /> */}
-          <TouchableOpacity style={styles.newSP}>
+          <TouchableOpacity
+            style={styles.newSP}
+            onPress={() => navigation.navigate('NewProductScreen')}
+          >
             <Text
               style={{
                 fontSize: 17,
-                color: "black",
-                fontWeight: "bold",
-                textDecorationLine: "underline",
+                color: 'black',
+                fontWeight: 'bold',
+                textDecorationLine: 'underline',
               }}
             >
               Xem hàng mới về ➭
             </Text>
           </TouchableOpacity>
+
         </View>
 
         <Text
