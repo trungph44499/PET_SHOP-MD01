@@ -16,7 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 
-export const URL = "http://192.168.1.5";
+export const URL = "http://10.24.36.143a";
 
 // 10.24.33.19
 // 192.168.1.29

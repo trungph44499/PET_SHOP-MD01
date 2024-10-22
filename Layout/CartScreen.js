@@ -64,7 +64,7 @@ const CartScreen = ({ navigation }) => {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image style={{ width: 20, height: 20 }} source={require('../Image/back.png')} />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Giỏ hàng</Text>
+                <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Giỏ hàng</Text>
             </View>
 
             {/* Danh sách sản phẩm trong giỏ hàng */}
