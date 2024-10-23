@@ -24,6 +24,11 @@ thì không gửi thông tin đó lên, ví dụ chỉ muốn update mật khẩ
 
 # Thông tin router products
 - products/ (Lấy danh sách sản phẩm)
+- products/add (Thêm sản phẩm)
+- products/update (Sửa sản phẩm)
+- products/delete (Xoá sản phẩm)
+
+# Thông tin router cart
 - carts/addToCart (Thêm vào giỏ hàng)
 - carts/getFromCart (Lấy sản phẩm từ giỏ hàng)
 
