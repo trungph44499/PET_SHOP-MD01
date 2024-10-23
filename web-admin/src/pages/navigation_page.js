@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -8,13 +8,22 @@ import { myColor } from "../styles/color";
 import {
   faChevronLeft,
   faChevronRight,
+  faComputer,
   faHippo,
+  faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 export default function NavigationPage({ child }) {
   const navigator = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const admin = window.localStorage.getItem("@isAdmin");
+    setIsAdmin(admin);
+  }, []);
+
   return (
     <div
       style={{
@@ -37,7 +46,6 @@ export default function NavigationPage({ child }) {
             style={{ marginLeft: 32 }}
             color={myColor.backgroundcolor}
           />
-
           <p
             style={{
               color: myColor.backgroundcolor,
@@ -50,7 +58,7 @@ export default function NavigationPage({ child }) {
               marginTop: 15,
             }}
           >
-            Welcome Admin
+            Welcome {isAdmin == "true" ? "Admin" : "Staff"}
           </p>
         </div>
         <div
@@ -108,6 +116,15 @@ export default function NavigationPage({ child }) {
           )}
         </div>
         <Menu>
+          {isAdmin == "true" && (
+            <MenuItem
+              style={{ textAlign: "start" }}
+              icon={<FontAwesomeIcon icon={faComputer} />}
+              onClick={() => navigator("/admin")}
+            >
+              Admin management
+            </MenuItem>
+          )}
           <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faUser} />}
@@ -123,7 +140,14 @@ export default function NavigationPage({ child }) {
             Product management
           </MenuItem>
         </Menu>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            height: 30,
+          }}
+        >
           <p
             style={{
               textAlign: "start",
@@ -131,24 +155,19 @@ export default function NavigationPage({ child }) {
               fontSize: 11,
               fontWeight: "600",
               opacity: 0.5,
-              paddingBottom: 3,
+              height: 0,
             }}
           >
-            Statistical
+            User
           </p>
         </div>
         <Menu>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faUser} />}
+            icon={<FontAwesomeIcon icon={faSignOut} />}
+            onClick={() => navigator("/", { replace: true })}
           >
-            User management
-          </MenuItem>
-          <MenuItem
-            style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faHippo} />}
-          >
-            Product management
+            Logout
           </MenuItem>
         </Menu>
       </Sidebar>
