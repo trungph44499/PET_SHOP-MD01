@@ -7,7 +7,7 @@ export const getListClassify = async (type) => {
     const {
       status,
       data: { response },
-    } = await axios.get(`${URL}/animals`);
+    } = await axios.get(`${URL}/products`);
     if (status == 200) {
       data = response.filter((item) => item.type == type);
     }

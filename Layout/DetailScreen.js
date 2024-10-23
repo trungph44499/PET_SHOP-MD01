@@ -93,7 +93,7 @@ const DetailScreen = ({ navigation, route }) => {
             }}
           >
             <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
-              {upperCaseFirstItem(item.type)}
+              {upperCaseFirstItem(item._id.slice(-5))}
             </Text>
           </View>
 

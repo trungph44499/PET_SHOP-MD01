@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { getListClassify } from "./function";
 import { upperCaseFirstItem } from "../utils/stringUtils";
+import { numberUtils } from "../utils/stringUtils";
 
 export default ClassifyScreen = ({ navigation, route }) => {
   // const [isAdmin, setIsAdmin] = useState(false);
@@ -101,7 +102,6 @@ export default ClassifyScreen = ({ navigation, route }) => {
       <View style={{ flexDirection: "row", gap: 30, marginHorizontal: 20 }}>
         <Text style={{ color: "red" }}>Tất cả</Text>
         <Text>Hàng mới về</Text>
-        <Text>Hàng Sale</Text>
       </View>
 
       <FlatList
@@ -114,9 +114,16 @@ export default ClassifyScreen = ({ navigation, route }) => {
             style={styles.itemDog}
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemType}>Mã SP: {item.type}</Text>
-            <Text style={styles.price}>{item.price}</Text>
+            <View style={styles.itemRow}>
+              <Text style={styles.itemName}>
+                {item.name}
+                {item.status === "New" && (
+                  <Text style={styles.itemStatus}> {item.status}</Text>
+                )}
+              </Text>
+            </View>
+            <Text style={styles.itemType}>Mã SP: {item._id.slice(-5)}</Text>
+            <Text style={styles.price}>{numberUtils(item.price)}</Text>
             {/* {isAdmin && (
                 <View style={styles.adminActions}>
                   <TouchableOpacity onPress={() => handleEdit(item)}>
@@ -172,6 +179,15 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  itemStatus: {
+    fontSize: 18,
+    fontStyle: "italic",
+    color: "green",
+  },
+  itemRow: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   itemType: {
     fontSize: 13,
