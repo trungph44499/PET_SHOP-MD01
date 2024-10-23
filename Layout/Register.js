@@ -11,8 +11,11 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
-import { URL } from "./HomeScreen";
+import { URL } from "./HomeScreen"; // Đảm bảo URL là đường dẫn đến API của bạn
 import axios from "axios";
+import { auth } from '../Layout/utils/firebaseConfig'; // Import firebase auth
+import { fetchSignInMethodsForEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register = (props) => {
   const [name, setname] = useState("");
@@ -26,38 +29,57 @@ const Register = (props) => {
   };
 
   const addUser = async () => {
-    if (name == "" || email == "" || pass == "") {
-      ToastAndroid.show("Không được để trống", 0);
-      return;
+    if (name === "" || email === "" || pass === "") {
+        ToastAndroid.show("Không được để trống", ToastAndroid.SHORT);
+        return;
     }
-    if (pass != pass2) {
-      ToastAndroid.show("Mật khẩu chưa khớp", 0);
-      return;
+    if (pass !== pass2) {
+        ToastAndroid.show("Mật khẩu chưa khớp", ToastAndroid.SHORT);
+        return;
     }
+    if (pass.length < 6) { // Kiểm tra độ dài mật khẩu
+      ToastAndroid.show("Mật khẩu phải lớn hơn 6 ký tự", ToastAndroid.SHORT);
+      return;
+  }
     if (!validateEmail(email)) {
-      ToastAndroid.show("không đúng định dạng email", 0);
-      return;
+        ToastAndroid.show("Không đúng định dạng email", ToastAndroid.SHORT);
+        return;
     }
 
     try {
-      const {
-        data: { response, type },
-        status,
-      } = await axios.post(`${URL}/users/register`, {
-        name,
-        email,
-        pass,
-      });
-      if (status == 200) {
-        ToastAndroid.show(response, 0);
-        if (type) {
-          props.navigation.navigate("LoginScreen");
+        // Kiểm tra email đã tồn tại chưa
+        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+        if (signInMethods.length > 0) {
+            ToastAndroid.show("Email đã được sử dụng", ToastAndroid.SHORT);
+            return;
         }
-      }
+
+        // Tạo người dùng với Firebase
+        const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+        const user = userCredential.user;
+
+        // Lưu thông tin người dùng vào MongoDB
+        const { data } = await axios.post(`${URL}/users/register`, {
+            name,
+            email,
+            pass, 
+            uid: user.uid,
+        });
+
+        ToastAndroid.show(data.response, ToastAndroid.SHORT);
+        props.navigation.navigate("LoginScreen");
+
     } catch (error) {
-      console.log(error);
+        // Hiển thị thông báo lỗi cụ thể
+        const errorMessage = error.code === "auth/email-already-in-use" 
+            ? "Email đã được sử dụng"
+            : error.message;
+        
+        ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+        console.log(error); // Để kiểm tra lỗi chi tiết trong console
     }
-  };
+};
+  
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <KeyboardAvoidingView
@@ -89,30 +111,24 @@ const Register = (props) => {
             <TextInput
               style={styles.input}
               placeholder="Họ và tên"
-              onChangeText={(txt) => {
-                setname(txt);
-              }}
+              onChangeText={setname}
             />
             <TextInput
               style={styles.input}
               placeholder="E-mail"
-              onChangeText={(txt) => {
-                setemail(txt);
-              }}
+              onChangeText={setemail}
             />
             <TextInput
               style={styles.input}
               placeholder="Password"
-              onChangeText={(txt) => {
-                setpass(txt);
-              }}
+              secureTextEntry
+              onChangeText={setpass}
             />
             <TextInput
               style={styles.input}
               placeholder="Nhập lại Password"
-              onChangeText={(txt) => {
-                setpass2(txt);
-              }}
+              secureTextEntry
+              onChangeText={setpass2}
             />
             <Text
               style={{ textAlign: "center", marginBottom: 10, marginTop: 10 }}
@@ -193,13 +209,13 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#ffff", // Màu của bóng
+    shadowColor: "#ffff",
     shadowOffset: {
-      width: -10, // Độ lệch bóng theo chiều ngang, âm là bóng từ trái
-      height: 5, // Độ lệch bóng theo chiều dọc
+      width: -10,
+      height: 5,
     },
-    shadowOpacity: 0.1, // Độ mờ của bóng
-    shadowRadius: 50, // Bán kính của bóng
+    shadowOpacity: 0.1,
+    shadowRadius: 50,
   },
   image: {
     width: 50,

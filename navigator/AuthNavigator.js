@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import MainNavigator from './MainNavigator';
 import Register from '../Layout/Register';
 import LoginScreen from '../Layout/LoginScreen';
+import ForgotPassword from '../Layout/ForgotPassword';
 
 
 const AuthNavigator = () => {
@@ -15,6 +16,7 @@ const AuthNavigator = () => {
             <Stack.Screen name='LoginScreen' component={LoginScreen}/>
             <Stack.Screen name='Register' component={Register}/>
             <Stack.Screen name='Main' component={MainNavigator}/>
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         </Stack.Navigator>
     )
 }

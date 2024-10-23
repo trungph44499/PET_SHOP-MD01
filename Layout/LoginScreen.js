@@ -158,7 +158,7 @@ const LoginScreen = (props) => {
                 </TouchableOpacity>
                 <Text style={{ marginLeft: 10 }}>Nhớ tài khoản</Text>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => props.navigation.navigate("ForgotPassword")}>
                 <Text style={{ color: "green", fontWeight: "bold" }}>
                   Forgot Password?
                 </Text>

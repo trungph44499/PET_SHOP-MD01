@@ -3,8 +3,8 @@ const adminSchema = new mongoose.Schema({
   fullname: String,
   username: String,
   password: String,
-  type: String,
-  status: Boolean,
+  type: { default: 'staff', type: String },
+  status: { default: true, type: Boolean },
 });
 
 const adminModel = mongoose.model("admins", adminSchema);

@@ -1,3 +1,4 @@
+
 var express = require("express");
 var router = express.Router();
 const userModel = require("../models/userModel");
@@ -6,24 +7,28 @@ router.post("/register", async (req, res) => {
   const { name, email, pass } = req.body;
 
   try {
-    const checkEmailExist = await userModel.find({ email: email });
+    // Kiểm tra xem email đã tồn tại chưa
+    const checkEmailExist = await userModel.findOne({ email });
 
-    if (checkEmailExist.length == 0) {
-      const registerUser = await userModel.insertMany({
+    if (!checkEmailExist) {
+      // Đăng ký người dùng mới
+      const registerUser = await userModel.create({
         fullname: name,
-        email: email,
-        pass: pass,
+        email,
+        pass,
       });
-      if (registerUser.length != 0) {
-        res.status(200).json({ response: "Đăng ký thành công", type: true });
+
+      if (registerUser) {
+        res.status(201).json({ response: "Đăng ký thành công", type: true });
       } else {
-        res.status(200).json({ response: "Đăng ký thất bại", type: false });
+        res.status(400).json({ response: "Đăng ký thất bại", type: false });
       }
     } else {
-      res.status(200).json({ response: "Tài khoản đã tồn tại!", type: false });
+      res.status(409).json({ response: "Tài khoản đã tồn tại!", type: false });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ response: "Có lỗi xảy ra", type: false });
   }
 });
 
@@ -40,6 +45,19 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+});
+
+// Backend: kiểm tra email
+router.post("/check-email", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await userModel.findOne({ email });
+    res.status(200).json({ exists: !!user }); // Trả về true nếu tồn tại
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Có lỗi xảy ra" });
   }
 });
 
@@ -73,9 +91,9 @@ router.post("/delete", async (req, res) => {
 
     if (result.deletedCount > 0) {
       res.status(200).json({ response: "Delete complete", type: true });
-    } else {
-      res.status(200).json({ response: "Error delete", type: false });
+      return;
     }
+    res.status(200).json({ response: "Error delete", type: false });
   } catch (error) {
     console.log(error);
   }
@@ -89,20 +107,13 @@ router.post("/update", async (req, res) => {
 
   try {
     const result = await userModel.findOne({ email: email });
+    if (fullname === "") fullname = result.fullname;
+    if (password === "") password = result.pass;
+    if (avatar === "") avatar = result.avatar;
 
-    if (fullname == "") {
-      fullname = result.fullname;
-    }
-    if (password == "") {
-      password = result.pass;
-    }
-    if (avatar == "") {
-      avatar = result.avatar;
-    }
     const updateUser = await userModel.updateOne(
       { email: email },
       {
-        email: email,
         fullname: fullname,
         pass: password,
         avatar: avatar,
@@ -110,9 +121,9 @@ router.post("/update", async (req, res) => {
     );
     if (updateUser.matchedCount > 0) {
       res.status(200).json({ response: "Update complete", type: true });
-    } else {
-      res.status(200).json({ response: "Error Update", type: false });
+      return;
     }
+    res.status(200).json({ response: "Error Update", type: false });
   } catch (error) {
     console.log(error);
   }
