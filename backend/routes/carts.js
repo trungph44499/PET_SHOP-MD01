@@ -21,10 +21,10 @@ router.post("/addToCart", async (req, res) => {
         description: description,
       });
       result.length != 0
-        ? res.status(200).json({ response: "Insert complete!" })
-        : res.status(200).json({ response: "Error insert!" });
+        ? res.status(200).json({ response: "Thêm sản phẩm thành công" })
+        : res.status(200).json({ response: "Thêm sản phẩm thất bại" });
     } else {
-      res.status(200).json({ response: "Item already exists!" });
+      res.status(200).json({ response: "Sản phẩm đã có trong giỏ hàng!" });
     }
   } catch (error) {
     console.log(error);

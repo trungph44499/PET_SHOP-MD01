@@ -40,6 +40,10 @@ export default ClassifyScreen = ({ navigation, route }) => {
     setFilteredData(newProducts); // Cập nhật filteredData với sản phẩm mới
   };
 
+  function goToDetailScreen(item) {
+    navigation.navigate("DetailScreen", { item: item });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -81,7 +85,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("DetailScreen", { item: item })}
+            onPress={() => goToDetailScreen(item)}
             style={styles.itemDog}
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />

@@ -26,6 +26,10 @@ export default NewProductScreen = ({ navigation }) => {
     getData();
   }, []);
 
+  function goToDetailScreen(item) {
+    navigation.navigate("DetailScreen", { item: item });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -55,7 +59,7 @@ export default NewProductScreen = ({ navigation }) => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('DetailScreen', { item })}
+            onPress={() => goToDetailScreen(item)}
             style={styles.itemProduct}
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />

@@ -15,12 +15,12 @@ router.post("/register", async (req, res) => {
         pass: pass,
       });
       if (registerUser.length != 0) {
-        res.status(200).json({ response: "Register complete", type: true });
+        res.status(200).json({ response: "Đăng ký thành công", type: true });
       } else {
-        res.status(200).json({ response: "Error register", type: false });
+        res.status(200).json({ response: "Đăng ký thất bại", type: false });
       }
     } else {
-      res.status(200).json({ response: "User exist", type: false });
+      res.status(200).json({ response: "Tài khoản đã tồn tại!", type: false });
     }
   } catch (error) {
     console.log(error);
@@ -34,9 +34,9 @@ router.post("/login", async (req, res) => {
     const checkUserLogin = await userModel.find({ email: email, pass: pass });
 
     if (checkUserLogin.length != 0) {
-      res.status(200).json({ response: "Login complete", type: true });
+      res.status(200).json({ response: "Đăng nhập thành công", type: true });
     } else {
-      res.status(200).json({ response: "User incorrect", type: false });
+      res.status(200).json({ response: "Đăng nhập thất bại", type: false });
     }
   } catch (error) {
     console.log(error);
