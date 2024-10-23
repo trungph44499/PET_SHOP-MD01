@@ -1,53 +1,47 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, Text, ToastAndroid, TouchableOpacity, View, StyleSheet, TextInput } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { addItem, congItem } from '../Redux/action';
+import { Image, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View, TextInput } from 'react-native';
+import axios from 'axios';
+import { URL } from './HomeScreen';
+import { numberUtils, upperCaseFirstItem } from './utils/stringUtils';
 
-const DetailProduct = ({ navigation, route }) => {
+const DetailScreen = ({ navigation, route }) => {
   const { item } = route.params;
-  const [count, setCount] = useState(1);
-  const dispatch = useDispatch();
-  const cartItems = useSelector(state => state.cart.items);
+  const [quantity, setQuantity] = useState(1); // Trạng thái số lượng
 
-  const handleTang = () => {
-    if (count < item.quantity) {
-      setCount(prevCount => prevCount + 1);
-    } else {
-      ToastAndroid.show('Số lượng không được vượt quá số lượng có sẵn', ToastAndroid.SHORT);
-    }
-  };
+  // Thêm sản phẩm vào giỏ hàng
+  const addToCart = async () => {
+    try {
+      const { status, data: { response } } = await axios.post(`${URL}/carts/addToCart`, { ...item, quantity });
 
-  const handleGiam = () => setCount(prevCount => (prevCount > 1 ? prevCount - 1 : 1));
-
-  const handleAddToCart = () => {
-    const existingItem = cartItems.find(cartItem => cartItem.id === item.id);
-    const newQuantity = existingItem ? existingItem.quantity + count : count;
-
-    if (newQuantity <= item.quantity) {
-      if (existingItem) {
-        dispatch(congItem({ ...existingItem, quantity: newQuantity }));
-      } else {
-        dispatch(addItem({ ...item, quantity: count }));
+      if (status === 200) {
+        ToastAndroid.show(response, ToastAndroid.SHORT);
       }
-      ToastAndroid.show('Đã thêm vào giỏ hàng', ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show('Số lượng trong giỏ hàng không được vượt quá số lượng có sẵn', ToastAndroid.SHORT);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const handleTextInputChange = (text) => {
-    const value = Number(text);
-    if (value < 1) {
-      setCount(1);
-    } else if (value > item.quantity) {
-      ToastAndroid.show('Số lượng không được vượt quá số lượng có sẵn', ToastAndroid.SHORT);
-      setCount(item.quantity);
-    } else {
-      setCount(value);
+  // Hàm tăng số lượng
+  const increaseQuantity = () => {
+    if (quantity < item.quantity) {
+      setQuantity(prevQuantity => prevQuantity + 1);
     }
   };
 
-  const formatPrice = (price) => price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  // Hàm giảm số lượng
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(prevQuantity => prevQuantity - 1);
+    }
+  };
+
+  // Xử lý thay đổi số lượng thủ công
+  const handleQuantityChange = (text) => {
+    const num = parseInt(text, 10);
+    if (!isNaN(num) && num > 0 && num <= item.quantity) {
+      setQuantity(num);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -55,117 +49,175 @@ const DetailProduct = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon} source={require('../Image/back.png')} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('CartScreen', { count })} style={styles.cartButton}>
+        <Text style={styles.title}>{item.name}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
           <Image style={styles.cartIcon} source={require('../Image/cart.png')} />
-          {cartItems.length > 0 && <View style={styles.badge}><Text style={styles.badgeText}>{cartItems.length}</Text></View>}
         </TouchableOpacity>
       </View>
 
       <Image source={{ uri: item.img }} style={styles.productImage} />
 
-      <View style={styles.counterContainer}>
-        <TouchableOpacity onPress={handleGiam} style={styles.counterButton}><Text>-</Text></TouchableOpacity>
-        <TextInput
-          style={styles.counterInput}
-          value={count.toString()}
-          keyboardType="numeric"
-          onChangeText={handleTextInputChange}
-        />
-        <TouchableOpacity onPress={handleTang} style={styles.counterButton}><Text>+</Text></TouchableOpacity>
+      <View style={styles.detailsContainer}>
+        <View style={styles.productId}>
+          <Text style={styles.productIdText}>{upperCaseFirstItem(item._id.slice(-5))}</Text>
+        </View>
+
+        <View style={styles.priceQuantityContainer}>
+          <Text style={styles.priceText}>{numberUtils(item.price)}</Text>
+          <View style={styles.quantityContainer}>
+            <TouchableOpacity onPress={decreaseQuantity} style={styles.quantityButton}>
+              <Text style={styles.quantityButtonText}>-</Text>
+            </TouchableOpacity>
+            <TextInput
+              style={styles.quantityInput}
+              value={String(quantity)}
+              onChangeText={handleQuantityChange}
+              keyboardType="numeric"
+            />
+            <TouchableOpacity onPress={increaseQuantity} style={styles.quantityButton}>
+              <Text style={styles.quantityButtonText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <ScrollView style={styles.descriptionContainer}>
+          <Text style={styles.sectionTitle}>Chi tiết sản phẩm</Text>
+          {item.origin && (
+            <Text style={styles.detailText}>Xuất xứ: {item.origin}</Text>
+          )}
+          <Text style={styles.detailText}>
+            Số lượng: <Text style={styles.availableQuantity}>còn {item.quantity} sp</Text>
+          </Text>
+          <Text style={styles.descriptionText}>Mô tả: {item.description}</Text>
+        </ScrollView>
       </View>
 
-      <View style={styles.details}>
-        <Text style={styles.productName}>{item.name}</Text>
-        <Text style={styles.itemPrice}>{formatPrice(item.price)}</Text>
-        <Text>Mô tả: {item.description}</Text>
-        <Text>Xuất xứ: {item.origin}</Text>
-        <Text>Số lượng còn lại: {item.quantity}</Text>
-      </View>
-
-      <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartButton}>
+      <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
         <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
 
+export default DetailScreen;
+
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#FFF',
+    elevation: 3,
   },
   icon: {
-    width: 20,
-    height: 20
-  },
-  cartButton: {
-    position: 'relative'
+    width: 24,
+    height: 24,
   },
   cartIcon: {
-    width: 24,
-    height: 24
+    width: 26,
+    height: 26,
   },
-  badge: {
-    position: 'absolute',
-    top: -5,
-    right: -5,
-    backgroundColor: 'red',
-    borderRadius: 10,
-    padding: 2,
-    minWidth: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  badgeText: {
-    color: 'white',
-    fontSize: 10
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   productImage: {
     width: '100%',
-    height: 300
+    height: 300,
+    resizeMode: 'cover',
   },
-  counterContainer: {
+  detailsContainer: {
+    padding: 16,
+    backgroundColor: '#FFF',
+    marginTop: 10,
+    borderRadius: 10,
+    elevation: 3,
+    marginHorizontal: 10,
+  },
+  productId: {
+    backgroundColor: '#825640',
+    borderRadius: 8,
+    padding: 8,
+    alignSelf: 'flex-start',
+  },
+  productIdText: {
+    color: '#FFF',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  priceQuantityContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: 10
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
-  counterButton: {
-    padding: 10,
-    backgroundColor: '#ccc',
+  priceText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#EB4F26',
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantityButton: {
+    borderWidth: 1,
+    borderColor: '#825640',
     borderRadius: 5,
-    marginHorizontal: 10
+    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  counterInput: {
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    textAlign: 'center',
-  },
-  details: {
-    padding: 20
-  },
-  productName: {
+  quantityButtonText: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
-  itemPrice: {
+  quantityInput: {
+    borderWidth: 1,
+    borderColor: '#825640',
+    borderRadius: 5,
+    padding: 8,
+    width: 50,
+    textAlign: 'center',
+    marginHorizontal: 5,
+    fontSize: 18,
+  },
+  descriptionContainer: {
+    marginTop: 16,
+  },
+  sectionTitle: {
     fontSize: 16,
-    color: 'red'
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  detailText: {
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  availableQuantity: {
+    color: 'green',
+    fontWeight: 'bold',
+  },
+  descriptionText: {
+    fontSize: 14,
+    marginTop: 10,
   },
   addToCartButton: {
-    backgroundColor: 'green',
-    padding: 15,
     borderRadius: 10,
+    padding: 12,
+    marginHorizontal: 20,
     alignItems: 'center',
-    margin: 20
+    backgroundColor: '#825640',
+    marginTop: 30,
   },
   addToCartText: {
-    color: 'white',
-    fontSize: 16
-  }
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
-
-export default DetailProduct;

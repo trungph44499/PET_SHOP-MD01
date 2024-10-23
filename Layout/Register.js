@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { URL } from "./HomeScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const Register = (props) => {
@@ -52,7 +51,6 @@ const Register = (props) => {
       if (status == 200) {
         ToastAndroid.show(response, 0);
         if (type) {
-          //await AsyncStorage.setItem("@userRole", "user");
           props.navigation.navigate("LoginScreen");
         }
       }

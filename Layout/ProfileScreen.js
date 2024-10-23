@@ -6,6 +6,7 @@ import {
   ToastAndroid,
   View,
   TouchableOpacity,
+  Animated
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState, useCallback } from "react";
@@ -15,6 +16,22 @@ import { URL } from "./HomeScreen";
 
 const ProfileScreen = ({ navigation, route }) => {
   const [user, setUser] = useState({});
+
+  const [scale] = useState(new Animated.Value(1));
+
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.8,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const retrieveData = async () => {
     try {
@@ -84,6 +101,25 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text onPress={() => navigation.navigate("ManageUser")}>
             Chỉnh sửa thông tin
           </Text>
+          <View style={styles.background}>
+            <Animated.View style={{ transform: [{ scale }] }}>
+              <TouchableOpacity
+                style={styles.button}
+                onPressIn={handlePressIn}
+                onPressOut={handlePressOut}
+                onPress={() => alert('Button Pressed!')}
+              >
+                   <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
+                <Text style={styles.buttonText}>Pet care</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+          <Text onPress={() => navigation.navigate("NoticeScreen")}>
+            Chỉnh sửa thông tin
+          </Text>
+          <Text onPress={() => navigation.navigate("NoticeScreen")}>
+            Đổi mật khẩu
+          </Text>
 
           <Text onPress={() => navigation.navigate("NoticeScreen")}>
             Lịch sử giao dịch
@@ -133,9 +169,40 @@ const styles = StyleSheet.create({
   },
   option: {
     gap: 18,
-    marginTop: 10,
+    marginTop: 5,
   },
   textGray: {
     color: "gray",
+  },
+  starImage: {
+    width: 32,
+    height: 32,
+    marginLeft:5,
+    resizeMode: 'contain',
+  },
+  background: {
+    width: 200,
+    height: 45,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: 'transparent',
+    borderRadius: 10,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  button: {
+    width: '100%',
+    height: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: '#fcd4db',
+    borderRadius: 20,
+    padding: 10,
+   
+  },
+  buttonText: {
+    fontSize: 14,
+    color: 'black',
+    marginLeft: 10
   },
 });

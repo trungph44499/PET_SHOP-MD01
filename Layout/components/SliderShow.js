@@ -12,9 +12,9 @@ const styles = StyleSheet.create({
 const { width } = Dimensions.get("window");
 const listBanner = [
   require("../../Image/banner_pet01.png"),
-  require("../../Image/banner_pet01.png"),
-  require("../../Image/banner_pet01.png"),
-  require("../../Image/banner_pet01.png"),
+  require("../../Image/banner_pet03.png"),
+  require("../../Image/banner_pet02.png"),
+  require("../../Image/banner_pet05.png"),
 ];
 
 export default function () {
