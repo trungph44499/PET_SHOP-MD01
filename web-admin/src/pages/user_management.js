@@ -4,6 +4,7 @@ import axios from "axios";
 import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
+import "./css/css.css";
 
 export default function UserManagement() {
   return (
@@ -45,7 +46,7 @@ function Main() {
   return (
     <div>
       {isUpdate && (
-        <div className="column m-2">
+        <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
               Avatar
@@ -72,11 +73,7 @@ function Main() {
             <span className="input-group-text" style={{ width: 100 }}>
               Password
             </span>
-            <input
-              ref={password}
-              type="text"
-              defaultValue={dataUpdate.password}
-            />
+            <input ref={password} type="text" defaultValue={dataUpdate.pass} />
           </div>
           <div className="d-flex flex-row">
             <button
@@ -119,7 +116,7 @@ function Main() {
         </div>
       )}
       {isAdd && (
-        <div className="column m-2">
+        <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
               Avatar
@@ -209,22 +206,21 @@ function Main() {
         <tbody>
           {data.map((item) => (
             <tr key={item._id}>
-              <th scope="row">{item.avatar}</th>
+              <th>
+                <img src={item.avatar} height={50} width={50} />
+              </th>
               <td>{item.fullname}</td>
               <td>{item.email}</td>
               <td>{item.pass}</td>
               <td>
                 <button
                   onClick={() => {
-                    setDataUpdate({
-                      avatar: item.avatar,
-                      fullname: item.fullname,
-                      email: item.email,
-                      password: item.pass,
-                    });
-
-                    setIsAdd(false);
-                    setIsUdpdate(true);
+                    setIsUdpdate(false);
+                    setTimeout(() => {
+                      setDataUpdate(item);
+                      setIsAdd(false);
+                      setIsUdpdate(true);
+                    }, 500);
                   }}
                   className="btn btn-primary"
                 >
