@@ -73,9 +73,9 @@ router.post("/delete", async (req, res) => {
 
     if (result.deletedCount > 0) {
       res.status(200).json({ response: "Delete complete", type: true });
-    } else {
-      res.status(200).json({ response: "Error delete", type: false });
+      return;
     }
+    res.status(200).json({ response: "Error delete", type: false });
   } catch (error) {
     console.log(error);
   }
@@ -89,20 +89,13 @@ router.post("/update", async (req, res) => {
 
   try {
     const result = await userModel.findOne({ email: email });
+    if (fullname === "") fullname = result.fullname;
+    if (password === "") password = result.pass;
+    if (avatar === "") avatar = result.avatar;
 
-    if (fullname == "") {
-      fullname = result.fullname;
-    }
-    if (password == "") {
-      password = result.pass;
-    }
-    if (avatar == "") {
-      avatar = result.avatar;
-    }
     const updateUser = await userModel.updateOne(
       { email: email },
       {
-        email: email,
         fullname: fullname,
         pass: password,
         avatar: avatar,
@@ -110,9 +103,9 @@ router.post("/update", async (req, res) => {
     );
     if (updateUser.matchedCount > 0) {
       res.status(200).json({ response: "Update complete", type: true });
-    } else {
-      res.status(200).json({ response: "Error Update", type: false });
+      return;
     }
+    res.status(200).json({ response: "Error Update", type: false });
   } catch (error) {
     console.log(error);
   }

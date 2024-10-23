@@ -13,7 +13,7 @@
 - carts
 - admins
 
-# Các router
+# Thông tin router user
 - users/register (Đăng kí)
 - users/login (Đăng nhập)
 - users/getUser (Lấy thông tin người dùng)
@@ -22,9 +22,19 @@
 thì không gửi thông tin đó lên, ví dụ chỉ muốn update mật khẩu thì chỉ cần gửi email và mật khẩu lên)
 - users/delete(Xoá người dùng dựa trên email)
 
+# Thông tin router products
 - products/ (Lấy danh sách sản phẩm)
 - carts/addToCart (Thêm vào giỏ hàng)
 - carts/getFromCart (Lấy sản phẩm từ giỏ hàng)
-- admins
+
+# Lưu ý với bảng admin
+- Chỉ có 1 admin có tài khoản là "admin"
+- admin có thể thao tác với tài khoản nhân viên
+
+# Thông tin router admin
+- admins/ (Lấy danh sách nhân viên)
+- admin/add (Thêm nhân viên)
+- admin/update (Sửa thông tin nhân viên)
+- admin/delete (Xoá nhân viên)
 
 
