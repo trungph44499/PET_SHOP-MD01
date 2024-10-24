@@ -50,6 +50,18 @@ const PassReset = ({ navigation }) => {
     }
   
     try {
+      // Kiểm tra mật khẩu cũ
+      const checkOldPassResponse = await axios.post(`${URL}/users/login`, {
+        email,
+        pass: oldPass,
+      });
+
+      if (checkOldPassResponse.status !== 200 || !checkOldPassResponse.data.type) {
+        Alert.alert('Lỗi', 'Mật khẩu cũ không đúng');
+        return;
+      }
+
+      // Đổi mật khẩu mới
       const response = await axios.post(`${URL}/users/update`, {
         email,
         password: newPass,
@@ -71,59 +83,61 @@ const PassReset = ({ navigation }) => {
   const { oldPass, newPass, confirmNewPass } = showPass;
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.scrollView}>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image style={styles.icon} source={require('../Image/back.png')} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>Đổi mật khẩu</Text>
-        </View>
-        <View style={styles.textInput}>
-          <View style={styles.input}>
-            <TextInput
-              style={styles.textInputField}
-              secureTextEntry={oldPass}
-              placeholder='Nhập mật khẩu cũ'
-              onChangeText={(text) => setUserInfo({ ...userInfo, oldPass: text })}
-              value={userInfo.oldPass}
-            />
-            <TouchableOpacity onPress={() => toggleShowPass('oldPass')}>
-              <Image
-                style={styles.icon}
-                source={oldPass ? require('../Image/visible.png') : require('../Image/invisible.png')}
-              />
+        <View>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image style={styles.icon} source={require('../Image/back.png')} />
             </TouchableOpacity>
+            <Text style={styles.headerText}>Đổi mật khẩu</Text>
           </View>
-          <View style={styles.input}>
-            <TextInput
-              style={styles.textInputField}
-              secureTextEntry={newPass}
-              placeholder='Nhập mật khẩu mới'
-              onChangeText={(text) => setUserInfo({ ...userInfo, newPass: text })}
-              value={userInfo.newPass}
-            />
-            <TouchableOpacity onPress={() => toggleShowPass('newPass')}>
-              <Image
-                style={styles.icon}
-                source={newPass ? require('../Image/visible.png') : require('../Image/invisible.png')}
+          <View style={styles.textInput}>
+            <View style={styles.input}>
+              <TextInput
+                style={styles.textInputField}
+                secureTextEntry={oldPass}
+                placeholder='Nhập mật khẩu cũ'
+                onChangeText={(text) => setUserInfo({ ...userInfo, oldPass: text })}
+                value={userInfo.oldPass}
               />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.input}>
-            <TextInput
-              style={styles.textInputField}
-              secureTextEntry={confirmNewPass}
-              placeholder='Nhập lại mật khẩu mới'
-              onChangeText={(text) => setUserInfo({ ...userInfo, confirmNewPass: text })}
-              value={userInfo.confirmNewPass}
-            />
-            <TouchableOpacity onPress={() => toggleShowPass('confirmNewPass')}>
-              <Image
-                style={styles.icon}
-                source={confirmNewPass ? require('../Image/visible.png') : require('../Image/invisible.png')}
+              <TouchableOpacity onPress={() => toggleShowPass('oldPass')}>
+                <Image
+                  style={styles.icon}
+                  source={oldPass ? require('../Image/visible.png') : require('../Image/invisible.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.input}>
+              <TextInput
+                style={styles.textInputField}
+                secureTextEntry={newPass}
+                placeholder='Nhập mật khẩu mới'
+                onChangeText={(text) => setUserInfo({ ...userInfo, newPass: text })}
+                value={userInfo.newPass}
               />
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => toggleShowPass('newPass')}>
+                <Image
+                  style={styles.icon}
+                  source={newPass ? require('../Image/visible.png') : require('../Image/invisible.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.input}>
+              <TextInput
+                style={styles.textInputField}
+                secureTextEntry={confirmNewPass}
+                placeholder='Nhập lại mật khẩu mới'
+                onChangeText={(text) => setUserInfo({ ...userInfo, confirmNewPass: text })}
+                value={userInfo.confirmNewPass}
+              />
+              <TouchableOpacity onPress={() => toggleShowPass('confirmNewPass')}>
+                <Image
+                  style={styles.icon}
+                  source={confirmNewPass ? require('../Image/visible.png') : require('../Image/invisible.png')}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
@@ -137,10 +151,14 @@ const PassReset = ({ navigation }) => {
 export default PassReset;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     padding: 20,
-    gap: 10,
+    justifyContent: 'space-between',
+    alignContent: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -153,24 +171,32 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   textInput: {
-    padding: 10,
     gap: 15,
+    top: 30,
   },
   input: {
     borderRadius: 10,
     borderWidth: 1,
+    borderColor: '#ccc',
     padding: 15,
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
   textInputField: {
-    width: '90%',
+    flex: 1,
+    marginRight: 10,
   },
   icon: {
     width: 20,
     height: 20,
-    marginTop: 4,
   },
   button: {
     padding: 15,
@@ -180,5 +206,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+    fontWeight: 'bold',
   },
 });
