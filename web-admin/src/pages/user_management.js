@@ -67,7 +67,12 @@ function Main() {
             <span className="input-group-text" style={{ width: 100 }}>
               Email
             </span>
-            <input ref={email} type="text" defaultValue={dataUpdate.email} />
+            <input
+              ref={email}
+              disabled
+              type="text"
+              defaultValue={dataUpdate.email}
+            />
           </div>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>

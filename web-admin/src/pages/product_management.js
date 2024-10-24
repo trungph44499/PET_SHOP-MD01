@@ -121,6 +121,7 @@ function Main() {
               </span>
               <input ref={_type} type="text" defaultValue={dataUpdate.type} />
             </div>
+
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Description
@@ -144,17 +145,25 @@ function Main() {
                   window.alert("Must input Status New or Old");
                   return;
                 }
-                if (
-                  _type.current.value != "dog" &&
-                  _type.current.value != "cat" &&
-                  _type.current.value != "accessory"
-                ) {
-                  window.alert("Must input Type cat or dot or accessory");
-                  return;
-                }
+
                 try {
                   const {
                     status,
+                    data: { id },
+                  } = await axios.post(
+                    `${json_config[0].url_connect}/type/add`,
+                    {
+                      type: _type.current.value,
+                    }
+                  );
+
+                  if (status != 200) {
+                    window.alert("Error update type!");
+                    return;
+                  }
+
+                  const {
+                    status: status_,
                     data: { response, type },
                   } = await axios.post(
                     `${json_config[0].url_connect}/products/update`,
@@ -166,16 +175,19 @@ function Main() {
                       origin: _origin.current.value,
                       quantity: _quantity.current.value,
                       status: _status.current.value,
-                      type: _type.current.value,
+                      type: id,
                       description: _description.current.value,
                     }
                   );
-                  if (status == 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllProduct();
-                      setIsUdpdate(false);
-                    }
+                  if (status_ != 200) {
+                    window.alert("Error update product!");
+                    return;
+                  }
+
+                  window.alert(response);
+                  if (type) {
+                    await getAllProduct();
+                    setIsUdpdate(false);
                   }
                 } catch (error) {
                   console.log(error);
@@ -281,18 +293,25 @@ function Main() {
                   window.alert("Must input Status New or Old");
                   return;
                 }
-                if (
-                  _type.current.value != "dog" &&
-                  _type.current.value != "cat" &&
-                  _type.current.value != "accessory"
-                ) {
-                  window.alert("Must input Type cat or dot or accessory");
-                  return;
-                }
 
                 try {
                   const {
                     status,
+                    data: { id },
+                  } = await axios.post(
+                    `${json_config[0].url_connect}/type/add`,
+                    {
+                      type: _type.current.value,
+                    }
+                  );
+
+                  if (status != 200) {
+                    window.alert("Error add type!");
+                    return;
+                  }
+
+                  const {
+                    status: status_,
                     data: { response, type },
                   } = await axios.post(
                     `${json_config[0].url_connect}/products/add`,
@@ -303,16 +322,20 @@ function Main() {
                       origin: _origin.current.value,
                       quantity: _quantity.current.value,
                       status: _status.current.value,
-                      type: _type.current.value,
+                      type: id,
                       description: _description.current.value,
                     }
                   );
-                  if (status == 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllProduct();
-                      setIsAdd(false);
-                    }
+
+                  if (status_ != 200) {
+                    window.alert("Error add product!");
+                    return;
+                  }
+
+                  window.alert(response);
+                  if (type) {
+                    await getAllProduct();
+                    setIsAdd(false);
                   }
                 } catch (error) {
                   console.log(error);

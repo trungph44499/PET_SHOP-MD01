@@ -96,7 +96,7 @@ function Main() {
                 if (
                   fullname.current.value === "" ||
                   username.current.value === "" ||
-                  password === ""
+                  password.current.value === ""
                 ) {
                   window.alert("Inpur empty!");
                   return;
@@ -164,7 +164,7 @@ function Main() {
                 if (
                   fullname.current.value === "" ||
                   username.current.value === "" ||
-                  password === ""
+                  password.current.value === ""
                 ) {
                   window.alert("Inpur empty!");
                   return;

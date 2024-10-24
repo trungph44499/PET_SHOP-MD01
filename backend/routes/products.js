@@ -1,11 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const productModel = require("../models/productModel");
+const typeProductModel = require("../models/typeProductModel");
 
 router.get("/", async (req, res) => {
+  const arrayResult = [];
   try {
     const getProducts = await productModel.find({});
-    res.status(200).send({ response: getProducts });
+    const getTypeProduct = await typeProductModel.find({});
+
+    getProducts.map((item) => {
+      getTypeProduct.map((type) => {
+        if (item.type == type._id) {
+          item.type = type.type;
+          arrayResult.push(item);
+        }
+      });
+    });
+
+    res.status(200).send({ response: arrayResult });
   } catch (error) {
     console.log(error);
   }
