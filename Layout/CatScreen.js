@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { congItem, truItem, removeItem, removeAllItem } from "../Redux/action";
+import axios from "axios";
 import {
   Image,
   ScrollView,
@@ -7,12 +11,7 @@ import {
   View,
   Modal,
   Pressable,
-  TextInput,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { congItem, truItem, removeItem, removeAllItem } from "../Redux/action"; 
-import axios from "axios";
 import { URL } from "./HomeScreen";
 
 const CartScreen = ({ navigation }) => {
@@ -33,7 +32,7 @@ const CartScreen = ({ navigation }) => {
       setCartItems(data);
       calculateTotalPrice(data);
     } catch (error) {
-      console.error("Error fetching cart items: ", error);
+      console.error(error);
     }
   };
 
@@ -60,63 +59,42 @@ const CartScreen = ({ navigation }) => {
 
   const TaoMaHoaDon = async () => {
     const url = `${URL}/hoadons`;
-    const NewHoaDon = {
-      ngayMua: date,
-      totalPrice: totalPrice,
-      cartItems: cartItems.map(item => ({
-        productId: item._id,
-        productName: item.name,
-        quantity: item.quantity,
-        price: item.price
-      }))
-    };
+    const NewHoaDon = { ngayMua: date };
 
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(NewHoaDon),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const id = data.id;
-        // Điều hướng tới màn hình thanh toán với tổng giá và ID hóa đơn
-        navigation.navigate("Payment", { total: totalPrice, id_bill: id });
-      } else {
-        console.error("Error creating invoice");
-      }
-    } catch (error) {
-      console.error("Error creating invoice: ", error);
+    const res = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(NewHoaDon),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const id = data.id;
+      navigation.navigate("Payment", { total: totalPrice, id_bill: id });
     }
-  };
-
-  const handleRemoveItem = (item) => {
-    dispatch(removeItem(item));
-    getAllCart(); // Cập nhật lại giỏ hàng sau khi xóa
-  };
-
-  const handleIncreaseQuantity = (item) => {
-    dispatch(congItem(item));
-    getAllCart(); // Cập nhật lại giỏ hàng sau khi tăng
-  };
-
-  const handleDecreaseQuantity = (item) => {
-    dispatch(truItem(item));
-    getAllCart(); // Cập nhật lại giỏ hàng sau khi giảm
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={{ width: 20, height: 20 }} source={require("../Image/back.png")} />
+          <Image
+            style={{ width: 20, height: 20 }}
+            source={require("../Image/back.png")}
+          />
         </TouchableOpacity>
-        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>Giỏ hàng</Text>
-        <TouchableOpacity style={{ width: 50 }} onPress={() => setModalAllVisible(true)}>
-          <Image style={{ width: 26, height: 26 }} source={require("../Image/delete.png")} />
+        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
+          Giỏ hàng
+        </Text>
+        <TouchableOpacity
+          style={{ width: 50 }}
+          onPress={() => setModalAllVisible(true)}
+        >
+          <Image
+            style={{ width: 26, height: 26 }}
+            source={require("../Image/delete.png")}
+          />
         </TouchableOpacity>
         <Modal
           animationType="slide"
@@ -124,23 +102,30 @@ const CartScreen = ({ navigation }) => {
           visible={modalAllVisible}
           onRequestClose={() => setModalAllVisible(false)}
         >
-          <View style={styles.cardContainer}>
+          <View style={styles.cardCotainer}>
             <View style={styles.cardModal}>
               <Text style={styles.textBold}>Xác nhận xóa tất cả đơn hàng?</Text>
-              <Text style={{ fontSize: 14, color: "gray" }}>Thao tác này sẽ không thể khôi phục.</Text>
+              <Text style={{ fontSize: 14, color: "gray" }}>
+                Thao tác này sẽ không thể khôi phục.
+              </Text>
               <Pressable
                 style={styles.btnModal}
                 onPress={() => {
                   dispatch(removeAllItem());
                   setModalAllVisible(false);
-                  getAllCart(); // Cập nhật lại giỏ hàng sau khi xóa tất cả
                 }}
               >
-                <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>Đồng ý</Text>
+                <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
+                  Đồng ý
+                </Text>
               </Pressable>
               <Text
                 onPress={() => setModalAllVisible(false)}
-                style={{ textDecorationLine: "underline", fontWeight: "bold", fontSize: 16 }}
+                style={{
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                }}
               >
                 Hủy bỏ
               </Text>
@@ -153,24 +138,40 @@ const CartScreen = ({ navigation }) => {
           <View key={item._id} style={styles.item}>
             <Image source={{ uri: item.img }} style={styles.image} />
             <View style={{ padding: 10, justifyContent: "space-between" }}>
-              <Text style={{ marginBottom: 1, fontWeight: "bold" }}>{item.name}</Text>
-              <Text style={{ marginBottom: 1, fontWeight: "bold", color: "#FF0000" }}>
-                {formatPrice(item.price)}
+              <Text style={{ marginBottom: 1, fontWeight: "bold" }}>
+                {item.name}
               </Text>
-
+              <Text
+                style={{ marginBottom: 1, fontWeight: "bold", color: "#FF0000" }}
+              >
+                {formatPrice(item.price)} {/* Hiển thị giá sản phẩm */}
+              </Text>
+              <Text
+                style={{ marginBottom: 1, fontWeight: "bold", color: "#000000" }}
+              >
+                x {item.quantity} {/* Hiển thị số lượng */}
+              </Text>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity onPress={() => handleDecreaseQuantity(item)}>
+                {/* Nút giảm số lượng */}
+                <TouchableOpacity onPress={() => dispatch(truItem(item))}>
                   <Text style={{ marginHorizontal: 10, fontSize: 18 }}>-</Text>
                 </TouchableOpacity>
-                <TextInput style={{ fontWeight: "bold", color: "#000000" }}>
-                  {item.quantity}
-                </TextInput>
-                <TouchableOpacity onPress={() => handleIncreaseQuantity(item)}>
-                  <Text style={{ fontSize: 18 }}>+</Text>
+
+                {/* Nút tăng số lượng */}
+                <TouchableOpacity onPress={() => dispatch(congItem(item))}>
+                  <Text style={{ marginHorizontal: 10, fontSize: 18 }}>+</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => handleRemoveItem(item)}>
-                  <Text style={{ textDecorationLine: "underline", marginLeft: 20 }}>Xóa</Text>
+                {/* Nút xóa sản phẩm */}
+                <TouchableOpacity onPress={() => dispatch(removeItem(item))}>
+                  <Text
+                    style={{
+                      textDecorationLine: "underline",
+                      marginLeft: 20,
+                    }}
+                  >
+                    Xóa
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -180,15 +181,24 @@ const CartScreen = ({ navigation }) => {
 
       {cartItems.length > 0 ? (
         <View style={styles.totalContainer}>
-          <Text style={{ fontSize: 17, fontWeight: "bold" }}>Tạm tính: {formatPrice(totalPrice)}</Text>
-          <Text style={{ fontSize: 17 }}>Số lượng: {calculateTotalQuantity(cartItems)}</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+            Tạm tính :{formatPrice(totalPrice)}
+          </Text>
+          <Text style={{ fontSize: 17 }}>
+            Số lượng : {calculateTotalQuantity(cartItems)} {/* Hiển thị tổng số lượng */}
+          </Text>
           <TouchableOpacity onPress={TaoMaHoaDon} style={styles.paymentButton}>
             <Text style={{ color: "white" }}>Tiến hành thanh toán</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <TouchableOpacity onPress={() => navigation.navigate("SearchScreen")} style={styles.emptyCart}>
-          <Text style={{ textAlign: "center" }}>Giỏ hàng rỗng{"\n"}Thêm sản phẩm vào giỏ hàng</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SearchScreen")}
+          style={styles.emptyCart}
+        >
+          <Text style={{ textAlign: "center" }}>
+            Giỏ hàng rỗng{"\n"}Thêm sản phẩm vào giỏ hàng
+          </Text>
         </TouchableOpacity>
       )}
     </View>
@@ -196,6 +206,7 @@ const CartScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  // Styles remain unchanged
   container: {
     flex: 1,
     padding: 20,
@@ -239,7 +250,7 @@ const styles = StyleSheet.create({
     top: "50%",
     width: "100%",
   },
-  cardContainer: {
+  cardCotainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -253,18 +264,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   btnModal: {
-    marginVertical: 20,
-    width: "100%",
-    backgroundColor: "#FF0000",
+    backgroundColor: "#FF5B5B",
     borderRadius: 10,
-    paddingVertical: 10,
-    justifyContent: "center",
+    padding: 10,
+    width: "100%",
     alignItems: "center",
   },
   textBold: {
-    fontWeight: "bold",
     fontSize: 17,
-    color: "black",
+    fontWeight: "bold",
+    marginBottom: 10,
   },
 });
 

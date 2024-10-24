@@ -15,7 +15,8 @@ import React, { useEffect, useState, useRef } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils } from "./utils/stringUtils";
 
-export const URL = "http://192.168.1.3";
+export const URL = "http://192.168.1.5";
+
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -135,7 +136,20 @@ const HomeScreen = ({ navigation }) => {
           scrollEnabled={false}
           data={ListDogs.filter((item, index) => index < 4)}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => ItemList(item)}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("DetailScreen", { item: item })
+              }
+              style={styles.itemDogs}
+            >
+              <Image source={{ uri: item.img }} style={styles.itemImage} />
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemStyle}>ID: {item.type}</Text>
+              <Text style={styles.price}>{item.price} </Text>
+            </TouchableOpacity>
+          )}
+          // renderItem={({ item }) => ItemList(item)}
         />
 
         <TouchableOpacity
@@ -222,7 +236,7 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
       <TouchableOpacity
         style={styles.cart}
-        onPress={() => navigation.navigate("CartScreen")}
+        onPress={() => navigation.navigate("CatScreen")}
       >
         <Image
           source={require("../Image/cart.png")}

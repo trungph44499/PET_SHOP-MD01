@@ -98,6 +98,9 @@ const ProfileScreen = ({ navigation, route }) => {
             Chung
             {"\n"}_________________________________________________
           </Text>
+          <Text onPress={() => navigation.navigate("ManageUser")}>
+            Chỉnh sửa thông tin
+          </Text>
           <View style={styles.background}>
             <Animated.View style={{ transform: [{ scale }] }}>
               <TouchableOpacity
