@@ -163,6 +163,7 @@ router.post("/update", async (req, res) => {
   var avatar = req.body.avatar ?? "";
 
   try {
+
     const result = await userModel.findOne({ email: email });
     if (fullname === "") fullname = result.fullname;
     if (password === "") password = result.pass;
