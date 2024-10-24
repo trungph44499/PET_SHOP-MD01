@@ -6,28 +6,24 @@ router.post("/register", async (req, res) => {
   const { name, email, pass } = req.body;
 
   try {
-    // Kiểm tra xem email đã tồn tại chưa
-    const checkEmailExist = await userModel.findOne({ email });
+    const checkEmailExist = await userModel.find({ email: email });
 
-    if (!checkEmailExist) {
-      // Đăng ký người dùng mới
-      const registerUser = await userModel.create({
+    if (checkEmailExist.length == 0) {
+      const registerUser = await userModel.insertMany({
         fullname: name,
-        email,
-        pass,
+        email: email,
+        pass: pass,
       });
-
-      if (registerUser) {
-        res.status(201).json({ response: "Đăng ký thành công", type: true });
+      if (registerUser.length != 0) {
+        res.status(200).json({ response: "Đăng ký thành công", type: true });
       } else {
-        res.status(400).json({ response: "Đăng ký thất bại", type: false });
+        res.status(200).json({ response: "Đăng ký thất bại", type: false });
       }
     } else {
-      res.status(409).json({ response: "Tài khoản đã tồn tại!", type: false });
+      res.status(200).json({ response: "Tài khoản đã tồn tại!", type: false });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ response: "Có lỗi xảy ra", type: false });
+    console.log(error);
   }
 });
 
@@ -44,19 +40,6 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-  }
-});
-
-// Backend: kiểm tra email
-router.post("/check-email", async (req, res) => {
-  const { email } = req.body;
-
-  try {
-    const user = await userModel.findOne({ email });
-    res.status(200).json({ exists: !!user }); // Trả về true nếu tồn tại
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Có lỗi xảy ra" });
   }
 });
 

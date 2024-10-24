@@ -111,13 +111,16 @@ const ProfileScreen = ({ navigation, route }) => {
               </TouchableOpacity>
             </Animated.View>
           </View>
-          <Text onPress={() => navigation.navigate("NoticeScreen")}>
+
+          <Text onPress={() => navigation.navigate("ManageUser")}>
             Chỉnh sửa thông tin
           </Text>
-          <Text onPress={() => navigation.navigate("NoticeScreen")}>
+          <TouchableOpacity  onPress={() => navigation.navigate("PassReset")}>
+            <Text>
             Đổi mật khẩu
           </Text>
-
+          </TouchableOpacity>
+          
           <Text onPress={() => navigation.navigate("NoticeScreen")}>
             Lịch sử giao dịch
           </Text>

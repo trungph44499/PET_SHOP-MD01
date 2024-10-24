@@ -10,6 +10,9 @@ import CartScreen from "../Layout/CartScreen";
 import SearchScreen from '../Layout/SearchScreen';
 import NoticeScreen from '../Layout/NoticeScreen';
 import NewProductScreen from '../Layout/NewProductScreen';
+import ManageUser from "../Layout/ManageUser";
+import PassReset from "../Layout/PassReset";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -96,8 +99,11 @@ const MainNavigator = () => {
       <Stack.Screen name='SearchScreen' component={SearchScreen} />
       <Stack.Screen name='NoticeScreen' component={NoticeScreen} />
       <Stack.Screen name="NewProductScreen" component={NewProductScreen} />
+      <Stack.Screen name='ManageUser' component={ManageUser} />
+      <Stack.Screen name='PassReset' component={PassReset} />
     </Stack.Navigator>
   );
 };
 
 export default MainNavigator;
+
