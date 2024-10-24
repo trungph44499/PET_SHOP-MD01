@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { URL } from './HomeScreen';
-import { launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 const ManageUser = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
@@ -30,24 +31,28 @@ const ManageUser = ({ navigation }) => {
   }, []);
 
   const handleSave = async () => {
-    const { img, fullname, email, address, phone } = userInfo;
-
-    if (!fullname || !email || !address || !phone) {
+    const { img, fullname, email } = userInfo;
+  
+    if (!fullname || !email) {
       Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
 
+    let base64Img = '';
+    if (img) {
+      const fileInfo = await FileSystem.readAsStringAsync(img, { encoding: 'base64' });
+      base64Img = `data:image/jpeg;base64,${fileInfo}`;
+    }
+  
     try {
       const response = await axios.post(`${URL}/users/update`, {
-        img,
+        avatar: base64Img,
         fullname,
         email,
-        address,
-        phone,
       });
-
+  
       if (response.status === 200 && response.data.type) {
-        await AsyncStorage.setItem('@UserLogin', JSON.stringify(response.data.user));
+        await AsyncStorage.setItem('@UserLogin', email);
         Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
         navigation.goBack();
       } else {
@@ -59,33 +64,17 @@ const ManageUser = ({ navigation }) => {
     }
   };
 
-  const handleImagePicker = () => {
-    launchImageLibrary({}, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        Alert.alert(
-          'Xác nhận',
-          'Bạn có muốn thay đổi ảnh không?',
-          [
-            {
-              text: 'Không',
-              style: 'cancel',
-            },
-            {
-              text: 'Có',
-              onPress: () => {
-                const source = { uri: response.assets[0].uri };
-                setUserInfo({ ...userInfo, img: source.uri });
-              },
-            },
-          ],
-          { cancelable: false }
-        );
-      }
-    });
+  const handleImagePicker = async () => {
+    const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (result.granted === false) {
+      Alert.alert('Lỗi', 'Quyền truy cập thư viện ảnh bị từ chối.');
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+    if (!pickerResult.cancelled) {
+      setUserInfo({ ...userInfo, img: pickerResult.uri });
+    }
   };
 
   return (
@@ -106,12 +95,6 @@ const ManageUser = ({ navigation }) => {
         <View style={styles.textInput}>
           <TextInput
             style={styles.input}
-            placeholder='Image URL'
-            value={userInfo.img}
-            onChangeText={(text) => setUserInfo({ ...userInfo, img: text })}
-          />
-          <TextInput
-            style={styles.input}
             placeholder='Fullname'
             value={userInfo.fullname}
             onChangeText={(text) => setUserInfo({ ...userInfo, fullname: text })}
@@ -121,18 +104,6 @@ const ManageUser = ({ navigation }) => {
             placeholder='Email'
             value={userInfo.email}
             onChangeText={(text) => setUserInfo({ ...userInfo, email: text })}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder='Address'
-            value={userInfo.address}
-            onChangeText={(text) => setUserInfo({ ...userInfo, address: text })}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder='Number phone'
-            value={userInfo.phone}
-            onChangeText={(text) => setUserInfo({ ...userInfo, phone: text })}
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
