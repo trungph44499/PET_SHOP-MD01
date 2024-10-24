@@ -12,69 +12,37 @@ import { upperCaseFirstItem } from "../utils/stringUtils";
 import { numberUtils } from "../utils/stringUtils";
 
 export default ClassifyScreen = ({ navigation, route }) => {
-  // const [isAdmin, setIsAdmin] = useState(false);
-  // const [data, setData] = useState(route.params?.data || []);
-
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]); // Thêm state để lọc dữ liệu
+  const [showNewOnly, setShowNewOnly] = useState(false); // Thêm state để kiểm tra chế độ hiển thị
   const { type } = route.params;
 
-  // const checkUserRole = async () => {
-  //     try {
-  //         const userInfo = await AsyncStorage.getItem('User');
-  //         if (userInfo) {
-  //             const { role } = JSON.parse(userInfo);
-  //             if (role === 'admin') {
-  //                 setIsAdmin(true);
-  //             }
-  //         }
-  //     } catch (error) {
-  //         Alert.alert('Lỗi', 'Không thể tải vai trò người dùng.');
-  //     }
-  // };
   async function getData() {
     const result = await getListClassify(type);
     setData(result);
+    setFilteredData(result); // Gán toàn bộ dữ liệu vào filteredData ban đầu
   }
+
   useEffect(() => {
-    //checkUserRole();
     getData();
   }, []);
 
-  // useFocusEffect(
-  //     useCallback(() => {
-  //         getListCat();
-  //     }, [])
-  // );
+  // Hàm hiển thị tất cả sản phẩm
+  const showAllProducts = () => {
+    setShowNewOnly(false); // Đặt về chế độ hiển thị tất cả
+    setFilteredData(data); // Hiển thị toàn bộ sản phẩm
+  };
 
-  //   const handleDelete = async (id, type) => {
-  //     let url =
-  //       type === "Dogs"
-  //         ? `${URL}/dogs/${id}`
-  //         : type === "Cats"
-  //         ? `${URL}/cats/${id}`
-  //         : type === "Phụ kiện"
-  //         ? `${URL}/phukien/${id}`
-  //         : `${URL}/default/${id}`; // Giá trị mặc định nếu không khớp
+  // Hàm lọc chỉ sản phẩm mới
+  const filterNewProducts = () => {
+    setShowNewOnly(true); // Chuyển sang chế độ lọc sản phẩm mới
+    const newProducts = data.filter(item => item.status === "New"); // Lọc sản phẩm có status "New"
+    setFilteredData(newProducts); // Cập nhật filteredData với sản phẩm mới
+  };
 
-  //     try {
-  //       const response = await fetch(url, {
-  //         method: "DELETE",
-  //       });
-
-  //       if (response.ok) {
-  //         Alert.alert("Xóa sản phẩm thành công");
-  //         setData((prevData) => prevData.filter((item) => item.id !== id));
-  //       } else {
-  //         Alert.alert("Xóa sản phẩm thất bại");
-  //       }
-  //     } catch (error) {
-  //       Alert.alert("Lỗi", "Không thể xóa sản phẩm");
-  //     }
-  //   };
-
-  //   const handleEdit = (item) => {
-  //     navigation.navigate("EditScreen", { product: item });
-  //   };
+  function goToDetailScreen(item) {
+    navigation.navigate("DetailScreen", { item: item });
+  }
 
   return (
     <View style={styles.container}>
@@ -100,17 +68,24 @@ export default ClassifyScreen = ({ navigation, route }) => {
       </View>
 
       <View style={{ flexDirection: "row", gap: 30, marginHorizontal: 20 }}>
-        <Text style={{ color: "red" }}>Tất cả</Text>
-        <Text>Hàng mới về</Text>
+        {/* Nút hiển thị tất cả sản phẩm */}
+        <TouchableOpacity onPress={showAllProducts}>
+          <Text style={{ color: !showNewOnly ? "red" : "black" }}>Tất cả</Text>
+        </TouchableOpacity>
+
+        {/* Nút lọc sản phẩm mới */}
+        <TouchableOpacity onPress={filterNewProducts}>
+          <Text style={{ color: showNewOnly ? "red" : "black" }}>Hàng mới về</Text>
+        </TouchableOpacity>
       </View>
 
       <FlatList
         numColumns={2}
-        data={data}
+        data={filteredData} // Sử dụng dữ liệu đã lọc
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("DetailScreen", { item: item })}
+            onPress={() => goToDetailScreen(item)}
             style={styles.itemDog}
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />
@@ -124,18 +99,6 @@ export default ClassifyScreen = ({ navigation, route }) => {
             </View>
             <Text style={styles.itemType}>Mã SP: {item._id.slice(-5)}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
-            {/* {isAdmin && (
-                <View style={styles.adminActions}>
-                  <TouchableOpacity onPress={() => handleEdit(item)}>
-                    <Text style={styles.editButton}>Sửa</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => handleDelete(item.id, item.type)}
-                  >
-                    <Text style={styles.deleteButton}>Xóa</Text>
-                  </TouchableOpacity>
-                </View>
-              )} */}
           </TouchableOpacity>
         )}
       />
@@ -196,17 +159,6 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 17,
     fontWeight: "600",
-    color: "red",
-  },
-  adminActions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  editButton: {
-    color: "blue",
-    marginRight: 10,
-  },
-  deleteButton: {
     color: "red",
   },
 });

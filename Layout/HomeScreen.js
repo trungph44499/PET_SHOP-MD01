@@ -15,7 +15,7 @@ import React, { useEffect, useState, useRef } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils } from "./utils/stringUtils";
 
-export const URL = "http://10.24.36.153";
+export const URL = "http://192.168.0.104";
 // 10.24.33.19
 // 192.168.1.29
 const { width: screenWidth } = Dimensions.get("window");
@@ -42,51 +42,11 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  // const getListDogs = async () => {
-  //   await fetch(`${URL}/dogs`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setListDogs(data);
-  //     })
-  //     .catch(err => console.log(err));
-  // };
-
-  // const getListCats = async () => {
-  //   await fetch(`${URL}/cats`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setListCats(data);
-  //     })
-  //     .catch(err => console.log(err));
-  // };
-
   useEffect(() => {
     getListProduct();
 
-    // getListDogs();
-    // getListCats();
-    // checkUserRole();
-
-    // const unsubscribe = navigation.addListener("focus", () => {
-    // getListDogs();
-    // getListCats();
-    // });
   }, []);
 
-
-  // const checkUserRole = async () => {
-  //   try {
-  //     const userInfo = await AsyncStorage.getItem('User');
-  //     if (userInfo) {
-  //       const { role } = JSON.parse(userInfo);
-  //       if (role === 'admin') {
-  //         setIsAdmin(true);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     Alert.alert('Lỗi', 'Không thể tải vai trò người dùng.');
-  //   }
-  // };
   function goToClassifyScreen(type) {
     navigation.navigate("ClassifyScreen", { type: type });
   }
@@ -143,21 +103,10 @@ const HomeScreen = ({ navigation }) => {
             </Text>
           </View>
           <SliderShow />
-          {/* <ScrollView
-           horizontal
-          //  pagingEnabled
-           contentContainerStyle={{width: screenWidth * imageList.length, height:230}}
-           onScroll={handleScroll}
-           scrollEventThrottle={16}
-           >
-            {imageList.map((e, index) => 
-            <View key={index.toString()}>
-              {e.image} 
-            </View>
-          )}
-          </ScrollView> */}
-          {/* <Image style={{ width: '100%', height: 230, justifyContent: 'center' }} source={require('../Image/banner_1.jpg')} /> */}
-          <TouchableOpacity style={styles.newSP}>
+       
+          <TouchableOpacity 
+          style={styles.newSP}
+          onPress={() => navigation.navigate("NewProductScreen")}>
             <Text
               style={{
                 fontSize: 17,
@@ -281,11 +230,6 @@ const HomeScreen = ({ navigation }) => {
           style={{ height: 30, width: 30 }}
         />
       </TouchableOpacity>
-      {/* {isAdmin && (
-        <TouchableOpacity style={styles.adminAdd} onPress={() => navigation.navigate('AddScreen')}>
-          <Image source={require('../Image/add.png')} style={{ height: 20, width: 20 }} />
-        </TouchableOpacity>
-      )} */}
     </SafeAreaView>
   );
 };

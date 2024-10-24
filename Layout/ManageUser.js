@@ -1,57 +1,92 @@
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import { URL } from './HomeScreen';
+import { launchImageLibrary } from 'react-native-image-picker';
 
-const ManageUser = ({ navigation, route }) => {
+const ManageUser = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
     img: '',
     fullname: '',
     email: '',
     address: '',
     phone: '',
-    pass: "",
   });
-  const [showPass, setShowPass] = useState(true);
 
-  const getUserInfo = async () => {
-    try {
-      const userInfo = await AsyncStorage.getItem('User');
-      if (userInfo) {
-        setUserInfo(JSON.parse(userInfo));
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const email = await AsyncStorage.getItem('@UserLogin');
+        if (email) {
+          setUserInfo((prev) => ({ ...prev, email }));
+        }
+      } catch (error) {
+        Alert.alert('Lỗi', 'Không thể tải thông tin người dùng.');
       }
-    } catch (error) {
-      Alert.alert('Lỗi', 'Không thể tải thông tin người dùng.');
-    }
-  };
+    };
+
+    getUserInfo();
+  }, []);
 
   const handleSave = async () => {
+    const { img, fullname, email, address, phone } = userInfo;
+
+    if (!fullname || !email || !address || !phone) {
+      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
     try {
-      const response = await fetch(`${URL}/users/${userInfo.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userInfo),
+      const response = await axios.post(`${URL}/users/update`, {
+        img,
+        fullname,
+        email,
+        address,
+        phone,
       });
 
-      if (response.ok) {
-        const updatedUser = await response.json();
-        await AsyncStorage.setItem('User', JSON.stringify(updatedUser));
+      if (response.status === 200 && response.data.type) {
+        await AsyncStorage.setItem('@UserLogin', JSON.stringify(response.data.user));
         Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
         navigation.goBack();
       } else {
         Alert.alert('Lỗi', 'Không thể cập nhật thông tin người dùng.');
       }
     } catch (error) {
+      console.log(error);
       Alert.alert('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin người dùng.');
     }
   };
 
-  useEffect(() => {
-    getUserInfo();
-    setShowPass(true);
-  }, []);
+  const handleImagePicker = () => {
+    launchImageLibrary({}, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        Alert.alert(
+          'Xác nhận',
+          'Bạn có muốn thay đổi ảnh không?',
+          [
+            {
+              text: 'Không',
+              style: 'cancel',
+            },
+            {
+              text: 'Có',
+              onPress: () => {
+                const source = { uri: response.assets[0].uri };
+                setUserInfo({ ...userInfo, img: source.uri });
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
+    });
+  };
 
   return (
     <ScrollView>
@@ -63,7 +98,9 @@ const ManageUser = ({ navigation, route }) => {
           <Text style={{ marginLeft: 60, fontSize: 18, fontWeight: 'bold' }}>Chỉnh sửa thông tin</Text>
         </View>
         <View style={{ width: '100%', height: 230, justifyContent: 'center', alignItems: 'center' }}>
-          <Image style={{ width: 200, height: 200 }} source={{ uri: userInfo.img || 'https://via.placeholder.com/200' }} />
+          <TouchableOpacity onPress={handleImagePicker}>
+            <Image style={{ width: 200, height: 200 }} source={{ uri: userInfo.img || 'https://via.placeholder.com/200' }} />
+          </TouchableOpacity>
           <Text style={{ textAlign: 'center', fontSize: 20 }}>Thông tin của bạn</Text>
         </View>
         <View style={styles.textInput}>
@@ -97,17 +134,6 @@ const ManageUser = ({ navigation, route }) => {
             value={userInfo.phone}
             onChangeText={(text) => setUserInfo({ ...userInfo, phone: text })}
           />
-          <View style={styles.input}>
-            <TextInput style={{ width: '90%' }} 
-              secureTextEntry={showPass}
-              placeholder='Nhập mật khẩu' 
-              onChangeText={(text) => setUserInfo({ ...userInfo, pass: text })}
-              value={userInfo.pass} />
-            <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-              <Image style={{ width: 20, height: 20, marginTop: 4 }}
-                source={showPass ? require('../Image/visible.png') : require('../Image/invisible.png')} />
-            </TouchableOpacity>
-          </View>
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={{ color: 'white' }}>LƯU THÔNG TIN</Text>
@@ -135,10 +161,6 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   input: {
-    // borderWidth: 1,
-    // borderRadius: 10,
-    // padding: 10,
-    // paddingVertical: 15,
     borderRadius: 10,
     borderWidth: 1,
     padding: 15,
