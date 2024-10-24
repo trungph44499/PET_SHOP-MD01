@@ -65,15 +65,13 @@ const ProfileScreen = ({ navigation, route }) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <Image
-              style={{ width: 20, height: 20 }}
+              style={styles.icon}
               source={require("../Image/back.png")}
             />
           </TouchableOpacity>
-          <Text
-            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
-          >
+          <Text style={styles.headerText}>
             PROFILE
           </Text>
         </View>
@@ -158,8 +156,24 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    width: "100%",
-    paddingVertical: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
+  },
+  headerText: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
   infor: {
     flexDirection: "column",
@@ -183,8 +197,6 @@ const styles = StyleSheet.create({
   background: {
     width: 200,
     height: 45,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: 'transparent',
     borderRadius: 10,
     overflow: 'hidden',
@@ -198,7 +210,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fcd4db',
     borderRadius: 20,
     padding: 10,
-   
   },
   buttonText: {
     fontSize: 14,

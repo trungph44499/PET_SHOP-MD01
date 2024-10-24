@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -78,71 +78,133 @@ const ManageUser = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image style={{ width: 20, height: 20 }} source={require('../Image/back.png')} />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View>
+            <View style={styles.header}>
+              <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+                <Image style={styles.icon} source={require('../Image/back.png')} />
+              </TouchableOpacity>
+              <Text style={styles.headerText}>Chỉnh sửa thông tin</Text>
+            </View>
+            <View style={styles.imageContainer}>
+              <TouchableOpacity onPress={handleImagePicker}>
+                <Image style={styles.image} source={{ uri: userInfo.img || 'https://via.placeholder.com/200' }} />
+              </TouchableOpacity>
+              <Text style={styles.imageText}>Thông tin của bạn</Text>
+            </View>
+            <View style={styles.textInput}>
+              <View style={styles.input}>
+                <TextInput
+                  style={styles.textInputField}
+                  placeholder='Fullname'
+                  value={userInfo.fullname}
+                  onChangeText={(text) => setUserInfo({ ...userInfo, fullname: text })}
+                />
+              </View>
+              <View style={styles.input}>
+                <TextInput
+                  style={styles.textInputField}
+                  placeholder='Email'
+                  value={userInfo.email}
+                  onChangeText={(text) => setUserInfo({ ...userInfo, email: text })}
+                />
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
+            <Text style={styles.buttonText}>LƯU THÔNG TIN</Text>
           </TouchableOpacity>
-          <Text style={{ marginLeft: 60, fontSize: 18, fontWeight: 'bold' }}>Chỉnh sửa thông tin</Text>
         </View>
-        <View style={{ width: '100%', height: 230, justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity onPress={handleImagePicker}>
-            <Image style={{ width: 200, height: 200 }} source={{ uri: userInfo.img || 'https://via.placeholder.com/200' }} />
-          </TouchableOpacity>
-          <Text style={{ textAlign: 'center', fontSize: 20 }}>Thông tin của bạn</Text>
-        </View>
-        <View style={styles.textInput}>
-          <TextInput
-            style={styles.input}
-            placeholder='Fullname'
-            value={userInfo.fullname}
-            onChangeText={(text) => setUserInfo({ ...userInfo, fullname: text })}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder='Email'
-            value={userInfo.email}
-            onChangeText={(text) => setUserInfo({ ...userInfo, email: text })}
-          />
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={{ color: 'white' }}>LƯU THÔNG TIN</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default ManageUser;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     padding: 20,
-    gap: 10,
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    paddingBottom: 20, // Thêm khoảng cách dưới cùng
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 30,
   },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1, // Add this line
+  },
+  headerText: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  imageContainer: {
+    width: '100%',
+    height: 230,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
+  },
+  imageText: {
+    textAlign: 'center',
+    fontSize: 20,
+  },
   textInput: {
-    padding: 10,
     gap: 15,
+    top: 30,
   },
   input: {
     borderRadius: 10,
     borderWidth: 1,
+    borderColor: '#ccc',
     padding: 15,
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  textInputField: {
+    flex: 1,
+    marginRight: 10,
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
   button: {
     padding: 15,
     borderRadius: 10,
     backgroundColor: 'green',
     alignItems: 'center',
+    marginTop: 70, // Thêm khoảng cách trên cùng
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
