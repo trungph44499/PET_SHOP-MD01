@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import SliderShow from "./components/SliderShow";
-import { numberUtils } from "./utils/stringUtils";
+import { numberUtils, upperCaseFirstItem } from './utils/stringUtils';
 
 export const URL = "http://192.168.1.3";
 
@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
             )}
           </Text>
         </View>
-        <Text style={styles.itemStyle}>Mã SP: {item._id.slice(-5)}</Text>
+        <Text style={styles.itemStyle}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
         <Text style={styles.price}>{numberUtils(item.price)}</Text>
       </TouchableOpacity>
     );

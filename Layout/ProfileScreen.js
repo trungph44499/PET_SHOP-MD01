@@ -6,7 +6,8 @@ import {
   ToastAndroid,
   View,
   TouchableOpacity,
-  Animated
+  Animated,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState, useCallback } from "react";
@@ -106,7 +107,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 onPressOut={handlePressOut}
                 onPress={() => alert('Button Pressed!')}
               >
-                   <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
+                <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
                 <Text style={styles.buttonText}>Pet care</Text>
               </TouchableOpacity>
             </Animated.View>
@@ -115,36 +116,54 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text onPress={() => navigation.navigate("ManageUser")}>
             Chỉnh sửa thông tin
           </Text>
-          <TouchableOpacity  onPress={() => navigation.navigate("PassReset")}>
+          <TouchableOpacity onPress={() => navigation.navigate("PassReset")}>
             <Text>
-            Đổi mật khẩu
-          </Text>
+              Đổi mật khẩu
+            </Text>
           </TouchableOpacity>
-          
+
           <Text onPress={() => navigation.navigate("NoticeScreen")}>
             Lịch sử giao dịch
           </Text>
           <Text>Q & A</Text>
         </View>
 
-        <View style={styles.option}>
-          <Text style={styles.textGray}>
-            Bảo mật và điều khoản
-            {"\n"}_________________________________________________
-          </Text>
-          <Text>Điều khoản và điều kiện</Text>
-          <Text>Chính sách quyền riêng tư</Text>
-          <Text
-            style={{ color: "red" }}
-            onPress={() => {
-              navigation.navigate("LoginScreen");
-              ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
-            }}
-          >
-            Đăng xuất
-          </Text>
+          <View style={styles.option}>
+            <Text style={styles.textGray}>
+              Bảo mật và điều khoản
+              {"\n"}_________________________________________________
+            </Text>
+            <Text>Điều khoản và điều kiện</Text>
+            <Text>Chính sách quyền riêng tư</Text>
+            <Text
+              style={{ color: "red" }}
+              onPress={() => {
+                Alert.alert(
+                  "Xác nhận đăng xuất",
+                  "Bạn có chắc chắn muốn đăng xuất không?",
+                  [
+                    {
+                      text: "Hủy",
+                      onPress: () => console.log("Hủy đăng xuất"),
+                      style: "cancel",
+                    },
+                    {
+                      text: "Đăng xuất",
+                      onPress: () => {
+                        navigation.navigate("LoginScreen");
+                        ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
+                      },
+                      style: "destructive",
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              }}
+            >
+              Đăng xuất
+            </Text>
+          </View>
         </View>
-      </View>
     </ScrollView>
   );
 };
@@ -177,7 +196,7 @@ const styles = StyleSheet.create({
   starImage: {
     width: 32,
     height: 32,
-    marginLeft:5,
+    marginLeft: 5,
     resizeMode: 'contain',
   },
   background: {
@@ -198,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fcd4db',
     borderRadius: 20,
     padding: 10,
-   
+
   },
   buttonText: {
     fontSize: 14,

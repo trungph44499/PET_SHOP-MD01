@@ -9,7 +9,6 @@ var usersRouter = require("./routes/users");
 var productRouter = require("./routes/products");
 var cartRouter = require("./routes/carts");
 var adminRouter = require("./routes/admin");
-var typeProductRouter = require("./routes/type");
 
 var app = express();
 
@@ -25,6 +24,6 @@ app.use("/users", usersRouter);
 app.use("/products", productRouter);
 app.use("/carts", cartRouter);
 app.use("/admin", adminRouter);
-app.use("/type", typeProductRouter);
+
 
 module.exports = app;
