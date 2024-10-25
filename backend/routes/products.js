@@ -2,14 +2,34 @@ const express = require("express");
 const router = express.Router();
 const productModel = require("../models/productModel");
 
+// Lấy tất cả sản phẩm
 router.get("/", async (req, res) => {
   try {
     const getProducts = await productModel.find({});
     res.status(200).send({ response: getProducts });
   } catch (error) {
     console.log(error);
+    res.status(500).send({ response: "Có lỗi xảy ra!" });
   }
 });
+
+// Lấy thông tin sản phẩm theo ID
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await productModel.findById(id);
+    if (product) {
+      res.status(200).json({ response: product });
+    } else {
+      res.status(404).json({ response: "Không tìm thấy sản phẩm!" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ response: "Có lỗi xảy ra!" });
+  }
+});
+
 
 router.post("/add", async (req, res) => {
   var img = req.body.image ?? "";
@@ -83,6 +103,20 @@ router.post("/delete", async (req, res) => {
     } else {
       res.status(200).json({ response: "Error Delete product!", type: false });
     }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/search-product", async (req, res) => {
+  const { value } = req.query;
+
+  try {
+    const getProducts = await productModel.find({});
+    const resultSearch = getProducts.filter((item) =>
+      item.name.toLocaleLowerCase().includes(value)
+    );
+    res.status(200).send({ response: resultSearch });
   } catch (error) {
     console.log(error);
   }

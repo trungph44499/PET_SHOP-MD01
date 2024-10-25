@@ -8,8 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getListClassify } from "./function";
-import { upperCaseFirstItem } from "../utils/stringUtils";
-import { numberUtils } from "../utils/stringUtils";
+import { numberUtils, upperCaseFirstItem } from "../utils/stringUtils";
 
 export default ClassifyScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]);
@@ -97,7 +96,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
                 )}
               </Text>
             </View>
-            <Text style={styles.itemType}>Mã SP: {item._id.slice(-5)}</Text>
+            <Text style={styles.itemType}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
           </TouchableOpacity>
         )}

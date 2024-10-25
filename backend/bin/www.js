@@ -17,6 +17,10 @@ var URL_DATABASE = "mongodb+srv://admin01:luVw2E9ICnvXhS8b@mydatabase.bnquf.mong
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 
+/**
+ * Create HTTP server.
+ */
+
 var server = http.createServer(app);
 
 mongoose

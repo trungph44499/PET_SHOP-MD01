@@ -56,12 +56,6 @@ const ProfileScreen = ({ navigation, route }) => {
     retrieveData();
   }, []);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     retrieveData();
-  //   }, [])
-  // );
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -86,12 +80,14 @@ const ProfileScreen = ({ navigation, route }) => {
             }
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
-          <Text style={{ fontSize: 17, fontWeight: "bold" }}>
-            Fullname: {user.fullname}
-          </Text>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Email: {user.email}
-          </Text>
+          <View style={{marginLeft: 20}}>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              {user.fullname}
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
+              {user.email}
+            </Text>
+          </View>
         </View>
 
         <View style={styles.option}>
@@ -128,42 +124,42 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text>Q & A</Text>
         </View>
 
-          <View style={styles.option}>
-            <Text style={styles.textGray}>
-              Bảo mật và điều khoản
-              {"\n"}_________________________________________________
-            </Text>
-            <Text>Điều khoản và điều kiện</Text>
-            <Text>Chính sách quyền riêng tư</Text>
-            <Text
-              style={{ color: "red" }}
-              onPress={() => {
-                Alert.alert(
-                  "Xác nhận đăng xuất",
-                  "Bạn có chắc chắn muốn đăng xuất không?",
-                  [
-                    {
-                      text: "Hủy",
-                      onPress: () => console.log("Hủy đăng xuất"),
-                      style: "cancel",
+        <View style={styles.option}>
+          <Text style={styles.textGray}>
+            Bảo mật và điều khoản
+            {"\n"}_________________________________________________
+          </Text>
+          <Text>Điều khoản và điều kiện</Text>
+          <Text>Chính sách quyền riêng tư</Text>
+          <Text
+            style={{ color: "red" }}
+            onPress={() => {
+              Alert.alert(
+                "Xác nhận đăng xuất",
+                "Bạn có chắc chắn muốn đăng xuất không?",
+                [
+                  {
+                    text: "Hủy",
+                    onPress: () => console.log("Hủy đăng xuất"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "Đăng xuất",
+                    onPress: () => {
+                      navigation.navigate("LoginScreen");
+                      ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
                     },
-                    {
-                      text: "Đăng xuất",
-                      onPress: () => {
-                        navigation.navigate("LoginScreen");
-                        ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
-                      },
-                      style: "destructive",
-                    },
-                  ],
-                  { cancelable: false }
-                );
-              }}
-            >
-              Đăng xuất
-            </Text>
-          </View>
+                    style: "destructive",
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+          >
+            Đăng xuất
+          </Text>
         </View>
+      </View>
     </ScrollView>
   );
 };
@@ -181,10 +177,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   infor: {
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 5,
+    gap: 10,
   },
   option: {
     gap: 18,

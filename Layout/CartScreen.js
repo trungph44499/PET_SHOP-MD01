@@ -36,6 +36,10 @@ const CartScreen = ({ navigation }) => {
     }
   };
 
+  const calculateTotalQuantity = (items) => {
+    return items.reduce((acc, item) => acc + (item.quantity || 0), 0);
+  };
+
   const calculateTotalPrice = (items) => {
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(total);
@@ -67,47 +71,53 @@ const CartScreen = ({ navigation }) => {
     setModalAllVisible(false);
   };
 
-  // Hàm tăng số lượng
   const increaseQuantity = async (itemId) => {
+    const item = cartItems.find(item => item._id === itemId);
+    if (!item) return;
+
+    const newQuantity = item.quantity + 1;
     try {
-      await axios.patch(`${URL}/carts/increaseQuantity/${itemId}`);
+      const response = await axios.put(`${URL}/carts/updateQuantity/${itemId}`, { quantity: newQuantity });
       const updatedCart = cartItems.map(item => {
         if (item._id === itemId) {
-          return { ...item, quantity: item.quantity + 1 };
+          return { ...item, quantity: newQuantity };
         }
         return item;
       });
       setCartItems(updatedCart);
       calculateTotalPrice(updatedCart);
-     
     } catch (error) {
       console.error(error);
-      ToastAndroid.show('Không thể tăng số lượng!', ToastAndroid.SHORT);
+      ToastAndroid.show(error.response.data.response || 'Không thể tăng số lượng!', ToastAndroid.SHORT);
     }
   };
 
-  // Hàm giảm số lượng
   const decreaseQuantity = async (itemId) => {
-    try {
-      if (cartItems.find(item => item._id === itemId).quantity > 1) {
-        await axios.patch(`${URL}/carts/decreaseQuantity/${itemId}`);
+    const item = cartItems.find(item => item._id === itemId);
+    if (!item) return;
+
+    if (item.quantity > 1) {
+      const newQuantity = item.quantity - 1;
+      try {
+        const response = await axios.put(`${URL}/carts/updateQuantity/${itemId}`, { quantity: newQuantity });
         const updatedCart = cartItems.map(item => {
           if (item._id === itemId) {
-            return { ...item, quantity: item.quantity - 1 };
+            return { ...item, quantity: newQuantity };
           }
           return item;
         });
         setCartItems(updatedCart);
         calculateTotalPrice(updatedCart);
-
-      } else {
-        ToastAndroid.show('Số lượng không thể giảm xuống 0!', ToastAndroid.SHORT);
+      } catch (error) {
+        console.error(error);
+        ToastAndroid.show(error.response.data.response || 'Không thể giảm số lượng!', ToastAndroid.SHORT);
       }
-    } catch (error) {
-      console.error(error);
-      ToastAndroid.show('Không thể giảm số lượng!', ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show('Số lượng không thể giảm xuống 0!', ToastAndroid.SHORT);
     }
   };
+
+
 
   return (
     <View style={styles.container}>
@@ -149,8 +159,8 @@ const CartScreen = ({ navigation }) => {
             <View key={item._id} style={styles.item}>
               <Image source={{ uri: item.img }} style={styles.image} />
               <View style={{ padding: 10, justifyContent: 'space-between' }}>
-                <Text style={{ marginBottom: 1, fontWeight: 'bold' }}>{item.name}</Text>
-                <Text style={{ marginBottom: 1, fontWeight: 'bold', color: '#FF0000' }}>{numberUtils(item.price)}</Text>
+                <Text style={{ marginBottom: 10, fontWeight: 'bold', fontSize: 16 }}>{item.name}</Text>
+                <Text style={{ marginBottom: 10, fontWeight: 'bold', fontSize: 16, color: '#ff4c4c' }}>{numberUtils(item.price)}</Text>
                 <View style={{ flexDirection: 'row' }}>
                   <TouchableOpacity onPress={() => decreaseQuantity(item._id)} style={styles.btn}>
                     <Image source={require('../Image/subtract.png')} style={styles.icon} />
@@ -208,11 +218,18 @@ const CartScreen = ({ navigation }) => {
       </ScrollView>
 
       {cartItems.length > 0 && (
-        <View style={{ width: '90%', marginVertical: 20, marginHorizontal: '5%', gap: 20 }}>
+        <View style={{ width: '90%', marginVertical: 10, marginHorizontal: '5%', gap: 15 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text>Tạm tính :</Text>
+
             <Text style={{ fontSize: 17, fontWeight: 'bold' }}>{numberUtils(totalPrice)}</Text>
           </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text>Số lượng :</Text>
+
+            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>{calculateTotalQuantity(cartItems)} sản phẩm</Text>
+          </View>
+
           <TouchableOpacity onPress={() => { /* Thực hiện thanh toán */ }} style={styles.checkoutButton}>
             <Text style={{ color: 'white' }}>Tiến hành thanh toán</Text>
           </TouchableOpacity>
