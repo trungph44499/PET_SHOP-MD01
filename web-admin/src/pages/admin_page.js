@@ -5,7 +5,6 @@ import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import "./css/css.css";
-
 export default function AdminManagement() {
   return (
     <div>
@@ -13,19 +12,15 @@ export default function AdminManagement() {
     </div>
   );
 }
-
 function Main() {
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
-
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-
   const fullname = useRef();
   const username = useRef();
   const password = useRef();
   const status = useRef();
-
   async function getAllAdmin() {
     try {
       const { status, data } = await axios.post(
@@ -38,11 +33,9 @@ function Main() {
       console.log(error);
     }
   }
-
   useEffect(() => {
     getAllAdmin();
   }, []);
-
   return (
     <div>
       {isUpdate && (
@@ -96,7 +89,7 @@ function Main() {
                 if (
                   fullname.current.value === "" ||
                   username.current.value === "" ||
-                  password.current.value === ""
+                  password === ""
                 ) {
                   window.alert("Inpur empty!");
                   return;
@@ -156,7 +149,6 @@ function Main() {
             </span>
             <input ref={password} type="text" />
           </div>
-
           <div className="d-flex flex-row">
             <button
               className="btn btn-primary"
@@ -164,7 +156,7 @@ function Main() {
                 if (
                   fullname.current.value === "" ||
                   username.current.value === "" ||
-                  password.current.value === ""
+                  password === ""
                 ) {
                   window.alert("Inpur empty!");
                   return;
