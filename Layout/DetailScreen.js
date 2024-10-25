@@ -20,15 +20,20 @@ const DetailScreen = ({ navigation, route }) => {
 
   // Thêm sản phẩm vào giỏ hàng
   const addToCart = async () => {
+    if (quantity > item.quantity) {
+      ToastAndroid.show("Số lượng vượt quá số lượng có sẵn!", ToastAndroid.SHORT);
+      return;
+    }
+
     try {
       const emailUser = await AsyncStorage.getItem("@UserLogin");
       const {
         status,
         data: { response },
       } = await axios.post(`${URL}/carts/addToCart`, {
+        emailUser,
         ...item,
         quantity,
-        emailUser,
       });
 
       if (status === 200) {
@@ -36,6 +41,7 @@ const DetailScreen = ({ navigation, route }) => {
       }
     } catch (error) {
       console.error(error);
+      ToastAndroid.show("Có lỗi xảy ra!", ToastAndroid.SHORT);
     }
   };
 
@@ -50,14 +56,6 @@ const DetailScreen = ({ navigation, route }) => {
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity((prevQuantity) => prevQuantity - 1);
-    }
-  };
-
-  // Xử lý thay đổi số lượng thủ công
-  const handleQuantityChange = (text) => {
-    const num = parseInt(text, 10);
-    if (!isNaN(num) && num > 0 && num <= item.quantity) {
-      setQuantity(num);
     }
   };
 
@@ -127,7 +125,7 @@ const DetailScreen = ({ navigation, route }) => {
           </Text>
 
           <Text style={styles.detailText}>
-            <Text style={styles.availableQuantity}>Số lượng:</Text>
+            <Text style={styles.availableQuantity}>Mô tả:</Text>
             <Text> {item.description}</Text>
           </Text>
         </ScrollView>
