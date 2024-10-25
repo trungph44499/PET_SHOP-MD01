@@ -87,4 +87,20 @@ router.post("/delete", async (req, res) => {
     console.log(error);
   }
 });
+
+router.get("/search-product", async (req, res) => {
+  const { value } = req.query;
+
+  try {
+    const getProducts = await productModel.find({});
+    console.log(getProducts);
+
+    const resultSearch = getProducts.filter((item) =>
+      item.name.toLocaleLowerCase().includes(value)
+    );
+    res.status(200).send({ response: resultSearch });
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = router;
