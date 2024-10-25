@@ -93,8 +93,6 @@ router.get("/search-product", async (req, res) => {
 
   try {
     const getProducts = await productModel.find({});
-    console.log(getProducts);
-
     const resultSearch = getProducts.filter((item) =>
       item.name.toLocaleLowerCase().includes(value)
     );
