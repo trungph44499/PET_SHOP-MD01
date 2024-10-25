@@ -1,5 +1,4 @@
 import {
-  Alert,
   FlatList,
   Image,
   SafeAreaView,
@@ -11,11 +10,11 @@ import {
   Dimensions,
 } from "react-native";
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils } from "./utils/stringUtils";
 
-export const URL = "http://192.168.1.3";
+export const URL = "http://192.168.138.55";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -43,7 +42,6 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getListProduct();
-
   }, []);
 
   function goToClassifyScreen(type) {
@@ -102,10 +100,11 @@ const HomeScreen = ({ navigation }) => {
             </Text>
           </View>
           <SliderShow />
-       
-          <TouchableOpacity 
-          style={styles.newSP}
-          onPress={() => navigation.navigate("NewProductScreen")}>
+
+          <TouchableOpacity
+            style={styles.newSP}
+            onPress={() => navigation.navigate("NewProductScreen")}
+          >
             <Text
               style={{
                 fontSize: 17,
@@ -301,10 +300,10 @@ const styles = StyleSheet.create({
   cart: {
     width: 50,
     height: 50,
-    position: 'absolute',
+    position: "absolute",
     top: 40, // Khoảng cách từ trên cùng
     right: 30, // Khoảng cách từ bên trái
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 30,
   },

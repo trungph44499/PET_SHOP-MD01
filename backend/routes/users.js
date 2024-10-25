@@ -1,8 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var URL = "http://192.168.1.3";
 var nodemailer = require('nodemailer');
-var crypto = require('crypto');
 const userModel = require("../models/userModel");
 
 // Cấu hình Nodemailer
