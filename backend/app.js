@@ -25,5 +25,4 @@ app.use("/products", productRouter);
 app.use("/carts", cartRouter);
 app.use("/admin", adminRouter);
 
-
 module.exports = app;

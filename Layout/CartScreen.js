@@ -11,16 +11,16 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { congItem, truItem, removeItem, removeAllItem } from "../Redux/action"; 
+import { congItem, truItem, removeItem, removeAllItem } from "../Redux/action";
 import axios from "axios";
 import { URL } from "./HomeScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CartScreen = ({ navigation }) => {
   const date = new Date();
   const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [modalVisible, setModalVisible] = useState(false);
   const [modalAllVisible, setModalAllVisible] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,10 @@ const CartScreen = ({ navigation }) => {
 
   const getAllCart = async () => {
     try {
-      const { data } = await axios.get(`${URL}/carts/getFromCart`);
+      const emailUser = await AsyncStorage.getItem("@UserLogin");
+      const { data } = await axios.get(`${URL}/carts/getFromCart`, {
+        params: { emailUser },
+      });
       setCartItems(data);
       calculateTotalPrice(data);
     } catch (error) {
@@ -63,12 +66,12 @@ const CartScreen = ({ navigation }) => {
     const NewHoaDon = {
       ngayMua: date,
       totalPrice: totalPrice,
-      cartItems: cartItems.map(item => ({
+      cartItems: cartItems.map((item) => ({
         productId: item._id,
         productName: item.name,
         quantity: item.quantity,
-        price: item.price
-      }))
+        price: item.price,
+      })),
     };
 
     try {
@@ -112,11 +115,22 @@ const CartScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={{ width: 20, height: 20 }} source={require("../Image/back.png")} />
+          <Image
+            style={{ width: 20, height: 20 }}
+            source={require("../Image/back.png")}
+          />
         </TouchableOpacity>
-        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>Giỏ hàng</Text>
-        <TouchableOpacity style={{ width: 50 }} onPress={() => setModalAllVisible(true)}>
-          <Image style={{ width: 26, height: 26 }} source={require("../Image/delete.png")} />
+        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
+          Giỏ hàng
+        </Text>
+        <TouchableOpacity
+          style={{ width: 50 }}
+          onPress={() => setModalAllVisible(true)}
+        >
+          <Image
+            style={{ width: 26, height: 26 }}
+            source={require("../Image/delete.png")}
+          />
         </TouchableOpacity>
         <Modal
           animationType="slide"
@@ -127,7 +141,9 @@ const CartScreen = ({ navigation }) => {
           <View style={styles.cardContainer}>
             <View style={styles.cardModal}>
               <Text style={styles.textBold}>Xác nhận xóa tất cả đơn hàng?</Text>
-              <Text style={{ fontSize: 14, color: "gray" }}>Thao tác này sẽ không thể khôi phục.</Text>
+              <Text style={{ fontSize: 14, color: "gray" }}>
+                Thao tác này sẽ không thể khôi phục.
+              </Text>
               <Pressable
                 style={styles.btnModal}
                 onPress={() => {
@@ -136,11 +152,19 @@ const CartScreen = ({ navigation }) => {
                   getAllCart(); // Cập nhật lại giỏ hàng sau khi xóa tất cả
                 }}
               >
-                <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>Đồng ý</Text>
+                <Text
+                  style={{ color: "white", fontWeight: "bold", fontSize: 16 }}
+                >
+                  Đồng ý
+                </Text>
               </Pressable>
               <Text
                 onPress={() => setModalAllVisible(false)}
-                style={{ textDecorationLine: "underline", fontWeight: "bold", fontSize: 16 }}
+                style={{
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                }}
               >
                 Hủy bỏ
               </Text>
@@ -153,8 +177,16 @@ const CartScreen = ({ navigation }) => {
           <View key={item._id} style={styles.item}>
             <Image source={{ uri: item.img }} style={styles.image} />
             <View style={{ padding: 10, justifyContent: "space-between" }}>
-              <Text style={{ marginBottom: 1, fontWeight: "bold" }}>{item.name}</Text>
-              <Text style={{ marginBottom: 1, fontWeight: "bold", color: "#FF0000" }}>
+              <Text style={{ marginBottom: 1, fontWeight: "bold" }}>
+                {item.name}
+              </Text>
+              <Text
+                style={{
+                  marginBottom: 1,
+                  fontWeight: "bold",
+                  color: "#FF0000",
+                }}
+              >
                 {formatPrice(item.price)}
               </Text>
 
@@ -170,7 +202,11 @@ const CartScreen = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => handleRemoveItem(item)}>
-                  <Text style={{ textDecorationLine: "underline", marginLeft: 20 }}>Xóa</Text>
+                  <Text
+                    style={{ textDecorationLine: "underline", marginLeft: 20 }}
+                  >
+                    Xóa
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -180,15 +216,24 @@ const CartScreen = ({ navigation }) => {
 
       {cartItems.length > 0 ? (
         <View style={styles.totalContainer}>
-          <Text style={{ fontSize: 17, fontWeight: "bold" }}>Tạm tính: {formatPrice(totalPrice)}</Text>
-          <Text style={{ fontSize: 17 }}>Số lượng: {calculateTotalQuantity(cartItems)}</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+            Tạm tính: {formatPrice(totalPrice)}
+          </Text>
+          <Text style={{ fontSize: 17 }}>
+            Số lượng: {calculateTotalQuantity(cartItems)}
+          </Text>
           <TouchableOpacity onPress={TaoMaHoaDon} style={styles.paymentButton}>
             <Text style={{ color: "white" }}>Tiến hành thanh toán</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <TouchableOpacity onPress={() => navigation.navigate("SearchScreen")} style={styles.emptyCart}>
-          <Text style={{ textAlign: "center" }}>Giỏ hàng rỗng{"\n"}Thêm sản phẩm vào giỏ hàng</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SearchScreen")}
+          style={styles.emptyCart}
+        >
+          <Text style={{ textAlign: "center" }}>
+            Giỏ hàng rỗng{"\n"}Thêm sản phẩm vào giỏ hàng
+          </Text>
         </TouchableOpacity>
       )}
     </View>

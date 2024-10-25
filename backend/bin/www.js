@@ -14,7 +14,6 @@ var mongoose = require("mongoose");
  */
 
 var URL_DATABASE = "mongodb+srv://admin01:luVw2E9ICnvXhS8b@mydatabase.bnquf.mongodb.net";
-
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 
