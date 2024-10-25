@@ -6,6 +6,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 import { myColor } from "../styles/color";
 import {
+  faAnchor,
   faChevronLeft,
   faChevronRight,
   faComputer,
@@ -122,7 +123,7 @@ export default function NavigationPage({ child }) {
               icon={<FontAwesomeIcon icon={faComputer} />}
               onClick={() => navigator("/admin")}
             >
-              Admin management
+              Staff management
             </MenuItem>
           )}
           <MenuItem

@@ -1,7 +1,18 @@
 var express = require("express");
 var router = express.Router();
+var nodemailer = require('nodemailer');
 const userModel = require("../models/userModel");
 
+// Cấu hình Nodemailer
+const transporter = nodemailer.createTransport({
+  service: "Gmail", // Hoặc dịch vụ email mà bạn đang sử dụng
+  auth: {
+    user: "zingkull29@gmail.com", // Thay thế bằng email của bạn
+    pass: "hriz nkni nhdi gnme", // Thay thế bằng mật khẩu email của bạn
+  },
+});
+
+// Đăng ký người dùng
 router.post("/register", async (req, res) => {
   const { name, email, pass } = req.body;
 
@@ -40,6 +51,68 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+});
+
+// Chức năng quên mật khẩu (gửi mã OTP)
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await userModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ response: "Email không tồn tại", type: false });
+    }
+
+    // Gửi email với OTP
+    const mailOptions = {
+      from: "zingkull29@gmail.com",
+      to: email,
+      subject: "Mã OTP đặt lại mật khẩu",
+      text: `Mã OTP của bạn là: ${req.body.otp}`, // Lấy OTP từ request
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ response: "Gửi email thất bại", type: false });
+      }
+
+      res.status(200).json({ response: "Mã OTP đã được gửi", type: true });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ response: "Đã xảy ra lỗi", type: false });
+  }
+});
+
+// Chức năng đặt lại mật khẩu (kiểm tra mã OTP)
+router.post("/reset-password", async (req, res) => {
+  const { email, otp, password } = req.body;
+
+  try {
+    // Tìm người dùng dựa trên email
+    const user = await userModel.findOne({ email: email });
+
+    // Kiểm tra xem người dùng có tồn tại không
+    if (!user) {
+      return res.status(404).json({ response: "Người dùng không tồn tại", type: false });
+    }
+
+    // Kiểm tra mã OTP
+    if (user.otp !== otp) {
+      return res.status(400).json({ response: "Mã OTP không hợp lệ", type: false });
+    }
+
+    // Cập nhật mật khẩu mới
+    user.pass = password; // Cập nhật mật khẩu mới
+    user.otp = undefined; // Xóa mã OTP
+    await user.save();
+
+    res.status(200).json({ response: "Mật khẩu đã được đặt lại thành công", type: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ response: "Đã xảy ra lỗi", type: false });
   }
 });
 
@@ -88,6 +161,7 @@ router.post("/update", async (req, res) => {
   var avatar = req.body.avatar ?? "";
 
   try {
+
     const result = await userModel.findOne({ email: email });
     if (fullname === "") fullname = result.fullname;
     if (password === "") password = result.pass;
@@ -112,3 +186,4 @@ router.post("/update", async (req, res) => {
 });
 
 module.exports = router;
+

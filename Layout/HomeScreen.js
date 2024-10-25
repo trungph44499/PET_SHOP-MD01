@@ -12,11 +12,11 @@ import {
 } from "react-native";
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import SliderShow from "./components/SliderShow";
-import { numberUtils } from "./utils/stringUtils";
+import { numberUtils, upperCaseFirstItem } from './utils/stringUtils';
 
-export const URL = "http://192.168.1.17";
-
+export const URL = "http://192.168.1.3";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -44,7 +44,6 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getListProduct();
-
   }, []);
 
   function goToClassifyScreen(type) {
@@ -70,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
             )}
           </Text>
         </View>
-        <Text style={styles.itemStyle}>Mã SP: {item._id.slice(-5)}</Text>
+        <Text style={styles.itemStyle}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
         <Text style={styles.price}>{numberUtils(item.price)}</Text>
       </TouchableOpacity>
     );
@@ -107,6 +106,10 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity 
           style={styles.newSP}
           onPress={() => navigation.navigate("NewProductScreen")}>
+          <TouchableOpacity
+            style={styles.newSP}
+            onPress={() => navigation.navigate("NewProductScreen")}
+          >
             <Text
               style={{
                 fontSize: 17,
@@ -136,20 +139,7 @@ const HomeScreen = ({ navigation }) => {
           scrollEnabled={false}
           data={ListDogs.filter((item, index) => index < 4)}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("DetailScreen", { item: item })
-              }
-              style={styles.itemDogs}
-            >
-              <Image source={{ uri: item.img }} style={styles.itemImage} />
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemStyle}>ID: {item.type}</Text>
-              <Text style={styles.price}>{item.price} </Text>
-            </TouchableOpacity>
-          )}
-          // renderItem={({ item }) => ItemList(item)}
+          renderItem={({ item }) => ItemList(item)}
         />
 
         <TouchableOpacity
@@ -316,9 +306,11 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     position: 'absolute',
+    position: "absolute",
     top: 40, // Khoảng cách từ trên cùng
     right: 30, // Khoảng cách từ bên trái
     backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 30,
   },

@@ -17,7 +17,6 @@ export default function ProductManagement() {
 function Main() {
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
-
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
 
@@ -59,7 +58,6 @@ function Main() {
               </span>
               <input ref={_image} type="text" defaultValue={dataUpdate.img} />
             </div>
-
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Name
@@ -67,7 +65,6 @@ function Main() {
               <input ref={_name} type="text" defaultValue={dataUpdate.name} />
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -90,7 +87,6 @@ function Main() {
               />
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -113,7 +109,6 @@ function Main() {
               />
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -132,7 +127,6 @@ function Main() {
               />
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <button
               className="btn btn-primary"
@@ -203,7 +197,6 @@ function Main() {
               </span>
               <input ref={_image} type="text" />
             </div>
-
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Name
@@ -241,7 +234,6 @@ function Main() {
               <input ref={_status} type="text" />
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -256,7 +248,6 @@ function Main() {
               <input ref={_description} type="text" />
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <button
               className="btn btn-primary"
@@ -289,7 +280,6 @@ function Main() {
                   window.alert("Must input Type cat or dot or accessory");
                   return;
                 }
-
                 try {
                   const {
                     status,
@@ -342,7 +332,6 @@ function Main() {
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
-
       <table className="table">
         <thead>
           <tr>
