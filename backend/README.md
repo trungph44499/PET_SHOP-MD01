@@ -29,8 +29,8 @@ thì không gửi thông tin đó lên, ví dụ chỉ muốn update mật khẩ
 - products/delete (Xoá sản phẩm)
 - products/search-product (Tìm kiếm sản phẩm, truyền vào params với tên thuộc tính là value,
 có 2 cái truyền params với axios,\n
-1- axios.get(url/products/search-product?value=? giá trị trong ô tìm kiếm là gì đẩy vào dấu ? kia)\n
-2- axios.get(url/products/search-product,{params:{value:?}} dấu ? điền như trên))
+1. axios.get(url/products/search-product?value=? giá trị trong ô tìm kiếm là gì đẩy vào dấu ? kia)
+2. axios.get(url/products/search-product,{params:{value:?}} dấu ? điền như trên))
 
 # Thông tin router cart
 - carts/addToCart (Thêm vào giỏ hàng)
