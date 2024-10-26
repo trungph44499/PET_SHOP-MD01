@@ -7,6 +7,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { myColor } from "../styles/color";
 import {
   faAnchor,
+  faBookOpen,
   faChevronLeft,
   faChevronRight,
   faComputer,
@@ -139,6 +140,13 @@ export default function NavigationPage({ child }) {
             onClick={() => navigator("/product")}
           >
             Product management
+          </MenuItem>
+          <MenuItem
+            style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faBookOpen} />}
+            onClick={() => navigator("/confirm-product")}
+          >
+            Confirm product
           </MenuItem>
         </Menu>
         <div

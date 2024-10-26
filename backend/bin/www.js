@@ -8,16 +8,19 @@ var app = require("../app");
 var debug = require("debug")("generator:server");
 var http = require("http");
 var mongoose = require("mongoose");
+const { WebSocketServer } = require("ws");
 
 /**
  * Get port from environment and store in Express.
  */
 
-var URL_DATABASE = "mongodb+srv://hoangquan:WXtVprHBhv2skTNq@cluster0.m5rmad6.mongodb.net";
+var URL_DATABASE =
+  "mongodb+srv://hoangquan:WXtVprHBhv2skTNq@cluster0.m5rmad6.mongodb.net";
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 
 var server = http.createServer(app);
+const websocket = new WebSocketServer({ server: server });
 
 mongoose
   .connect(`${URL_DATABASE}/pet_shop`)
@@ -27,6 +30,21 @@ mongoose
 /**
  * Listen on provided port, on all network interfaces.
  */
+
+websocket.on("connection", function connection(ws) {
+  ws.on("error", console.error);
+  console.log("user connected");
+
+  ws.on("message", function message(data) {
+    websocket.clients.forEach(function each(client) {
+      client.send(data);
+    });
+  });
+
+  ws.on("close", () => {
+    console.log("user disconneted");
+  });
+});
 
 server.listen(port, () => console.log("Running"));
 server.on("error", onError);
