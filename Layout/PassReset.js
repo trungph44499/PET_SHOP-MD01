@@ -83,11 +83,11 @@ const PassReset = ({ navigation }) => {
   const { oldPass, newPass, confirmNewPass } = showPass;
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
+    <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
               <Image style={styles.icon} source={require('../Image/back.png')} />
             </TouchableOpacity>
             <Text style={styles.headerText}>Đổi mật khẩu</Text>
@@ -141,7 +141,7 @@ const PassReset = ({ navigation }) => {
           </View>
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>LƯU THÔNG TIN</Text>
+          <Text style={styles.buttonText}>ĐỔI MẬT KHẨU</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -165,8 +165,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 30,
   },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1, // Add this line
+  },
   headerText: {
-    marginLeft: 60,
+    flex: 1,
+    textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -203,6 +209,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'green',
     alignItems: 'center',
+    marginTop: 70,
   },
   buttonText: {
     color: 'white',
