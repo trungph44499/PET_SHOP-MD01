@@ -6,7 +6,7 @@ import {
   ToastAndroid,
   View,
   TouchableOpacity,
-  Animated
+  Animated,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState, useCallback } from "react";
@@ -65,21 +65,21 @@ const ProfileScreen = ({ navigation, route }) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Image
-              style={styles.icon}
-              source={require("../Image/back.png")}
-            />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Image style={styles.icon} source={require("../Image/back.png")} />
           </TouchableOpacity>
-          <Text style={styles.headerText}>
-            PROFILE
-          </Text>
+          <Text style={styles.headerText}>PROFILE</Text>
         </View>
 
         <View style={styles.infor}>
           <Image
             source={
-              user.avatar ? { uri: user.avatar } : require("../Image/pesonal.png")
+              user.avatar
+                ? { uri: user.avatar }
+                : require("../Image/pesonal.png")
             }
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
@@ -102,9 +102,12 @@ const ProfileScreen = ({ navigation, route }) => {
                 style={styles.button}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
-                onPress={() => alert('Button Pressed!')}
+                onPress={() => alert("Button Pressed!")}
               >
-                   <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
+                <Image
+                  source={require("../Image/dog_care.png")}
+                  style={styles.starImage}
+                />
                 <Text style={styles.buttonText}>Pet care</Text>
               </TouchableOpacity>
             </Animated.View>
@@ -112,12 +115,9 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text onPress={() => navigation.navigate("ManageUser")}>
             Chỉnh sửa thông tin
           </Text>
-          <TouchableOpacity  onPress={() => navigation.navigate("PassReset")}>
-            <Text>
-            Đổi mật khẩu
-          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("PassReset")}>
+            <Text>Đổi mật khẩu</Text>
           </TouchableOpacity>
-          
 
           <Text onPress={() => navigation.navigate("NoticeScreen")}>
             Lịch sử giao dịch
@@ -132,15 +132,14 @@ const ProfileScreen = ({ navigation, route }) => {
           </Text>
           <Text>Điều khoản và điều kiện</Text>
           <Text>Chính sách quyền riêng tư</Text>
-          <Text
-            style={{ color: "red" }}
+          <TouchableOpacity
             onPress={() => {
               navigation.navigate("LoginScreen");
               ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
             }}
           >
-            Đăng xuất
-          </Text>
+            <Text style={{ color: "red" }}>Đăng xuất</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -156,20 +155,20 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 30,
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     zIndex: 1,
   },
   headerText: {
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   icon: {
     width: 20,
@@ -191,29 +190,29 @@ const styles = StyleSheet.create({
   starImage: {
     width: 32,
     height: 32,
-    marginLeft:5,
-    resizeMode: 'contain',
+    marginLeft: 5,
+    resizeMode: "contain",
   },
   background: {
     width: 200,
     height: 45,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 10,
-    overflow: 'hidden',
-    position: 'relative',
+    overflow: "hidden",
+    position: "relative",
   },
   button: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: '#fcd4db',
+    backgroundColor: "#fcd4db",
     borderRadius: 20,
     padding: 10,
   },
   buttonText: {
     fontSize: 14,
-    color: 'black',
-    marginLeft: 10
+    color: "black",
+    marginLeft: 10,
   },
 });
