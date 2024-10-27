@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid, Image, Modal, Pressable } from 'react-native';
 import axios from 'axios';
-import { URL } from './HomeScreen'; // Đảm bảo URL đã được định nghĩa
+import { URL } from './HomeScreen'; 
 import { numberUtils } from './utils/stringUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

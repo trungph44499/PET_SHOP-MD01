@@ -12,14 +12,13 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SliderShow from "./components/SliderShow";
-import { numberUtils, upperCaseFirstItem } from './utils/stringUtils';
+import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 
-export const URL = "http://192.168.138.55";
+export const URL = "http://192.168.1.3";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
-  // const [isAdmin, setIsAdmin] = useState(false);
   const [ListDogs, setListDogs] = useState([]);
   const [ListCats, setListCats] = useState([]);
   const [ListAccessory, setListAccessory] = useState([]);
@@ -67,7 +66,9 @@ const HomeScreen = ({ navigation }) => {
             )}
           </Text>
         </View>
-        <Text style={styles.itemStyle}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
+        <Text style={styles.itemStyle}>
+          Mã SP: {upperCaseFirstItem(item._id.slice(-5))}
+        </Text>
         <Text style={styles.price}>{numberUtils(item.price)}</Text>
       </TouchableOpacity>
     );

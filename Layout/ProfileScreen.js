@@ -66,11 +66,7 @@ const ProfileScreen = ({ navigation, route }) => {
               source={require("../Image/back.png")}
             />
           </TouchableOpacity>
-          <Text
-            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
-          >
-            PROFILE
-          </Text>
+          <Text style={styles.title}>PROFILE</Text>
         </View>
 
         <View style={styles.infor}>
@@ -80,7 +76,7 @@ const ProfileScreen = ({ navigation, route }) => {
             }
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
-          <View style={{marginLeft: 20}}>
+          <View style={{ marginLeft: 20 }}>
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
               {user.fullname}
             </Text>
@@ -171,10 +167,18 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    width: "100%",
-    paddingVertical: 20,
-    alignItems: 'center'
+    padding: 5,
+    marginBottom: 10,
+
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    flex: 1, // Cho phép tiêu đề chiếm không gian giữa
+    textAlign: 'center', // Căn giữa văn bản
   },
   infor: {
     flexDirection: "row",

@@ -6,8 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeAllItem } from '../Redux/action';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-
-
 const FinalBill = ({ navigation, route }) => {
     const { id_bill } = route.params;
     const [user, setuser] = useState([]);
