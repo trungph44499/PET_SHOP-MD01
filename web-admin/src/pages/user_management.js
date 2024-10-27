@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import "./css/css.css";
+import { webSocketContext } from "../context/WebSocketContext";
 
 export default function UserManagement() {
   return (
@@ -15,6 +16,7 @@ export default function UserManagement() {
 }
 
 function Main() {
+  const ws = useContext(webSocketContext);
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
 
@@ -67,7 +69,12 @@ function Main() {
             <span className="input-group-text" style={{ width: 100 }}>
               Email
             </span>
-            <input ref={email} type="text" defaultValue={dataUpdate.email} />
+            <input
+              ref={email}
+              disabled
+              type="text"
+              defaultValue={dataUpdate.email}
+            />
           </div>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>

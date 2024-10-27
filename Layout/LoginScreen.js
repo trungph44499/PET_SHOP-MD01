@@ -51,35 +51,6 @@ const LoginScreen = (props) => {
     }
   };
 
-  //   const retrieveData = async () => {
-  //     try {
-  //       const storedEmail = await AsyncStorage.getItem("email");
-  //       const storedPassword = await AsyncStorage.getItem("pass");
-  //       if (storedEmail !== null && storedPassword !== null) {
-  //         setEmail(storedEmail);
-  //         setPass(storedPassword);
-  //         setCheckRemember(true);
-  //       } else {
-  //         setPass("");
-  //         setCheckRemember(false);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   useFocusEffect(
-  //     React.useCallback(() => {
-  //       retrieveData();
-  //       return () => {
-  //         setEmail("");
-  //         setPass("");
-  //         setShowPass(true);
-  //         setCheckRemember(false);
-  //       };
-  //     }, [])
-  //   );
-
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <KeyboardAvoidingView
@@ -119,7 +90,6 @@ const LoginScreen = (props) => {
                 placeholder="Nhập email"
                 onChangeText={(txt) => setEmail(txt)}
                 value={email || ""}
-                autoCapitalize="none"
               />
             </View>
             <View style={styles.input}>
@@ -129,7 +99,6 @@ const LoginScreen = (props) => {
                 placeholder="Nhập mật khẩu"
                 onChangeText={(txt) => setPass(txt)}
                 value={pass || ""}
-                autoCapitalize="none"
               />
               <TouchableOpacity onPress={() => setShowPass(!showPass)}>
                 <Image
@@ -160,7 +129,9 @@ const LoginScreen = (props) => {
                 </TouchableOpacity>
                 <Text style={{ marginLeft: 10 }}>Nhớ tài khoản</Text>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity 
+              onPress={() => props.navigation.navigate("ForgotPassword")}
+              >
                 <Text style={{ color: "green", fontWeight: "bold" }}>
                   Forgot Password?
                 </Text>

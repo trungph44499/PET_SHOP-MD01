@@ -8,22 +8,23 @@ var app = require("../app");
 var debug = require("debug")("generator:server");
 var http = require("http");
 var mongoose = require("mongoose");
+const { WebSocketServer } = require("ws");
 
 /**
  * Get port from environment and store in Express.
  */
 
-
-var URL_DATABASE = "mongodb://localhost:27017";
+var URL_DATABASE =
+  "mongodb+srv://hoangquan:WXtVprHBhv2skTNq@cluster0.m5rmad6.mongodb.net";
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 
 /**
- * Create HTTP server.var URL_DATABASE = "mongodb+srv://lammbph37723:lammbph37723@cluster0.kt2hajt.mongodb.net";
-
+ * Create HTTP server.
  */
 
 var server = http.createServer(app);
+const websocket = new WebSocketServer({ server: server, clientTracking: true });
 
 mongoose
   .connect(`${URL_DATABASE}/pet_shop`)
@@ -33,6 +34,30 @@ mongoose
 /**
  * Listen on provided port, on all network interfaces.
  */
+const idReceiver = "67172b1e05373a1bb6c1542e";
+const clients = {};
+
+websocket.on("connection", function connection(ws) {
+  ws.on("error", console.error);
+  console.log("user connected");
+  clients[idReceiver] = ws;
+
+  ws.on("message", function message(data) {
+    const json = JSON.parse(data.toString("utf8"));
+    const { userId, message } = json;
+
+    const client = clients[userId];
+    if (client) {
+      client.send(message);
+      return;
+    }
+    console.log("user not found");
+  });
+
+  ws.on("close", () => {
+    console.log("user disconnected");
+  });
+});
 
 server.listen(port, () => console.log("Running"));
 server.on("error", onError);

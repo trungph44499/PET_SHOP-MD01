@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   Animated,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState, useCallback } from "react";
@@ -55,40 +56,38 @@ const ProfileScreen = ({ navigation, route }) => {
     retrieveData();
   }, []);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     retrieveData();
-  //   }, [])
-  // );
-
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          >
-            <Image style={styles.icon} source={require("../Image/back.png")} />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              style={{ width: 20, height: 20 }}
+              source={require("../Image/back.png")}
+            />
           </TouchableOpacity>
-          <Text style={styles.headerText}>PROFILE</Text>
+          <Text
+            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
+          >
+            PROFILE
+          </Text>
         </View>
 
         <View style={styles.infor}>
           <Image
             source={
-              user.avatar
-                ? { uri: user.avatar }
-                : require("../Image/pesonal.png")
+              user.avatar ? { uri: user.avatar } : require("../Image/pesonal.png")
             }
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
-          <Text style={{ fontSize: 17, fontWeight: "bold" }}>
-            Fullname: {user.fullname}
-          </Text>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Email: {user.email}
-          </Text>
+          <View style={{marginLeft: 20}}>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              {user.fullname}
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
+              {user.email}
+            </Text>
+          </View>
         </View>
 
         <View style={styles.option}>
@@ -102,26 +101,23 @@ const ProfileScreen = ({ navigation, route }) => {
                 style={styles.button}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
-                onPress={() => alert("Button Pressed!")}
+                onPress={() => navigation.navigate("Petcare")}
               >
-                <Image
-                  source={require("../Image/dog_care.png")}
-                  style={styles.starImage}
-                />
+                <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
                 <Text style={styles.buttonText}>Pet care</Text>
               </TouchableOpacity>
             </Animated.View>
           </View>
+
           <Text onPress={() => navigation.navigate("ManageUser")}>
             Chỉnh sửa thông tin
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate("PassReset")}>
-            <Text>Đổi mật khẩu</Text>
+            <Text>
+              Đổi mật khẩu
+            </Text>
           </TouchableOpacity>
 
-          <Text onPress={() => navigation.navigate("NoticeScreen")}>
-            Lịch sử giao dịch
-          </Text>
           <Text>Q & A</Text>
         </View>
 
@@ -132,14 +128,33 @@ const ProfileScreen = ({ navigation, route }) => {
           </Text>
           <Text>Điều khoản và điều kiện</Text>
           <Text>Chính sách quyền riêng tư</Text>
-          <TouchableOpacity
+          <Text
+            style={{ color: "red" }}
             onPress={() => {
-              navigation.navigate("LoginScreen");
-              ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
+              Alert.alert(
+                "Xác nhận đăng xuất",
+                "Bạn có chắc chắn muốn đăng xuất không?",
+                [
+                  {
+                    text: "Hủy",
+                    onPress: () => console.log("Hủy đăng xuất"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "Đăng xuất",
+                    onPress: () => {
+                      navigation.navigate("LoginScreen");
+                      ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
+                    },
+                    style: "destructive",
+                  },
+                ],
+                { cancelable: false }
+              );
             }}
           >
-            <Text style={{ color: "red" }}>Đăng xuất</Text>
-          </TouchableOpacity>
+            Đăng xuất
+          </Text>
         </View>
       </View>
     </ScrollView>
@@ -155,30 +170,16 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 30,
-  },
-  backButton: {
-    position: "absolute",
-    left: 0,
-    zIndex: 1,
-  },
-  headerText: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  icon: {
-    width: 20,
-    height: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: "100%",
+    paddingVertical: 20,
+    alignItems: 'center'
   },
   infor: {
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 5,
+    gap: 10,
   },
   option: {
     gap: 18,
@@ -191,28 +192,31 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     marginLeft: 5,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   background: {
     width: 200,
     height: 45,
-    backgroundColor: "transparent",
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: 'transparent',
     borderRadius: 10,
-    overflow: "hidden",
-    position: "relative",
+    overflow: 'hidden',
+    position: 'relative',
   },
   button: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fcd4db",
+    backgroundColor: '#fcd4db',
     borderRadius: 20,
     padding: 10,
+
   },
   buttonText: {
     fontSize: 14,
-    color: "black",
-    marginLeft: 10,
+    color: 'black',
+    marginLeft: 10
   },
 });

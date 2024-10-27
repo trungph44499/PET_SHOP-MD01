@@ -76,6 +76,7 @@ router.post("/update", async function (req, res) {
   var status = req.body.status ?? "";
 
   try {
+    const findAdmin = await adminModel.find({ username: username });
     if (fullname === "") fullname = findAdmin.fullname;
     if (password === "") password = findAdmin.password;
     if (status === "") status = findAdmin.status;

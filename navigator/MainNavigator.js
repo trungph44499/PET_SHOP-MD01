@@ -9,8 +9,16 @@ import ClassifyScreen from "../Layout/classify/ClassifyScreen";
 import CartScreen from "../Layout/CartScreen";
 import SearchScreen from '../Layout/SearchScreen';
 import NoticeScreen from '../Layout/NoticeScreen';
+import NewProductScreen from '../Layout/NewProductScreen';
 import ManageUser from "../Layout/ManageUser";
 import PassReset from "../Layout/PassReset";
+import Petcare from "../Layout/Petcare";
+import Petcare2 from "../Layout/Petcare2";
+import Payment from "../Layout/Payment";
+import Payment2 from "../Layout/Petcare2";
+import FinalBill from "../Layout/FinalBill";
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -70,7 +78,7 @@ function Home() {
       />
 
       <Tab.Screen
-        name="     "
+        name="    "
         component={ProfileScreen}
         options={{
           headerShown: false,
@@ -94,12 +102,17 @@ const MainNavigator = () => {
       <Stack.Screen name="DetailScreen" component={DetailScreen} />
       <Stack.Screen name="ClassifyScreen" component={ClassifyScreen} />
       <Stack.Screen name="CartScreen" component={CartScreen} />
-      <Stack.Screen name='SearchScreen' component={SearchScreen} />
-      <Stack.Screen name='NoticeScreen' component={NoticeScreen} />
+      <Stack.Screen name="NewProductScreen" component={NewProductScreen} />
       <Stack.Screen name='ManageUser' component={ManageUser} />
       <Stack.Screen name='PassReset' component={PassReset} />
+      <Stack.Screen name="Petcare" component={Petcare} />
+      <Stack.Screen name="Petcare2" component={Petcare2}/>
+      <Stack.Screen name="Payment" component={Payment}/>
+      <Stack.Screen name="Payment2" component={Payment2}/>
+      <Stack.Screen name="FinalBill" component={FinalBill}/>
     </Stack.Navigator>
   );
 };
 
 export default MainNavigator;
+
