@@ -2,13 +2,7 @@ import React from "react";
 import { StyleSheet, View, Image, Dimensions } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
-const styles = StyleSheet.create({
-  img: {
-    resizeMode: "center",
-    height: 200,
-    width: "auto",
-  },
-});
+
 const { width } = Dimensions.get("window");
 const listBanner = [
   require("../../Image/banner_pet01.png"),
@@ -35,3 +29,10 @@ export default function () {
     />
   );
 }
+const styles = StyleSheet.create({
+  img: {
+    resizeMode: "center",
+    height: 200,
+    width: "auto",
+  },
+});

@@ -16,7 +16,6 @@ export default function UserManagement() {
 }
 
 function Main() {
-  const ws = useContext(webSocketContext);
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
 
