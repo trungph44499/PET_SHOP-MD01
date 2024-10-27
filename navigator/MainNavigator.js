@@ -95,8 +95,6 @@ const MainNavigator = () => {
       <Stack.Screen name="DetailScreen" component={DetailScreen} />
       <Stack.Screen name="ClassifyScreen" component={ClassifyScreen} />
       <Stack.Screen name="CartScreen" component={CartScreen} />
-      <Stack.Screen name='SearchScreen' component={SearchScreen} />
-      <Stack.Screen name='NoticeScreen' component={NoticeScreen} />
       <Stack.Screen name="NewProductScreen" component={NewProductScreen} />
       <Stack.Screen name='ManageUser' component={ManageUser} />
       <Stack.Screen name='PassReset' component={PassReset} />

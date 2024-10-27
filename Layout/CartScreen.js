@@ -210,8 +210,8 @@ const CartScreen = ({ navigation }) => {
               Giỏ hàng rỗng
               {'\n'}Thêm sản phẩm vào giỏ hàng
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SearchScreen')} style={styles.addButton}>
-              <Text style={styles.addButtonText}>Tìm kiếm sản phẩm</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.addButton}>
+              <Text style={styles.addButtonText}>Xem sản phẩm mới</Text>
             </TouchableOpacity>
           </View>
         )}

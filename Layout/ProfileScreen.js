@@ -118,9 +118,6 @@ const ProfileScreen = ({ navigation, route }) => {
             </Text>
           </TouchableOpacity>
 
-          <Text onPress={() => navigation.navigate("NoticeScreen")}>
-            Lịch sử giao dịch
-          </Text>
           <Text>Q & A</Text>
         </View>
 
