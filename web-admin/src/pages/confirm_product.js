@@ -3,7 +3,6 @@ import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
 import "./css/css.css";
-const ws = new WebSocket("ws://192.168.137.251");
 
 export default function ConfirmProduct() {
   return (
@@ -15,13 +14,6 @@ export default function ConfirmProduct() {
 
 function Main() {
   const [data, setData] = useState([]);
-  
-  useEffect(() => {
-    ws.onmessage = (data) => {
-      window.alert(data);
-    };
-  }, []);
-
   async function getAllConfirmProduct() {
     try {
       const { status, data } = await axios.get(
@@ -43,7 +35,7 @@ function Main() {
     <div>
       <button
         onClick={() => {
-          ws.send("data");
+          
         }}
       >
         sendddd

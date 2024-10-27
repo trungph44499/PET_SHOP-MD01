@@ -6,7 +6,6 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 import { myColor } from "../styles/color";
 import {
-  faAnchor,
   faBookOpen,
   faChevronLeft,
   faChevronRight,

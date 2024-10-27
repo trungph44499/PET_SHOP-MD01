@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var nodemailer = require('nodemailer');
+var nodemailer = require("nodemailer");
 const userModel = require("../models/userModel");
 
 // Cấu hình Nodemailer
@@ -61,7 +61,9 @@ router.post("/forgot-password", async (req, res) => {
   try {
     const user = await userModel.findOne({ email: email });
     if (!user) {
-      return res.status(404).json({ response: "Email không tồn tại", type: false });
+      return res
+        .status(404)
+        .json({ response: "Email không tồn tại", type: false });
     }
 
     // Gửi email với OTP
@@ -75,7 +77,9 @@ router.post("/forgot-password", async (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error);
-        return res.status(500).json({ response: "Gửi email thất bại", type: false });
+        return res
+          .status(500)
+          .json({ response: "Gửi email thất bại", type: false });
       }
 
       res.status(200).json({ response: "Mã OTP đã được gửi", type: true });
@@ -96,12 +100,16 @@ router.post("/reset-password", async (req, res) => {
 
     // Kiểm tra xem người dùng có tồn tại không
     if (!user) {
-      return res.status(404).json({ response: "Người dùng không tồn tại", type: false });
+      return res
+        .status(404)
+        .json({ response: "Người dùng không tồn tại", type: false });
     }
 
     // Kiểm tra mã OTP
     if (user.otp !== otp) {
-      return res.status(400).json({ response: "Mã OTP không hợp lệ", type: false });
+      return res
+        .status(400)
+        .json({ response: "Mã OTP không hợp lệ", type: false });
     }
 
     // Cập nhật mật khẩu mới
@@ -109,7 +117,9 @@ router.post("/reset-password", async (req, res) => {
     user.otp = undefined; // Xóa mã OTP
     await user.save();
 
-    res.status(200).json({ response: "Mật khẩu đã được đặt lại thành công", type: true });
+    res
+      .status(200)
+      .json({ response: "Mật khẩu đã được đặt lại thành công", type: true });
   } catch (error) {
     console.log(error);
     res.status(500).json({ response: "Đã xảy ra lỗi", type: false });
@@ -161,7 +171,6 @@ router.post("/update", async (req, res) => {
   var avatar = req.body.avatar ?? "";
 
   try {
-
     const result = await userModel.findOne({ email: email });
     if (fullname === "") fullname = result.fullname;
     if (password === "") password = result.pass;
@@ -186,4 +195,3 @@ router.post("/update", async (req, res) => {
 });
 
 module.exports = router;
-

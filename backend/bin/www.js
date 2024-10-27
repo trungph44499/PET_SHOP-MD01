@@ -20,7 +20,7 @@ var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 
 var server = http.createServer(app);
-const websocket = new WebSocketServer({ server: server });
+const websocket = new WebSocketServer({ server: server, clientTracking: true });
 
 mongoose
   .connect(`${URL_DATABASE}/pet_shop`)
@@ -30,19 +30,28 @@ mongoose
 /**
  * Listen on provided port, on all network interfaces.
  */
+const idReceiver = "67172b1e05373a1bb6c1542e";
+const clients = {};
 
 websocket.on("connection", function connection(ws) {
   ws.on("error", console.error);
   console.log("user connected");
+  clients[idReceiver] = ws;
 
   ws.on("message", function message(data) {
-    websocket.clients.forEach(function each(client) {
-      client.send(data);
-    });
+    const json = JSON.parse(data.toString("utf8"));
+    const { userId, message } = json;
+
+    const client = clients[userId];
+    if (client) {
+      client.send(message);
+      return;
+    }
+    console.log("user not found");
   });
 
   ws.on("close", () => {
-    console.log("user disconneted");
+    console.log("user disconnected");
   });
 });
 
