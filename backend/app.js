@@ -11,6 +11,7 @@ var cartRouter = require("./routes/carts");
 var adminRouter = require("./routes/admin");
 var searchRouter = require("./routes/searchs");
 
+
 var app = express();
 
 app.use(logger("dev"));
@@ -26,5 +27,6 @@ app.use("/products", productRouter);
 app.use("/carts", cartRouter);
 app.use("/admin", adminRouter);
 app.use("/searchs", searchRouter);
+
 
 module.exports = app;

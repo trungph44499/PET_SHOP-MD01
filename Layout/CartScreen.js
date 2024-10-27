@@ -230,7 +230,7 @@ const CartScreen = ({ navigation }) => {
             <Text style={{ fontSize: 17, fontWeight: 'bold' }}>{calculateTotalQuantity(cartItems)} sản phẩm</Text>
           </View>
 
-          <TouchableOpacity onPress={() => { /* Thực hiện thanh toán */ }} style={styles.checkoutButton}>
+          <TouchableOpacity onPress={() => { navigation.navigate('Payment') }} style={styles.checkoutButton}>
             <Text style={{ color: 'white' }}>Tiến hành thanh toán</Text>
           </TouchableOpacity>
         </View>

@@ -101,7 +101,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 style={styles.button}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
-                onPress={() => alert('Button Pressed!')}
+                onPress={() => navigation.navigate("Petcare")}
               >
                 <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
                 <Text style={styles.buttonText}>Pet care</Text>
@@ -170,8 +170,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: "100%",
     paddingVertical: 20,
+    alignItems: 'center'
   },
   infor: {
     flexDirection: "row",
