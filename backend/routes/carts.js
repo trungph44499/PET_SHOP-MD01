@@ -5,7 +5,6 @@ const productModel = require("../models/productModel");
 
 // Thêm sản phẩm vào giỏ hàng
 router.post("/addToCart", async (req, res) => {
-  console.log("Received data:", req.body);
   const {
     emailUser,
     _id: idProduct,

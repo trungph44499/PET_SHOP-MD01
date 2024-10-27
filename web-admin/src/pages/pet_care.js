@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
 import "./css/css.css";
+import { webSocketContext } from "../context/WebSocketContext";
 
-export default function ConfirmProduct() {
+export default function PetCare() {
   return (
     <div>
       <NavigationPage child={<Main />} />
@@ -14,13 +15,20 @@ export default function ConfirmProduct() {
 
 function Main() {
   const [data, setData] = useState([]);
-  async function getAllConfirmProduct() {
+  const websocket = useContext(webSocketContext);
+
+  websocket.onmessage = function (data) {
+    getAllPetCare();
+  };
+
+  async function getAllPetCare() {
     try {
-      const { status, data } = await axios.get(
-        `${json_config[0].url_connect}/notification`
-      );
+      const {
+        status,
+        data: { response },
+      } = await axios.get(`${json_config[0].url_connect}/pet-care`);
       if (status == 200) {
-        setData(data);
+        setData(response);
       }
     } catch (error) {
       console.log(error);
@@ -28,38 +36,31 @@ function Main() {
   }
 
   useEffect(() => {
-    getAllConfirmProduct();
+    getAllPetCare();
   }, []);
 
   return (
     <div>
-      <button
-        onClick={() => {
-          
-        }}
-      >
-        sendddd
-      </button>
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Tittle</th>
-            <th scope="col">Content</th>
-            <th scope="col">Status</th>
-            <th scope="col">Confirm</th>
-            <th scope="col">Reject</th>
+            <th scope="col">Email</th>
+            <th scope="col">Service</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Message</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr key={item._id}>
-              <td>{item.emailUser}</td>
-              <td>{item.status ? "Confirmed" : "Rejected"}</td>
-              <td>{item.date}</td>
-              <td>{item.product.map((p) => p.name + " ,")}</td>
+              <td>{item.email}</td>
+              <td>{item.service}</td>
+              <td>{item.name}</td>
+              <td>{item.phone}</td>
+              <td>{item.message}</td>
 
-              <td>
+              {/* <td>
                 <button onClick={() => {}} className="btn btn-primary">
                   Confirm
                 </button>
@@ -73,7 +74,7 @@ function Main() {
                 >
                   Reject
                 </button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

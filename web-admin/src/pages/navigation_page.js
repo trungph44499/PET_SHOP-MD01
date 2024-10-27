@@ -145,7 +145,7 @@ export default function NavigationPage({ child }) {
             icon={<FontAwesomeIcon icon={faBookOpen} />}
             onClick={() => navigator("/confirm-product")}
           >
-            Confirm product
+            Pet Care
           </MenuItem>
         </Menu>
         <div
