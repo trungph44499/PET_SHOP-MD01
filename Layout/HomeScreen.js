@@ -17,6 +17,7 @@ import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 export const URL = "http://192.168.1.3";
 
 
+
 const { width: screenWidth } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {

@@ -52,21 +52,23 @@ const ProfileScreen = ({ navigation, route }) => {
     }
   };
 
-  useEffect(() => {
-    retrieveData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      retrieveData();
+    }, [])
+  );
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <Image
-              style={{ width: 20, height: 20 }}
+              style={styles.icon}
               source={require("../Image/back.png")}
             />
           </TouchableOpacity>
-          <Text style={styles.title}>PROFILE</Text>
+          <Text style={styles.headerText}>PROFILE</Text>
         </View>
 
         <View style={styles.infor}>
@@ -76,7 +78,7 @@ const ProfileScreen = ({ navigation, route }) => {
             }
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
-          <View style={{ marginLeft: 20 }}>
+          <View style={{marginLeft: 20}}>
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
               {user.fullname}
             </Text>
@@ -125,7 +127,7 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text>Điều khoản và điều kiện</Text>
           <Text>Chính sách quyền riêng tư</Text>
           <Text
-            style={{ color: "red" }}
+            style={{ color: "red"}}
             onPress={() => {
               Alert.alert(
                 "Xác nhận đăng xuất",
@@ -167,18 +169,23 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 5,
-    marginBottom: 10,
-
+    paddingVertical: 30,
   },
-  title: {
-    fontSize: 20,
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
+  },
+  headerText: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    flex: 1, // Cho phép tiêu đề chiếm không gian giữa
-    textAlign: 'center', // Căn giữa văn bản
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
   infor: {
     flexDirection: "row",
@@ -201,8 +208,6 @@ const styles = StyleSheet.create({
   background: {
     width: 200,
     height: 45,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: 'transparent',
     borderRadius: 10,
     overflow: 'hidden',
@@ -216,7 +221,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fcd4db',
     borderRadius: 20,
     padding: 10,
-
   },
   buttonText: {
     fontSize: 14,

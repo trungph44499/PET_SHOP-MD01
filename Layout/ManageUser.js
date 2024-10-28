@@ -8,7 +8,7 @@ import * as FileSystem from 'expo-file-system';
 
 const ManageUser = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
-    img: '',
+    avatar: '',
     fullname: '',
     email: '',
     address: '',
@@ -20,27 +20,38 @@ const ManageUser = ({ navigation }) => {
       try {
         const email = await AsyncStorage.getItem('@UserLogin');
         if (email) {
-          setUserInfo((prev) => ({ ...prev, email }));
+          const response = await axios.post(`${URL}/users/getUser`, { email });
+          if (response.status === 200) {
+            const user = response.data.response[0];
+            setUserInfo({
+              avatar: user.avatar || '',
+              fullname: user.fullname,
+              email: user.email,
+              address: user.address || '',
+              phone: user.phone || '',
+            });
+          }
         }
       } catch (error) {
         Alert.alert('Lỗi', 'Không thể tải thông tin người dùng.');
       }
     };
-
+  
     getUserInfo();
   }, []);
+  
 
   const handleSave = async () => {
-    const { img, fullname, email } = userInfo;
+    const { avatar, fullname, email, address, phone } = userInfo;
   
     if (!fullname || !email) {
       Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
-
+  
     let base64Img = '';
-    if (img) {
-      const fileInfo = await FileSystem.readAsStringAsync(img, { encoding: 'base64' });
+    if (avatar) {
+      const fileInfo = await FileSystem.readAsStringAsync(avatar, { encoding: 'base64' });
       base64Img = `data:image/jpeg;base64,${fileInfo}`;
     }
   
@@ -49,6 +60,8 @@ const ManageUser = ({ navigation }) => {
         avatar: base64Img,
         fullname,
         email,
+        address,
+        phone,
       });
   
       if (response.status === 200 && response.data.type) {
@@ -63,6 +76,7 @@ const ManageUser = ({ navigation }) => {
       Alert.alert('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin người dùng.');
     }
   };
+  
 
   const handleImagePicker = async () => {
     const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -71,9 +85,14 @@ const ManageUser = ({ navigation }) => {
       return;
     }
 
-    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
     if (!pickerResult.cancelled) {
-      setUserInfo({ ...userInfo, img: pickerResult.uri });
+      setUserInfo({ ...userInfo, avatar: pickerResult.uri });
     }
   };
 
@@ -93,7 +112,7 @@ const ManageUser = ({ navigation }) => {
             </View>
             <View style={styles.imageContainer}>
               <TouchableOpacity onPress={handleImagePicker}>
-                <Image style={styles.image} source={{ uri: userInfo.img || 'https://via.placeholder.com/200' }} />
+                <Image style={styles.image} source={{ uri: userInfo.avatar || 'https://via.placeholder.com/200' }} />
               </TouchableOpacity>
               <Text style={styles.imageText}>Thông tin của bạn</Text>
             </View>
@@ -163,10 +182,12 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
+    borderRadius: 100, // Make the image circular
   },
   imageText: {
     textAlign: 'center',
     fontSize: 20,
+    marginTop: 20,
   },
   textInput: {
     gap: 15,
