@@ -100,6 +100,7 @@ router.put("/updateQuantity/:id", async (req, res) => {
 
   try {
     const item = await cartModel.findById(id);
+    const product = await productModel.findById(item.idProduct);
     if (!item) {
       return res.status(404).json({ response: "Không tìm thấy sản phẩm!" });
     }
@@ -108,7 +109,6 @@ router.put("/updateQuantity/:id", async (req, res) => {
       return res.status(400).json({ response: "Số lượng phải lớn hơn 0!" });
     }
 
-    const product = await productModel.findById(item.idProduct);
     if (!product) {
       return res.status(404).json({ response: "Không tìm thấy sản phẩm trong cơ sở dữ liệu!" });
     }

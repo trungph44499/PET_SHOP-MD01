@@ -13,7 +13,6 @@ var searchRouter = require("./routes/searchs");
 var petCareRouter = require("./routes/petCare");
 
 var app = express();
-
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());

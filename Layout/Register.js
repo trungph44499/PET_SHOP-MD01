@@ -17,6 +17,7 @@ import axios from "axios";
 const Register = (props) => {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
+  const [sdt, setsdt] = useState("");
   const [pass2, setpass2] = useState("");
   const [pass, setpass] = useState("");
 
@@ -25,8 +26,13 @@ const Register = (props) => {
     return regex.test(email);
   };
 
+  const validateSDT = (sdt) => {
+    const regex2 = /^(?:\+84|0)([0-9]{9})$/;
+    return regex2.test(sdt);
+  };
+
   const addUser = async () => {
-    if (name == "" || email == "" || pass == "") {
+    if (name == "" || email == "" || pass == "" || sdt == "") {
       ToastAndroid.show("Không được để trống", 0);
       return;
     }
@@ -38,6 +44,10 @@ const Register = (props) => {
       ToastAndroid.show("không đúng định dạng email", 0);
       return;
     }
+    if (!validateSDT(sdt)) {
+      ToastAndroid.show("không đúng định dạng số điện thoại", 0);
+      return;
+    }
 
     try {
       const {
@@ -47,6 +57,7 @@ const Register = (props) => {
         name,
         email,
         pass,
+        sdt,
       });
       if (status == 200) {
         ToastAndroid.show(response, 0);
@@ -98,6 +109,13 @@ const Register = (props) => {
               placeholder="E-mail"
               onChangeText={(txt) => {
                 setemail(txt);
+              }}
+            />
+             <TextInput
+              style={styles.input}
+              placeholder="Số điện thoại"
+              onChangeText={(txt) => {
+                setsdt(txt);
               }}
             />
             <TextInput
