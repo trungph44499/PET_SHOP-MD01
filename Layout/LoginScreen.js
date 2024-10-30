@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { URL } from "./HomeScreen";
 import axios from "axios";
+import CheckBoxCustom from "./components/CheckBoxCustom";
 
 const LoginScreen = (props) => {
   const [email, setEmail] = useState("");
@@ -114,23 +115,15 @@ const LoginScreen = (props) => {
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <View style={{ flexDirection: "row" }}>
-                <TouchableOpacity
-                  onPress={() => setCheckRemember(!checkRemember)}
-                >
-                  <Image
-                    style={{ width: 20, height: 20 }}
-                    source={
-                      checkRemember
-                        ? require("../Image/check.png")
-                        : require("../Image/circle.png")
-                    }
-                  />
-                </TouchableOpacity>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <CheckBoxCustom
+                  onChangeCheckBox={() => setCheckRemember(!checkRemember)}
+                  value={checkRemember}
+                />
                 <Text style={{ marginLeft: 10 }}>Nhớ tài khoản</Text>
               </View>
-              <TouchableOpacity 
-              onPress={() => props.navigation.navigate("ForgotPassword")}
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate("ForgotPassword")}
               >
                 <Text style={{ color: "green", fontWeight: "bold" }}>
                   Forgot Password?
