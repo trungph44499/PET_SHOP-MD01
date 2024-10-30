@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cartModel = require("../models/cartModel");
-const productModel = require("../models/productModel"); 
+const productModel = require("../models/productModel");
 
 // Thêm sản phẩm vào giỏ hàng
 router.post("/addToCart", async (req, res) => {
@@ -26,7 +26,9 @@ router.post("/addToCart", async (req, res) => {
     });
 
     if (existingItem) {
-      return res.status(200).json({ response: "Sản phẩm đã có trong giỏ hàng!" });
+      return res
+        .status(200)
+        .json({ response: "Sản phẩm đã có trong giỏ hàng!" });
     } else {
       const newItem = await cartModel.create({
         emailUser,
@@ -37,7 +39,9 @@ router.post("/addToCart", async (req, res) => {
         price,
         quantity,
       });
-      return res.status(200).json({ response: "Thêm sản phẩm thành công", result: newItem });
+      return res
+        .status(200)
+        .json({ response: "Thêm sản phẩm thành công", result: newItem });
     }
   } catch (error) {
     console.error(error);
@@ -57,34 +61,52 @@ router.get("/getFromCart", async (req, res) => {
     return res.status(500).send({ response: "Có lỗi xảy ra!" });
   }
 });
+// Xóa tất cả sản phẩm được lựa chọn trong giỏ hàng
 
-// Xóa sản phẩm khỏi giỏ hàng
-router.delete("/removeFromCart/:id", async (req, res) => {
-  const { id } = req.params;
+router.post("/removeAllFromCart", async (req, res) => {
+  const { list, emailUser } = req.body;
+  var itemDelete = 0;
 
   try {
-    const result = await cartModel.findByIdAndDelete(id);
-    if (result) {
-      return res.status(200).json({ response: "Sản phẩm đã được xóa khỏi giỏ hàng!" });
-    } else {
-      return res.status(404).json({ response: "Không tìm thấy sản phẩm!" });
+    for (const item of list) {
+      const result = await cartModel.deleteMany({
+        idProduct: item.id,
+        emailUser: emailUser,
+      });
+      itemDelete += result.deletedCount;
     }
+
+    if (itemDelete > 0) {
+      return res.status(200).json({
+        response: "Tất cả sản phẩm được chọn đã xóa khỏi giỏ hàng!",
+        type: true,
+      });
+    }
+    return res
+      .status(200)
+      .json({ response: "Không tìm thấy sản phẩm!", type: false });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ response: "Có lỗi xảy ra!" });
+    return res.status(500).json({ response: "Có lỗi xảy ra!", type: false });
   }
 });
 
-// Xóa tất cả sản phẩm trong giỏ hàng theo email
-router.delete("/removeAllFromCart/:emailUser", async (req, res) => {
-  const { emailUser } = req.params;
+// Xóa sản phẩm khỏi giỏ hàng
+router.post("/removeFromCart", async (req, res) => {
+  const { id } = req.body;
 
   try {
-    await cartModel.deleteMany({ emailUser: emailUser });
-    return res.status(200).json({ response: "Đã xóa tất cả sản phẩm khỏi giỏ hàng!" });
+    const result = await cartModel.deleteOne({ idProduct: id });
+    if (result != null) {
+      return res.status(200).json({
+        response: "Đã xóa sản phẩm khỏi giỏ hàng!",
+        type: true,
+      });
+    }
+    return res.status(200).json({ response: "Lỗi xóa sản phẩm!", type: false });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ response: "Có lỗi xảy ra!" });
+    return res.status(500).json({ response: "Có lỗi xảy ra!", type: false });
   }
 });
 
@@ -110,7 +132,9 @@ router.put("/updateQuantity/:id", async (req, res) => {
     }
 
     if (!product) {
-      return res.status(404).json({ response: "Không tìm thấy sản phẩm trong cơ sở dữ liệu!" });
+      return res
+        .status(404)
+        .json({ response: "Không tìm thấy sản phẩm trong cơ sở dữ liệu!" });
     }
 
     if (quantity > product.quantity) {
@@ -121,12 +145,13 @@ router.put("/updateQuantity/:id", async (req, res) => {
     item.quantity = quantity;
     await item.save();
 
-    return res.status(200).json({ response: "Cập nhật số lượng thành công!", result: item });
+    return res
+      .status(200)
+      .json({ response: "Cập nhật số lượng thành công!", result: item });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ response: "Có lỗi xảy ra!" });
   }
 });
-
 
 module.exports = router;
