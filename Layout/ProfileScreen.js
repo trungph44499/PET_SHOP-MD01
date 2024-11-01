@@ -15,7 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { URL } from "./HomeScreen";
 
-const ProfileScreen = ({ navigation, route }) => {
+const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState({});
 
   const [scale] = useState(new Animated.Value(1));
@@ -37,15 +37,11 @@ const ProfileScreen = ({ navigation, route }) => {
   const retrieveData = async () => {
     try {
       const userData = await AsyncStorage.getItem("@UserLogin");
-
-      const {
-        status,
-        data: { response },
-      } = await axios.post(`${URL}/users/getUser`, {
-        email: userData,
-      });
-      if (status == 200) {
-        setUser(...response);
+      if (userData) {
+        const { status, data: { response } } = await axios.post(`${URL}/users/getUser`, { email: userData });
+        if (status === 200) {
+          setUser(...response);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -58,33 +54,50 @@ const ProfileScreen = ({ navigation, route }) => {
     }, [])
   );
 
+  const handleLogout = async () => {
+    Alert.alert(
+      "Xác nhận đăng xuất",
+      "Bạn có chắc chắn muốn đăng xuất không?",
+      [
+        {
+          text: "Hủy",
+          onPress: () => console.log("Hủy đăng xuất"),
+          style: "cancel",
+        },
+        {
+          text: "Đăng xuất",
+          onPress: async () => {
+            await AsyncStorage.removeItem("@UserLogin");
+            await AsyncStorage.removeItem("User");
+            await AsyncStorage.removeItem("Password"); // Xóa mật khẩu
+            ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
+            navigation.navigate("LoginScreen");
+          },
+          style: "destructive",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Image
-              style={styles.icon}
-              source={require("../Image/back.png")}
-            />
+            <Image style={styles.icon} source={require("../Image/back.png")} />
           </TouchableOpacity>
           <Text style={styles.headerText}>PROFILE</Text>
         </View>
 
         <View style={styles.infor}>
           <Image
-            source={
-              user.avatar ? { uri: user.avatar } : require("../Image/pesonal.png")
-            }
+            source={user.avatar ? { uri: user.avatar } : require("../Image/pesonal.png")}
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
-          <View style={{marginLeft: 20}}>
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-              {user.fullname}
-            </Text>
-            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
-              {user.email}
-            </Text>
+          <View style={{ marginLeft: 20 }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>{user.fullname}</Text>
+            <Text style={{ fontSize: 16, fontWeight: "thin" }}>{user.email}</Text>
           </View>
         </View>
 
@@ -107,13 +120,9 @@ const ProfileScreen = ({ navigation, route }) => {
             </Animated.View>
           </View>
 
-          <Text onPress={() => navigation.navigate("ManageUser")}>
-            Chỉnh sửa thông tin
-          </Text>
+          <Text onPress={() => navigation.navigate("ManageUser")}>Chỉnh sửa thông tin</Text>
           <TouchableOpacity onPress={() => navigation.navigate("PassReset")}>
-            <Text>
-              Đổi mật khẩu
-            </Text>
+            <Text>Đổi mật khẩu</Text>
           </TouchableOpacity>
 
           <Text>Q & A</Text>
@@ -126,31 +135,7 @@ const ProfileScreen = ({ navigation, route }) => {
           </Text>
           <Text>Điều khoản và điều kiện</Text>
           <Text>Chính sách quyền riêng tư</Text>
-          <Text
-            style={{ color: "red"}}
-            onPress={() => {
-              Alert.alert(
-                "Xác nhận đăng xuất",
-                "Bạn có chắc chắn muốn đăng xuất không?",
-                [
-                  {
-                    text: "Hủy",
-                    onPress: () => console.log("Hủy đăng xuất"),
-                    style: "cancel",
-                  },
-                  {
-                    text: "Đăng xuất",
-                    onPress: () => {
-                      navigation.navigate("LoginScreen");
-                      ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
-                    },
-                    style: "destructive",
-                  },
-                ],
-                { cancelable: false }
-              );
-            }}
-          >
+          <Text style={{ color: "red" }} onPress={handleLogout}>
             Đăng xuất
           </Text>
         </View>

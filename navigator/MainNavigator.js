@@ -6,7 +6,7 @@ import HomeScreen from "../Layout/HomeScreen";
 import ProfileScreen from "../Layout/ProfileScreen";
 import DetailScreen from "../Layout/DetailScreen";
 import ClassifyScreen from "../Layout/classify/ClassifyScreen";
-import CartScreen from "../Layout/CartScreen";
+import CartScreen from "../Layout/cart/CartScreen";
 import SearchScreen from "../Layout/SearchScreen";
 import NoticeScreen from "../Layout/NoticeScreen";
 import NewProductScreen from "../Layout/NewProductScreen";
