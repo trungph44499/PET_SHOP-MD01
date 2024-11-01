@@ -12,31 +12,30 @@ import { numberUtils, upperCaseFirstItem } from "../utils/stringUtils";
 
 export default ClassifyScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); // Thêm state để lọc dữ liệu
-  const [showNewOnly, setShowNewOnly] = useState(false); // Thêm state để kiểm tra chế độ hiển thị
+  const [filteredData, setFilteredData] = useState([]); 
+  const [showNewOnly, setShowNewOnly] = useState(false); 
   const { type } = route.params;
 
   async function getData() {
     const result = await getListClassify(type);
     setData(result);
-    setFilteredData(result); // Gán toàn bộ dữ liệu vào filteredData ban đầu
+    setFilteredData(result); 
   }
 
   useEffect(() => {
     getData();
   }, []);
 
-  // Hàm hiển thị tất cả sản phẩm
   const showAllProducts = () => {
-    setShowNewOnly(false); // Đặt về chế độ hiển thị tất cả
-    setFilteredData(data); // Hiển thị toàn bộ sản phẩm
+    setShowNewOnly(false);
+    setFilteredData(data); 
   };
 
-  // Hàm lọc chỉ sản phẩm mới
+
   const filterNewProducts = () => {
-    setShowNewOnly(true); // Chuyển sang chế độ lọc sản phẩm mới
-    const newProducts = data.filter(item => item.status === "New"); // Lọc sản phẩm có status "New"
-    setFilteredData(newProducts); // Cập nhật filteredData với sản phẩm mới
+    setShowNewOnly(true); 
+    const newProducts = data.filter(item => item.status === "New"); 
+    setFilteredData(newProducts);
   };
 
   function goToDetailScreen(item) {
@@ -67,20 +66,33 @@ export default ClassifyScreen = ({ navigation, route }) => {
       </View>
 
       <View style={{ flexDirection: "row", gap: 30, marginHorizontal: 20 }}>
-        {/* Nút hiển thị tất cả sản phẩm */}
-        <TouchableOpacity onPress={showAllProducts}>
-          <Text style={{ color: !showNewOnly ? "red" : "black" }}>Tất cả</Text>
+        <TouchableOpacity
+          onPress={showAllProducts}
+          style={{
+            backgroundColor: !showNewOnly ? "#73B5F7" : "transparent",
+            padding: 10,
+            borderRadius: 5,
+          }}
+        >
+          <Text style={{ color: showNewOnly ? "#7D7B7B" : "#FFFFFF" }}>Tất cả</Text>
         </TouchableOpacity>
 
-        {/* Nút lọc sản phẩm mới */}
-        <TouchableOpacity onPress={filterNewProducts}>
-          <Text style={{ color: showNewOnly ? "red" : "black" }}>Hàng mới về</Text>
+        <TouchableOpacity
+          onPress={filterNewProducts}
+          style={{
+            backgroundColor: showNewOnly ? "#73B5F7" : "transparent",
+            padding: 10,
+            borderRadius: 5,
+          }}
+        >
+          <Text style={{ color: showNewOnly ? "#FFFFFF" : "#7D7B7B" }}>Hàng mới về</Text>
         </TouchableOpacity>
       </View>
 
+
       <FlatList
         numColumns={2}
-        data={filteredData} // Sử dụng dữ liệu đã lọc
+        data={filteredData} 
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity
