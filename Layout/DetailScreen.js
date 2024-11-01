@@ -1,60 +1,61 @@
+import React from "react";
 import {
-  Alert,
   Image,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   ToastAndroid,
   TouchableOpacity,
   View,
+  StatusBar,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
-import { addItem } from "../Redux/action";
-import store from "../Redux/store";
 import axios from "axios";
 import { URL } from "./HomeScreen";
+import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const DetailScreen = ({ navigation, route }) => {
+const DetailProduct = ({ navigation, route }) => {
   const { item } = route.params;
-  // const [count, setcount] = useState(0);
-  // const [TongTien, setTongTien] = useState(0);
-  // console.log(item);
 
-  // const dispatch = useDispatch();
-
-  // const handleTang = () => {
-  //   setcount(count + 1);
-  // };
-
-  // const handleGiam = () => {
-  //   count > 0 ? setcount(count - 1) : setcount(count);
-  // };
-
-  // const getTongTien = () => {
-  //   const Tong = Number(Number(item.price) * count);
-  //   setTongTien(Tong * 1000);
-  // };
-
-  // useEffect(() => {
-  //   getTongTien();
-  // }, [count]);
-  async function addToCart() {
+  const addToCart = async () => {
     try {
-      const {
-        status,
-        data: { response },
-      } = await axios.post(`${URL}/carts/addToCart`, item);
+      const emailUser = await AsyncStorage.getItem("@UserLogin");
 
-      if (status == 200) {
-        ToastAndroid.show(response, ToastAndroid.SHORT);
+      if (item.quantity < 1) {
+        ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
+        return;
       }
-      
+
+      const response = await axios.post(`${URL}/carts/addToCart`, {
+        emailUser,
+        _id: item._id,
+        img: item.img,
+        name: item.name,
+        type: item.type,
+        price: item.price,
+        quantity: item.quantity,
+      });
+
+      if (response.status === 200) {
+        ToastAndroid.show(response.data.response, ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show(
+          response.data.response || "Có lỗi xảy ra!",
+          ToastAndroid.SHORT
+        );
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      if (error.response) {
+        ToastAndroid.show(
+          error.response.data.response || "Có lỗi xảy ra!",
+          ToastAndroid.SHORT
+        );
+      } else {
+        ToastAndroid.show("Có lỗi xảy ra!", ToastAndroid.SHORT);
+      }
     }
-  }
+  };
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -67,7 +68,7 @@ const DetailScreen = ({ navigation, route }) => {
             />
           </TouchableOpacity>
           <Text
-            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
+            style={{ width: '80%', textAlign: "center", fontSize: 18, fontWeight: "bold" }}
           >
             {item.name}
           </Text>
@@ -98,12 +99,12 @@ const DetailScreen = ({ navigation, route }) => {
             }}
           >
             <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
-              {item.type}
+              {upperCaseFirstItem(item._id.slice(-5))}
             </Text>
           </View>
 
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#EB4F26" }}>
-            {item.price}{" "}
+            {numberUtils(item.price)}{" "}
           </Text>
 
           <ScrollView style={{ height: 200, padding: 1 }}>
@@ -151,7 +152,7 @@ const DetailScreen = ({ navigation, route }) => {
   );
 };
 
-export default DetailScreen;
+export default DetailProduct;
 
 const styles = StyleSheet.create({
   container: {
@@ -164,15 +165,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     marginTop: 20,
-  },
-  icon: {
-    width: 10,
-    height: 10,
-  },
-  btn: {
-    padding: 7,
-    borderRadius: 4,
-    borderWidth: 1,
   },
   txt: {
     marginTop: 10,

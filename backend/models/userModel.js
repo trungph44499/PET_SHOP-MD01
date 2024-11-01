@@ -4,12 +4,12 @@ const userSchema = new mongoose.Schema({
   fullname: String,
   email: String,
   pass: String,
+  sdt: String,
   avatar: {
     type: String,
     default:
-      "https://i.pinimg.com/474x/6d/50/9d/6d509d329b23502e4f4579cbad5f3d7f.jpg",
+      "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg",
   },
-  role: String,
 });
 
 const userModel = mongoose.model("users", userSchema);
