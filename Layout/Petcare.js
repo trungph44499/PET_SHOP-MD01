@@ -1,61 +1,81 @@
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 
+const services = [
+    {
+        name: 'Spa',
+        intro: 'Giới thiệu về dịch vụ Spa',
+        description: [
+            "Quy trình tắm trọn gói 8 bước:",
+            "- Vệ sinh nhổ lông tai.",
+            "- Cạo bàn, cắt, mài móng.",
+            "- Cạo lông bụng.",
+            "- Vệ sinh tuyến hôi.",
+            "- Tắm dưỡng xả lông.",
+            "- Massage.",
+            "- Sấy đánh bông lông.",
+        ],
+        image: require('../Image/petcare.png'),
+    },
+    {
+        name: 'Chăm sóc',
+        intro: 'Giới thiệu về dịch vụ Chăm sóc',
+        description: [
+            "Quy trình tắm trọn gói 12 bước:",
+            "- Kiểm tra sức khỏe cơ bản .",
+            "- Cạo bàn, cắt, mài móng.",
+            "- Cạo lông bụng.",
+            "- Vệ sinh tuyến hôi.",
+            "- Tắm dưỡng xả lông.",
+            "- Vệ sinh tai, nhổ lông tai.",
+            "- Sấy khô lông.",
+            "- Gỡ rối, đánh tơi lông.",
+            "- Kiểm tra tai sau khi tắm.",
+            "- Tỉa gọn lông vùng mắt.",
+            "- Thoa dưỡng và thơm lông..",
+        ],
+        image: require('../Image/pet3.png'),
+    },
+];
+
 const Petcare = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalContent, setModalContent] = useState('');
+    const [modalContent, setModalContent] = useState({ intro: '', description: [] });
 
     const showModal = (service) => {
-        let content;
-        if (service === 'Spa') {
-            content = 'Dịch vụ Spa thú cưng bao gồm tắm rửa, chăm sóc lông và thư giãn cho thú cưng của bạn.';
-        } else if (service === 'Chăm sóc') {
-            content = 'Dịch vụ Chăm sóc chó mèo bao gồm dinh dưỡng, sức khỏe và chơi đùa cho thú cưng của bạn.';
-        }
-        setModalContent(content);
+        const content = services.find(s => s.name === service);
+        setModalContent(content || { intro: '', description: [] });
         setModalVisible(true);
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigation.goBack()} accessibilityLabel="Quay lại">
                     <Image
                         style={{ width: 20, height: 20 }}
                         source={require("../Image/back.png")}
                     />
                 </TouchableOpacity>
-                <Text style={styles.title}>Dịch vụ chăm sóc thú cưng</Text>
+                <Text style={styles.title}>Dịch vụ chăm sóc thú cưng 1 </Text>
             </View>
             <View style={{ alignItems: 'center' }}>
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={styles.card}
-                    onPress={() => showModal('Spa')}
-                    accessibilityLabel="Đi đến dịch vụ Spa"
-                >
-                    <Image
-                        source={require('../Image/petcare.png')}
-                        style={styles.image}
-                        resizeMode="cover"
-                    />
-                    <Text style={styles.cardText}>Dịch vụ Spa thú cưng</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={styles.card}
-                    onPress={() => showModal('Chăm sóc')}
-                    accessibilityLabel="Đi đến Chăm sóc thú cưng"
-                >
-                    <Image
-                        source={require('../Image/pet3.png')}
-                        style={styles.image}
-                        resizeMode="cover"
-                    />
-                    <Text style={styles.cardText}>Dịch vụ khám sức khỏe</Text>
-                </TouchableOpacity>
-
+                {services.map(service => (
+                    <TouchableOpacity
+                        key={service.name}
+                        activeOpacity={0.8}
+                        style={styles.card}
+                        onPress={() => showModal(service.name)}
+                        accessibilityLabel={`Đi đến dịch vụ ${service.name}`}
+                    >
+                        <Image
+                            source={service.image}
+                            style={styles.image}
+                            resizeMode="cover"
+                        />
+                        <Text style={styles.cardText}>{`Dịch vụ ${service.name}`}</Text>
+                    </TouchableOpacity>
+                ))}
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={styles.card}
@@ -74,7 +94,13 @@ const Petcare = ({ navigation }) => {
                 >
                     <View style={styles.modalContainer}>
                         <View style={styles.modalContent}>
-                            <Text style={styles.modalText}>{modalContent}</Text>
+                            <Text style={styles.modalTitle}>Thông tin dịch vụ</Text>
+                            <Text style={styles.modalSubTitle}>{modalContent.intro}</Text>
+                            {modalContent.description.map((text, index) => (
+                                <Text key={index} style={[styles.modalText, { textAlign: 'left' }]}>
+                                    {text}
+                                </Text>
+                            ))}
                             <TouchableOpacity
                                 style={styles.closeButton}
                                 onPress={() => setModalVisible(false)}
@@ -85,6 +111,7 @@ const Petcare = ({ navigation }) => {
                     </View>
                 </Modal>
             </View>
+            //aaaaaaaa
         </View>
     );
 };
@@ -96,7 +123,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f5f5f5',
         padding: 20,
-        gap: 16,
     },
     header: {
         flexDirection: 'row',
@@ -104,14 +130,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 5,
         marginBottom: 20,
-      
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         color: '#333',
-        flex: 1, // Cho phép tiêu đề chiếm không gian giữa
-        textAlign: 'center', // Căn giữa văn bản
+        flex: 1,
+        textAlign: 'center',
     },
     card: {
         width: 280,
@@ -144,24 +169,37 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        width: 300,
+        width: '90%',
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 10,
-        alignItems: 'center',
+    },
+    modalTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        textAlign: 'center', // Căn giữa cho tiêu đề
+    },
+    modalSubTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        textAlign: 'left', // Căn trái cho tiêu đề phụ
     },
     modalText: {
-        fontSize: 20,
-        marginBottom: 20,
+        fontSize: 16,
+        marginBottom: 10,
+        textAlign: 'left', // Căn trái cho mô tả
     },
     closeButton: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#825640',
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 20,
     },
     closeButtonText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 18,
+        textAlign: 'center',
+        fontWeight: 'bold'
     },
-
 });

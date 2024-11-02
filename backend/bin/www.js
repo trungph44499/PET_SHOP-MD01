@@ -43,15 +43,10 @@ websocket.on("connection", function connection(ws) {
   clients[idReceiver] = ws;
 
   ws.on("message", function message(data) {
-    const json = JSON.parse(data.toString("utf8"));
-    const { userId, message } = json;
-
-    const client = clients[userId];
-    if (client) {
-      client.send(message);
-      return;
-    }
-    console.log("user not found");
+    const json = data.toString("utf8");
+    websocket.clients.forEach((client) => {
+      client.send(json);
+    });
   });
 
   ws.on("close", () => {

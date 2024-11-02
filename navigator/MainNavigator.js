@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+
+import { Image } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -6,18 +7,18 @@ import HomeScreen from "../Layout/HomeScreen";
 import ProfileScreen from "../Layout/ProfileScreen";
 import DetailScreen from "../Layout/DetailScreen";
 import ClassifyScreen from "../Layout/classify/ClassifyScreen";
-import CartScreen from "../Layout/CartScreen";
-import SearchScreen from '../Layout/SearchScreen';
-import NoticeScreen from '../Layout/NoticeScreen';
-import NewProductScreen from '../Layout/NewProductScreen';
+import CartScreen from "../Layout/cart/CartScreen";
+import SearchScreen from "../Layout/SearchScreen";
+import NoticeScreen from "../Layout/NoticeScreen";
+import NewProductScreen from "../Layout/NewProductScreen";
 import ManageUser from "../Layout/ManageUser";
 import PassReset from "../Layout/PassReset";
 import Petcare from "../Layout/Petcare";
 import Petcare2 from "../Layout/Petcare2";
 import Payment from "../Layout/Payment";
-import Payment2 from "../Layout/Petcare2";
+import Payment2 from "../Layout/Payment2";
 import FinalBill from "../Layout/FinalBill";
-
+import WebSocketContext from "../Layout/websocket/WebSocketContext";
 
 
 const Tab = createBottomTabNavigator();
@@ -95,6 +96,10 @@ function Home() {
   );
 }
 
+function PetCareWebSocket() {
+  return <WebSocketContext child={<Petcare2 />} />;
+}
+
 const MainNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -103,13 +108,13 @@ const MainNavigator = () => {
       <Stack.Screen name="ClassifyScreen" component={ClassifyScreen} />
       <Stack.Screen name="CartScreen" component={CartScreen} />
       <Stack.Screen name="NewProductScreen" component={NewProductScreen} />
-      <Stack.Screen name='ManageUser' component={ManageUser} />
-      <Stack.Screen name='PassReset' component={PassReset} />
+      <Stack.Screen name="ManageUser" component={ManageUser} />
+      <Stack.Screen name="PassReset" component={PassReset} />
       <Stack.Screen name="Petcare" component={Petcare} />
-      <Stack.Screen name="Petcare2" component={Petcare2}/>
-      <Stack.Screen name="Payment" component={Payment}/>
-      <Stack.Screen name="Payment2" component={Payment2}/>
-      <Stack.Screen name="FinalBill" component={FinalBill}/>
+      <Stack.Screen name="Petcare2" component={PetCareWebSocket} />
+      <Stack.Screen name="Payment" component={Payment} />
+      <Stack.Screen name="Payment2" component={Payment2} />
+      <Stack.Screen name="FinalBill" component={FinalBill} />
     </Stack.Navigator>
   );
 };

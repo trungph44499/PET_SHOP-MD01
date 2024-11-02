@@ -47,3 +47,7 @@ có 2 cái truyền params với axios,
 - admin/delete (Xoá nhân viên)
 
 
+# Link mogodb
+- mongodb+srv://trungmvph44499:3E4riGHCN1noc8fj@mydatabase.bnquf.mongodb.net
+- http://192.168.1.3
+
