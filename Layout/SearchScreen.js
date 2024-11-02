@@ -84,16 +84,17 @@ const SearchScreen = ({ navigation }) => {
         <TouchableOpacity onPress={resetSearch}>
           <Image style={{ width: 20, height: 20 }} source={require('../Image/reset.png')} />
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>TÌM KIẾM</Text>
-        <View style={{ width: 50 }}></View>
+        <Text style={styles.title}>TÌM KIẾM</Text>
+        <View style={{ width: 20 }}></View>
       </View>
 
       <View style={styles.search}>
         <TextInput
           onChangeText={handleSetTxtSearch}
           value={txtSearch}
-          placeholder='Tìm kiếm'
-          style={{ marginStart: 10, marginEnd: 10, flex: 1 }}
+          placeholder="Tìm kiếm"
+          placeholderTextColor="#999"
+          style={styles.searchInput}
         />
         <TouchableOpacity onPress={resetSearch}>
           <Image source={require('../Image/search.png')} style={styles.icon} />
@@ -102,21 +103,23 @@ const SearchScreen = ({ navigation }) => {
 
       <ScrollView style={styles.listSearch}>
         {loading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#A05E56" />
         ) : (
           <>
             {txtSearch === "" ? (
               <View style={{ gap: 10 }}>
-                <Text style={{ fontSize: 15 }}>Tìm kiếm gần đây</Text>
+                <Text style={styles.recentSearchTitle}>Tìm kiếm gần đây</Text>
                 <FlatList
                   scrollEnabled={false}
                   data={ListSearch}
-                  keyExtractor={item => item._id.toString()}
+                  keyExtractor={(item) => item._id.toString()}
                   renderItem={({ item }) => (
                     <View style={styles.searchHistory}>
-                      <View style={{ flexDirection: 'row', gap: 20 }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                         <Image style={styles.icon} source={require('../Image/clock.png')} />
-                        <Text onPress={() => handleSetTxtSearch(item.txt)}>{item.txt}</Text>
+                        <Text style={styles.historyText} onPress={() => handleSetTxtSearch(item.txt)}>
+                          {item.txt}
+                        </Text>
                       </View>
                       <TouchableOpacity onPress={() => deleteSearch(item._id)}>
                         <Image style={styles.icon} source={require('../Image/cancel.png')} />
@@ -128,22 +131,21 @@ const SearchScreen = ({ navigation }) => {
             ) : (
               <View>
                 {products.length === 0 ? (
-                  <Text style={{ fontSize: 15 }}>Không tìm thấy</Text>
+                  <Text style={styles.noResultText}>Không tìm thấy</Text>
                 ) : (
                   <View style={{ gap: 12 }}>
-                    <Text style={{ fontSize: 15 }}>Kết quả tìm kiếm</Text>
+                    <Text style={styles.resultTitle}>Kết quả tìm kiếm</Text>
                     <FlatList
                       scrollEnabled={false}
                       data={products}
-                      keyExtractor={item => item._id.toString()}
+                      keyExtractor={(item) => item._id.toString()}
                       renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('DetailScreen', { item })} 
-                        style={styles.itemDog}>
+                        <TouchableOpacity onPress={() => navigation.navigate('DetailScreen', { item })} style={styles.itemDog}>
                           <Image source={{ uri: item.img }} style={styles.itemImage} />
                           <View style={{ gap: 5 }}>
-                            <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
-                            <Text style={{ fontSize: 16, color: 'red' }}>{item.price} đ</Text>
-                            <Text style={{ fontSize: 16, fontWeight: "thin"  }}>Còn {item.quantity} sp</Text>
+                            <Text style={styles.productName}>{item.name}</Text>
+                            <Text style={styles.productPrice}>{item.price} đ</Text>
+                            <Text style={styles.productQuantity}>Còn {item.quantity} sp</Text>
                           </View>
                         </TouchableOpacity>
                       )}
@@ -161,52 +163,122 @@ const SearchScreen = ({ navigation }) => {
 
 export default SearchScreen;
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    gap: 16
+    backgroundColor: '#F8F8F8',
+    gap: 16,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20
+    paddingVertical: 20,
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
   },
   search: {
     width: '100%',
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: 25,
     flexDirection: 'row',
-    padding: 10
-  },
-  searchHistory: {
     padding: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2, // Giảm độ cao bóng trên Android để cân đối
+  },
+  searchInput: {
+    flex: 1,
+    marginStart: 10,
+    marginEnd: 10,
+    fontSize: 16,
+    color: '#333',
   },
   icon: {
     width: 24,
-    height: 24
+    height: 24,
+    tintColor: '#A05E56',
   },
   listSearch: {
-    gap: 12,
-    flexGrow: 1, // Cho phép ScrollView phát triển theo chiều dọc
+    flexGrow: 1,
+  },
+  recentSearchTitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#555',
+    marginBottom: 10,
+  },
+  searchHistory: {
+    padding: 10,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  historyText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  noResultText: {
+    fontSize: 16,
+    color: '#999',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  resultTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#555',
+    marginBottom: 10,
   },
   itemDog: {
-    padding: 20,
-    marginHorizontal: 20,
-    borderWidth: 1,
+    padding: 15,
+    backgroundColor: '#FFF',
     borderRadius: 12,
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 20,
-    gap: 30
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 4,
   },
   itemImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 12
+    width: 80,
+    height: 80,
+    borderRadius: 12,
+    marginRight: 15,
+  },
+  productName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  productPrice: {
+    fontSize: 16,
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  productQuantity: {
+    fontSize: 14,
+    color: '#666',
   },
 });
+
