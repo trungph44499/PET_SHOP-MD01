@@ -8,7 +8,6 @@ import ForgotPassword  from '../Layout/ForgotPassword';
 import ResetPassword  from '../Layout/ResetPassword';
 import OtpScreen  from '../Layout/OtpScreen';
 
-
 const AuthNavigator = () => {
 
     const Stack = createStackNavigator();

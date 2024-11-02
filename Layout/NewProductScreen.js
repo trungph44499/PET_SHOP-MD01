@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getListClassify } from '../Layout/classify/function';
-import { numberUtils } from '../Layout/utils/stringUtils';
+import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 
 export default NewProductScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -71,7 +71,7 @@ export default NewProductScreen = ({ navigation }) => {
                 )}
               </Text>
             </View>
-            <Text style={styles.itemType}>Mã SP: {item._id.slice(-5)}</Text>
+            <Text style={styles.itemType}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
           </TouchableOpacity>
         )}
