@@ -111,7 +111,6 @@ const Petcare = ({ navigation }) => {
                     </View>
                 </Modal>
             </View>
-            //aaaaaaaa
         </View>
     );
 };

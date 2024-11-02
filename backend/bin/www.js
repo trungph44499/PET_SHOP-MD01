@@ -34,13 +34,11 @@ mongoose
 /**
  * Listen on provided port, on all network interfaces.
  */
-const idReceiver = "67172b1e05373a1bb6c1542e";
-const clients = {};
 
 websocket.on("connection", function connection(ws) {
   ws.on("error", console.error);
   console.log("user connected");
-  clients[idReceiver] = ws;
+
 
   ws.on("message", function message(data) {
     const json = data.toString("utf8");
