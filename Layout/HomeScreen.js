@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 
-export const URL = "http://192.168.156.102";
+export const URL = "http://192.168.138.55";
 
 
 const { width: screenWidth } = Dimensions.get("window");

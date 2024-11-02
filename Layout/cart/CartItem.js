@@ -29,6 +29,8 @@ export default function CartItemComponent({ item }) {
         onChangeCheckBox={() => {
           onChangeCheckBox({
             id: item.idProduct,
+            name: item.name,
+            image: item.img,
             price: item.price,
             quantity: count,
             status: !checkBox,
@@ -59,8 +61,10 @@ export default function CartItemComponent({ item }) {
                 setCount(count - 1);
 
                 decreaseQuantity({
-                  id: item._id,
+                  id: item.idProduct,
+                  name: item.name,
                   price: item.price,
+                  image: item.img,
                   quantity: count - 1,
                   status: checkBox,
                 });
@@ -80,8 +84,10 @@ export default function CartItemComponent({ item }) {
                 setCount(count + 1);
 
                 increaseQuantity({
-                  id: item._id,
+                  id: item.idProduct,
+                  name: item.name,
                   price: item.price,
+                  image: item.img,
                   quantity: count + 1,
                   status: checkBox,
                 });

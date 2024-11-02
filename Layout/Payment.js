@@ -15,7 +15,7 @@ import { URL } from "./HomeScreen";
 import axios from "axios";
 
 const Payment = ({ navigation, route }) => {
-  const { total, id_bill } = route.params;
+  const { total, listItem } = route.params;
   const [user, setuser] = useState({});
   const day = new Date().getDay();
   const month = new Date().getMonth();
@@ -220,13 +220,12 @@ const Payment = ({ navigation, route }) => {
           onPress={() => {
             soDienThoai && diaChi
               ? navigation.navigate("Payment2", {
-                  id_bill: id_bill,
                   user: user,
                   total: total,
                   ship: ship,
                   diaChi: diaChi,
                   soDienThoai: soDienThoai,
-                  pay: card,
+                  listItem: listItem,
                 })
               : seterr(true);
           }}

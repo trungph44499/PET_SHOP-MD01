@@ -31,7 +31,7 @@ const CartScreen = ({ navigation }) => {
   function decreaseQuantity(item) {
     if (item.status) {
       listItemCheck.current = listItemCheck.current.map((e) => {
-        if (e.id == item.id) {
+        if (e.id === item.id) {
           e = item;
         }
         return e;
@@ -104,9 +104,10 @@ const CartScreen = ({ navigation }) => {
     items.forEach((element) => {
       total += element.price * element.quantity;
     });
+
     setTotalPrice(total);
   };
-  
+
   async function deleteAllProductSelected() {
     try {
       const emailUser = await AsyncStorage.getItem("@UserLogin");
@@ -259,7 +260,7 @@ const CartScreen = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("Payment", {
                   total: totalPrice,
-                  id_bill: "123",
+                  listItem: listItemCheck.current,
                 });
               }}
               style={styles.checkoutButton}
