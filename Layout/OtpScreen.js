@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import {
   StyleSheet,
@@ -12,20 +12,33 @@ import {
   Platform,
 } from "react-native";
 
-const OtpScreen = ({ route, navigation }) => { // Lấy navigation từ tham số
+const OtpScreen = ({ route, navigation }) => {
   const { email } = route.params;
-  const otpFromStore = useSelector((state) => state.otp.otp); // Lấy OTP từ Redux store
-  const [otp, setOtp] = useState("");
+  const otpFromStore = useSelector((state) => state.otp.otp);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const inputs = useRef([]);
+
+  const handleInputChange = (text, index) => {
+    const newOtp = [...otp];
+    newOtp[index] = text;
+    setOtp(newOtp);
+
+    // Chuyển con trỏ sang ô tiếp theo nếu người dùng nhập xong một ký tự
+    if (text && index < 5) {
+      inputs.current[index + 1].focus();
+    }
+  };
 
   const handleVerifyOtp = () => {
-    if (otp === "") {
+    const enteredOtp = otp.join("");
+    if (enteredOtp === "") {
       ToastAndroid.show("Vui lòng nhập mã OTP", ToastAndroid.SHORT);
       return;
     }
 
-    if (otp === otpFromStore) {
+    if (enteredOtp === otpFromStore) {
       ToastAndroid.show("Mã OTP hợp lệ", ToastAndroid.SHORT);
-      navigation.navigate("ResetPassword", { email }); // Chuyển sang màn ResetPassword
+      navigation.navigate("ResetPassword", { email });
     } else {
       ToastAndroid.show("Mã OTP không hợp lệ", ToastAndroid.SHORT);
     }
@@ -34,20 +47,31 @@ const OtpScreen = ({ route, navigation }) => { // Lấy navigation từ tham s�
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+
         <View style={styles.container}>
-          <Text style={styles.title}>Xác thực mã OTP</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nhập mã OTP"
-            onChangeText={setOtp}
-            value={otp}
-          />
+      <Text style={styles.title}>Xác thực mã OTP</Text>
+
+          <View style={styles.otpContainer}>
+            {otp.map((digit, index) => (
+              <TextInput
+                key={index}
+                ref={(ref) => (inputs.current[index] = ref)}
+                style={styles.otpInput}
+                maxLength={1}
+                keyboardType="numeric"
+                onChangeText={(text) => handleInputChange(text, index)}
+                value={digit}
+              />
+            ))}
+          </View>
           <TouchableOpacity style={styles.btn} onPress={handleVerifyOtp}>
             <Text style={{ fontWeight: "bold", fontSize: 16, color: "white" }}>Xác thực</Text>
           </TouchableOpacity>
           <Text
             onPress={() => navigation.navigate("LoginScreen")}
-            style={styles.btnLogin}>Trở lại trang đăng nhập
+            style={styles.btnLogin}
+          >
+            Trở lại trang đăng nhập
           </Text>
         </View>
       </KeyboardAvoidingView>
@@ -63,18 +87,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFDF8",
+    
   },
   title: {
     fontWeight: "900",
     fontSize: 35,
-    marginBottom: 20,
   },
-  input: {
+  otpContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
+paddingBottom:90
+  },
+  otpInput: {
+    width: 50,
+    height: 50,
     borderRadius: 10,
     borderWidth: 1,
-    padding: 15,
-    width: "90%",
-    height: 55,
+    borderColor: "#825640",
+    textAlign: "center",
+    fontSize: 18,
+
+
   },
   btn: {
     width: '50%',
@@ -83,7 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#825640",
     padding: 15,
     alignItems: "center",
-    marginTop: 20,
+    marginBottom:40
   },
   btnLogin: {
     width: '50%',
@@ -93,6 +127,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "green",
-    textDecorationLine: 'underline'
-},
+    textDecorationLine: 'underline',
+  },
 });

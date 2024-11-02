@@ -57,7 +57,7 @@ const Petcare = ({ navigation }) => {
                         source={require("../Image/back.png")}
                     />
                 </TouchableOpacity>
-                <Text style={styles.title}>Dịch vụ chăm sóc thú cưng 1 </Text>
+                <Text style={styles.title}>Dịch vụ chăm sóc thú cưng </Text>
             </View>
             <View style={{ alignItems: 'center' }}>
                 {services.map(service => (

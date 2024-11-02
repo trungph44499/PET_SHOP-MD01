@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SliderShow from "./components/SliderShow";
-import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+import { numberUtils, upperCaseFirstItem } from './utils/stringUtils';
 
 export const URL = "http://192.168.1.3";
 
@@ -59,12 +59,16 @@ const HomeScreen = ({ navigation }) => {
       >
         <Image source={{ uri: item.img }} style={styles.itemImage} />
         <View style={styles.itemRow}>
+          {/* Hiển thị tên sản phẩm */}
           <Text style={styles.itemName}>
             {item.name}
-            {item.status === "New" && (
-              <Text style={styles.itemStatus}> {item.status}</Text>
-            )}
           </Text>
+          {/* Nếu trạng thái sản phẩm là "New", hiển thị nhãn "New" trong thẻ Text riêng */}
+          {item.status === "New" && (
+            <Text style={styles.itemStatus}>
+              {item.status}
+            </Text>
+          )}
         </View>
         <Text style={styles.itemStyle}>
           Mã SP: {upperCaseFirstItem(item._id.slice(-5))}
@@ -278,13 +282,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontStyle: "italic",
     color: "green",
+    fontWeight: "bold", // Làm cho chữ đậm hơn
+    backgroundColor: "#e0f7e0", // Nền màu nhẹ
+    borderRadius: 5, // Bo góc
+    padding: 2, // Thêm khoảng cách bên trong
+    marginLeft: 5, // Khoảng cách với tên sản phẩm
   },
+
   itemRow: {
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap", // Cho phép nội dung bọc lại khi không đủ chỗ
+    // marginVertical: 1, // Khoảng cách giữa các dòng
   },
   itemStyle: {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: "300",
   },
   Xemthem: {

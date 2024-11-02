@@ -13,6 +13,7 @@ var searchRouter = require("./routes/searchs");
 var petCareRouter = require("./routes/petCare");
 var paymentRouter = require("./routes/payment");
 
+
 var app = express();
 app.use(logger("dev"));
 app.use(cors());
@@ -29,5 +30,6 @@ app.use("/admin", adminRouter);
 app.use("/searchs", searchRouter);
 app.use("/pet-care", petCareRouter);
 app.use("/pay", paymentRouter);
+
 
 module.exports = app;

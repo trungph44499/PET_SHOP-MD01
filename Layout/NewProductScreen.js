@@ -64,12 +64,16 @@ export default NewProductScreen = ({ navigation }) => {
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />
             <View style={styles.itemRow}>
+              {/* Hiển thị tên sản phẩm */}
               <Text style={styles.itemName}>
                 {item.name}
-                {item.status === 'New' && (
-                  <Text style={styles.itemStatus}> {item.status}</Text>
-                )}
               </Text>
+              {/* Nếu trạng thái sản phẩm là "New", hiển thị nhãn "New" trong thẻ Text riêng */}
+              {item.status === "New" && (
+                <Text style={styles.itemStatus}>
+                  {item.status}
+                </Text>
+              )}
             </View>
             <Text style={styles.itemType}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
@@ -114,24 +118,31 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   itemName: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 'bold',
   },
   itemStatus: {
-    fontSize: 18,
-    fontStyle: 'italic',
-    color: 'green',
+    fontSize: 17,
+    fontStyle: "italic",
+    color: "green",
+    fontWeight: "bold", // Làm cho chữ đậm hơn
+    backgroundColor: "#e0f7e0", // Nền màu nhẹ
+    borderRadius: 5, // Bo góc
+    padding: 2, // Thêm khoảng cách bên trong
+    marginLeft: 5, // Khoảng cách với tên sản phẩm
   },
   itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap", // Cho phép nội dung bọc lại khi không đủ chỗ
+    // marginVertical: 1, // Khoảng cách giữa các dòng
   },
   itemType: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '300',
   },
   price: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: '600',
     color: 'red',
   },
