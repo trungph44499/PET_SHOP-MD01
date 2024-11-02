@@ -1,3 +1,4 @@
+
 import { Image } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -18,6 +19,7 @@ import Payment from "../Layout/Payment";
 import Payment2 from "../Layout/Payment2";
 import FinalBill from "../Layout/FinalBill";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -118,3 +120,4 @@ const MainNavigator = () => {
 };
 
 export default MainNavigator;
+
