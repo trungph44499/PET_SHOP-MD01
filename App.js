@@ -13,7 +13,7 @@ export default function App() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setcheckWelcome(false);
-    }, 2000);
+    }, 3000);
     return () => clearTimeout(timeout);
   }, []);
 
