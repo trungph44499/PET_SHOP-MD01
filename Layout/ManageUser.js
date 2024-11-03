@@ -13,6 +13,7 @@ const ManageUser = ({ navigation }) => {
     address: '',
     sdt: '',
   });
+  const [initialUserInfo, setInitialUserInfo] = useState(null);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -22,13 +23,15 @@ const ManageUser = ({ navigation }) => {
           const response = await axios.post(`${URL}/users/getUser`, { email });
           if (response.status === 200) {
             const user = response.data.response[0];
-            setUserInfo({
+            const userData = {
               avatar: user.avatar || '',
               fullname: user.fullname,
               email: user.email,
               address: user.address || '',
               sdt: user.sdt || '',
-            });
+            };
+            setUserInfo(userData);
+            setInitialUserInfo(userData);
           }
         }
       } catch (error) {
@@ -63,6 +66,11 @@ const ManageUser = ({ navigation }) => {
 
     if (sdt && (!/^\d+$/.test(sdt) || sdt.length !== 10)) {
       Alert.alert('Lỗi', 'Số điện thoại phải có đúng 10 ký tự');
+      return;
+    }
+
+    if (JSON.stringify(userInfo) === JSON.stringify(initialUserInfo)) {
+      Alert.alert('Thông báo', 'Chưa có sự thay đổi nào');
       return;
     }
 
