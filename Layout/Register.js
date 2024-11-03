@@ -120,6 +120,7 @@ const Register = (props) => {
                 setsdt(txt);
               }}
               autoCapitalize="none"
+              keyboardType='numeric'
             />
             <TextInput
               style={styles.input}
