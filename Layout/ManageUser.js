@@ -112,6 +112,14 @@ const ManageUser = ({ navigation }) => {
     );
   };
 
+  const clearFullname = () => {
+    setUserInfo({ ...userInfo, fullname: '' });
+  };
+
+  const clearSdt = () => {
+    setUserInfo({ ...userInfo, sdt: '' });
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -143,6 +151,11 @@ const ManageUser = ({ navigation }) => {
                   value={userInfo.fullname}
                   onChangeText={(text) => setUserInfo({ ...userInfo, fullname: text })}
                 />
+                {userInfo.fullname ? (
+                  <TouchableOpacity onPress={clearFullname} style={styles.bgX}>
+                    <Text style={styles.clearButton}>X</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
               <View style={styles.input}>
                 <TextInput
@@ -151,7 +164,11 @@ const ManageUser = ({ navigation }) => {
                   value={userInfo.sdt}
                   keyboardType='numeric'
                   onChangeText={(text) => setUserInfo({ ...userInfo, sdt: text })}
-                />
+                />{userInfo.sdt ? (
+                  <TouchableOpacity onPress={clearSdt} style={styles.bgX}>
+                    <Text style={styles.clearButton}>X</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </View>
           </View>
@@ -247,5 +264,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  clearButton: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 18,
+    
+  },
+  bgX: {
   },
 });
