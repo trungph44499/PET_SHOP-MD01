@@ -66,26 +66,42 @@ const ManageUser = ({ navigation }) => {
       return;
     }
 
-    try {
-      const response = await axios.post(`${URL}/users/update`, {
-        avatar,
-        fullname,
-        email,
-        address,
-        sdt,
-      });
+    Alert.alert(
+      'Xác nhận',
+      'Bạn có chắc chắn muốn thay đổi thông tin?',
+      [
+        {
+          text: 'Hủy',
+          style: 'cancel',
+        },
+        {
+          text: 'Đồng ý',
+          onPress: async () => {
+            try {
+              const response = await axios.post(`${URL}/users/update`, {
+                avatar,
+                fullname,
+                email,
+                address,
+                sdt,
+              });
 
-      if (response.status === 200 && response.data.type) {
-        await AsyncStorage.setItem('@UserLogin', email);
-        Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
-        navigation.goBack();
-      } else {
-        Alert.alert('Lỗi', 'Không thể cập nhật thông tin người dùng.');
-      }
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin người dùng.');
-    }
+              if (response.status === 200 && response.data.type) {
+                await AsyncStorage.setItem('@UserLogin', email);
+                Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
+                navigation.goBack();
+              } else {
+                Alert.alert('Lỗi', 'Không thể cập nhật thông tin người dùng.');
+              }
+            } catch (error) {
+              console.log(error);
+              Alert.alert('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin người dùng.');
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
