@@ -39,7 +39,19 @@ const ManageUser = ({ navigation }) => {
     getUserInfo();
   }, []);
 
-  const pickImage = async () => {};
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const newAvatar = result.assets[0].uri;
+      setUserInfo({ ...userInfo, avatar: newAvatar });
+    }
+  };
 
   const handleSave = async () => {
     const { avatar, fullname, email, address, sdt } = userInfo;
@@ -92,7 +104,10 @@ const ManageUser = ({ navigation }) => {
             </View>
             <View style={styles.imageContainer}>
               <TouchableOpacity onPress={pickImage}>
-                <Image style={styles.image} source={{ uri: userInfo.avatar || 'https://example.com/default-avatar.png' }} />
+                <Image
+                  style={styles.image}
+                  source={userInfo.avatar ? { uri: userInfo.avatar } : null}
+                />
               </TouchableOpacity>
               <Text style={styles.imageText}>Thông tin của bạn</Text>
             </View>
@@ -136,7 +151,7 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'space-between',
     alignContent: 'center',
-    paddingBottom: 20, // Thêm khoảng cách dưới cùng
+    paddingBottom: 20,
   },
   header: {
     flexDirection: 'row',
@@ -146,7 +161,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 0,
-    zIndex: 1, // Add this line
+    zIndex: 1,
   },
   headerText: {
     flex: 1,
@@ -163,7 +178,7 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-    borderRadius: 100, // Make the image circular
+    borderRadius: 100,
   },
   imageText: {
     textAlign: 'center',
@@ -203,7 +218,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'green',
     alignItems: 'center',
-    marginTop: 70, // Thêm khoảng cách trên cùng
+    marginTop: 70,
   },
   buttonText: {
     color: 'white',
