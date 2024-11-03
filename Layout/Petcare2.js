@@ -62,6 +62,7 @@ const Petcare2 = () => {
               })
             );
           }
+          navigation.goBack();
         }
       } catch (error) {
         console.log(error);

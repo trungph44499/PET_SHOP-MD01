@@ -33,12 +33,12 @@ router.post("/add", async (req, res) => {
     if (result.length > 0) {
       res
         .status(200)
-        .json({ response: "Send payment comfirm complete!", type: true });
+        .json({ response: "Thanh toán thành công!", type: true });
       return;
     }
     res
       .status(200)
-      .json({ response: "Send payment comfirm failed!", type: false });
+      .json({ response: "Thanh toán thất bại!", type: false });
   } catch (error) {
     console.log(error);
   }
