@@ -103,6 +103,7 @@ const Register = (props) => {
               onChangeText={(txt) => {
                 setname(txt);
               }}
+              autoCapitalize="none"
             />
             <TextInput
               style={styles.input}
@@ -110,6 +111,7 @@ const Register = (props) => {
               onChangeText={(txt) => {
                 setemail(txt);
               }}
+              autoCapitalize="none"
             />
              <TextInput
               style={styles.input}
@@ -117,6 +119,7 @@ const Register = (props) => {
               onChangeText={(txt) => {
                 setsdt(txt);
               }}
+              autoCapitalize="none"
             />
             <TextInput
               style={styles.input}
@@ -124,6 +127,7 @@ const Register = (props) => {
               onChangeText={(txt) => {
                 setpass(txt);
               }}
+              autoCapitalize="none"
             />
             <TextInput
               style={styles.input}
@@ -131,6 +135,7 @@ const Register = (props) => {
               onChangeText={(txt) => {
                 setpass2(txt);
               }}
+              autoCapitalize="none"
             />
             <Text
               style={{ textAlign: "center", marginBottom: 10, marginTop: 10 }}

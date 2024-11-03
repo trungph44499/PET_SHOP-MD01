@@ -85,6 +85,9 @@ const ProfileScreen = ({ navigation, route }) => {
             <Text style={{ fontSize: 16, fontWeight: "thin" }}>
               {user.email}
             </Text>
+            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
+              {user.sdt}
+            </Text>
           </View>
         </View>
 

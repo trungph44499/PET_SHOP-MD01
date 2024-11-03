@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { URL } from './HomeScreen';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 
 const ManageUser = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
@@ -12,7 +11,7 @@ const ManageUser = ({ navigation }) => {
     fullname: '',
     email: '',
     address: '',
-    phone: '',
+    sdt: '',
   });
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const ManageUser = ({ navigation }) => {
               fullname: user.fullname,
               email: user.email,
               address: user.address || '',
-              phone: user.phone || '',
+              sdt: user.sdt || '',
             });
           }
         }
@@ -36,34 +35,31 @@ const ManageUser = ({ navigation }) => {
         Alert.alert('Lỗi', 'Không thể tải thông tin người dùng.');
       }
     };
-  
+
     getUserInfo();
   }, []);
-  
+
+  const pickImage = async () => {};
 
   const handleSave = async () => {
-    const { avatar, fullname, email, address, phone } = userInfo;
-  
+    const { avatar, fullname, email, address, sdt } = userInfo;
+
     if (!fullname || !email) {
       Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
-  
-    let base64Img = '';
-    if (avatar) {
-      const fileInfo = await FileSystem.readAsStringAsync(avatar, { encoding: 'base64' });
-      base64Img = `data:image/jpeg;base64,${fileInfo}`;
-    }
-  
+
+    
+
     try {
       const response = await axios.post(`${URL}/users/update`, {
-        avatar: base64Img,
+        avatar,
         fullname,
         email,
         address,
-        phone,
+        sdt,
       });
-  
+
       if (response.status === 200 && response.data.type) {
         await AsyncStorage.setItem('@UserLogin', email);
         Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
@@ -74,25 +70,6 @@ const ManageUser = ({ navigation }) => {
     } catch (error) {
       console.log(error);
       Alert.alert('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin người dùng.');
-    }
-  };
-  
-
-  const handleImagePicker = async () => {
-    const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (result.granted === false) {
-      Alert.alert('Lỗi', 'Quyền truy cập thư viện ảnh bị từ chối.');
-      return;
-    }
-
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-    if (!pickerResult.cancelled) {
-      setUserInfo({ ...userInfo, avatar: pickerResult.uri });
     }
   };
 
@@ -111,8 +88,8 @@ const ManageUser = ({ navigation }) => {
               <Text style={styles.headerText}>Chỉnh sửa thông tin</Text>
             </View>
             <View style={styles.imageContainer}>
-              <TouchableOpacity onPress={handleImagePicker}>
-                <Image style={styles.image} source={{ uri: userInfo.avatar || 'https://via.placeholder.com/200' }} />
+              <TouchableOpacity onPress={pickImage}>
+                <Image style={styles.image} source={{ uri: userInfo.avatar || 'https://example.com/default-avatar.png' }} />
               </TouchableOpacity>
               <Text style={styles.imageText}>Thông tin của bạn</Text>
             </View>
@@ -128,9 +105,10 @@ const ManageUser = ({ navigation }) => {
               <View style={styles.input}>
                 <TextInput
                   style={styles.textInputField}
-                  placeholder='Email'
-                  value={userInfo.email}
-                  onChangeText={(text) => setUserInfo({ ...userInfo, email: text })}
+                  placeholder='Số điện thoại'
+                  value={userInfo.sdt}
+                  keyboardType='numeric'
+                  onChangeText={(text) => setUserInfo({ ...userInfo, sdt: text })}
                 />
               </View>
             </View>
