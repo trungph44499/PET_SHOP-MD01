@@ -170,12 +170,14 @@ router.post("/update", async (req, res) => {
   var email = req.body.email;
   var password = req.body.password ?? "";
   var avatar = req.body.avatar ?? "";
+  var sdt = req.body.sdt ?? "";
 
   try {
     const result = await userModel.findOne({ email: email });
     if (fullname === "") fullname = result.fullname;
     if (password === "") password = result.pass;
     if (avatar === "") avatar = result.avatar;
+    if (sdt === "") sdt = result.sdt;
 
     const updateUser = await userModel.updateOne(
       { email: email },
@@ -183,6 +185,7 @@ router.post("/update", async (req, res) => {
         fullname: fullname,
         pass: password,
         avatar: avatar,
+        sdt: sdt,
       }
     );
     if (updateUser.matchedCount > 0) {

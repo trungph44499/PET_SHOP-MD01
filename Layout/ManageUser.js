@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { URL } from './HomeScreen';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 
 const ManageUser = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
@@ -12,8 +11,9 @@ const ManageUser = ({ navigation }) => {
     fullname: '',
     email: '',
     address: '',
-    phone: '',
+    sdt: '',
   });
+  const [initialUserInfo, setInitialUserInfo] = useState(null);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -23,77 +23,117 @@ const ManageUser = ({ navigation }) => {
           const response = await axios.post(`${URL}/users/getUser`, { email });
           if (response.status === 200) {
             const user = response.data.response[0];
-            setUserInfo({
+            const userData = {
               avatar: user.avatar || '',
               fullname: user.fullname,
               email: user.email,
               address: user.address || '',
-              phone: user.phone || '',
-            });
+              sdt: user.sdt || '',
+            };
+            setUserInfo(userData);
+            setInitialUserInfo(userData);
           }
         }
       } catch (error) {
         Alert.alert('Lỗi', 'Không thể tải thông tin người dùng.');
       }
     };
-  
+
     getUserInfo();
   }, []);
-  
 
-  const handleSave = async () => {
-    const { avatar, fullname, email, address, phone } = userInfo;
-  
-    if (!fullname || !email) {
-      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
-      return;
-    }
-  
-    let base64Img = '';
-    if (avatar) {
-      const fileInfo = await FileSystem.readAsStringAsync(avatar, { encoding: 'base64' });
-      base64Img = `data:image/jpeg;base64,${fileInfo}`;
-    }
-  
-    try {
-      const response = await axios.post(`${URL}/users/update`, {
-        avatar: base64Img,
-        fullname,
-        email,
-        address,
-        phone,
-      });
-  
-      if (response.status === 200 && response.data.type) {
-        await AsyncStorage.setItem('@UserLogin', email);
-        Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
-        navigation.goBack();
-      } else {
-        Alert.alert('Lỗi', 'Không thể cập nhật thông tin người dùng.');
-      }
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin người dùng.');
-    }
-  };
-  
-
-  const handleImagePicker = async () => {
-    const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (result.granted === false) {
-      Alert.alert('Lỗi', 'Quyền truy cập thư viện ảnh bị từ chối.');
-      return;
-    }
-
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
     });
-    if (!pickerResult.cancelled) {
-      setUserInfo({ ...userInfo, avatar: pickerResult.uri });
+
+    if (!result.canceled) {
+      const newAvatar = result.assets[0].uri;
+      setUserInfo({ ...userInfo, avatar: newAvatar });
     }
+  };
+
+  const handleSave = async () => {
+    const { avatar, fullname, email, address, sdt } = userInfo;
+  
+    if (!fullname) {
+      Alert.alert('Lỗi', 'Tên không được để trống');
+      return;
+    }
+  
+    if (!sdt) {
+      Alert.alert('Lỗi', 'Số điện thoại không được để trống');
+      return;
+    }
+  
+    if (!email) {
+      Alert.alert('Lỗi', 'Email không được để trống');
+      return;
+    }
+  
+    if (sdt && (!/^\d+$/.test(sdt) || sdt.length !== 10)) {
+      Alert.alert('Lỗi', 'Số điện thoại phải có đúng 10 ký tự');
+      return;
+    }
+
+    if (sdt[0] !== '0') {
+      Alert.alert('Lỗi', 'Số điện thoại phải bắt đầu bằng số 0');
+      return;
+    }
+  
+    if (JSON.stringify(userInfo) === JSON.stringify(initialUserInfo)) {
+      Alert.alert('Thông báo', 'Chưa có sự thay đổi nào');
+      return;
+    }
+  
+    Alert.alert(
+      'Xác nhận',
+      'Bạn có chắc chắn muốn thay đổi thông tin?',
+      [
+        {
+          text: 'Hủy',
+          style: 'cancel',
+        },
+        {
+          text: 'Đồng ý',
+          onPress: async () => {
+            try {
+              const response = await axios.post(`${URL}/users/update`, {
+                avatar,
+                fullname,
+                email,
+                address,
+                sdt,
+              });
+  
+              if (response.status === 200 && response.data.type) {
+                await AsyncStorage.setItem('@UserLogin', email);
+                Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
+                navigation.goBack();
+              } else {
+                Alert.alert('Lỗi', 'Không thể cập nhật thông tin người dùng.');
+              }
+            } catch (error) {
+              console.log(error);
+              Alert.alert('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin người dùng.');
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+  
+
+  const clearFullname = () => {
+    setUserInfo({ ...userInfo, fullname: '' });
+  };
+
+  const clearSdt = () => {
+    setUserInfo({ ...userInfo, sdt: '' });
   };
 
   return (
@@ -111,8 +151,11 @@ const ManageUser = ({ navigation }) => {
               <Text style={styles.headerText}>Chỉnh sửa thông tin</Text>
             </View>
             <View style={styles.imageContainer}>
-              <TouchableOpacity onPress={handleImagePicker}>
-                <Image style={styles.image} source={{ uri: userInfo.avatar || 'https://via.placeholder.com/200' }} />
+              <TouchableOpacity onPress={pickImage}>
+                <Image
+                  style={styles.image}
+                  source={userInfo.avatar ? { uri: userInfo.avatar } : null}
+                />
               </TouchableOpacity>
               <Text style={styles.imageText}>Thông tin của bạn</Text>
             </View>
@@ -124,14 +167,24 @@ const ManageUser = ({ navigation }) => {
                   value={userInfo.fullname}
                   onChangeText={(text) => setUserInfo({ ...userInfo, fullname: text })}
                 />
+                {userInfo.fullname ? (
+                  <TouchableOpacity onPress={clearFullname} style={styles.bgX}>
+                    <Text style={styles.clearButton}>X</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
               <View style={styles.input}>
                 <TextInput
                   style={styles.textInputField}
-                  placeholder='Email'
-                  value={userInfo.email}
-                  onChangeText={(text) => setUserInfo({ ...userInfo, email: text })}
-                />
+                  placeholder='Số điện thoại'
+                  value={userInfo.sdt}
+                  keyboardType='numeric'
+                  onChangeText={(text) => setUserInfo({ ...userInfo, sdt: text })}
+                />{userInfo.sdt ? (
+                  <TouchableOpacity onPress={clearSdt} style={styles.bgX}>
+                    <Text style={styles.clearButton}>X</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </View>
           </View>
@@ -155,7 +208,7 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'space-between',
     alignContent: 'center',
-    paddingBottom: 20, // Thêm khoảng cách dưới cùng
+    paddingBottom: 20,
   },
   header: {
     flexDirection: 'row',
@@ -165,7 +218,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 0,
-    zIndex: 1, // Add this line
+    zIndex: 1,
   },
   headerText: {
     flex: 1,
@@ -182,7 +235,7 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-    borderRadius: 100, // Make the image circular
+    borderRadius: 100,
   },
   imageText: {
     textAlign: 'center',
@@ -222,10 +275,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'green',
     alignItems: 'center',
-    marginTop: 70, // Thêm khoảng cách trên cùng
+    marginTop: 70,
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  clearButton: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 18,
+    
+  },
+  bgX: {
   },
 });

@@ -83,7 +83,9 @@ const LoginScreen = (props) => {
                 style={{ width: "100%" }}
                 placeholder="Nhập email"
                 onChangeText={(txt) => setEmail(txt)}
-                value={email}
+                value={email || ""}
+                autoCapitalize="none"
+
               />
             </View>
             <View style={styles.input}>
@@ -92,7 +94,8 @@ const LoginScreen = (props) => {
                 secureTextEntry={showPass}
                 placeholder="Nhập mật khẩu"
                 onChangeText={(txt) => setPass(txt)}
-                value={pass}
+                value={pass || ""}
+                autoCapitalize="none"
               />
               <TouchableOpacity onPress={() => setShowPass(!showPass)}>
                 <Image

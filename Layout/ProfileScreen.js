@@ -76,7 +76,7 @@ const ProfileScreen = ({ navigation, route }) => {
             source={
               user.avatar ? { uri: user.avatar } : require("../Image/pesonal.png")
             }
-            style={{ width: 60, height: 60, borderRadius: 30 }}
+            style={{ width: 100, height: 100, borderRadius: 100 }}
           />
           <View style={{ marginLeft: 20 }}>
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
@@ -84,6 +84,9 @@ const ProfileScreen = ({ navigation, route }) => {
             </Text>
             <Text style={{ fontSize: 16, fontWeight: "thin" }}>
               {user.email}
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
+              {user.sdt}
             </Text>
           </View>
         </View>

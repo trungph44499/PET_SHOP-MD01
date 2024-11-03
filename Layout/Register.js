@@ -140,11 +140,17 @@ const Register = (props) => {
                 />
               </TouchableOpacity>
             </View>
-
-            <Text style={styles.termsText}>
+            <Text
+              style={{ textAlign: "center", marginBottom: 5, marginTop: 5 }}
+            >
               Để đăng ký tài khoản, bạn đồng ý
-              <Text style={styles.linkText}> Terms & Conditions</Text> và
-              <Text style={styles.linkText}> Privacy Policy</Text>
+              <Text style={{ textDecorationLine: "underline", color: "green" }}>
+                Terms &{"\n"} Conditions
+              </Text>
+              and
+              <Text style={{ textDecorationLine: "underline", color: "green" }}>
+                Privacy Policy
+              </Text>
             </Text>
             <TouchableOpacity onPress={addUser} style={styles.btn}>
               <Text style={styles.btnText}>Đăng ký</Text>
