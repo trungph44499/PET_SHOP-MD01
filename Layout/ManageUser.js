@@ -49,7 +49,10 @@ const ManageUser = ({ navigation }) => {
       return;
     }
 
-    
+    if (sdt && (!/^\d+$/.test(sdt) || sdt.length !== 10)) {
+      Alert.alert('Lỗi', 'Số điện thoại phải có đúng 10 ký tự');
+      return;
+    }
 
     try {
       const response = await axios.post(`${URL}/users/update`, {
