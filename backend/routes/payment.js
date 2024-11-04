@@ -11,6 +11,25 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/update", async (req, res) => {
+  const { status, id } = req.body;
+  try {
+    const result = await paymentModel.updateMany(
+      {  _id: id },
+      {
+        status: status,
+      }
+    );
+    if (result.matchedCount > 0) {
+      res.status(200).json({ response: "Update status complete!", type: true });
+      return;
+    }
+    res.status(200).json({ response: "Update status failed!", type: false });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.get("/filter", async (req, res) => {
   const { email } = req.query;
   try {

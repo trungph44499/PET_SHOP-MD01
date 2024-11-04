@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-
 import { myColor } from "../styles/color";
 import {
   faBookOpen,
@@ -11,6 +10,7 @@ import {
   faChevronRight,
   faComputer,
   faHippo,
+  faPenFancy,
   faSignOut,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -146,6 +146,13 @@ export default function NavigationPage({ child }) {
             onClick={() => navigator("/confirm-product")}
           >
             Pet Care
+          </MenuItem>
+          <MenuItem
+            style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faPenFancy} />}
+            onClick={() => navigator("/payment")}
+          >
+           Payment
           </MenuItem>
         </Menu>
         <div

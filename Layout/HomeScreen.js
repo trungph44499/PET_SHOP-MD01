@@ -7,14 +7,16 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions,
+  Dimensions, 
+  StatusBar,
 } from "react-native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SliderShow from "./components/SliderShow";
-import { numberUtils, upperCaseFirstItem } from './utils/stringUtils';
+import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+import ip from "./config/ipconfig.json";
 
-export const URL = "http://192.168.1.2";
+export const URL = `http://${ip.ip}`;
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -60,14 +62,10 @@ const HomeScreen = ({ navigation }) => {
         <Image source={{ uri: item.img }} style={styles.itemImage} />
         <View style={styles.itemRow}>
           {/* Hiển thị tên sản phẩm */}
-          <Text style={styles.itemName}>
-            {item.name}
-          </Text>
+          <Text style={styles.itemName}>{item.name}</Text>
           {/* Nếu trạng thái sản phẩm là "New", hiển thị nhãn "New" trong thẻ Text riêng */}
           {item.status === "New" && (
-            <Text style={styles.itemStatus}>
-              {item.status}
-            </Text>
+            <Text style={styles.itemStatus}>{item.status}</Text>
           )}
         </View>
         <Text style={styles.itemStyle}>
@@ -81,6 +79,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+      <StatusBar hidden />
         <View style={{ width: screenWidth, height: 320 }}>
           <View>
             <Text
@@ -285,7 +284,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold", // Làm cho chữ đậm hơn
     backgroundColor: "#e0f7e0", // Nền màu nhẹ
     borderRadius: 5, // Bo góc
-    padding: 2, // Thêm khoảng cách bên trong
+    padding: 5, // Thêm khoảng cách bên trong
     marginLeft: 5, // Khoảng cách với tên sản phẩm
   },
 

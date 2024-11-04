@@ -15,7 +15,8 @@ const { WebSocketServer } = require("ws");
  */
 
 var URL_DATABASE =
-  "mongodb+srv://thuyltph35992:9R0lYRlaxcOd0WdV@cluster0.smo2w.mongodb.net";
+  "mongodb+srv://trungmvph44499:3E4riGHCN1noc8fj@mydatabase.bnquf.mongodb.net";
+
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 
@@ -34,13 +35,10 @@ mongoose
 /**
  * Listen on provided port, on all network interfaces.
  */
-const idReceiver = "67172b1e05373a1bb6c1542e";
-const clients = {};
 
 websocket.on("connection", function connection(ws) {
   ws.on("error", console.error);
   console.log("user connected");
-  clients[idReceiver] = ws;
 
   ws.on("message", function message(data) {
     const json = data.toString("utf8");

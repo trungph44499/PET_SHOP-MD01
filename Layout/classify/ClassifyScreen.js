@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold", // Làm cho chữ đậm hơn
     backgroundColor: "#e0f7e0", // Nền màu nhẹ
     borderRadius: 5, // Bo góc
-    padding: 2, // Thêm khoảng cách bên trong
+    padding: 5, // Thêm khoảng cách bên trong
     marginLeft: 5, // Khoảng cách với tên sản phẩm
   },
   itemRow: {
