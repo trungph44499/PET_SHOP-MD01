@@ -258,10 +258,15 @@ const CartScreen = ({ navigation }) => {
 
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Payment", {
-                  total: totalPrice,
-                  listItem: listItemCheck.current,
-                });
+                if(listItemCheck.current.length > 0){
+                  navigation.navigate("Payment", {
+                    total: totalPrice,
+                    listItem: listItemCheck.current,
+                  });
+                }
+               else{
+                ToastAndroid.show("Chưa chọn sản phẩm nào!", ToastAndroid.SHORT);
+               }
               }}
               style={styles.checkoutButton}
             >
