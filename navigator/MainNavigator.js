@@ -1,4 +1,3 @@
-
 import { Image } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -19,7 +18,7 @@ import Payment from "../Layout/Payment";
 import Payment2 from "../Layout/Payment2";
 import FinalBill from "../Layout/FinalBill";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
-
+import HistoryPay from "../Layout/history-pay/HistoryPay";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -114,10 +113,9 @@ const MainNavigator = () => {
       <Stack.Screen name="Petcare2" component={PetCareWebSocket} />
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="Payment2" component={Payment2} />
-      <Stack.Screen name="FinalBill" component={FinalBill} />
+      <Stack.Screen name="history-pay" component={HistoryPay} />
     </Stack.Navigator>
   );
 };
 
 export default MainNavigator;
-

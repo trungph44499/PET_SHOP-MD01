@@ -42,7 +42,7 @@ const Petcare2 = () => {
         const {
           status,
           data: { response, type },
-        } = await axios.post(URL+"/pet-care/add", {
+        } = await axios.post(URL + "/pet-care/add", {
           service,
           name,
           email,
@@ -54,11 +54,8 @@ const Petcare2 = () => {
           if (type) {
             websocket.send(
               JSON.stringify({
-                service,
-                name,
                 email,
-                phone,
-                message,
+                type: "pet-care",
               })
             );
           }

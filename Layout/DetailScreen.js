@@ -7,7 +7,6 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
-  StatusBar,
 } from "react-native";
 import axios from "axios";
 import { URL } from "./HomeScreen";
@@ -68,14 +67,18 @@ const DetailProduct = ({ navigation, route }) => {
             />
           </TouchableOpacity>
           <Text
-            style={{ width: '80%', textAlign: "center", fontSize: 18, fontWeight: "bold" }}
+            style={{
+              width: "60%",
+              textAlign: "center",
+              fontSize: 18,
+              fontWeight: "bold",
+            }}
+            numberOfLines={1}
+            ellipsizeMode="tail"
           >
             {item.name}
           </Text>
-          <TouchableOpacity
-            style={{ width: 50 }}
-            onPress={() => navigation.navigate("CartScreen")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("CartScreen")}>
             <Image
               style={{ width: 26, height: 26 }}
               source={require("../Image/cart.png")}
@@ -161,10 +164,10 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
-    padding: 20,
-    marginTop: 20,
+    marginTop: 40,
+    paddingHorizontal: 10,
   },
   txt: {
     marginTop: 10,

@@ -145,9 +145,7 @@ const NoticeScreen = ({ navigation, route }) => {
           <View style={{ padding: 20, justifyContent: 'space-between', gap: 10}}>
             {item.status == 0 ? <Text style={{ color: 'green', fontSize: 16, fontWeight: 'bold' }}>Đặt hàng thành công</Text>
               : <Text style={{ color: 'red', fontSize: 16, fontWeight: 'bold' }}>Đã hủy đơn hàng</Text>}
-            <Text>{Dog?.name || Cat?.name || PhuKien?.name}
-              {/* <Text style={{ color: 'gray' }}>{'\n'}{Dog?.id}
-              </Text> */}
+            <Text>{Dog?.name || Cat?.name || PhuKien?.name}  
             </Text>
             <Text>Mua {sl} sản phẩm</Text>
             <Text>Tổng tiền : {formatPrice(item.total)}</Text>
