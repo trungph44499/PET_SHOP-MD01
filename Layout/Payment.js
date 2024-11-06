@@ -191,6 +191,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f2f2f2",
+    padding: 20,
+    
   },
   header: {
     flexDirection: "row",
@@ -210,9 +212,10 @@ const styles = StyleSheet.create({
     height: 24,
   },
   headerText: {
-    fontSize: 20,
+    textAlign: "center",
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: "#FF6B6B",
   },
   section: {
     paddingHorizontal: 20,
@@ -235,11 +238,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "#fdfdfd",
     fontSize: 16,
+    textAlign: "left",  // Căn trái cho trường nhập liệu
   },
   errorText: {
     color: "#d9534f",
     fontSize: 13,
     marginBottom: 5,
+    textAlign: "left",  // Căn trái cho thông báo lỗi
   },
   paymentOption: {
     flexDirection: "row",
@@ -247,6 +252,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomColor: "#f2f2f2",
     borderBottomWidth: 1,
+    textAlign: "left",  // Căn trái cho phương thức thanh toán
   },
   checkIcon: {
     width: 24,
@@ -277,16 +283,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: "#333",
+    textAlign: "left",  // Căn trái cho thông tin tạm tính và phí vận chuyển
   },
   totalLabel: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
+    textAlign: "left",  // Căn trái cho tổng tiền
   },
   totalAmount: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#d9534f",
+    textAlign: "right",  // Căn phải cho tổng số tiền
   },
   continueButton: {
     paddingVertical: 14,

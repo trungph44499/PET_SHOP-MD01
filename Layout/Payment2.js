@@ -39,7 +39,7 @@ const Payment2 = ({ route }) => {
         number: soDienThoai,
         products: listItem,
       });
-      if (status == 200) {
+      if (status === 200) {
         ToastAndroid.show(response, ToastAndroid.SHORT);
         if (type) {
           setmodalTiepTuc(false);
@@ -60,11 +60,10 @@ const Payment2 = ({ route }) => {
 
   const OptionModal = () => (
     <Modal animationType="slide" transparent={true} visible={modalTiepTuc}>
-      <View style={styles.cardContainer}>
-        <View style={styles.cardModal}>
-          <Text style={styles.textBold}>Xác nhận thanh toán ?</Text>
-
-          <Pressable style={styles.btn} onPress={_payment}>
+      <View style={styles.modalBackdrop}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Xác nhận thanh toán ?</Text>
+          <Pressable style={styles.btnConfirm} onPress={_payment}>
             <Text style={styles.btnText}>Đồng ý</Text>
           </Pressable>
           <Text
@@ -91,46 +90,38 @@ const Payment2 = ({ route }) => {
         <View />
       </View>
 
-      <ScrollView>
+      <ScrollView style={styles.scrollContainer}>
         <View style={styles.section}>
-          <UnderLine value={"Nhập thông tin thẻ"} color={"black"} />
+          <UnderLine value={"Nhập thông tin thẻ"} color={"#000000"} />
           <TextInput
             placeholder="XXXX XXXX XXXX XXXX"
             style={styles.input}
             keyboardType="numeric"
             onChangeText={(txt) => setcard(txt)}
           />
-          {card === "" && (
-            <Text style={styles.errorText}>Vui lòng nhập số thẻ</Text>
-          )}
+          {card === "" && <Text style={styles.errorText}>Vui lòng nhập số thẻ</Text>}
           <TextInput
             placeholder="Tên chủ thẻ"
             style={styles.input}
             onChangeText={(txt) => setcardname(txt)}
           />
-          {cardname === "" && (
-            <Text style={styles.errorText}>Vui lòng nhập tên chủ thẻ</Text>
-          )}
+          {cardname === "" && <Text style={styles.errorText}>Vui lòng nhập tên chủ thẻ</Text>}
           <TextInput
             placeholder="Ngày hết hạn (MM/YY)"
             style={styles.input}
             onChangeText={(txt) => setcarddate(txt)}
           />
-          {carddate === "" && (
-            <Text style={styles.errorText}>Vui lòng nhập ngày hết hạn</Text>
-          )}
+          {carddate === "" && <Text style={styles.errorText}>Vui lòng nhập ngày hết hạn</Text>}
           <TextInput
             placeholder="CVV"
             style={styles.input}
             onChangeText={(txt) => setcvv(txt)}
           />
-          {cvv === "" && (
-            <Text style={styles.errorText}>Vui lòng nhập CVV</Text>
-          )}
+          {cvv === "" && <Text style={styles.errorText}>Vui lòng nhập CVV</Text>}
         </View>
 
         <View style={styles.section}>
-          <UnderLine value={"Thông tin khách hàng"} color={"black"} />
+          <UnderLine value={"Thông tin khách hàng"} color={"#000000"} />
           <Text style={styles.textGray}>Họ tên: {user.fullname}</Text>
           <Text style={styles.textGray}>Email: {user.email}</Text>
           <Text style={styles.textGray}>Địa chỉ: {diaChi}</Text>
@@ -138,26 +129,24 @@ const Payment2 = ({ route }) => {
         </View>
 
         <View style={styles.section}>
-          <UnderLine value={"Phương thức thanh toán"} color={"black"} />
+          <UnderLine value={"Phương thức thanh toán"} color={"#000000"} />
           {ship ? (
             <UnderLine
               value={"Giao hàng nhanh - 15.000đ"}
-              color={"gray"}
-              color2={"gray"}
+              color={"#000000"}
               value2={`Dự kiến giao hàng ${day + 3}-${day + 5}/${month + 1}`}
             />
           ) : (
             <UnderLine
               value={"Giao hàng COD - 20.000đ"}
-              color={"gray"}
-              color2={"gray"}
+              color={"#000000"}
               value2={`Dự kiến giao hàng ${day + 2}-${day + 4}/${month + 1}`}
             />
           )}
         </View>
 
         <View style={styles.section}>
-          <UnderLine value={"Đơn hàng đã chọn"} color={"black"} />
+          <UnderLine value={"Đơn hàng đã chọn"} color={"#000000"} />
           {listItem &&
             listItem.map((item) => (
               <View key={item.id} style={styles.item}>
@@ -188,9 +177,7 @@ const Payment2 = ({ route }) => {
           </View>
           <View style={styles.amountColumn}>
             <Text style={styles.textBold}>{numberUtils(total)}</Text>
-            <Text style={styles.textBold}>
-              {ship ? "15.000 đ" : "20.000 đ"}
-            </Text>
+            <Text style={styles.textBold}>{ship ? "15.000 đ" : "20.000 đ"}</Text>
             <Text style={styles.totalAmount}>
               {numberUtils(total + (ship ? 15000 : 20000))}
             </Text>
@@ -204,7 +191,7 @@ const Payment2 = ({ route }) => {
             styles.payButton,
             {
               backgroundColor:
-                card && carddate && cardname && cvv ? "#FF6B6B" : "gray",
+                card && cardname && carddate && cvv ? "#FF6B6B" : "#E0E0E0",
             },
           ]}
         >
@@ -235,6 +222,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
+    color: "#FF6B6B",
   },
   textBold: {
     fontSize: 15,
@@ -248,67 +236,34 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: 45,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderBottomWidth: 2,
+    borderBottomColor: "#000000", // Chỉnh sửa màu gạch ngang thành đen
     padding: 10,
-    marginBottom: 5,
-    borderRadius: 10,
+    marginBottom: 10,
+    borderRadius: 8,
     backgroundColor: "#FFF",
   },
   errorText: {
     color: "red",
     fontSize: 13,
-    marginBottom: 5,
   },
-  cardContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.4)",
-  },
-  cardModal: {
-    width: "90%",
-    padding: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  btn: {
-    padding: 14,
-    borderRadius: 10,
-    backgroundColor: "#FF6B6B",
-    width: "100%",
-    alignItems: "center",
-    marginTop: 15,
-  },
-  btnText: {
-    color: "#FFF",
-    fontWeight: "bold",
-  },
-  cancelText: {
-    marginTop: 10,
-    color: "gray",
+  scrollContainer: {
+    marginBottom: 80,
   },
   section: {
-    marginVertical: 10,
+    marginVertical: 15,
   },
   item: {
-    height: 180,
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
-    borderRadius: 10,
+    padding: 12,
     backgroundColor: "#FFF",
-    marginBottom: 10,
+    borderRadius: 12,
+    marginBottom: 15,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
     elevation: 3,
   },
   image: {
@@ -317,11 +272,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   itemInfo: {
-    marginLeft: 10,
+    marginLeft: 15,
     flex: 1,
   },
   itemCode: {
     fontWeight: "bold",
+    color: "#FF6B6B",
   },
   itemName: {
     color: "#555",
@@ -333,7 +289,7 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   paymentSection: {
-    paddingVertical: 20,
+    paddingVertical: 25,
   },
   paymentInfo: {
     flexDirection: "row",
@@ -360,5 +316,38 @@ const styles = StyleSheet.create({
   payButtonText: {
     color: "#FFF",
     fontWeight: "bold",
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    width: "85%",
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 15,
+    alignItems: "center",
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#FF6B6B",
+  },
+  btnConfirm: {
+    padding: 14,
+    backgroundColor: "#FF6B6B",
+    borderRadius: 10,
+    marginTop: 20,
+    width: "100%",
+    alignItems: "center",
+  },
+  btnText: {
+    color: "#FFF",
+    fontWeight: "bold",
+  },
+  cancelText: {
+    marginTop: 10,
+    color: "gray",
   },
 });
