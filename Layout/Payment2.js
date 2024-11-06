@@ -57,37 +57,26 @@ const Payment2 = ({ route }) => {
       console.log(error);
     }
   }
-  // modal option
-  const OptionModal = () => {
-    return (
-      <Modal animationType="slide" transparent={true} visible={modalTiepTuc}>
-        <View style={styles.cardCotainer}>
-          <View />
-          <View style={styles.cardModal}>
-            <Text style={styles.textBold}>Xác nhận thanh toán ?</Text>
 
-            <Pressable style={styles.btn} onPress={_payment}>
-              <Text
-                style={{ color: "white", fontWeight: "bold", fontSize: 16 }}
-              >
-                Đồng ý
-              </Text>
-            </Pressable>
-            <Text
-              onPress={() => setmodalTiepTuc(false)}
-              style={{
-                textDecorationLine: "underline",
-                fontWeight: "bold",
-                fontSize: 16,
-              }}
-            >
-              Hủy bỏ
-            </Text>
-          </View>
+  const OptionModal = () => (
+    <Modal animationType="slide" transparent={true} visible={modalTiepTuc}>
+      <View style={styles.cardContainer}>
+        <View style={styles.cardModal}>
+          <Text style={styles.textBold}>Xác nhận thanh toán ?</Text>
+
+          <Pressable style={styles.btn} onPress={_payment}>
+            <Text style={styles.btnText}>Đồng ý</Text>
+          </Pressable>
+          <Text
+            onPress={() => setmodalTiepTuc(false)}
+            style={styles.cancelText}
+          >
+            Hủy bỏ
+          </Text>
         </View>
-      </Modal>
-    );
-  };
+      </View>
+    </Modal>
+  );
 
   return (
     <View style={styles.container}>
@@ -98,14 +87,12 @@ const Payment2 = ({ route }) => {
             source={require("../Image/back.png")}
           />
         </TouchableOpacity>
-        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          THANH TOÁN
-        </Text>
+        <Text style={styles.headerText}>THANH TOÁN</Text>
         <View />
       </View>
 
       <ScrollView>
-        <View style={{ paddingHorizontal: 20, gap: 10 }}>
+        <View style={styles.section}>
           <UnderLine value={"Nhập thông tin thẻ"} color={"black"} />
           <TextInput
             placeholder="XXXX XXXX XXXX XXXX"
@@ -113,36 +100,36 @@ const Payment2 = ({ route }) => {
             keyboardType="numeric"
             onChangeText={(txt) => setcard(txt)}
           />
-          {card == "" ? (
-            <Text style={{ color: "red" }}>Vui lòng nhập số thẻ</Text>
-          ) : null}
+          {card === "" && (
+            <Text style={styles.errorText}>Vui lòng nhập số thẻ</Text>
+          )}
           <TextInput
             placeholder="Tên chủ thẻ"
             style={styles.input}
             onChangeText={(txt) => setcardname(txt)}
           />
-          {cardname == "" ? (
-            <Text style={{ color: "red" }}>Vui lòng nhập tên chủ thẻ</Text>
-          ) : null}
+          {cardname === "" && (
+            <Text style={styles.errorText}>Vui lòng nhập tên chủ thẻ</Text>
+          )}
           <TextInput
             placeholder="Ngày hết hạn (MM/YY)"
             style={styles.input}
             onChangeText={(txt) => setcarddate(txt)}
           />
-          {carddate == "" ? (
-            <Text style={{ color: "red" }}>Vui lòng nhập ngày hết hạn</Text>
-          ) : null}
+          {carddate === "" && (
+            <Text style={styles.errorText}>Vui lòng nhập ngày hết hạn</Text>
+          )}
           <TextInput
             placeholder="CVV"
             style={styles.input}
             onChangeText={(txt) => setcvv(txt)}
           />
-          {cvv == "" ? (
-            <Text style={{ color: "red" }}>Vui lòng nhập CVV</Text>
-          ) : null}
+          {cvv === "" && (
+            <Text style={styles.errorText}>Vui lòng nhập CVV</Text>
+          )}
         </View>
 
-        <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
+        <View style={styles.section}>
           <UnderLine value={"Thông tin khách hàng"} color={"black"} />
           <Text style={styles.textGray}>Họ tên: {user.fullname}</Text>
           <Text style={styles.textGray}>Email: {user.email}</Text>
@@ -150,7 +137,7 @@ const Payment2 = ({ route }) => {
           <Text style={styles.textGray}>Số điện thoại: {soDienThoai}</Text>
         </View>
 
-        <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
+        <View style={styles.section}>
           <UnderLine value={"Phương thức thanh toán"} color={"black"} />
           {ship ? (
             <UnderLine
@@ -169,84 +156,59 @@ const Payment2 = ({ route }) => {
           )}
         </View>
 
-        <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
+        <View style={styles.section}>
           <UnderLine value={"Đơn hàng đã chọn"} color={"black"} />
           {listItem &&
             listItem.map((item) => (
               <View key={item.id} style={styles.item}>
                 <Image source={{ uri: item.image }} style={styles.image} />
-                <View
-                  style={{
-                    padding: 20,
-                    justifyContent: "space-between",
-                    gap: 10,
-                  }}
-                >
-                  <Text style={{ color: "gray" }}>
+                <View style={styles.itemInfo}>
+                  <Text style={styles.itemCode}>
                     Mã sản phẩm: {upperCaseFirstItem(item.id.slice(-5))}
                   </Text>
-                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                    Tên sản phẩm: {item.name}
-                  </Text>
-                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                  <Text style={styles.itemName}>Tên sản phẩm: {item.name}</Text>
+                  <Text style={styles.itemPrice}>
                     Giá tiền: {numberUtils(item.price)}
                   </Text>
-                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                    Số lượng : {item.quantity}
+                  <Text style={styles.itemQuantity}>
+                    Số lượng: {item.quantity}
                   </Text>
                 </View>
               </View>
             ))}
         </View>
       </ScrollView>
-      <View
-        style={{
-          width: "90%",
-          marginVertical: 20,
-          marginHorizontal: "5%",
-          gap: 20,
-        }}
-      >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <View style={{ gap: 5 }}>
+
+      <View style={styles.paymentSection}>
+        <View style={styles.paymentInfo}>
+          <View style={styles.textColumn}>
             <Text style={styles.textBold}>Tạm tính :</Text>
             <Text style={styles.textBold}>Phí vận chuyển :</Text>
             <Text style={styles.textBold}>Tổng tiền :</Text>
           </View>
-          <View style={{ gap: 5 }}>
+          <View style={styles.amountColumn}>
             <Text style={styles.textBold}>{numberUtils(total)}</Text>
             <Text style={styles.textBold}>
               {ship ? "15.000 đ" : "20.000 đ"}
             </Text>
-            <Text
-              style={[
-                styles.textBold,
-                { color: "green", fontSize: 17, fontWeight: "bold" },
-              ]}
-            >
+            <Text style={styles.totalAmount}>
               {numberUtils(total + (ship ? 15000 : 20000))}
             </Text>
           </View>
         </View>
         <TouchableOpacity
           onPress={() => {
-            card != "" &&
-              cardname != "" &&
-              carddate != "" &&
-              cvv != "" &&
-              setmodalTiepTuc(true);
+            card && cardname && carddate && cvv && setmodalTiepTuc(true);
           }}
-          style={{
-            borderRadius: 9,
-            padding: 12,
-            alignItems: "center",
-            backgroundColor:
-              card && carddate && cardname && cvv ? "#825640" : "gray",
-          }}
+          style={[
+            styles.payButton,
+            {
+              backgroundColor:
+                card && carddate && cardname && cvv ? "#FF6B6B" : "gray",
+            },
+          ]}
         >
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
-            Thanh toán
-          </Text>
+          <Text style={styles.payButtonText}>Thanh toán</Text>
         </TouchableOpacity>
       </View>
 
@@ -260,8 +222,8 @@ export default Payment2;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F7F7F7",
     padding: 20,
-    gap: 16,
   },
   header: {
     flexDirection: "row",
@@ -269,57 +231,134 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 20,
   },
+  headerText: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
   textBold: {
-    fontSize: 14,
-    fontWeight: "400",
+    fontSize: 15,
+    fontWeight: "500",
   },
   textGray: {
     fontSize: 16,
-    color: "gray",
+    color: "#555",
+    marginBottom: 5,
   },
   input: {
     width: "100%",
-    height: 40,
+    height: 45,
     borderBottomWidth: 1,
-    borderBottomColor: "gray",
+    borderBottomColor: "#ccc",
+    padding: 10,
+    marginBottom: 5,
+    borderRadius: 10,
+    backgroundColor: "#FFF",
   },
-  img: { width: 20, height: 20, position: "absolute", right: 20, top: 20 },
-  cardCotainer: {
-    height: "100%",
-    justifyContent: "space-between",
+  errorText: {
+    color: "red",
+    fontSize: 13,
+    marginBottom: 5,
+  },
+  cardContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
   },
   cardModal: {
     width: "90%",
-    marginBottom: 40,
+    padding: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 50,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
   },
   btn: {
     padding: 14,
     borderRadius: 10,
-    backgroundColor: "#825640",
-    marginVertical: 20,
+    backgroundColor: "#FF6B6B",
     width: "100%",
     alignItems: "center",
+    marginTop: 15,
   },
-  image: {
-    width: 120,
-    height: 120,
+  btnText: {
+    color: "#FFF",
+    fontWeight: "bold",
+  },
+  cancelText: {
+    marginTop: 10,
+    color: "gray",
+  },
+  section: {
+    marginVertical: 10,
   },
   item: {
-    height: 160,
+    height: 180,
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    width: "100%",
-    gap: 20,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#FFF",
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  },
+  itemInfo: {
+    marginLeft: 10,
+    flex: 1,
+  },
+  itemCode: {
+    fontWeight: "bold",
+  },
+  itemName: {
+    color: "#555",
+  },
+  itemPrice: {
+    color: "#FF6B6B",
+  },
+  itemQuantity: {
+    color: "#555",
+  },
+  paymentSection: {
+    paddingVertical: 20,
+  },
+  paymentInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  textColumn: {
+    flex: 1,
+  },
+  amountColumn: {
+    flex: 1,
+    alignItems: "flex-end",
+  },
+  totalAmount: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#FF6B6B",
+  },
+  payButton: {
+    padding: 14,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  payButtonText: {
+    color: "#FFF",
+    fontWeight: "bold",
   },
 });
