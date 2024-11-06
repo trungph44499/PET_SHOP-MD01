@@ -57,9 +57,9 @@ const LoginScreen = (props) => {
           await AsyncStorage.setItem("@UserLogin", email);
           if (checkRemember) {
             await AsyncStorage.setItem("User", email);
-            await AsyncStorage.setItem("RememberMe", "true"); // Lưu trạng thái "Nhớ tài khoản"
+            await AsyncStorage.setItem("RememberMe", "true"); 
           } else {
-            await AsyncStorage.removeItem("RememberMe"); // Xóa nếu không tick
+            await AsyncStorage.removeItem("RememberMe"); 
           }
           props.navigation.navigate("Main");
         }
