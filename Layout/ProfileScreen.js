@@ -59,7 +59,7 @@ const ProfileScreen = ({ navigation, route }) => {
   );
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#FFFFFF'}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -78,7 +78,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 ? { uri: user.avatar }
                 : require("../Image/pesonal.png")
             }
-            style={{ width: 60, height: 60, borderRadius: 30 }}
+            style={{ width: 80, height: 80, borderRadius: 40 }}
           />
           <View style={{ marginLeft: 10 }}>
 
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 30,
+    paddingVertical: 20,
   },
   backButton: {
     position: "absolute",

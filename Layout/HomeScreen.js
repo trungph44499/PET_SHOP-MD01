@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: "100%",
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 12,
   },
   image: {
