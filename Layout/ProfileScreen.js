@@ -60,7 +60,7 @@ const ProfileScreen = ({ navigation, route }) => {
   );
 
   return (
-    <ScrollView style={{backgroundColor: '#FFFFFF'}}>
+    <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
@@ -133,8 +133,12 @@ const ProfileScreen = ({ navigation, route }) => {
             Bảo mật và điều khoản
             {"\n"}_________________________________________________
           </Text>
-          <Text>Điều khoản và điều kiện</Text>
-          <Text>Chính sách quyền riêng tư</Text>
+          <Text onPress={() => navigation.navigate("PaymentMethod")}>
+            Payment Method
+          </Text>
+          <Text onPress={() => navigation.navigate("ShippingAddrees")}>
+            Shipping Addresses
+          </Text>
           <Text
             style={{ color: "red" }}
             onPress={() => {
