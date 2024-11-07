@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
     if (checkUserLogin.length != 0) {
       res.status(200).json({ response: "Đăng nhập thành công", type: true });
     } else {
-      res.status(200).json({ response: "Đăng nhập thất bại", type: false });
+      res.status(200).json({ response: "Tài khoản hoặc mật khẩu của bạn không chính xác", type: false });
     }
   } catch (error) {
     console.log(error);

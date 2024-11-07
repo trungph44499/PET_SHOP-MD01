@@ -1,3 +1,4 @@
+
 import { Image } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -6,7 +7,7 @@ import HomeScreen from "../Layout/HomeScreen";
 import ProfileScreen from "../Layout/ProfileScreen";
 import DetailScreen from "../Layout/DetailScreen";
 import ClassifyScreen from "../Layout/classify/ClassifyScreen";
-import CartScreen from "../Layout/CartScreen";
+import CartScreen from "../Layout/cart/CartScreen";
 import SearchScreen from "../Layout/SearchScreen";
 import NoticeScreen from "../Layout/NoticeScreen";
 import NewProductScreen from "../Layout/NewProductScreen";
@@ -18,6 +19,7 @@ import Payment from "../Layout/Payment";
 import Payment2 from "../Layout/Payment2";
 import FinalBill from "../Layout/FinalBill";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -118,3 +120,4 @@ const MainNavigator = () => {
 };
 
 export default MainNavigator;
+

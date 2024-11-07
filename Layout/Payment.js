@@ -1,3 +1,55 @@
+// import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+// import React, { useEffect, useState } from 'react'
+// import UnderLine from '../components/UnderLine';
+// import AsyncStorage from '@react-native-async-storage/async-storage'
+// import { URL } from './HomeScreen';
+
+
+// const Payment = ({ navigation, route }) => {
+  // const { total, id_bill } = route.params;
+  // const [user, setuser] = useState([]);
+  // const [day, setday] = useState(new Date().getDay());
+  // const [month, setmonth] = useState(new Date().getMonth());
+  // const [ship, setship] = useState(true);
+  // const [card, setcard] = useState(true);
+  // const [err, seterr] = useState(false);
+  // const [diaChi, setdiaChi] = useState('');
+  // const [soDienThoai, setsoDienThoai] = useState('');
+
+  // // lấy user từ AsyncStorage
+  // const retrieveData = async () => {
+  //   try {
+  //     const UserData = await AsyncStorage.getItem('User');
+  //     if (UserData != null) {
+  //       setuser(JSON.parse(UserData));
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // const DeleteBill = async () => {
+  //   const url = `${URL}/hoadons/${id_bill}`;
+  //   const res = await fetch(url,{
+  //     method: 'DELETE'
+  //   });
+  //   const data = await res.json();
+  //   if(res.ok){
+  //     navigation.goBack();
+  //     console.log('====================================');
+  //     console.log("Đã xóa : "+data.id);
+  //     console.log('====================================');
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   retrieveData()
+  // }, [])
+
+  // const formatPrice = (price) => {
+  //   // Sử dụng phương thức toLocaleString để định dạng giá theo định dạng tiền tệ của Việt Nam (VND)
+  //   return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  // };
 import {
   Image,
   Pressable,
@@ -15,7 +67,7 @@ import { URL } from "./HomeScreen";
 import axios from "axios";
 
 const Payment = ({ navigation, route }) => {
-  const { total, id_bill } = route.params;
+  const { total, listItem } = route.params;
   const [user, setuser] = useState({});
   const day = new Date().getDay();
   const month = new Date().getMonth();
@@ -220,13 +272,12 @@ const Payment = ({ navigation, route }) => {
           onPress={() => {
             soDienThoai && diaChi
               ? navigation.navigate("Payment2", {
-                  id_bill: id_bill,
                   user: user,
                   total: total,
                   ship: ship,
                   diaChi: diaChi,
                   soDienThoai: soDienThoai,
-                  pay: card,
+                  listItem: listItem,
                 })
               : seterr(true);
           }}

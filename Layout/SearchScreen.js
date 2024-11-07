@@ -1,36 +1,36 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid, Image, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
-import { URL } from './HomeScreen'; // Đảm bảo URL đã được định nghĩa
+import { URL } from './HomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { numberUtils } from './utils/stringUtils';
 
 const SearchScreen = ({ navigation }) => {
   const [txtSearch, setTxtSearch] = useState('');
   const [products, setProducts] = useState([]);
   const [emailUser, setEmailUser] = useState('');
   const [loading, setLoading] = useState(false);
-  const [ListSearch, setListSearch] = useState([]); // Lịch sử tìm kiếm
+  const [ListSearch, setListSearch] = useState([]);
 
   useEffect(() => {
     const fetchUserEmail = async () => {
       const userEmail = await AsyncStorage.getItem('@UserLogin');
       setEmailUser(userEmail);
+      fetchSearchHistory(userEmail); // Fetch history on user email change
     };
-
-    const fetchSearchHistory = async () => {
-      if (emailUser) {
-        try {
-          const response = await axios.get(`${URL}/searchs/history`, { params: { emailUser } });
-          setListSearch(response.data || []);
-        } catch (error) {
-          console.error("Lỗi khi lấy lịch sử tìm kiếm:", error);
-        }
-      }
-    };
-
     fetchUserEmail();
-    fetchSearchHistory();
-  }, [emailUser]);
+  }, []);
+
+  const fetchSearchHistory = async (emailUser) => {
+    if (emailUser) {
+      try {
+        const response = await axios.get(`${URL}/searchs/history`, { params: { emailUser } });
+        setListSearch(response.data || []);
+      } catch (error) {
+        console.error("Lỗi khi lấy lịch sử tìm kiếm:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     const searchProducts = async () => {
@@ -41,6 +41,7 @@ const SearchScreen = ({ navigation }) => {
             params: { txt: txtSearch, emailUser },
           });
           setProducts(response.data.response || []);
+          await fetchSearchHistory(emailUser); // Fetch history after search
         } catch (error) {
           console.error("Lỗi:", error.response ? error.response.data : error.message);
           ToastAndroid.show('Không thể tìm kiếm sản phẩm!', ToastAndroid.SHORT);
@@ -48,16 +49,16 @@ const SearchScreen = ({ navigation }) => {
           setLoading(false);
         }
       } else {
-        setProducts([]); // Clear products when search text is empty
+        setProducts([]);
       }
     };
 
     const delayDebounceFn = setTimeout(() => {
       searchProducts();
-    }, 300); // Thời gian trễ để tránh gửi yêu cầu quá nhiều
+    }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [txtSearch]);
+  }, [txtSearch, emailUser]);
 
   const handleSetTxtSearch = (txt) => {
     setTxtSearch(txt);
@@ -67,6 +68,7 @@ const SearchScreen = ({ navigation }) => {
     try {
       await axios.delete(`${URL}/searchs/${_id}`);
       setListSearch(prev => prev.filter(item => item._id !== _id));
+      await fetchSearchHistory(emailUser); // Fetch history after deletion
     } catch (error) {
       console.error("Lỗi khi xóa lịch sử tìm kiếm:", error);
       ToastAndroid.show('Không thể xóa lịch sử tìm kiếm!', ToastAndroid.SHORT);
@@ -137,13 +139,18 @@ const SearchScreen = ({ navigation }) => {
                       data={products}
                       keyExtractor={item => item._id.toString()}
                       renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('DetailScreen', { item })} 
-                        style={styles.itemDog}>
+                        <TouchableOpacity onPress={() => navigation.navigate('DetailScreen', { item })} style={styles.itemDog}>
                           <Image source={{ uri: item.img }} style={styles.itemImage} />
-                          <View style={{ gap: 5 }}>
-                            <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
-                            <Text style={{ fontSize: 16, color: 'red' }}>{item.price} đ</Text>
-                            <Text style={{ fontSize: 16, fontWeight: "thin"  }}>Còn {item.quantity} sp</Text>
+                          <View style={{ flexDirection: 'column', marginLeft: 10, flex: 1 }}>
+                            <Text
+                              style={{ fontSize: 17, fontWeight: "600", flex: 1 }}
+                              numberOfLines={1}
+                              ellipsizeMode="tail"
+                            >
+                              {item.name}
+                            </Text>
+                            <Text style={{ fontSize: 16, color: 'red', flex: 1, fontWeight: "600" }}>{numberUtils(item.price)}</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "thin", flex: 1 }}>Còn {item.quantity} sp</Text>
                           </View>
                         </TouchableOpacity>
                       )}
@@ -192,17 +199,26 @@ const styles = StyleSheet.create({
   },
   listSearch: {
     gap: 12,
-    flexGrow: 1, // Cho phép ScrollView phát triển theo chiều dọc
+    flexGrow: 1,
   },
   itemDog: {
-    padding: 20,
-    marginHorizontal: 20,
-    borderWidth: 1,
+    flexDirection: "row",
+    backgroundColor: "white",
+    alignItems: "center",
+    width: "95%",
     borderRadius: 12,
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 20,
-    gap: 30
+    padding: 20,
+    margin: 10,
+    gap: 10,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.35,
+    elevation: 10,
+    flexShrink: 1,
   },
   itemImage: {
     width: 100,

@@ -78,7 +78,7 @@ const ProfileScreen = ({ navigation, route }) => {
             }
             style={{ width: 100, height: 100, borderRadius: 100 }}
           />
-          <View style={{marginLeft: 20}}>
+          <View style={{ marginLeft: 20 }}>
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
               {user.fullname}
             </Text>
@@ -130,7 +130,7 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text>Điều khoản và điều kiện</Text>
           <Text>Chính sách quyền riêng tư</Text>
           <Text
-            style={{ color: "red"}}
+            style={{ color: "red" }}
             onPress={() => {
               Alert.alert(
                 "Xác nhận đăng xuất",
@@ -143,7 +143,12 @@ const ProfileScreen = ({ navigation, route }) => {
                   },
                   {
                     text: "Đăng xuất",
-                    onPress: () => {
+                    onPress: async () => {
+                      // Xóa thông tin người dùng trong AsyncStorage
+                      await AsyncStorage.removeItem("@UserLogin");
+                      await AsyncStorage.removeItem("User");
+                      await AsyncStorage.removeItem("RememberMe");
+
                       navigation.navigate("LoginScreen");
                       ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
                     },
@@ -156,6 +161,7 @@ const ProfileScreen = ({ navigation, route }) => {
           >
             Đăng xuất
           </Text>
+
         </View>
       </View>
     </ScrollView>

@@ -57,7 +57,7 @@ const Petcare = ({ navigation }) => {
                         source={require("../Image/back.png")}
                     />
                 </TouchableOpacity>
-                <Text style={styles.title}>Dịch vụ chăm sóc thú cưng</Text>
+                <Text style={styles.title}>Dịch vụ chăm sóc thú cưng </Text>
             </View>
             <View style={{ alignItems: 'center' }}>
                 {services.map(service => (
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     closeButton: {
         backgroundColor: '#825640',
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 20,
     },
     closeButtonText: {
         color: 'white',

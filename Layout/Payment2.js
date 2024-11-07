@@ -6,36 +6,57 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UnderLine from "../components/UnderLine";
-import { useSelector, useDispatch } from "react-redux";
 import { URL } from "./HomeScreen";
+import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
-const Payment2 = ({ navigation, route }) => {
-  const { id_bill, total, user, soDienThoai, diaChi, ship, pay } = route.params;
-  const date = new Date();
+const Payment2 = ({ route }) => {
+  const { listItem, total, user, soDienThoai, diaChi, ship } = route.params;
+  const navigation = useNavigation();
   const day = new Date().getDay();
   const month = new Date().getMonth();
   const [card, setcard] = useState("");
   const [cardname, setcardname] = useState("");
   const [carddate, setcarddate] = useState("");
   const [cvv, setcvv] = useState("");
-  const [err, seterr] = useState(false);
   const [modalTiepTuc, setmodalTiepTuc] = useState(false);
 
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const formatPrice = (price) => {
-    // Sử dụng phương thức toLocaleString để định dạng giá theo định dạng tiền tệ của Việt Nam (VND)
-    return price.toLocaleString("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    });
-  };
-
+  async function _payment() {
+    try {
+      const {
+        status,
+        data: { response, type },
+      } = await axios.post(`${URL}/pay/add`, {
+        email: user.email,
+        location: diaChi,
+        number: soDienThoai,
+        products: listItem,
+      });
+      if (status == 200) {
+        ToastAndroid.show(response, ToastAndroid.SHORT);
+        if (type) {
+          setmodalTiepTuc(false);
+          const {
+            status: _status,
+            data: { type: _type },
+          } = await axios.post(`${URL}/carts/removeAllFromCart`, {
+            list: listItem,
+            emailUser: user.email,
+          });
+          if (_type) navigation.popToTop();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   // modal option
   const OptionModal = () => {
     return (
@@ -45,12 +66,7 @@ const Payment2 = ({ navigation, route }) => {
           <View style={styles.cardModal}>
             <Text style={styles.textBold}>Xác nhận thanh toán ?</Text>
 
-            <Pressable
-              style={styles.btn}
-              onPress={() => {
-                AddProducToCart(0);
-              }}
-            >
+            <Pressable style={styles.btn} onPress={_payment}>
               <Text
                 style={{ color: "white", fontWeight: "bold", fontSize: 16 }}
               >
@@ -58,9 +74,7 @@ const Payment2 = ({ navigation, route }) => {
               </Text>
             </Pressable>
             <Text
-              onPress={() => {
-                AddProducToCart(1);
-              }}
+              onPress={() => setmodalTiepTuc(false)}
               style={{
                 textDecorationLine: "underline",
                 fontWeight: "bold",
@@ -73,58 +87,6 @@ const Payment2 = ({ navigation, route }) => {
         </View>
       </Modal>
     );
-  };
-
-  const AddProducToCart = async (status) => {
-    const url = `${URL}/carts`;
-
-    for (const pro of cartItems) {
-      const NewCart = {
-        id_bill: id_bill,
-        id_Product: pro.id,
-        soLuongMua: pro.quantity,
-        giaMua: pro.price,
-      };
-
-      const res = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(NewCart),
-        headers: {
-          Content_Type: "application/json",
-        },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        finalBill(status);
-      }
-    }
-  };
-
-  const finalBill = async (status) => {
-    const url = `${URL}/hoadons/${id_bill}`;
-    const FinalBill = {
-      id_User: user.id,
-      diaChi: diaChi,
-      soDienThoai: soDienThoai,
-      ship: ship,
-      pay: pay,
-      total: total + (ship ? 15000 : 20000),
-      status: status,
-      ngayMua: date,
-    };
-
-    const res = await fetch(url, {
-      method: "PUT",
-      body: JSON.stringify(FinalBill),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      navigation.navigate("FinalBill", { id_bill: id_bill });
-    }
   };
 
   return (
@@ -151,7 +113,7 @@ const Payment2 = ({ navigation, route }) => {
             keyboardType="numeric"
             onChangeText={(txt) => setcard(txt)}
           />
-          {err && card == "" ? (
+          {card == "" ? (
             <Text style={{ color: "red" }}>Vui lòng nhập số thẻ</Text>
           ) : null}
           <TextInput
@@ -159,7 +121,7 @@ const Payment2 = ({ navigation, route }) => {
             style={styles.input}
             onChangeText={(txt) => setcardname(txt)}
           />
-          {err && cardname == "" ? (
+          {cardname == "" ? (
             <Text style={{ color: "red" }}>Vui lòng nhập tên chủ thẻ</Text>
           ) : null}
           <TextInput
@@ -167,7 +129,7 @@ const Payment2 = ({ navigation, route }) => {
             style={styles.input}
             onChangeText={(txt) => setcarddate(txt)}
           />
-          {err && carddate == "" ? (
+          {carddate == "" ? (
             <Text style={{ color: "red" }}>Vui lòng nhập ngày hết hạn</Text>
           ) : null}
           <TextInput
@@ -175,17 +137,17 @@ const Payment2 = ({ navigation, route }) => {
             style={styles.input}
             onChangeText={(txt) => setcvv(txt)}
           />
-          {err && cvv == "" ? (
+          {cvv == "" ? (
             <Text style={{ color: "red" }}>Vui lòng nhập CVV</Text>
           ) : null}
         </View>
 
         <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
           <UnderLine value={"Thông tin khách hàng"} color={"black"} />
-          <Text style={styles.textGray}>{user.fullname}</Text>
-          <Text style={styles.textGray}>{user.email}</Text>
-          <Text style={styles.textGray}>{diaChi}</Text>
-          <Text style={styles.textGray}>{soDienThoai}</Text>
+          <Text style={styles.textGray}>Họ tên: {user.fullname}</Text>
+          <Text style={styles.textGray}>Email: {user.email}</Text>
+          <Text style={styles.textGray}>Địa chỉ: {diaChi}</Text>
+          <Text style={styles.textGray}>Số điện thoại: {soDienThoai}</Text>
         </View>
 
         <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
@@ -209,31 +171,32 @@ const Payment2 = ({ navigation, route }) => {
 
         <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
           <UnderLine value={"Đơn hàng đã chọn"} color={"black"} />
-          {cartItems.map((item) => (
-            <View key={item.id} style={styles.item}>
-              <Image source={{ uri: item.img }} style={styles.image} />
-              <View
-                style={{
-                  padding: 20,
-                  justifyContent: "space-between",
-                  gap: 10,
-                }}
-              >
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                  {item.name}
+          {listItem &&
+            listItem.map((item) => (
+              <View key={item.id} style={styles.item}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+                <View
+                  style={{
+                    padding: 20,
+                    justifyContent: "space-between",
+                    gap: 10,
+                  }}
+                >
                   <Text style={{ color: "gray" }}>
-                    {"\n"}
-                    {item.id}
+                    Mã sản phẩm: {upperCaseFirstItem(item.id.slice(-5))}
                   </Text>
-                  {"\n"}
-                  {item.price}
-                </Text>
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                  Số lượng mua : {item.quantity}
-                </Text>
+                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                    Tên sản phẩm: {item.name}
+                  </Text>
+                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                    Giá tiền: {numberUtils(item.price)}
+                  </Text>
+                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                    Số lượng : {item.quantity}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ))}
+            ))}
         </View>
       </ScrollView>
       <View
@@ -251,7 +214,7 @@ const Payment2 = ({ navigation, route }) => {
             <Text style={styles.textBold}>Tổng tiền :</Text>
           </View>
           <View style={{ gap: 5 }}>
-            <Text style={styles.textBold}>{formatPrice(total)}</Text>
+            <Text style={styles.textBold}>{numberUtils(total)}</Text>
             <Text style={styles.textBold}>
               {ship ? "15.000 đ" : "20.000 đ"}
             </Text>
@@ -261,15 +224,17 @@ const Payment2 = ({ navigation, route }) => {
                 { color: "green", fontSize: 17, fontWeight: "bold" },
               ]}
             >
-              {formatPrice(total + (ship ? 15000 : 20000))}
+              {numberUtils(total + (ship ? 15000 : 20000))}
             </Text>
           </View>
         </View>
         <TouchableOpacity
           onPress={() => {
-            card && cardname && carddate && cvv
-              ? setmodalTiepTuc(true)
-              : seterr(true);
+            card != "" &&
+              cardname != "" &&
+              carddate != "" &&
+              cvv != "" &&
+              setmodalTiepTuc(true);
           }}
           style={{
             borderRadius: 9,
@@ -280,7 +245,7 @@ const Payment2 = ({ navigation, route }) => {
           }}
         >
           <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
-            Tiếp tục
+            Thanh toán
           </Text>
         </TouchableOpacity>
       </View>

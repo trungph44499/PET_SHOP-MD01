@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { URL } from "./HomeScreen";
@@ -18,8 +19,10 @@ const Register = (props) => {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [sdt, setsdt] = useState("");
-  const [pass2, setpass2] = useState("");
   const [pass, setpass] = useState("");
+  const [pass2, setpass2] = useState("");
+  const [showPass, setShowPass] = useState(true);
+  const [showPass2, setShowPass2] = useState(true);
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,20 +35,20 @@ const Register = (props) => {
   };
 
   const addUser = async () => {
-    if (name == "" || email == "" || pass == "" || sdt == "") {
-      ToastAndroid.show("Không được để trống", 0);
+    if (name === "" || email === "" || pass === "" || sdt === "") {
+      ToastAndroid.show("Không được để trống", ToastAndroid.SHORT);
       return;
     }
-    if (pass != pass2) {
-      ToastAndroid.show("Mật khẩu chưa khớp", 0);
+    if (pass !== pass2) {
+      ToastAndroid.show("Mật khẩu chưa khớp", ToastAndroid.SHORT);
       return;
     }
     if (!validateEmail(email)) {
-      ToastAndroid.show("không đúng định dạng email", 0);
+      ToastAndroid.show("Không đúng định dạng email", ToastAndroid.SHORT);
       return;
     }
     if (!validateSDT(sdt)) {
-      ToastAndroid.show("không đúng định dạng số điện thoại", 0);
+      ToastAndroid.show("Không đúng định dạng số điện thoại", ToastAndroid.SHORT);
       return;
     }
 
@@ -59,8 +62,8 @@ const Register = (props) => {
         pass,
         sdt,
       });
-      if (status == 200) {
-        ToastAndroid.show(response, 0);
+      if (status === 200) {
+        ToastAndroid.show(response, ToastAndroid.SHORT);
         if (type) {
           props.navigation.navigate("LoginScreen");
         }
@@ -69,51 +72,31 @@ const Register = (props) => {
       console.log(error);
     }
   };
+
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
       >
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
           <Image
-            style={{ width: 210, height: 100, marginBottom: 10, marginTop: 10 }}
+            style={{ width: 210, height: 100, marginBottom: 10, marginTop: 20 }}
             source={require("../Image/logo_1.png")}
           />
-          <View
-            style={{
-              width: "100%",
-              gap: 10,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                textAlign: "center",
-                justifyContent: "center",
-                fontSize: 30,
-              }}
-            >
-              Tạo tài khoản
-            </Text>
+          <View style={styles.formContainer}>
+            <Text style={styles.titleText}>Tạo tài khoản</Text>
             <TextInput
               style={styles.input}
               placeholder="Họ và tên"
-              onChangeText={(txt) => {
-                setname(txt);
-              }}
-              autoCapitalize="none"
+              onChangeText={setname}
             />
             <TextInput
               style={styles.input}
               placeholder="E-mail"
-              onChangeText={(txt) => {
-                setemail(txt);
-              }}
-              autoCapitalize="none"
+              onChangeText={setemail}
             />
-             <TextInput
+            <TextInput
               style={styles.input}
               placeholder="Số điện thoại"
               onChangeText={(txt) => {
@@ -138,8 +121,47 @@ const Register = (props) => {
               }}
               autoCapitalize="none"
             />
+            <View style={styles.input}>
+              <TextInput
+                style={{ width: "90%" }}
+                secureTextEntry={showPass}
+                placeholder="Nhập mật khẩu"
+                onChangeText={setpass}
+                value={pass}
+              />
+              <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+                <Image
+                  style={styles.icon}
+                  source={
+                    showPass
+                      ? require("../Image/invisible.png")
+                      : require("../Image/visible.png")
+                  }
+                />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.input}>
+              <TextInput
+                style={{ width: "90%" }}
+                secureTextEntry={showPass2}
+                placeholder="Nhập lại mật khẩu"
+                onChangeText={setpass2}
+                value={pass2}
+              />
+              <TouchableOpacity onPress={() => setShowPass2(!showPass2)}>
+                <Image
+                  style={styles.icon}
+                  source={
+                    showPass2
+                      ? require("../Image/invisible.png")
+                      : require("../Image/visible.png")
+                  }
+                />
+              </TouchableOpacity>
+            </View>
             <Text
-              style={{ textAlign: "center", marginBottom: 10, marginTop: 10 }}
+              style={{ textAlign: "center", marginBottom: 5, marginTop: 5 }}
             >
               Để đăng ký tài khoản, bạn đồng ý
               <Text style={{ textDecorationLine: "underline", color: "green" }}>
@@ -151,40 +173,25 @@ const Register = (props) => {
               </Text>
             </Text>
             <TouchableOpacity onPress={addUser} style={styles.btn}>
-              <Text
-                style={{ fontWeight: "bold", fontSize: 20, color: "white" }}
-              >
-                Đăng ký
-              </Text>
+              <Text style={styles.btnText}>Đăng ký</Text>
             </TouchableOpacity>
-            <Text style={{ textAlign: "center", color: "green" }}>
-              ________________Hoặc________________
-            </Text>
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Text style={styles.dividerText}>________________Hoặc________________</Text>
+            <View style={styles.socialIcons}>
               <TouchableOpacity>
-                <Image
-                  style={styles.image}
-                  source={require("../Image/google.png")}
-                />
+                <Image style={styles.image} source={require("../Image/google.png")} />
               </TouchableOpacity>
-
               <TouchableOpacity>
-                <Image
-                  style={[styles.image, { marginLeft: 40 }]}
-                  source={require("../Image/facebook.png")}
-                />
+                <Image style={[styles.image, { marginLeft: 40 }]} source={require("../Image/facebook.png")} />
               </TouchableOpacity>
             </View>
             <View style={styles.text}>
               <Text>Tôi đã có tài khoản.</Text>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate("LoginScreen")}
-              >
-                <Text style={{ color: "green", marginLeft: 3 }}>Đăng nhập</Text>
+              <TouchableOpacity onPress={() => props.navigation.navigate("LoginScreen")}>
+                <Text style={styles.loginText}>Đăng nhập</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -194,11 +201,22 @@ export default Register;
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    width: "100%",
+    flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFDF8",
+    paddingBottom: 20,
+  },
+  formContainer: {
+    width: "100%",
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  titleText: {
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 30,
   },
   input: {
     borderRadius: 10,
@@ -209,6 +227,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  icon: {
+    width: 25,
+    height: 25,
+    marginTop: 1,
+  },
+  termsText: {
+    textAlign: "center",
+    marginBottom: 5,
+    marginTop: 5,
+  },
+  linkText: {
+    textDecorationLine: "underline",
+    color: "green",
+  },
   btn: {
     width: "90%",
     height: 55,
@@ -217,23 +249,37 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#ffff", // Màu của bóng
+    shadowColor: "#000",
     shadowOffset: {
-      width: -10, // Độ lệch bóng theo chiều ngang, âm là bóng từ trái
-      height: 5, // Độ lệch bóng theo chiều dọc
+      width: 0,
+      height: 5,
     },
-    shadowOpacity: 0.1, // Độ mờ của bóng
-    shadowRadius: 50, // Bán kính của bóng
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+  },
+  btnText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
+  },
+  dividerText: {
+    textAlign: "center",
+    color: "green",
+  },
+  socialIcons: {
+    flexDirection: "row",
+    justifyContent: "center",
   },
   image: {
     width: 50,
     height: 50,
-    justifyContent: "space-around",
-    alignItems: "center",
   },
   text: {
     flexDirection: "row",
     justifyContent: "center",
   },
-
+  loginText: {
+    color: "green",
+    marginLeft: 3,
+  },
 });
