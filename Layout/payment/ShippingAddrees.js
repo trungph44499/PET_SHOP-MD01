@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'react-native';
 
 const ShippingAddress = ({ navigation }) => {
   const [shippingAddresses, setShippingAddresses] = useState([]);
@@ -30,7 +31,7 @@ const ShippingAddress = ({ navigation }) => {
       }
 
       // Sử dụng một key duy nhất cho địa chỉ giao hàng, tránh trùng với phương thức thanh toán
-      const storedShippingAddresses = await AsyncStorage.getItem(emailUser + '_shippingAddresses'); 
+      const storedShippingAddresses = await AsyncStorage.getItem(emailUser + '_shippingAddresses');
       if (storedShippingAddresses) {
         setShippingAddresses(JSON.parse(storedShippingAddresses));
       }
@@ -57,9 +58,9 @@ const ShippingAddress = ({ navigation }) => {
 
   // Hàm chỉnh sửa địa chỉ giao hàng
   const editShippingAddress = (address, index) => {
-    navigation.navigate('AddShippingAddrees', { 
-      emailUser, 
-      setShippingAddresses, 
+    navigation.navigate('AddShippingAddrees', {
+      emailUser,
+      setShippingAddresses,
       address, // Chuyển thông tin địa chỉ giao hàng cần chỉnh sửa
       index,   // Chuyển index để biết là chỉnh sửa item nào
     });
@@ -112,33 +113,46 @@ const ShippingAddress = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Danh sách địa chỉ giao hàng</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Image style={styles.icon} source={require('../../Image/back.png')} />
+        </TouchableOpacity>
+        <Text style={styles.title}>Danh sách địa chỉ giao hàng</Text>
+      </View>
 
       <FlatList
         data={shippingAddresses}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
-
-      <Button
-        title="Thêm địa chỉ giao hàng"
+      <TouchableOpacity
+        style={styles.addButton}
         onPress={() => navigation.navigate('AddShippingAddrees', { emailUser, setShippingAddresses })}
-      />
+      >
+        <Image style={styles.addIcon} source={require('../../Image/add.png')} />
+      </TouchableOpacity>
     </View>
   );
 };
 
+export default ShippingAddress;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    top: 0,
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    flex: 1,
     textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  bold: {
+    fontWeight: 'bold',
   },
   addressContainer: {
     marginBottom: 20,
@@ -149,9 +163,6 @@ const styles = StyleSheet.create({
   addressText: {
     fontSize: 16,
     marginVertical: 5,
-  },
-  bold: {
-    fontWeight: 'bold',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -182,6 +193,34 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
+  },
+  icon: {
+    width: 20,
+    height: 20,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addIcon: {
+    width: 25,
+    height: 25,
+    tintColor: 'white',
+  },
 });
-
-export default ShippingAddress;
