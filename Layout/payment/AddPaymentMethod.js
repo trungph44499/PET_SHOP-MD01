@@ -13,7 +13,7 @@ const AddPaymentMethod = ({ route, navigation }) => {
 
 
   const handleCardNumberChange = (text) => {
-    if (text.length <= 16) {
+    if (text.length <= 16) {  
       setCardNumber(text);
     }
   };

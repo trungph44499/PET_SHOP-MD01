@@ -123,22 +123,15 @@ const ProfileScreen = ({ navigation, route }) => {
           <TouchableOpacity onPress={() => navigation.navigate("PaymentMethod")}>
             <Text>Phương thức thanh toán</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("ShippingAddrees")}>
+            <Text>Shipping Addresses</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("history-pay")}>
             <Text>Lịch sử mua hàng</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.option}>
-          <Text style={styles.textGray}>
-            Bảo mật và điều khoản
-            {"\n"}_________________________________________________
-          </Text>
-          <Text onPress={() => navigation.navigate("PaymentMethod")}>
-            Payment Method
-          </Text>
-          <Text onPress={() => navigation.navigate("ShippingAddrees")}>
-            Shipping Addresses
-          </Text>
           <Text
             style={{ color: "red" }}
             onPress={() => {

@@ -105,7 +105,7 @@ const PaymentMethod = ({ navigation }) => {
             style={styles.deleteIconContainer}
             onPress={() => deletePaymentMethod(index)} // Gọi hàm xóa khi nhấn nút
           >
-            <Image style={styles.deleteIcon} source={require('../../Image/delete.png')} />
+            <Image style={styles.deleteIcon} source={require('../../Image/cancel.png')} />
           </TouchableOpacity>
         <View style={styles.cardHeader}>
           {/* <Image
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
   deleteIcon: {
     width: 25,
     height: 25,
-    tintColor: 'red',
+    tintColor: 'black',
   },
   deleteIconContainer: {
     padding: 5,
