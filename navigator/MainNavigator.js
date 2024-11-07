@@ -20,6 +20,7 @@ import FinalBill from "../Layout/FinalBill";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
 import HistoryPay from "../Layout/history-pay/HistoryPay";
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -114,6 +115,7 @@ const MainNavigator = () => {
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="Payment2" component={Payment2} />
       <Stack.Screen name="history-pay" component={HistoryPay} />
+      
     </Stack.Navigator>
   );
 };

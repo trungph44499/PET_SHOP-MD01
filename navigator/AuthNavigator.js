@@ -7,6 +7,7 @@ import LoginScreen from '../Layout/LoginScreen';
 import ForgotPassword  from '../Layout/ForgotPassword';
 import ResetPassword  from '../Layout/ResetPassword';
 import OtpScreen  from '../Layout/OtpScreen';
+import ProfileScreen from '../Layout/ProfileScreen';
 
 const AuthNavigator = () => {
 
@@ -21,6 +22,7 @@ const AuthNavigator = () => {
             <Stack.Screen name='OtpScreen' component={OtpScreen} />
             <Stack.Screen name='ResetPassword' component={ResetPassword} />
         </Stack.Navigator>
+        // <ProfileScreen/>
     )
 }
 
