@@ -105,23 +105,6 @@ const Register = (props) => {
               autoCapitalize="none"
               keyboardType='numeric'
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              onChangeText={(txt) => {
-                setpass(txt);
-              }}
-              autoCapitalize="none"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Nhập lại Password"
-              onChangeText={(txt) => {
-                setpass2(txt);
-              }}
-              autoCapitalize="none"
-
-            />
             <View style={styles.input}>
               <TextInput
                 style={{ width: "90%" }}

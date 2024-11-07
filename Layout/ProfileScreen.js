@@ -46,6 +46,7 @@ const ProfileScreen = ({ navigation, route }) => {
       });
       if (status == 200) {
         setUser(...response);
+        
       }
     } catch (error) {
       console.log(error);

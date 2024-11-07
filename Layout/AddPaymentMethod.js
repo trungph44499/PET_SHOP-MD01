@@ -1,11 +1,15 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ScrollView, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { URL } from './HomeScreen';
 
-const AddPaymentMethod = ({ navigation }) => {
+const AddPaymentMethod = ({ navigation, route }) => {
     const [cardNumber, setCardNumber] = useState('');
     const [cardHolder, setCardHolder] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
+    const [userEmail, setUserEmail] = useState('');
 
     const handleExpiryDateChange = (text) => {
         if (text.length === 0) {
@@ -25,11 +29,12 @@ const AddPaymentMethod = ({ navigation }) => {
             } else {
                 setExpiryDate(text);
             }
+        } else if (text.length === 3 && text[2] !== '/') {
+            setExpiryDate(text.slice(0, 2) + '/' + text[2]);
         } else {
             setExpiryDate(text);
         }
-    };
-    
+    };    
     const handleCardNumberChange = (text) => {
         if (text.length <= 16) {
             setCardNumber(text);
@@ -45,10 +50,36 @@ const AddPaymentMethod = ({ navigation }) => {
         return number.replace(/(\d{4})(?=\d)/g, '$1 ');
     };
 
-    const handleAddCard = () => {
-            Alert.alert('Thành công', 'Thẻ đã được thêm thành công');
-
+    const handleAddCard = async () => {
+        if (!cardNumber || !cardHolder || !expiryDate || !cvv) {
+            Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+        if (cardNumber.length < 16) {
+            Alert.alert('Lỗi', 'Vui lòng điền đầy số thẻ');
+            return;
+        }
+    
+        
     };
+    
+    const retrieveUserData = async () => {
+        try {
+            const userData = await AsyncStorage.getItem('@UserLogin');
+            if (userData) {
+                setUserEmail(userData);
+                console.log('User Email:', userData);
+            } else {
+                console.log('No user email found');
+            }
+        } catch (error) {
+            console.log('Error retrieving user email:', error);
+        }
+    };
+
+    useEffect(() => {
+        retrieveUserData();
+    }, []);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

@@ -1,7 +1,39 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useEffect, useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { URL } from "./HomeScreen";
+import { useFocusEffect } from '@react-navigation/native';
 
-const PaymentMethod = ({ navigation }) => {
+const PaymentMethod = ({ navigation, route }) => {
+    // const [user, setUser] = useState({});
+
+    // const retrieveData = async () => {
+    //     try {
+    //         const userData = await AsyncStorage.getItem("@UserLogin");
+
+    //         const {
+    //             status,
+    //             data: { response },
+    //         } = await axios.post(`${URL}/users/getUser`, {
+    //             email: userData,
+    //         });
+    //         if (status == 200) {
+    //             setUser(...response);
+    //             console.log("User ID:", response.emai);
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+    // useFocusEffect(
+    //     useCallback(() => {
+    //       retrieveData();
+    //     }, [])
+    //   );
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -16,13 +48,10 @@ const PaymentMethod = ({ navigation }) => {
             >
                 <Image style={styles.addIcon} source={require('../Image/add.png')} />
             </TouchableOpacity>
-            <View>
-                
-            </View>
+
         </View>
     );
 };
-
 export default PaymentMethod;
 
 const styles = StyleSheet.create({
