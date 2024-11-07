@@ -6,7 +6,6 @@ const PaymentMethod = ({ navigation }) => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [emailUser, setEmailUser] = useState('');
 
-  // Hàm lấy email người dùng từ AsyncStorage
   const fetchUserEmail = async () => {
     try {
       const userEmail = await AsyncStorage.getItem('@UserLogin');
@@ -21,7 +20,6 @@ const PaymentMethod = ({ navigation }) => {
     }
   };
 
-  // Hàm lấy phương thức thanh toán từ AsyncStorage
   const fetchPaymentMethods = async () => {
     try {
       if (!emailUser) {
@@ -29,7 +27,6 @@ const PaymentMethod = ({ navigation }) => {
         return;
       }
 
-      // Sử dụng emailUser + '_paymentMethods' làm key riêng cho phương thức thanh toán
       const storedPaymentMethods = await AsyncStorage.getItem(emailUser + '_paymentMethods');
       if (storedPaymentMethods) {
         setPaymentMethods(JSON.parse(storedPaymentMethods));
@@ -39,7 +36,6 @@ const PaymentMethod = ({ navigation }) => {
     }
   };
 
-  // Hàm xóa phương thức thanh toán
   const deletePaymentMethod = async (index) => {
     Alert.alert(
       'Xác nhận',
@@ -53,12 +49,11 @@ const PaymentMethod = ({ navigation }) => {
           text: 'Xóa',
           onPress: async () => {
             const updatedPaymentMethods = [...paymentMethods];
-            updatedPaymentMethods.splice(index, 1); // Xóa phương thức thanh toán tại index
+            updatedPaymentMethods.splice(index, 1);
 
             try {
-              // Cập nhật lại danh sách phương thức thanh toán trong AsyncStorage
               await AsyncStorage.setItem(emailUser + '_paymentMethods', JSON.stringify(updatedPaymentMethods));
-              setPaymentMethods(updatedPaymentMethods); // Cập nhật lại trạng thái trong ứng dụng
+              setPaymentMethods(updatedPaymentMethods);
               Alert.alert('Thành công', 'Phương thức thanh toán đã được xóa');
             } catch (error) {
               console.error('Lỗi khi xóa phương thức thanh toán:', error);
@@ -71,19 +66,24 @@ const PaymentMethod = ({ navigation }) => {
     );
   };
 
-  // Hàm chỉnh sửa phương thức thanh toán
   const editPaymentMethod = (paymentMethod, index) => {
     navigation.navigate('AddPaymentMethod', {
       emailUser,
       setPaymentMethods,
-      paymentMethod, // Chuyển thông tin phương thức thanh toán cần chỉnh sửa
-      index,         // Chuyển index để biết là chỉnh sửa item nào
+      paymentMethod,
+      index,
     });
   };
 
   useEffect(() => {
     fetchUserEmail();
   }, []);
+
+  useEffect(() => {
+    if (emailUser) {
+      fetchPaymentMethods();
+    }
+  }, [emailUser]);
 
   useEffect(() => {
     if (emailUser) {
@@ -144,24 +144,20 @@ const PaymentMethod = ({ navigation }) => {
           <Image style={styles.icon} source={require('../../Image/back.png')} />
         </TouchableOpacity>
         <Text style={styles.headerText}>Danh sách phương thức thanh toán</Text>
-        
       </View>
+      
       <FlatList
         data={paymentMethods}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.listContentContainer}
       />
-
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => navigation.navigate('AddPaymentMethod', { emailUser, setPaymentMethods })}
       >
         <Image style={styles.addIcon} source={require('../../Image/add.png')} />
       </TouchableOpacity>
-      {/* <Button
-        title="Thêm phương thức thanh toán"
-        onPress={() => navigation.navigate('AddPaymentMethod', { emailUser, setPaymentMethods })}
-      /> */}
     </View>
   );
 };
@@ -171,7 +167,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 20,
     top: 0,
     backgroundColor: '#fff',
   },
