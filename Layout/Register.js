@@ -120,6 +120,7 @@ const Register = (props) => {
                 setpass2(txt);
               }}
               autoCapitalize="none"
+
             />
             <View style={styles.input}>
               <TextInput

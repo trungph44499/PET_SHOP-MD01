@@ -17,8 +17,12 @@ function Main() {
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
 
-  websocket.onmessage = function (data) {
-    getAllPetCare();
+  websocket.onmessage = function (result) {
+    const data = JSON.parse(result.data);
+    
+    if (data.type == "pet-care") {
+      getAllPetCare();
+    }
   };
 
   async function getAllPetCare() {

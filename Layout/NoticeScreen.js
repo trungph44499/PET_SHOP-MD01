@@ -45,21 +45,22 @@ const NoticeScreen = ({ navigation, route }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate('OrderDetails', { order: item })}>
-        <View>
-          <Text>{formatDate(item.ngayMua)}</Text>
-          <View style={styles.item}>
-            <Image source={{ uri: item.products[0]?.img }} style={styles.image} />
-            <View style={{ padding: 20, justifyContent: 'space-between', gap: 10 }}>
-              {item.status == 0 ? <Text style={{ color: 'green', fontSize: 16, fontWeight: 'bold' }}>Đặt hàng thành công</Text>
-                : <Text style={{ color: 'red', fontSize: 16, fontWeight: 'bold' }}>Đã hủy đơn hàng</Text>}
-              <Text>{item.products[0]?.name}</Text>
-              <Text>Mua {item.products.length} sản phẩm</Text>
-              <Text>Tổng tiền : {formatPrice(item.total)}</Text>
-            </View>
+      <View>
+        <Text>{formatDate(item.ngayMua)}</Text>
+        <View style={styles.item}>
+          <Image source={{ uri: Dog?.img || Cat?.img || PhuKien?.img }} style={styles.image} />
+          <View style={{ padding: 20, justifyContent: 'space-between', gap: 10}}>
+            {item.status == 0 ? <Text style={{ color: 'green', fontSize: 16, fontWeight: 'bold' }}>Đặt hàng thành công</Text>
+              : <Text style={{ color: 'red', fontSize: 16, fontWeight: 'bold' }}>Đã hủy đơn hàng</Text>}
+            <Text>{Dog?.name || Cat?.name || PhuKien?.name}
+              {/* <Text style={{ color: 'gray' }}>{'\n'}{Dog?.id}
+              </Text> */}
+            </Text>
+            <Text>Mua {sl} sản phẩm</Text>
+            <Text>Tổng tiền : {formatPrice(item.total)}</Text>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 

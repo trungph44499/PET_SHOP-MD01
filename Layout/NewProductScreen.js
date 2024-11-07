@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     gap: 16,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold", // Làm cho chữ đậm hơn
     backgroundColor: "#e0f7e0", // Nền màu nhẹ
     borderRadius: 5, // Bo góc
-    padding: 2, // Thêm khoảng cách bên trong
+    padding: 5, // Thêm khoảng cách bêntrong
     marginLeft: 5, // Khoảng cách với tên sản phẩm
   },
   itemRow: {

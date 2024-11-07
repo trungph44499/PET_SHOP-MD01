@@ -74,7 +74,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
             borderRadius: 5,
           }}
         >
-          <Text style={{ color: showNewOnly ? "#7D7B7B" : "#FFFFFF" }}>Tất cả</Text>
+          <Text style={{ color: showNewOnly ? "#7D7B7B" : "#FFFFFF", fontWeight: "bold" }}>Tất cả</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -85,7 +85,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
             borderRadius: 5,
           }}
         >
-          <Text style={{ color: showNewOnly ? "#FFFFFF" : "#7D7B7B" }}>Hàng mới về</Text>
+          <Text style={{ color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Hàng mới về</Text>
         </TouchableOpacity>
       </View>
 
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     gap: 16,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: "row",
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold", // Làm cho chữ đậm hơn
     backgroundColor: "#e0f7e0", // Nền màu nhẹ
     borderRadius: 5, // Bo góc
-    padding: 2, // Thêm khoảng cách bên trong
+    padding: 5, // Thêm khoảng cách bên trong
     marginLeft: 5, // Khoảng cách với tên sản phẩm
   },
   itemRow: {

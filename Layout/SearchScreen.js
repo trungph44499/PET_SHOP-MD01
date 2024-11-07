@@ -1,36 +1,37 @@
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid, Image, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
-import { URL } from './HomeScreen';
+import { URL } from './HomeScreen'; // Đảm bảo URL đã được định nghĩa
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { numberUtils } from './utils/stringUtils';
 
 const SearchScreen = ({ navigation }) => {
   const [txtSearch, setTxtSearch] = useState('');
   const [products, setProducts] = useState([]);
   const [emailUser, setEmailUser] = useState('');
   const [loading, setLoading] = useState(false);
-  const [ListSearch, setListSearch] = useState([]);
+  const [ListSearch, setListSearch] = useState([]); // Lịch sử tìm kiếm
 
   useEffect(() => {
     const fetchUserEmail = async () => {
       const userEmail = await AsyncStorage.getItem('@UserLogin');
       setEmailUser(userEmail);
-      fetchSearchHistory(userEmail); // Fetch history on user email change
     };
-    fetchUserEmail();
-  }, []);
 
-  const fetchSearchHistory = async (emailUser) => {
-    if (emailUser) {
-      try {
-        const response = await axios.get(`${URL}/searchs/history`, { params: { emailUser } });
-        setListSearch(response.data || []);
-      } catch (error) {
-        console.error("Lỗi khi lấy lịch sử tìm kiếm:", error);
+    const fetchSearchHistory = async () => {
+      if (emailUser) {
+        try {
+          const response = await axios.get(`${URL}/searchs/history`, { params: { emailUser } });
+          setListSearch(response.data || []);
+        } catch (error) {
+          console.error("Lỗi khi lấy lịch sử tìm kiếm:", error);
+        }
       }
-    }
-  };
+    };
+
+    fetchUserEmail();
+    fetchSearchHistory();
+  }, [emailUser]);
 
   useEffect(() => {
     const searchProducts = async () => {
@@ -41,7 +42,6 @@ const SearchScreen = ({ navigation }) => {
             params: { txt: txtSearch, emailUser },
           });
           setProducts(response.data.response || []);
-          await fetchSearchHistory(emailUser); // Fetch history after search
         } catch (error) {
           console.error("Lỗi:", error.response ? error.response.data : error.message);
           ToastAndroid.show('Không thể tìm kiếm sản phẩm!', ToastAndroid.SHORT);
@@ -49,16 +49,16 @@ const SearchScreen = ({ navigation }) => {
           setLoading(false);
         }
       } else {
-        setProducts([]);
+        setProducts([]); // Clear products when search text is empty
       }
     };
 
     const delayDebounceFn = setTimeout(() => {
       searchProducts();
-    }, 300);
+    }, 300); // Thời gian trễ để tránh gửi yêu cầu quá nhiều
 
     return () => clearTimeout(delayDebounceFn);
-  }, [txtSearch, emailUser]);
+  }, [txtSearch]);
 
   const handleSetTxtSearch = (txt) => {
     setTxtSearch(txt);
@@ -68,7 +68,6 @@ const SearchScreen = ({ navigation }) => {
     try {
       await axios.delete(`${URL}/searchs/${_id}`);
       setListSearch(prev => prev.filter(item => item._id !== _id));
-      await fetchSearchHistory(emailUser); // Fetch history after deletion
     } catch (error) {
       console.error("Lỗi khi xóa lịch sử tìm kiếm:", error);
       ToastAndroid.show('Không thể xóa lịch sử tìm kiếm!', ToastAndroid.SHORT);
@@ -86,16 +85,17 @@ const SearchScreen = ({ navigation }) => {
         <TouchableOpacity onPress={resetSearch}>
           <Image style={{ width: 20, height: 20 }} source={require('../Image/reset.png')} />
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>TÌM KIẾM</Text>
-        <View style={{ width: 50 }}></View>
+        <Text style={styles.title}>TÌM KIẾM</Text>
+        <View style={{ width: 20 }}></View>
       </View>
 
       <View style={styles.search}>
         <TextInput
           onChangeText={handleSetTxtSearch}
           value={txtSearch}
-          placeholder='Tìm kiếm'
-          style={{ marginStart: 10, marginEnd: 10, flex: 1 }}
+          placeholder="Tìm kiếm"
+          placeholderTextColor="#999"
+          style={styles.searchInput}
         />
         <TouchableOpacity onPress={resetSearch}>
           <Image source={require('../Image/search.png')} style={styles.icon} />
@@ -104,21 +104,23 @@ const SearchScreen = ({ navigation }) => {
 
       <ScrollView style={styles.listSearch}>
         {loading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#A05E56" />
         ) : (
           <>
             {txtSearch === "" ? (
               <View style={{ gap: 10 }}>
-                <Text style={{ fontSize: 15 }}>Tìm kiếm gần đây</Text>
+                <Text style={styles.recentSearchTitle}>Tìm kiếm gần đây</Text>
                 <FlatList
                   scrollEnabled={false}
                   data={ListSearch}
-                  keyExtractor={item => item._id.toString()}
+                  keyExtractor={(item) => item._id.toString()}
                   renderItem={({ item }) => (
                     <View style={styles.searchHistory}>
-                      <View style={{ flexDirection: 'row', gap: 20 }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                         <Image style={styles.icon} source={require('../Image/clock.png')} />
-                        <Text onPress={() => handleSetTxtSearch(item.txt)}>{item.txt}</Text>
+                        <Text style={styles.historyText} onPress={() => handleSetTxtSearch(item.txt)}>
+                          {item.txt}
+                        </Text>
                       </View>
                       <TouchableOpacity onPress={() => deleteSearch(item._id)}>
                         <Image style={styles.icon} source={require('../Image/cancel.png')} />
@@ -130,27 +132,21 @@ const SearchScreen = ({ navigation }) => {
             ) : (
               <View>
                 {products.length === 0 ? (
-                  <Text style={{ fontSize: 15 }}>Không tìm thấy</Text>
+                  <Text style={styles.noResultText}>Không tìm thấy</Text>
                 ) : (
                   <View style={{ gap: 12 }}>
-                    <Text style={{ fontSize: 15 }}>Kết quả tìm kiếm</Text>
+                    <Text style={styles.resultTitle}>Kết quả tìm kiếm</Text>
                     <FlatList
                       scrollEnabled={false}
                       data={products}
-                      keyExtractor={item => item._id.toString()}
+                      keyExtractor={(item) => item._id.toString()}
                       renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => navigation.navigate('DetailScreen', { item })} style={styles.itemDog}>
                           <Image source={{ uri: item.img }} style={styles.itemImage} />
-                          <View style={{ flexDirection: 'column', marginLeft: 10, flex: 1 }}>
-                            <Text
-                              style={{ fontSize: 17, fontWeight: "600", flex: 1 }}
-                              numberOfLines={1}
-                              ellipsizeMode="tail"
-                            >
-                              {item.name}
-                            </Text>
-                            <Text style={{ fontSize: 16, color: 'red', flex: 1, fontWeight: "600" }}>{numberUtils(item.price)}</Text>
-                            <Text style={{ fontSize: 16, fontWeight: "thin", flex: 1 }}>Còn {item.quantity} sp</Text>
+                          <View style={{ gap: 5 }}>
+                            <Text style={styles.productName}>{item.name}</Text>
+                            <Text style={styles.productPrice}>{item.price} đ</Text>
+                            <Text style={styles.productQuantity}>Còn {item.quantity} sp</Text>
                           </View>
                         </TouchableOpacity>
                       )}
@@ -168,48 +164,71 @@ const SearchScreen = ({ navigation }) => {
 
 export default SearchScreen;
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    gap: 16
+    backgroundColor: '#FFFFFF',
+    gap: 16,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20
+    paddingVertical: 20,
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
   },
   search: {
     width: '100%',
-    borderRadius: 8,
-    borderWidth: 1,
     flexDirection: 'row',
-    padding: 10
+    borderRadius: 12,
+    padding: 12,
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.35,
+    elevation: 10, // Giảm độ cao bóng trên Android để cân đối
   },
-  searchHistory: {
-    padding: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+  searchInput: {
+    flex: 1,
+    marginStart: 10,
+    marginEnd: 10,
+    fontSize: 16,
+    color: '#333',
   },
   icon: {
     width: 24,
-    height: 24
+    height: 24,
+    tintColor: '#A05E56',
   },
   listSearch: {
-    gap: 12,
     flexGrow: 1,
   },
-  itemDog: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    alignItems: "center",
-    width: "95%",
-    borderRadius: 12,
-    padding: 20,
-    margin: 10,
-    gap: 10,
+  recentSearchTitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#555',
+    marginBottom: 10,
+  },
+  searchHistory: {
+    padding: 10,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: 8,
     shadowColor: "black",
     shadowOffset: {
       width: 0,
@@ -218,11 +237,58 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.35,
     elevation: 10,
-    flexShrink: 1,
+  },
+  historyText: {
+    width: "50%",
+    fontSize: 16,
+    color: '#333',
+  },
+  noResultText: {
+    fontSize: 16,
+    color: '#999',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  resultTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#555',
+    marginBottom: 10,
+  },
+  itemDog: {
+    padding: 15,
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    alignItems: 'center',
+    flexDirection: 'row',
+    margin: 10,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.35,
+    elevation: 10,
   },
   itemImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 12
+    width: 80,
+    height: 80,
+    borderRadius: 12,
+    marginRight: 15,
+  },
+  productName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  productPrice: {
+    fontSize: 16,
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  productQuantity: {
+    fontSize: 14,
+    color: '#666',
   },
 });

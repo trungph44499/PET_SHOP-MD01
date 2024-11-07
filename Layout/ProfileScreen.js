@@ -59,14 +59,14 @@ const ProfileScreen = ({ navigation, route }) => {
   );
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#FFFFFF'}}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Image
-              style={styles.icon}
-              source={require("../Image/back.png")}
-            />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Image style={styles.icon} source={require("../Image/back.png")} />
           </TouchableOpacity>
           <Text style={styles.headerText}>PROFILE</Text>
         </View>
@@ -74,19 +74,19 @@ const ProfileScreen = ({ navigation, route }) => {
         <View style={styles.infor}>
           <Image
             source={
-              user.avatar ? { uri: user.avatar } : require("../Image/pesonal.png")
+              user.avatar
+                ? { uri: user.avatar }
+                : require("../Image/pesonal.png")
             }
-            style={{ width: 100, height: 100, borderRadius: 100 }}
+            style={{ width: 80, height: 80, borderRadius: 40 }}
           />
-          <View style={{ marginLeft: 20 }}>
+          <View style={{ marginLeft: 10 }}>
+
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
               {user.fullname}
             </Text>
             <Text style={{ fontSize: 16, fontWeight: "thin" }}>
               {user.email}
-            </Text>
-            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
-              {user.sdt}
             </Text>
           </View>
         </View>
@@ -104,7 +104,10 @@ const ProfileScreen = ({ navigation, route }) => {
                 onPressOut={handlePressOut}
                 onPress={() => navigation.navigate("Petcare")}
               >
-                <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
+                <Image
+                  source={require("../Image/dog_care.png")}
+                  style={styles.starImage}
+                />
                 <Text style={styles.buttonText}>Pet care</Text>
               </TouchableOpacity>
             </Animated.View>
@@ -114,12 +117,14 @@ const ProfileScreen = ({ navigation, route }) => {
             Chỉnh sửa thông tin
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate("PassReset")}>
-            <Text>
-              Đổi mật khẩu
-            </Text>
+            <Text>Đổi mật khẩu</Text>
           </TouchableOpacity>
-
-          <Text>Q & A</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("PaymentMethod")}>
+            <Text>Phương thức thanh toán</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("history-pay")}>
+            <Text>Lịch sử mua hàng</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.option}>
@@ -177,20 +182,20 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 20,
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     zIndex: 1,
   },
   headerText: {
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   icon: {
     width: 20,
@@ -212,28 +217,28 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     marginLeft: 5,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   background: {
     width: 200,
     height: 45,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 10,
-    overflow: 'hidden',
-    position: 'relative',
+    overflow: "hidden",
+    position: "relative",
   },
   button: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: '#fcd4db',
+    backgroundColor: "#fcd4db",
     borderRadius: 20,
     padding: 10,
   },
   buttonText: {
     fontSize: 14,
-    color: 'black',
-    marginLeft: 10
+    color: "black",
+    marginLeft: 10,
   },
 });

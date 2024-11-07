@@ -4,7 +4,7 @@ const paymentSchema = new mongoose.Schema({
   location: String,
   number: String,
   products: [],
-  status: { default: false, type: Boolean },
+  status: { default: "pending", type: String },//pending,success,reject
 });
 
 const paymentModel = mongoose.model("payments", paymentSchema);

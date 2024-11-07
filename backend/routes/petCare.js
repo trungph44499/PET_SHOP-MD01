@@ -13,10 +13,10 @@ router.post("/add", async (req, res) => {
       message: message,
     });
     if (result.length > 0) {
-      res.status(200).json({ response: "Post require completed", type: true });
+      res.status(200).json({ response: "Đăng ký dịch vụ thành công", type: true });
       return;
     }
-    res.status(200).json({ response: "Post require failed", type: false });
+    res.status(200).json({ response: "Đăng ký dịch vụ thất bại", type: false });
   } catch (error) {
     console.log(error);
   }
