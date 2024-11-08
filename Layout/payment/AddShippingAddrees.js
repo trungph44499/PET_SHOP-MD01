@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddShippingAddrees = ({ route, navigation }) => {
@@ -71,7 +71,12 @@ const AddShippingAddrees = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{address ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Image style={styles.icon} source={require('../../Image/back.png')} />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>{address ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}</Text>
+      </View>
 
       <TextInput
         style={styles.input}
@@ -98,8 +103,11 @@ const AddShippingAddrees = ({ route, navigation }) => {
         value={city}
         onChangeText={setCity}
       />
-
-      <Button title="Lưu" onPress={saveAddress} />
+{/* 
+      <Button title="Lưu" onPress={saveAddress} /> */}
+      <TouchableOpacity style={styles.submitButton} onPress={saveAddress}>
+        <Text style={styles.submitText}>Lưu</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -107,14 +115,30 @@ const AddShippingAddrees = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    top: 0,
     backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
+  },
+  headerText: {
+    flex: 1,
     textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
   input: {
     borderWidth: 1,
@@ -122,6 +146,18 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 15,
     borderRadius: 5,
+  },
+  submitButton: {
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  submitText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
