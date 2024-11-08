@@ -23,6 +23,7 @@ import AddShippingAddrees from "../Layout/payment/AddShippingAddrees";
 import PaymentMethod from "../Layout/payment/PaymentMethod";
 import ShippingAddrees from "../Layout/payment/ShippingAddrees";
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -121,6 +122,7 @@ const MainNavigator = () => {
       <Stack.Screen name="AddShippingAddrees" component={AddShippingAddrees} />
       <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
       <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
+
 
     </Stack.Navigator>
   );

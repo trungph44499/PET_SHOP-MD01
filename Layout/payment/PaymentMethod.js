@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const PaymentMethod = ({ navigation }) => {
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [emailUser, setEmailUser] = useState('');
+  const [checkRemember, setCheckRemember] = useState(false);
 
   const fetchUserEmail = async () => {
     try {
@@ -99,16 +100,16 @@ const PaymentMethod = ({ navigation }) => {
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity onPress={() => editPaymentMethod(item, index)} style={styles.paymentMethodContainer}>
-      
-      <View style={styles.cardPreview}>
-        <TouchableOpacity
+      <View>
+        <View style={styles.cardPreview}>
+          <TouchableOpacity
             style={styles.deleteIconContainer}
             onPress={() => deletePaymentMethod(index)} // Gọi hàm xóa khi nhấn nút
           >
             <Image style={styles.deleteIcon} source={require('../../Image/cancel.png')} />
           </TouchableOpacity>
-        <View style={styles.cardHeader}>
-          {/* <Image
+          <View style={styles.cardHeader}>
+            {/* <Image
             source={require('../../Image/chip.png')} // Bạn cần thêm hình ảnh chip thẻ
             style={styles.chipImage}
           />
@@ -116,24 +117,40 @@ const PaymentMethod = ({ navigation }) => {
             source={require('../../Image/visa.png')} // Bạn cần thêm logo visa
             style={styles.visaLogo}
           /> */}
-          
-        </View>
 
-        <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
-        <Text style={styles.cardNumber}>{formatCardNumber(item.cardNumber)}</Text>
-
-        <View style={styles.cardFooter}>
-          <View>
-            <Text style={styles.cardLabel}>CHỦ THẺ</Text>
-            <Text style={styles.cardValueName}>{item.cardHolderName}</Text>
           </View>
 
-          <View>
-            <Text style={styles.cardLabel}>HẾT HẠN</Text>
-            <Text style={styles.cardValue}>{item.expirationDate}</Text>
+          <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
+          <Text style={styles.cardNumber}>{formatCardNumber(item.cardNumber)}</Text>
+
+          <View style={styles.cardFooter}>
+            <View>
+              <Text style={styles.cardLabel}>CHỦ THẺ</Text>
+              <Text style={styles.cardValueName}>{item.cardHolderName}</Text>
+            </View>
+
+            <View>
+              <Text style={styles.cardLabel}>HẾT HẠN</Text>
+              <Text style={styles.cardValue}>{item.expirationDate}</Text>
+            </View>
           </View>
         </View>
+        <View style={styles.checkbox}>
+          <TouchableOpacity
+            onPress={() => setCheckRemember(!checkRemember)}
+          >
+            <Image
+              style={{ width: 20, height: 20 }}
+              source={
+                checkRemember
+                  ? require("../../Image/check-box.png")
+                  : require("../../Image/square.png")
+              }
+            />
+          </TouchableOpacity>
+          <Text style={{ marginLeft: 10 }}>Use as default payment method</Text>
         </View>
+      </View>
     </TouchableOpacity>
   );
 
@@ -145,7 +162,7 @@ const PaymentMethod = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>Danh sách phương thức thanh toán</Text>
       </View>
-      
+
       <FlatList
         data={paymentMethods}
         renderItem={renderItem}
@@ -257,7 +274,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#242424', // Màu xanh của Visa
     borderRadius: 16,
     padding: 24,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   cardHeader: {
     // flexDirection: 'row',
@@ -341,6 +358,11 @@ const styles = StyleSheet.create({
     right: 0,
     borderRadius: 50,
   },
+  checkbox: {
+     flexDirection: "row",
+     marginBottom: 20,
+     
+  }
 });
 
 export default PaymentMethod;
