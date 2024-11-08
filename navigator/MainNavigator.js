@@ -19,6 +19,7 @@ import Payment2 from "../Layout/Payment2";
 import FinalBill from "../Layout/FinalBill";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
 import HistoryPay from "../Layout/history-pay/HistoryPay";
+import Profilesetting from "../Layout/Profilesetting";
 
 
 const Tab = createBottomTabNavigator();
@@ -115,7 +116,7 @@ const MainNavigator = () => {
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="Payment2" component={Payment2} />
       <Stack.Screen name="history-pay" component={HistoryPay} />
-      
+      <Stack.Screen name="Profilesetting" component={Profilesetting} />
     </Stack.Navigator>
   );
 };
