@@ -36,21 +36,24 @@ const NoticeScreen = ({ navigation }) => {
 
   function convertStatus(status) {
     var statusResult = "";
+    var statusColor = "";
     switch (status) {
       case "reject":
         statusResult = "Đã từ chối";
+        statusColor = "red";
         break;
       case "success":
         statusResult = "Đã xác nhận";
+        statusColor = "green";
         break;
       case "pending":
         statusResult = "Chờ xác nhận";
+        statusColor = "gray";
         break;
-
       default:
         break;
     }
-    return statusResult;
+    return { statusResult, statusColor };
   }
 
   function convertDate(date) {
@@ -78,11 +81,12 @@ const NoticeScreen = ({ navigation }) => {
       <View style={styles.bgitem}>
         <View style={styles.item}>
           <Image source={{ uri: item.image }} style={styles.image} />
-          <View style={{left:5}}>
-            <Text style={{ color: "green", fontSize: 16}}>{convertStatus(item.status)}
+          <View style={styles.textContainer}>
+            <Text style={{ fontSize: 16, color: convertStatus(item.status).statusColor, textTransform: 'uppercase' }}>
+              {convertStatus(item.status).statusResult}
             </Text>
-            <Text style={{ fontSize: 16 }}>{item.service.toUpperCase()}</Text>
-            <Text style={{ fontSize: 14 }}>{item.type}</Text>
+            <Text style={{ fontSize: 16, textTransform: 'uppercase' }}>{item.service.toUpperCase()}</Text>
+            <Text style={{ fontSize: 14, textTransform: 'uppercase' }}>{item.type}</Text>
             <Text>{convertDate(item.date)}</Text>
           </View>
         </View>
@@ -146,14 +150,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   image: {
-    width: 75,
-    height: 75,
+    width: 80,
+    height: 80,
     padding: 5,
     borderRadius: 10,
     borderWidth: 1,
   },
   item: {
-    height: 100,
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
@@ -163,7 +166,10 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
   },
-  bgitem:{
-    marginBottom : 10,
-  }
+  bgitem: {
+    marginBottom: 10,
+  },
+  textContainer: {
+    marginLeft: 10,
+  },
 });
