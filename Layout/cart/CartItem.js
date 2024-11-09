@@ -219,9 +219,9 @@ const styles = StyleSheet.create({
     height: 10,
   },
   btn: {
-    padding: 7,
+    padding: 8,
     borderRadius: 5,
-    borderWidth: 1,
     marginHorizontal: 2,
+    backgroundColor: "#E0E0E0"
   },
 });

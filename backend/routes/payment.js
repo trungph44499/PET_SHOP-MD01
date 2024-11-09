@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const paymentModel = require("../models/paymentModel");
+const notificationModel = require("../models/notification");
 
 router.get("/", async (req, res) => {
   try {
@@ -12,16 +13,31 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-  const { status, id } = req.body;
+  const { status, id, email, products } = req.body;
+  
   try {
     const result = await paymentModel.updateMany(
-      {  _id: id },
+      { _id: id },
       {
         status: status,
       }
     );
     if (result.matchedCount > 0) {
-      res.status(200).json({ response: "Update status complete!", type: true });
+      const resultNotification = await notificationModel.insertMany({
+        email: email,
+        image: products[0].image,
+        service: products[0].name,
+        status: status,
+        type: `${products.length} sản phẩm`,
+      });
+
+      if (resultNotification.length > 0) {
+        res
+          .status(200)
+          .json({ response: "Update status complete!", type: true });
+        return;
+      }
+      res.status(200).json({ response: "Update status failed!", type: false });
       return;
     }
     res.status(200).json({ response: "Update status failed!", type: false });
@@ -50,14 +66,22 @@ router.post("/add", async (req, res) => {
       products: products,
     });
     if (result.length > 0) {
-      res
-        .status(200)
-        .json({ response: "Thanh toán thành công!", type: true });
+      const resultNotification = await notificationModel.insertMany({
+        email: email,
+        image: products[0].image,
+        service: products[0].name,
+        type: `${products.length} sản phẩm`,
+      });
+      if (resultNotification.length > 0) {
+        res
+          .status(200)
+          .json({ response: "Gửi yêu cầu thành công!", type: true });
+        return;
+      }
+      res.status(200).json({ response: "Gửi yêu cầu thất bại!", type: false });
       return;
     }
-    res
-      .status(200)
-      .json({ response: "Thanh toán thất bại!", type: false });
+    res.status(200).json({ response: "Gửi yêu cầu thất bại!", type: false });
   } catch (error) {
     console.log(error);
   }

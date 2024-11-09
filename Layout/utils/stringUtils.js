@@ -6,3 +6,7 @@ export function numberUtils(x) {
 export function upperCaseFirstItem(string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
+export const validateSDT = (sdt) => {
+  const regex2 = /^(?:\+84|0)([0-9]{9})$/;
+  return regex2.test(sdt);
+};
