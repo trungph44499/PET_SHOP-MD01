@@ -21,21 +21,6 @@ const LoginScreen = (props) => {
   const [showPass, setShowPass] = useState(true);
   const [checkRemember, setCheckRemember] = useState(false);
 
-  useEffect(() => {
-    const checkUserLogin = async () => {
-      const savedUser = await AsyncStorage.getItem("User");
-      const rememberMe = await AsyncStorage.getItem("RememberMe");
-
-      if (savedUser && rememberMe === "true") {
-        // Nếu có thông tin người dùng và đã tick "Nhớ tài khoản", chuyển đến Main
-        /* khi tick vào nút nhớ tài khoản trước khi đăng nhập
-              thì lần đăng nhập tiếp theo sẽ chuyển vào màn home luôn */
-        props.navigation.navigate("Main");
-      }
-    };
-    checkUserLogin();
-  }, []);
-
   const CheckLogin = async () => {
     if (email === "") {
       ToastAndroid.show("Email không được bỏ trống", ToastAndroid.SHORT);
@@ -58,9 +43,7 @@ const LoginScreen = (props) => {
           if (checkRemember) {
             await AsyncStorage.setItem("User", email);
             await AsyncStorage.setItem("RememberMe", "true"); // Lưu trạng thái "Nhớ tài khoản"
-          } else {
-            await AsyncStorage.removeItem("RememberMe"); // Xóa nếu không tick
-          }
+          } 
           props.navigation.navigate("Main");
         }
         return;

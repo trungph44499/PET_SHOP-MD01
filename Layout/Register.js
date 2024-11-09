@@ -6,14 +6,13 @@ import {
   View,
   TouchableOpacity,
   ToastAndroid,
-  KeyboardAvoidingView,
-  Platform,
   SafeAreaView,
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { URL } from "./HomeScreen";
 import axios from "axios";
+import { Toast } from "./utils/toastUtil";
 
 const Register = (props) => {
   const [name, setname] = useState("");
@@ -29,6 +28,11 @@ const Register = (props) => {
     return regex.test(email);
   };
 
+  function validateName(name) {
+    const regex = /[^a-zA-Z\s]/g;
+    return regex.test(name);
+  }
+
   const validateSDT = (sdt) => {
     const regex2 = /^(?:\+84|0)([0-9]{9})$/;
     return regex2.test(sdt);
@@ -36,19 +40,27 @@ const Register = (props) => {
 
   const addUser = async () => {
     if (name === "" || email === "" || pass === "" || sdt === "") {
-      ToastAndroid.show("Không được để trống", ToastAndroid.SHORT);
+      Toast("Cần nhập đủ thông tin");
       return;
     }
+
     if (pass !== pass2) {
-      ToastAndroid.show("Mật khẩu chưa khớp", ToastAndroid.SHORT);
+      Toast("Mật khẩu chưa khớp");
       return;
     }
+
+    if (validateName(name)) {
+      Toast("Họ tên chưa đúng định dạng");
+      return;
+    }
+
     if (!validateEmail(email)) {
-      ToastAndroid.show("Không đúng định dạng email", ToastAndroid.SHORT);
+      Toast("Không đúng định dạng email");
       return;
     }
+
     if (!validateSDT(sdt)) {
-      ToastAndroid.show("Không đúng định dạng số điện thoại", ToastAndroid.SHORT);
+      Toast("Không đúng định dạng số điện thoại");
       return;
     }
 
@@ -63,7 +75,7 @@ const Register = (props) => {
         sdt,
       });
       if (status === 200) {
-        ToastAndroid.show(response, ToastAndroid.SHORT);
+        Toast(response);
         if (type) {
           props.navigation.navigate("LoginScreen");
         }
@@ -75,104 +87,112 @@ const Register = (props) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <ScrollView contentContainerStyle={styles.container}>
-          <Image
-            style={{ width: 210, height: 100, marginBottom: 10, marginTop: 20 }}
-            source={require("../Image/logo_1.png")}
+      <ScrollView contentContainerStyle={styles.container}>
+        <Image
+          style={{ width: 210, height: 100, marginBottom: 10, marginTop: 20 }}
+          source={require("../Image/logo_1.png")}
+        />
+        <View style={styles.formContainer}>
+          <Text style={styles.titleText}>Tạo tài khoản</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Họ và tên"
+            onChangeText={setname}
           />
-          <View style={styles.formContainer}>
-            <Text style={styles.titleText}>Tạo tài khoản</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="E-mail"
+            onChangeText={setemail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Số điện thoại"
+            onChangeText={setsdt}
+          />
+          <View style={styles.input}>
             <TextInput
-              style={styles.input}
-              placeholder="Họ và tên"
-              onChangeText={setname}
+              style={{ width: "90%" }}
+              secureTextEntry={showPass}
+              placeholder="Nhập mật khẩu"
+              onChangeText={setpass}
+              value={pass}
             />
-            <TextInput
-              style={styles.input}
-              placeholder="E-mail"
-              onChangeText={setemail}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Số điện thoại"
-              onChangeText={setsdt}
-            />
-            <View style={styles.input}>
-              <TextInput
-                style={{ width: "90%" }}
-                secureTextEntry={showPass}
-                placeholder="Nhập mật khẩu"
-                onChangeText={setpass}
-                value={pass}
+            <TouchableOpacity onPress={() => setShowPass(!showPass)}>
+              <Image
+                style={styles.icon}
+                source={
+                  showPass
+                    ? require("../Image/invisible.png")
+                    : require("../Image/visible.png")
+                }
               />
-              <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-                <Image
-                  style={styles.icon}
-                  source={
-                    showPass
-                      ? require("../Image/invisible.png")
-                      : require("../Image/visible.png")
-                  }
-                />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.input}>
-              <TextInput
-                style={{ width: "90%" }}
-                secureTextEntry={showPass2}
-                placeholder="Nhập lại mật khẩu"
-                onChangeText={setpass2}
-                value={pass2}
-              />
-              <TouchableOpacity onPress={() => setShowPass2(!showPass2)}>
-                <Image
-                  style={styles.icon}
-                  source={
-                    showPass2
-                      ? require("../Image/invisible.png")
-                      : require("../Image/visible.png")
-                  }
-                />
-              </TouchableOpacity>
-            </View>
-            <Text
-              style={{ textAlign: "center", marginBottom: 5, marginTop: 5 }}
-            >
-              Để đăng ký tài khoản, bạn đồng ý
-              <Text style={{ textDecorationLine: "underline", color: "green" }}>
-                Terms &{"\n"} Conditions
-              </Text>
-              and
-              <Text style={{ textDecorationLine: "underline", color: "green" }}>
-                Privacy Policy
-              </Text>
-            </Text>
-            <TouchableOpacity onPress={addUser} style={styles.btn}>
-              <Text style={styles.btnText}>Đăng ký</Text>
             </TouchableOpacity>
-            <Text style={styles.dividerText}>________________Hoặc________________</Text>
-            <View style={styles.socialIcons}>
-              <TouchableOpacity>
-                <Image style={styles.image} source={require("../Image/google.png")} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image style={[styles.image, { marginLeft: 40 }]} source={require("../Image/facebook.png")} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.text}>
-              <Text>Tôi đã có tài khoản.</Text>
-              <TouchableOpacity onPress={() => props.navigation.navigate("LoginScreen")}>
-                <Text style={styles.loginText}>Đăng nhập</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+
+          <View style={styles.input}>
+            <TextInput
+              style={{ width: "90%" }}
+              secureTextEntry={showPass2}
+              placeholder="Nhập lại mật khẩu"
+              onChangeText={setpass2}
+              value={pass2}
+            />
+            <TouchableOpacity onPress={() => setShowPass2(!showPass2)}>
+              <Image
+                style={styles.icon}
+                source={
+                  showPass2
+                    ? require("../Image/invisible.png")
+                    : require("../Image/visible.png")
+                }
+              />
+            </TouchableOpacity>
+          </View>
+          <Text style={{ textAlign: "center", marginBottom: 5, marginTop: 5 }}>
+            Để đăng ký tài khoản, bạn đồng ý
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                color: "green",
+              }}
+            >
+              Terms &{"\n"} Conditions
+            </Text>
+            and
+            <Text style={{ textDecorationLine: "underline", color: "green" }}>
+              Privacy Policy
+            </Text>
+          </Text>
+          <TouchableOpacity onPress={addUser} style={styles.btn}>
+            <Text style={styles.btnText}>Đăng ký</Text>
+          </TouchableOpacity>
+          <Text style={styles.dividerText}>
+            ________________Hoặc________________
+          </Text>
+          <View style={styles.socialIcons}>
+            <TouchableOpacity>
+              <Image
+                style={styles.image}
+                source={require("../Image/google.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image
+                style={[styles.image, { marginLeft: 40 }]}
+                source={require("../Image/facebook.png")}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.text}>
+            <Text>Tôi đã có tài khoản.</Text>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate("LoginScreen")}
+            >
+              <Text style={styles.loginText}>Đăng nhập</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
