@@ -17,6 +17,11 @@ const NoticeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getData();
+    const interval = setInterval(() => {
+      getData();
+    }, 1000); // Fetch data every 60 seconds
+
+    return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
 
   const getData = async () => {
@@ -25,10 +30,10 @@ const NoticeScreen = ({ navigation }) => {
     const res = await fetch(url);
     if (res.ok) {
       const data = await res.json();
-
-      setData(data);
+      setData(data.reverse()); // Reverse the data array here
     }
   };
+
   function convertStatus(status) {
     var statusResult = "";
     switch (status) {
@@ -70,16 +75,15 @@ const NoticeScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <View>
+      <View style={styles.bgitem}>
         <View style={styles.item}>
           <Image source={{ uri: item.image }} style={styles.image} />
-          <View>
-            <Text style={{ color: "green", fontSize: 16 }}>
-              {convertStatus(item.status)}
+          <View style={{left:5}}>
+            <Text style={{ color: "green", fontSize: 16}}>{convertStatus(item.status)}
             </Text>
-            <Text style={{ fontSize: 16 }}> {item.service.toUpperCase()}</Text>
-            <Text style={{ fontSize: 14 }}> {item.type}</Text>
-            <Text> {convertDate(item.date)}</Text>
+            <Text style={{ fontSize: 16 }}>{item.service.toUpperCase()}</Text>
+            <Text style={{ fontSize: 14 }}>{item.type}</Text>
+            <Text>{convertDate(item.date)}</Text>
           </View>
         </View>
       </View>
@@ -133,7 +137,8 @@ export default NoticeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
     gap: 16,
   },
   header: {
@@ -152,5 +157,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+    padding: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
   },
+  bgitem:{
+    marginBottom : 10,
+  }
 });
