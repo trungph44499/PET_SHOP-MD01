@@ -8,24 +8,32 @@ import {
   ToastAndroid,
   View,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { numberUtils, upperCaseFirstItem } from "../../utils/stringUtils";
 import axios from "axios";
 import { URL } from "../../HomeScreen";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ({ item, getAllHistoryPay }) {
+  const navigation = useNavigation();
+  
   function convertStatus(status) {
     let result = "";
+    var statusColor = "";
     if (status == "pending") {
       result = "Chờ xác nhận";
+      statusColor = "gray";
     }
     if (status == "success") {
       result = "Đã xác nhận";
+      statusColor = "green";
     }
     if (status == "reject") {
       result = "Đã hủy";
+      statusColor = "red";
     }
-    return result;
+    return { result, statusColor };
   }
 
   function rejectBuyProduct() {
@@ -65,30 +73,32 @@ export default function ({ item, getAllHistoryPay }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       {item.products.map((e) => (
-        <View key={e.id} style={styles.item}>
-          <Image source={{ uri: e.image }} style={styles.image} />
-          <View>
-            <Text style={{ color: "gray" }}>
-              Mã sản phẩm: {upperCaseFirstItem(e.id.slice(-5))}
-            </Text>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={{ fontSize: 15, fontWeight: "bold", width: "50%" }}
-            >
-              {e.name}
-            </Text>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-              Giá tiền: {numberUtils(e.price)}
-            </Text>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-              Số lượng : {e.quantity}
-            </Text>
+        <TouchableOpacity key={e.id} onPress={() => navigation.navigate("DetailHistoryPay", { item, e })}>
+          <View style={styles.item}>
+            <Image source={{ uri: e.image }} style={styles.image} />
+            <View>
+              <Text style={{ color: "gray" }}>
+                Mã sản phẩm: {upperCaseFirstItem(e.id.slice(-5))}
+              </Text>
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={{ fontSize: 15, fontWeight: "bold", width: "50%" }}
+              >
+                {e.name}
+              </Text>
+              <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                Giá tiền: {numberUtils(e.price)}
+              </Text>
+              <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                Số lượng : {e.quantity}
+              </Text>
+            </View>
+            <View />
           </View>
-          <View />
-        </View>
+        </TouchableOpacity>
       ))}
       <View
         style={{
@@ -97,9 +107,15 @@ export default function ({ item, getAllHistoryPay }) {
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-          Trạng thái : {convertStatus(item.status)}
+        <View style={{flexDirection:'row'}}>
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          Trạng thái:
         </Text>
+        <Text style={{ fontSize: 15, fontWeight: "bold", color: convertStatus(item.status).statusColor, textTransform: 'uppercase', left:2}}>
+          {convertStatus(item.status).result}
+        </Text>
+        </View>
+        
 
         <Button
           disabled={item.status != "pending"}
@@ -110,6 +126,7 @@ export default function ({ item, getAllHistoryPay }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   item: {
     height: 120,

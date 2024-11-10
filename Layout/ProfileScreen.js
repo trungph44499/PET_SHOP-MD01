@@ -69,7 +69,7 @@ const ProfileScreen = ({ navigation, route }) => {
             <Image style={styles.icon} source={require("../Image/back.png")} />
           </TouchableOpacity>
           <Text style={styles.headerText}>PROFILE</Text>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity style={styles.backOut} onPress={() => {
             Alert.alert(
               "Xác nhận đăng xuất",
               "Bạn có chắc chắn muốn đăng xuất không?",
@@ -213,7 +213,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     zIndex: 1,
-
+  },
+  backOut: {
+    position: "absolute",
+    right: 0,
+    zIndex: 1,
   },
   headerText: {
     flex: 1,

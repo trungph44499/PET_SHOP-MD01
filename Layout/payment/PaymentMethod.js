@@ -143,6 +143,7 @@ const PaymentMethod = ({ navigation }) => {
         <View style={styles.checkbox}>
           <TouchableOpacity
             onPress={() => setCheckRemember(!checkRemember)}
+            style={{ flexDirection: "row", alignItems: "center" }}
           >
             <Image
               style={{ width: 20, height: 20 }}
@@ -152,8 +153,8 @@ const PaymentMethod = ({ navigation }) => {
                   : require("../../Image/square.png")
               }
             />
+            <Text style={{ marginLeft: 10 }}>Sử dụng làm phương thức thanh toán mặc định</Text>
           </TouchableOpacity>
-          <Text style={{ marginLeft: 10 }}>Use as default payment method</Text>
         </View>
       </View>
     </TouchableOpacity>
