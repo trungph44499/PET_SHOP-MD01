@@ -2,37 +2,42 @@ import React, { useState } from "react";
 import {
   Image,
   ScrollView,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  TouchableOpacity,
   View,
+  Text,
+  TouchableOpacity,
+  ToastAndroid,
+  StyleSheet,
   StatusBar,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { URL } from "./HomeScreen";
 import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailScreen = ({ navigation, route }) => {
   const { item } = route.params;
-  const [quantity, setQuantity] = useState(1); // Trạng thái số lượng
+  const [quantity, setQuantity] = useState(1); // Quantity state
 
-  // Thêm sản phẩm vào giỏ hàng
+  // Add product to cart function
   const addToCart = async () => {
     if (quantity > item.quantity) {
       ToastAndroid.show("Số lượng vượt quá số lượng có sẵn!", ToastAndroid.SHORT);
       return;
     }
-
     try {
       const emailUser = await AsyncStorage.getItem("@UserLogin");
-      const {
-        status,
-        data: { response },
-      } = await axios.post(`${URL}/carts/addToCart`, {
+      if (!emailUser) {
+        ToastAndroid.show("Lỗi người dùng!", ToastAndroid.SHORT);
+        return;
+      }
+
+      const { status, data: { response } } = await axios.post(`${URL}/carts/addToCart`, {
         emailUser,
-        ...item,
+        _id: item._id,
+        img: item.img,
+        name: item.name,
+        type: item.type,
+        price: item.price,
         quantity,
       });
 
@@ -41,11 +46,13 @@ const DetailScreen = ({ navigation, route }) => {
       }
     } catch (error) {
       console.error(error);
-      ToastAndroid.show("Có lỗi xảy ra!", ToastAndroid.SHORT);
+      ToastAndroid.show(
+        error.response?.data?.response || "Có lỗi xảy ra!",
+        ToastAndroid.SHORT
+      );
     }
   };
 
- 
   return (
     <ScrollView style={styles.container}>
       <StatusBar hidden />
@@ -57,50 +64,39 @@ const DetailScreen = ({ navigation, route }) => {
           {item.name}
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate("CartScreen")}>
-          <Image
-            style={styles.cartIcon}
-            source={require("../Image/cart.png")}
-          />
+          <Image style={styles.cartIcon} source={require("../Image/cart.png")} />
         </TouchableOpacity>
       </View>
-
       <Image source={{ uri: item.img }} style={styles.productImage} />
-
       <View style={styles.detailsContainer}>
         <View style={styles.productId}>
           <Text style={styles.productIdText}>
             {upperCaseFirstItem(item._id.slice(-5))}
           </Text>
         </View>
-
         <View style={styles.priceQuantityContainer}>
           <Text style={styles.priceText}>{numberUtils(item.price)}</Text>
-          
         </View>
-
-        <ScrollView style={styles.descriptionContainer}>
+        <View style={styles.descriptionContainer}>
           <Text style={styles.sectionTitle}>Chi tiết sản phẩm</Text>
-
+          {item.origin && (
+            <Text style={styles.detailText}>
+              <Text style={styles.availableQuantity}>Xuất xứ:</Text> {item.origin}
+            </Text>
+          )}
           <Text style={styles.detailText}>
-            <Text style={styles.availableQuantity}>Xuất xứ:</Text>
-            <Text> {item.origin}</Text>
+            <Text style={styles.availableQuantity}>Số lượng:</Text> {item.quantity}
           </Text>
-
-          <Text style={styles.detailText}>
-            <Text style={styles.availableQuantity}>Số lượng:</Text>
-            <Text> {item.quantity}</Text>
-          </Text>
-
-          <Text style={styles.detailText}>
-            <Text style={styles.availableQuantity}>Mô tả:</Text>
-            <Text> {item.description}</Text>
-          </Text>
-        </ScrollView>
+          {item.description && (
+            <Text style={styles.detailText}>
+              <Text style={styles.availableQuantity}>Mô tả:</Text> {item.description}
+            </Text>
+          )}
+        </View>
+        <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
+          <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
-        <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -162,39 +158,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
-    height: 30,
   },
   priceText: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#EB4F26",
-  },
-  quantityContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#333",
-    borderWidth: 1,
-  },
-  quantityButtonIncrease: {
-    borderLeftWidth: 1,
-    marginLeft: 10,
-    borderLeftColor: "#333",
-  },
-  quantityButtonDecrease: {
-    borderRightWidth: 1,
-    borderRightColor: "#333",
-    marginRight: 10,
-  },
-  quantityButtonText: {
-    fontSize: 21,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  quantityInput: {
-    fontSize: 17,
-    fontWeight: "600",
-    width: 20,
-    textAlign: "center",
   },
   descriptionContainer: {
     marginTop: 16,
@@ -207,7 +175,6 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 14,
     marginBottom: 8,
-    alignItems: "center",
   },
   availableQuantity: {
     color: "green",
@@ -216,7 +183,6 @@ const styles = StyleSheet.create({
   addToCartButton: {
     borderRadius: 10,
     padding: 12,
-    marginHorizontal: 20,
     alignItems: "center",
     backgroundColor: "#825640",
     marginTop: 30,

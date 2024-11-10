@@ -38,17 +38,17 @@ const PassReset = ({ navigation }) => {
 
   const handleSave = async () => {
     const { email, oldPass, newPass, confirmNewPass } = userInfo;
-  
+
     if (!oldPass || !newPass || !confirmNewPass) {
       Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
-  
+
     if (newPass !== confirmNewPass) {
       Alert.alert('Lỗi', 'Mật khẩu mới không khớp');
       return;
     }
-  
+
     try {
       // Kiểm tra mật khẩu cũ
       const checkOldPassResponse = await axios.post(`${URL}/users/login`, {
@@ -66,7 +66,7 @@ const PassReset = ({ navigation }) => {
         email,
         password: newPass,
       });
-  
+
       if (response.status === 200 && response.data.type) {
         Alert.alert('Thành công', 'Đổi mật khẩu thành công');
         navigation.goBack();
@@ -78,7 +78,7 @@ const PassReset = ({ navigation }) => {
       Alert.alert('Lỗi', 'Đã xảy ra lỗi');
     }
   };
-  
+
 
   const { oldPass, newPass, confirmNewPass } = showPass;
 
@@ -156,7 +156,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    top: 0,
     justifyContent: 'space-between',
     alignContent: 'center',
   },
@@ -207,7 +210,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 15,
     borderRadius: 10,
-    backgroundColor: 'green',
+    backgroundColor: '#825640',
     alignItems: 'center',
     marginTop: 70,
   },

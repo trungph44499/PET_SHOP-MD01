@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,21 +21,6 @@ const LoginScreen = (props) => {
   const [pass, setPass] = useState("");
   const [showPass, setShowPass] = useState(true);
   const [checkRemember, setCheckRemember] = useState(false);
-
-  useEffect(() => {
-    const checkUserLogin = async () => {
-      const savedUser = await AsyncStorage.getItem("User");
-      const rememberMe = await AsyncStorage.getItem("RememberMe");
-
-      if (savedUser && rememberMe === "true") {
-        // Nếu có thông tin người dùng và đã tick "Nhớ tài khoản", chuyển đến Main
-        /* khi tick vào nút nhớ tài khoản trước khi đăng nhập
-              thì lần đăng nhập tiếp theo sẽ chuyển vào màn home luôn */
-        props.navigation.navigate("Main");
-      }
-    };
-    checkUserLogin();
-  }, []);
 
   const CheckLogin = async () => {
     if (email === "") {
@@ -58,23 +44,32 @@ const LoginScreen = (props) => {
           if (checkRemember) {
             await AsyncStorage.setItem("User", email);
             await AsyncStorage.setItem("RememberMe", "true"); // Lưu trạng thái "Nhớ tài khoản"
-          } else {
-            await AsyncStorage.removeItem("RememberMe"); // Xóa nếu không tick
           }
           props.navigation.navigate("Main");
         }
+        return;
       }
+      ToastAndroid.show("Error login", ToastAndroid.SHORT);
     } catch (error) {
       console.log(error);
-      ToastAndroid.show("Đã có lỗi xảy ra, vui lòng thử lại", ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Đã có lỗi xảy ra, vui lòng thử lại",
+        ToastAndroid.SHORT
+      );
     }
   };
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <StatusBar hidden />
         <View style={styles.container}>
-          <Image style={{ width: 400, height: 200 }} source={require("../Image/logo_1.png")} />
+          <Image
+            style={{ width: 400, height: 200 }}
+            source={require("../Image/logo_1.png")}
+          />
           <View style={{ gap: 10 }}>
             <Text style={styles.titleText}>Chào mừng bạn</Text>
             <Text style={styles.subtitleText}>Đăng nhập tài khoản</Text>
@@ -108,9 +103,13 @@ const LoginScreen = (props) => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
               <View style={{ flexDirection: "row" }}>
-                <TouchableOpacity onPress={() => setCheckRemember(!checkRemember)}>
+                <TouchableOpacity
+                  onPress={() => setCheckRemember(!checkRemember)}
+                >
                   <Image
                     style={{ width: 20, height: 20 }}
                     source={
@@ -122,26 +121,46 @@ const LoginScreen = (props) => {
                 </TouchableOpacity>
                 <Text style={{ marginLeft: 10 }}>Nhớ tài khoản</Text>
               </View>
-              <TouchableOpacity onPress={() => props.navigation.navigate("ForgotPassword")}>
-                <Text style={{ color: "green", fontWeight: "bold" }}>Quên mật khẩu?</Text>
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate("ForgotPassword")}
+              >
+                <Text style={{ color: "green", fontWeight: "bold" }}>
+                  Quên mật khẩu?
+                </Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.btn} onPress={CheckLogin}>
-              <Text style={{ fontWeight: "bold", fontSize: 20, color: "white" }}>Đăng nhập</Text>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 20, color: "white" }}
+              >
+                Đăng nhập
+              </Text>
             </TouchableOpacity>
-            <Text style={{ textAlign: "center", color: "green" }}>______________Hoặc________________</Text>
+            <Text style={{ textAlign: "center", color: "green" }}>
+              ______________Hoặc________________
+            </Text>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <TouchableOpacity>
-                <Image style={styles.image} source={require("../Image/google.png")} />
+                <Image
+                  style={styles.image}
+                  source={require("../Image/google.png")}
+                />
               </TouchableOpacity>
               <TouchableOpacity>
-                <Image style={[styles.image, { marginLeft: 40 }]} source={require("../Image/facebook.png")} />
+                <Image
+                  style={[styles.image, { marginLeft: 40 }]}
+                  source={require("../Image/facebook.png")}
+                />
               </TouchableOpacity>
             </View>
             <View style={styles.text}>
               <Text>Bạn không có tài khoản?</Text>
-              <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
-                <Text style={{ color: "green", marginLeft: 5 }}>Tạo tài khoản</Text>
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate("Register")}
+              >
+                <Text style={{ color: "green", marginLeft: 5 }}>
+                  Tạo tài khoản
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

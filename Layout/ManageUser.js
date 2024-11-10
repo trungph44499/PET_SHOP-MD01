@@ -58,22 +58,22 @@ const ManageUser = ({ navigation }) => {
 
   const handleSave = async () => {
     const { avatar, fullname, email, address, sdt } = userInfo;
-  
+
     if (!fullname) {
       Alert.alert('Lỗi', 'Tên không được để trống');
       return;
     }
-  
+
     if (!sdt) {
       Alert.alert('Lỗi', 'Số điện thoại không được để trống');
       return;
     }
-  
+
     if (!email) {
       Alert.alert('Lỗi', 'Email không được để trống');
       return;
     }
-  
+
     if (sdt && (!/^\d+$/.test(sdt) || sdt.length !== 10)) {
       Alert.alert('Lỗi', 'Số điện thoại phải có đúng 10 ký tự');
       return;
@@ -83,12 +83,12 @@ const ManageUser = ({ navigation }) => {
       Alert.alert('Lỗi', 'Số điện thoại phải bắt đầu bằng số 0');
       return;
     }
-  
+
     if (JSON.stringify(userInfo) === JSON.stringify(initialUserInfo)) {
       Alert.alert('Thông báo', 'Chưa có sự thay đổi nào');
       return;
     }
-  
+
     Alert.alert(
       'Xác nhận',
       'Bạn có chắc chắn muốn thay đổi thông tin?',
@@ -108,7 +108,7 @@ const ManageUser = ({ navigation }) => {
                 address,
                 sdt,
               });
-  
+
               if (response.status === 200 && response.data.type) {
                 await AsyncStorage.setItem('@UserLogin', email);
                 Alert.alert('Thành công', 'Thông tin người dùng đã được cập nhật.');
@@ -126,7 +126,7 @@ const ManageUser = ({ navigation }) => {
       { cancelable: false }
     );
   };
-  
+
 
   const clearFullname = () => {
     setUserInfo({ ...userInfo, fullname: '' });
@@ -138,7 +138,7 @@ const ManageUser = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: '#FFFFFF' }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -205,10 +205,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    top: 0,
     justifyContent: 'space-between',
     alignContent: 'center',
-    paddingBottom: 20,
   },
   header: {
     flexDirection: 'row',
@@ -273,7 +275,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 15,
     borderRadius: 10,
-    backgroundColor: 'green',
+    backgroundColor: '#825640',
     alignItems: 'center',
     marginTop: 70,
   },
@@ -285,7 +287,7 @@ const styles = StyleSheet.create({
     color: 'red',
     fontWeight: 'bold',
     fontSize: 18,
-    
+
   },
   bgX: {
   },

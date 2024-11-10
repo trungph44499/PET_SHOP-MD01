@@ -6,19 +6,15 @@ import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 export default NewProductScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
 
-  // Hàm lấy dữ liệu cho tất cả danh mục: Dog, Cat, Phụ kiện
   async function getData() {
     const dogs = await getListClassify('dog');
     const cats = await getListClassify('cat');
     const accessories = await getListClassify('accessory');
 
-    // Gộp tất cả các sản phẩm lại
     const allProducts = [...dogs, ...cats, ...accessories];
 
-    // Lọc sản phẩm có status là "New"
     const newProducts = allProducts.filter(item => item.status === 'New');
 
-    // Cập nhật dữ liệu
     setData(newProducts);
   }
 
@@ -64,11 +60,9 @@ export default NewProductScreen = ({ navigation }) => {
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />
             <View style={styles.itemRow}>
-              {/* Hiển thị tên sản phẩm */}
               <Text style={styles.itemName}>
                 {item.name}
               </Text>
-              {/* Nếu trạng thái sản phẩm là "New", hiển thị nhãn "New" trong thẻ Text riêng */}
               {item.status === "New" && (
                 <Text style={styles.itemStatus}>
                   {item.status}
@@ -89,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     gap: 16,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -120,22 +115,23 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 17,
     fontWeight: 'bold',
+    marginRight: 5, 
   },
   itemStatus: {
     fontSize: 17,
     fontStyle: "italic",
     color: "green",
-    fontWeight: "bold", // Làm cho chữ đậm hơn
-    backgroundColor: "#e0f7e0", // Nền màu nhẹ
-    borderRadius: 5, // Bo góc
-    padding: 2, // Thêm khoảng cách bên trong
-    marginLeft: 5, // Khoảng cách với tên sản phẩm
+    fontWeight: "bold", 
+    backgroundColor: "#e0f7e0", 
+    borderRadius: 5, 
+    padding: 5, 
+ 
   },
   itemRow: {
     flexDirection: "row",
     alignItems: "center",
-    flexWrap: "wrap", // Cho phép nội dung bọc lại khi không đủ chỗ
-    // marginVertical: 1, // Khoảng cách giữa các dòng
+    flexWrap: "wrap", 
+  
   },
   itemType: {
     fontSize: 15,

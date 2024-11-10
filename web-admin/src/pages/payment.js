@@ -5,7 +5,7 @@ import json_config from "../config.json";
 import "./css/css.css";
 import { webSocketContext } from "../context/WebSocketContext";
 
-export default function PetCare() {
+export default function Payment() {
   return (
     <div>
       <NavigationPage child={<Main />} />
@@ -17,13 +17,6 @@ function Main() {
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
 
-  websocket.onmessage = function (result) {
-    const data = JSON.parse(result.data);
-
-    if (data.type == "pet-care") {
-      getAllPetCare();
-    }
-  };
   function convertStatus(status) {
     var statusResult = "";
     switch (status) {
@@ -42,14 +35,22 @@ function Main() {
     }
     return statusResult;
   }
-  async function getAllPetCare() {
+
+  websocket.onmessage = function (result) {
+    const data = JSON.parse(result.data);
+
+    if (data.type == "payment") {
+      getAllPayment();
+    }
+  };
+
+  async function getAllPayment() {
     try {
-      const {
-        status,
-        data: { response },
-      } = await axios.get(`${json_config[0].url_connect}/pet-care`);
+      const { status, data } = await axios.get(
+        `${json_config[0].url_connect}/pay`
+      );
       if (status == 200) {
-        setData(response);
+        setData(data);
       }
     } catch (error) {
       console.log(error);
@@ -57,7 +58,7 @@ function Main() {
   }
 
   useEffect(() => {
-    getAllPetCare();
+    getAllPayment();
   }, []);
 
   return (
@@ -66,10 +67,9 @@ function Main() {
         <thead>
           <tr>
             <th scope="col">Email</th>
-            <th scope="col">Service</th>
-            <th scope="col">Name</th>
+            <th scope="col">Location</th>
             <th scope="col">Phone</th>
-            <th scope="col">Message</th>
+            <th scope="col">Product</th>
             <th scope="col">Status</th>
             <th scope="col">Confirm</th>
             <th scope="col">Reject</th>
@@ -79,11 +79,11 @@ function Main() {
           {data.map((item) => (
             <tr key={item._id}>
               <td>{item.email}</td>
-              <td>{item.service}</td>
-              <td>{item.name}</td>
-              <td>{item.phone}</td>
-              <td>{item.message}</td>
+              <td>{item.location}</td>
+              <td>{item.number}</td>
+              <td>{item.products.map((e) => `${e.name}, `)}</td>
               <td>{convertStatus(item.status)}</td>
+
               <td>
                 <button
                   disabled={
@@ -98,18 +98,18 @@ function Main() {
                         status,
                         data: { response, type },
                       } = await axios.post(
-                        `${json_config[0].url_connect}/pet-care/update`,
+                        `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,
                           email: item.email,
-                          service: item.service,
+                          products: item.products,
                           status: "success",
                         }
                       );
 
                       if (status == 200) {
                         window.alert(response);
-                        if (type) getAllPetCare();
+                        if (type) getAllPayment();
                       }
                     }
                   }}
@@ -132,18 +132,18 @@ function Main() {
                         status,
                         data: { response, type },
                       } = await axios.post(
-                        `${json_config[0].url_connect}/pet-care/update`,
+                        `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,
                           email: item.email,
-                          service: item.service,
+                          products: item.products,
                           status: "reject",
                         }
                       );
 
                       if (status == 200) {
                         window.alert(response);
-                        if (type) getAllPetCare();
+                        if (type) getAllPayment();
                       }
                     }
                   }}

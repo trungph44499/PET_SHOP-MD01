@@ -11,5 +11,5 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ]
+, "Layout/NoticeScreen.js", "Layout/NoticeScreen.js"  ]
 }

@@ -1,3 +1,4 @@
+
 import {
   Image,
   ScrollView,
@@ -20,19 +21,19 @@ const ProfileScreen = ({ navigation, route }) => {
 
   const [scale] = useState(new Animated.Value(1));
 
-  const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.8,
-      useNativeDriver: true,
-    }).start();
-  };
+  // const handlePressIn = () => {
+  //   Animated.spring(scale, {
+  //     toValue: 0.8,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
 
-  const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  };
+  // const handlePressOut = () => {
+  //   Animated.spring(scale, {
+  //     toValue: 1,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
 
   const retrieveData = async () => {
     try {
@@ -57,110 +58,134 @@ const ProfileScreen = ({ navigation, route }) => {
       retrieveData();
     }, [])
   );
-
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Image
-              style={styles.icon}
-              source={require("../Image/back.png")}
-            />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Image style={styles.icon} source={require("../Image/back.png")} />
           </TouchableOpacity>
           <Text style={styles.headerText}>PROFILE</Text>
+          <TouchableOpacity onPress={() => {
+            Alert.alert(
+              "Xác nhận đăng xuất",
+              "Bạn có chắc chắn muốn đăng xuất không?",
+              [
+                {
+                  text: "Hủy",
+                  onPress: () => console.log("Hủy đăng xuất"),
+                  style: "cancel",
+                },
+                {
+                  text: "Đăng xuất",
+                  onPress: async () => {
+                    // Xóa thông tin người dùng trong AsyncStorage
+                    await AsyncStorage.removeItem("@UserLogin");
+                    await AsyncStorage.removeItem("User");
+                    await AsyncStorage.removeItem("RememberMe");
+
+                    navigation.navigate("LoginScreen");
+                    ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
+                  },
+                  style: "destructive",
+                },
+              ],
+              { cancelable: false }
+            );
+          }}>
+            <Image source={require("../Image/exit.png")}
+              style={{ width: 20, height: 20 }}
+            />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.infor}>
           <Image
             source={
-              user.avatar ? { uri: user.avatar } : require("../Image/pesonal.png")
+              user.avatar
+                ? { uri: user.avatar }
+                : require("../Image/pesonal.png")
             }
-            style={{ width: 100, height: 100, borderRadius: 100 }}
+            style={{ width: 80, height: 80, borderRadius: 40 }}
           />
-          <View style={{ marginLeft: 20 }}>
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+          <View style={{ marginLeft: 10 }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 5 }}>
               {user.fullname}
             </Text>
-            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
+            <Text style={{ fontSize: 15, color: "#808080" }}>
               {user.email}
             </Text>
-            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
-              {user.sdt}
-            </Text>
           </View>
         </View>
-
         <View style={styles.option}>
-          <Text style={styles.textGray}>
-            Chung
-            {"\n"}_________________________________________________
-          </Text>
-          <View style={styles.background}>
-            <Animated.View style={{ transform: [{ scale }] }}>
-              <TouchableOpacity
-                style={styles.button}
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
-                onPress={() => navigation.navigate("Petcare")}
-              >
-                <Image source={require('../Image/dog_care.png')} style={styles.starImage} />
-                <Text style={styles.buttonText}>Pet care</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          </View>
 
-          <Text onPress={() => navigation.navigate("ManageUser")}>
-            Chỉnh sửa thông tin
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("PassReset")}>
-            <Text>
-              Đổi mật khẩu
-            </Text>
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("Petcare")}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Dịch vụ chăm sóc</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
+            />
           </TouchableOpacity>
 
-          <Text>Q & A</Text>
-        </View>
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("history-pay")}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 15, marginBottom: 5 }}>Lịch sử thanh toán</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
+            />
+          </TouchableOpacity>
 
-        <View style={styles.option}>
-          <Text style={styles.textGray}>
-            Bảo mật và điều khoản
-            {"\n"}_________________________________________________
-          </Text>
-          <Text>Điều khoản và điều kiện</Text>
-          <Text>Chính sách quyền riêng tư</Text>
-          <Text
-            style={{ color: "red" }}
-            onPress={() => {
-              Alert.alert(
-                "Xác nhận đăng xuất",
-                "Bạn có chắc chắn muốn đăng xuất không?",
-                [
-                  {
-                    text: "Hủy",
-                    onPress: () => console.log("Hủy đăng xuất"),
-                    style: "cancel",
-                  },
-                  {
-                    text: "Đăng xuất",
-                    onPress: async () => {
-                      // Xóa thông tin người dùng trong AsyncStorage
-                      await AsyncStorage.removeItem("@UserLogin");
-                      await AsyncStorage.removeItem("User");
-                      await AsyncStorage.removeItem("RememberMe");
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("ShippingAddrees")}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Địa chỉ giao hàng</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
+            />
+          </TouchableOpacity>
 
-                      navigation.navigate("LoginScreen");
-                      ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
-                    },
-                    style: "destructive",
-                  },
-                ],
-                { cancelable: false }
-              );
-            }}
-          >
-            Đăng xuất
-          </Text>
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("PaymentMethod")}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Phương thức thanh toán</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("ManageUser")}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Chỉnh sửa thông tin</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("PassReset")}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Đổi mật khẩu</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
+            />
+          </TouchableOpacity>
 
         </View>
       </View>
@@ -173,24 +198,28 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 30,
     gap: 16,
+    backgroundColor: "#FFFFFF"
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 20,
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     zIndex: 1,
+
   },
   headerText: {
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   icon: {
     width: 20,
@@ -212,28 +241,28 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     marginLeft: 5,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   background: {
     width: 200,
     height: 45,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 10,
-    overflow: 'hidden',
-    position: 'relative',
+    overflow: "hidden",
+    position: "relative",
   },
   button: {
-    width: '100%',
-    height: '100%',
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: '#fcd4db',
-    borderRadius: 20,
-    padding: 10,
+    alignItems: 'center',
+    width: "100%", height: 80,
+    padding: 15,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,  // Làm tròn các góc
+    elevation: 5,  // Tạo bóng đổ trên Android
   },
   buttonText: {
-    fontSize: 14,
-    color: 'black',
-    marginLeft: 10
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginBottom: 5
   },
 });
