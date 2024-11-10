@@ -108,25 +108,25 @@ function PetCareWebSocket() {
 
 const MainNavigator = () => {
   return (
-    // <Stack.Navigator screenOptions={{ headerShown: false }}>
-    //   <Stack.Screen name="Home" component={Home} />
-    //   <Stack.Screen name="DetailScreen" component={DetailScreen} />
-    //   <Stack.Screen name="ClassifyScreen" component={ClassifyScreen} />
-    //   <Stack.Screen name="CartScreen" component={CartScreen} />
-    //   <Stack.Screen name="NewProductScreen" component={NewProductScreen} />
-    //   <Stack.Screen name="ManageUser" component={ManageUser} />
-    //   <Stack.Screen name="PassReset" component={PassReset} />
-    //   <Stack.Screen name="Petcare" component={Petcare} />
-    //   <Stack.Screen name="Petcare2" component={PetCareWebSocket} />
-    //   <Stack.Screen name="Payment" component={Payment} />
-    //   <Stack.Screen name="Payment2" component={Payment2} />
-    //   <Stack.Screen name="history-pay" component={HistoryPay} />
-    //   <Stack.Screen name="ShippingAddrees" component={ShippingAddrees} />
-    //   <Stack.Screen name="AddShippingAddrees" component={AddShippingAddrees} />
-    //   <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
-    //   <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
-    // </Stack.Navigator>
-    <ShippingAddrees/>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="DetailScreen" component={DetailScreen} />
+      <Stack.Screen name="ClassifyScreen" component={ClassifyScreen} />
+      <Stack.Screen name="CartScreen" component={CartScreen} />
+      <Stack.Screen name="NewProductScreen" component={NewProductScreen} />
+      <Stack.Screen name="ManageUser" component={ManageUser} />
+      <Stack.Screen name="PassReset" component={PassReset} />
+      <Stack.Screen name="Petcare" component={Petcare} />
+      <Stack.Screen name="Petcare2" component={PetCareWebSocket} />
+      <Stack.Screen name="Payment" component={Payment} />
+      <Stack.Screen name="Payment2" component={Payment2} />
+      <Stack.Screen name="history-pay" component={HistoryPay} />
+      <Stack.Screen name="ShippingAddrees" component={ShippingAddrees} />
+      <Stack.Screen name="AddShippingAddrees" component={AddShippingAddrees} />
+      <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
+      <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
+    </Stack.Navigator>
+   
 
   );
 };
