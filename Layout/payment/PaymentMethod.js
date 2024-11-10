@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Button, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const PaymentMethod = ({ navigation }) => {
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -101,7 +102,10 @@ const PaymentMethod = ({ navigation }) => {
   const renderItem = ({ item, index }) => (
     <TouchableOpacity onPress={() => editPaymentMethod(item, index)} style={styles.paymentMethodContainer}>
       <View>
-        <View style={styles.cardPreview}>
+        <LinearGradient 
+         colors={['#4c669f', '#3b5998', '#192f6a']} 
+         locations={[0, 0.5, 1]} // Điều chỉnh vị trí của các màu để tạo hiệu ứng gợn sóng
+          style={styles.cardPreview}>
           <TouchableOpacity
             style={styles.deleteIconContainer}
             onPress={() => deletePaymentMethod(index)} // Gọi hàm xóa khi nhấn nút
@@ -109,32 +113,33 @@ const PaymentMethod = ({ navigation }) => {
             <Image style={styles.deleteIcon} source={require('../../Image/cancel.png')} />
           </TouchableOpacity>
           <View style={styles.cardHeader}>
-            {/* <Image
-            source={require('../../Image/chip.png')} // Bạn cần thêm hình ảnh chip thẻ
-            style={styles.chipImage}
-          />
-          <Image
-            source={require('../../Image/visa.png')} // Bạn cần thêm logo visa
-            style={styles.visaLogo}
-          /> */}
+            <Image
+              source={require('../../Image/card.png')} // Bạn cần thêm hình ảnh chip thẻ
+              style={styles.chipImage}
+            />
+            <Image
+              source={require('../../Image/visa.png')} // Bạn cần thêm logo visa
+              style={styles.visaLogo}
+            />
 
           </View>
+          <View style={{ padding: 10 }}>
+            <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
+            <Text style={styles.cardNumber}>{formatCardNumber(item.cardNumber)}</Text>
 
-          <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
-          <Text style={styles.cardNumber}>{formatCardNumber(item.cardNumber)}</Text>
+            <View style={styles.cardFooter}>
+              <View>
+                <Text style={styles.cardLabel}>CHỦ THẺ</Text>
+                <Text style={styles.cardValueName}>{item.cardHolderName}</Text>
+              </View>
 
-          <View style={styles.cardFooter}>
-            <View>
-              <Text style={styles.cardLabel}>CHỦ THẺ</Text>
-              <Text style={styles.cardValueName}>{item.cardHolderName}</Text>
-            </View>
-
-            <View>
-              <Text style={styles.cardLabel}>HẾT HẠN</Text>
-              <Text style={styles.cardValue}>{item.expirationDate}</Text>
+              <View>
+                <Text style={styles.cardLabel}>HẾT HẠN</Text>
+                <Text style={styles.cardValue}>{item.expirationDate}</Text>
+              </View>
             </View>
           </View>
-        </View>
+        </LinearGradient>
         <View style={styles.checkbox}>
           <TouchableOpacity
             onPress={() => setCheckRemember(!checkRemember)}
@@ -260,27 +265,25 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'gray',
+    elevation: 8,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   addIcon: {
     width: 25,
     height: 25,
-    tintColor: 'white',
+    tintColor: 'black',
   },
   cardPreview: {
     height: 200,
-    backgroundColor: '#242424', // Màu xanh của Visa
     borderRadius: 16,
-    padding: 24,
+    padding: 10,
     marginBottom: 10,
   },
   cardHeader: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-    backgroundColor: '#242424',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   chipImage: {
     width: 50,
@@ -288,8 +291,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   visaLogo: {
-    width: 70,
-    height: 30,
+    width: 50,
+    height: 40,
     resizeMode: 'contain',
   },
   cardNumber: {
@@ -301,7 +304,7 @@ const styles = StyleSheet.create({
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 30,
+    marginTop: 20,
   },
   cardLabel: {
     color: '#ffffff80',
@@ -359,9 +362,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   checkbox: {
-     flexDirection: "row",
-     marginBottom: 20,
-     
+    flexDirection: "row",
+    marginBottom: 20,
+
   }
 });
 

@@ -48,7 +48,7 @@ const NoticeScreen = ({ navigation }) => {
         break;
       case "pending":
         statusResult = "Chờ xác nhận";
-        statusColor = "gray";
+        statusColor = "black";
         break;
       default:
         break;
@@ -82,7 +82,7 @@ const NoticeScreen = ({ navigation }) => {
         <View style={styles.item}>
           <Image source={{ uri: item.image }} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text style={{ fontSize: 16, color: convertStatus(item.status).statusColor, textTransform: 'uppercase' }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: convertStatus(item.status).statusColor, textTransform: 'uppercase' }}>
               {convertStatus(item.status).statusResult}
             </Text>
             <Text style={{ fontSize: 16, textTransform: 'uppercase' }}>{item.service.toUpperCase()}</Text>
@@ -141,13 +141,13 @@ export default NoticeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
+    backgroundColor: "#FFFFFF",
     gap: 16,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingHorizontal: 20
   },
   image: {
     width: 80,
@@ -160,14 +160,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: "#fff",
     padding: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
+    elevation: 5,
   },
   bgitem: {
-    marginBottom: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   textContainer: {
     marginLeft: 10,

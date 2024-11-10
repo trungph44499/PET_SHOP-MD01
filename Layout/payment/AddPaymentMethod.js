@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const AddPaymentMethod = ({ route, navigation }) => {
   const { emailUser, setPaymentMethods, paymentMethod, index } = route.params;  // Nhận email, setPaymentMethods, và thông tin chỉnh sửa từ route.params
@@ -13,7 +14,7 @@ const AddPaymentMethod = ({ route, navigation }) => {
 
 
   const handleCardNumberChange = (text) => {
-    if (text.length <= 16) {  
+    if (text.length <= 16) {
       setCardNumber(text);
     }
   };
@@ -133,28 +134,43 @@ const AddPaymentMethod = ({ route, navigation }) => {
       </View>
 
       <View style={styles.content}>
-        <View style={styles.cardPreview}>
+        <LinearGradient
+          colors={['#4c669f', '#3b5998', '#192f6a']}
+          locations={[0, 0.5, 1]} // Điều chỉnh vị trí của các màu để tạo hiệu ứng gợn sóng
+          style={styles.cardPreview}>
           <View style={styles.cardHeader}>
-          </View>
-          <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
-          <Text style={styles.cardNumber}>{formatCardNumber(cardNumber) || '**** **** **** ****'}</Text>
+            <Image
+              source={require('../../Image/card.png')} // Bạn cần thêm hình ảnh chip thẻ
+              style={styles.chipImage}
+            />
+            <Image
+              source={require('../../Image/visa.png')} // Bạn cần thêm logo visa
+              style={styles.visaLogo}
+            />
 
-          <View style={styles.cardFooter}>
-            <View>
-              <Text style={styles.cardLabel}>CHỦ THẺ</Text>
-              <Text style={styles.cardValueName}>{cardHolderName || 'NAME'}</Text>
-            </View>
+          </View>
+          <View style={{ padding: 10 }}>
+            <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
+            <Text style={styles.cardNumber}>{formatCardNumber(cardNumber) || '**** **** **** ****'}</Text>
 
-            <View>
-              <Text style={styles.cardLabel}>HẾT HẠN</Text>
-              <Text style={styles.cardValue}>{expirationDate || 'MM/YY'}</Text>
-            </View>
-            <View>
-              <Text style={styles.cardLabel}>CVV</Text>
-              <Text style={styles.cardValueCvv}>{cvv || '***'}</Text>
+            <View style={styles.cardFooter}>
+              <View>
+                <Text style={styles.cardLabel}>CHỦ THẺ</Text>
+                <Text style={styles.cardValueName}>{cardHolderName || 'NAME'}</Text>
+              </View>
+
+              <View>
+                <Text style={styles.cardLabel}>HẾT HẠN</Text>
+                <Text style={styles.cardValue}>{expirationDate || 'MM/YY'}</Text>
+              </View>
+              <View>
+                <Text style={styles.cardLabel}>CVV</Text>
+                <Text style={styles.cardValueCvv}>{cvv || '***'}</Text>
+              </View>
             </View>
           </View>
-        </View>
+        </LinearGradient>
+        <View style={{marginTop: 20}}>
         <TextInput
           style={styles.input}
           placeholder="Số thẻ"
@@ -168,8 +184,9 @@ const AddPaymentMethod = ({ route, navigation }) => {
           value={cardHolderName}
           onChangeText={handleCardHolderNameChange}
         />
+        <View style={styles.inputDayCVV}>
         <TextInput
-          style={styles.input}
+          style={styles.inputDay}
           placeholder="Ngày hết hạn (MM/YY)"
           keyboardType="numeric"
           value={expirationDate}
@@ -177,13 +194,15 @@ const AddPaymentMethod = ({ route, navigation }) => {
           maxLength={5}
         />
         <TextInput
-          style={styles.input}
+          style={styles.inputCVV}
           placeholder="CVV"
           keyboardType="numeric"
           value={cvv}
           secureTextEntry
           onChangeText={handleCvvChange}
         />
+        </View>
+        </View>
       </View>
       <TouchableOpacity style={styles.submitButton} onPress={savePaymentMethod}>
         <Text style={styles.submitText}>Lưu</Text>
@@ -233,14 +252,12 @@ const styles = StyleSheet.create({
   },
   cardPreview: {
     height: 200,
-    backgroundColor: '#242424', // Màu xanh của Visa
     borderRadius: 16,
-    padding: 24,
-    marginBottom: 30,
+    padding: 10,
+    marginBottom: 10,
   },
   cardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   chipImage: {
@@ -249,8 +266,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   visaLogo: {
-    width: 70,
-    height: 30,
+    width: 50,
+    height: 40,
     resizeMode: 'contain',
   },
   cardNumber: {
@@ -262,7 +279,7 @@ const styles = StyleSheet.create({
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 30,
+    marginTop: 20,
   },
   cardLabel: {
     color: '#ffffff80',
@@ -292,12 +309,34 @@ const styles = StyleSheet.create({
     width: 30,
   },
   input: {
-    height: 40,
+    height: 60,
     borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
+  },
+  inputDayCVV:{
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  inputDay:{
+    flex: 1,
+    height: 60,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginRight: 10,
+  },
+  inputCVV:{
+    flex: 1,
+    height: 60,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginLeft: 10,
   },
   header: {
     flexDirection: 'row',

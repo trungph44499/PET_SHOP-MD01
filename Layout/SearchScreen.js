@@ -82,11 +82,14 @@ const SearchScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+      <TouchableOpacity
+          onPress={() => navigation.goBack()}>
+          <Image style={{ width: 20, height: 20 }} source={require('../Image/back.png')} />
+        </TouchableOpacity>
+        <Text style={styles.title}>TÌM KIẾM</Text>
         <TouchableOpacity onPress={resetSearch}>
           <Image style={{ width: 20, height: 20 }} source={require('../Image/reset.png')} />
         </TouchableOpacity>
-        <Text style={styles.title}>TÌM KIẾM</Text>
-        <View style={{ width: 20 }}></View>
       </View>
 
       <View style={styles.search}>
@@ -176,11 +179,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingBottom: 5,
   },
   title: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
   },

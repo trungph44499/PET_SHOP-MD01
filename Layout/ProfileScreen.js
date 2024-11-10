@@ -96,9 +96,8 @@ const ProfileScreen = ({ navigation, route }) => {
               { cancelable: false }
             );
           }}>
-            <Image source={require("../Image/out.png")}
-              style={{ width: 60, height: 60, borderRadius: 20 }}
-
+            <Image source={require("../Image/exit.png")}
+              style={{ width: 20, height: 20 }}
             />
           </TouchableOpacity>
         </View>
@@ -110,74 +109,84 @@ const ProfileScreen = ({ navigation, route }) => {
                 ? { uri: user.avatar }
                 : require("../Image/pesonal.png")
             }
-            style={{ width: 60, height: 60, borderRadius: 30 }}
+            style={{ width: 80, height: 80, borderRadius: 40 }}
           />
           <View style={{ marginLeft: 10 }}>
-
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 5 }}>
               {user.fullname}
             </Text>
-            <Text style={{ fontSize: 16, fontWeight: "thin" }}>
+            <Text style={{ fontSize: 15, color: "#808080" }}>
               {user.email}
             </Text>
           </View>
         </View>
-
         <View style={styles.option}>
 
-        <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
+          <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("Petcare")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Pet care </Text>
-            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Reviews for 5 item </Text>
-            <Image source={require("../Image/backk.png")}
-              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Dịch vụ chăm sóc</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, borderTopLeftRadius: 20, borderTopEndRadius: 20, backgroundColor: '#F5F5F5' }}
+          <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("history-pay")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Lịch sử mua hàng </Text>
-            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Already have 10 orders</Text>
-            <Image source={require("../Image/backk.png")}
-              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 15, marginBottom: 5 }}>Lịch sử thanh toán</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
-           onPress={() => navigation.navigate("ShippingAddrees")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Shipping Addresses </Text>
-            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>03 Addresses </Text>
-            <Image source={require("../Image/backk.png")}
-              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("ShippingAddrees")}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Địa chỉ giao hàng</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
-           onPress={() => navigation.navigate("PaymentMethod")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Payment Method </Text>
-            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>You have 2 cards </Text>
-            <Image source={require("../Image/backk.png")}
-              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+          <TouchableOpacity style={styles.button}
+            onPress={() => navigation.navigate("PaymentMethod")}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Phương thức thanh toán</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
+          <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("ManageUser")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}> Chỉnh sửa thông tin</Text>
-            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Reviews for 5 item </Text>
-            <Image source={require("../Image/backk.png")}
-              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Chỉnh sửa thông tin</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
+          <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("PassReset")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Đổi mật khẩu </Text>
-            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Reviews for 5 item </Text>
-            <Image source={require("../Image/backk.png")}
-              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Đổi mật khẩu</Text>
+              <Text style={{ fontSize: 12, color: "#808080" }}>Reviews for 5 item </Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25, marginLeft: 150 }}
             />
           </TouchableOpacity>
-      
+
         </View>
       </View>
     </ScrollView>
@@ -189,8 +198,11 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 30,
     gap: 16,
+    backgroundColor: "#FFFFFF"
   },
   header: {
     flexDirection: "row",
@@ -208,19 +220,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 60
   },
   icon: {
-    width: 30,
-    height: 30,
-
+    width: 20,
+    height: 20,
   },
   infor: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 20
   },
   option: {
     gap: 18,
@@ -244,17 +252,17 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   button: {
-    width: "100%",
-    height: "100%",
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fcd4db",
-    borderRadius: 20,
-    padding: 10,
+    alignItems: 'center',
+    width: "100%", height: 80,
+    padding: 15,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,  // Làm tròn các góc
+    elevation: 5,  // Tạo bóng đổ trên Android
   },
   buttonText: {
-    fontSize: 14,
-    color: "black",
-    marginLeft: 10,
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginBottom: 5
   },
 });

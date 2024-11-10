@@ -39,12 +39,12 @@ export default function () {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon} source={require("../../Image/back.png")} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>History Buy</Text>
+        <Text style={styles.headerText}>Lịch sử thanh toán</Text>
         <View />
       </View>
       <ScrollView>
@@ -61,12 +61,14 @@ export default function () {
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 40,
-    paddingHorizontal: 15,
   },
   icon: {
     width: 20,

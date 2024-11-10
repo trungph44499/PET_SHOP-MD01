@@ -209,7 +209,7 @@ export default Payment2;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7F7F7",
+    backgroundColor: "white",
     padding: 20,
   },
   header: {
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FF6B6B",
+    color: "black",
   },
   textBold: {
     fontSize: 15,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 45,
     borderBottomWidth: 2,
-    borderBottomColor: "#000000", // Chỉnh sửa màu gạch ngang thành đen
+    borderBottomColor: "#D3D3D3", // Chỉnh sửa màu gạch ngang thành đen
     padding: 10,
     marginBottom: 10,
     borderRadius: 8,
@@ -246,9 +246,10 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 13,
+    marginLeft:10
   },
   scrollContainer: {
-    marginBottom: 80,
+    marginBottom: 30,
   },
   section: {
     marginVertical: 15,
@@ -289,7 +290,7 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   paymentSection: {
-    paddingVertical: 25,
+    paddingVertical: 1,
   },
   paymentInfo: {
     flexDirection: "row",
@@ -324,12 +325,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: "85%",
+    width: "90%",
     padding: 20,
     backgroundColor: "white",
     borderRadius: 15,
     alignItems: "center",
     elevation: 5,
+    position:'absolute',
+    bottom: 20,
+    
   },
   modalTitle: {
     fontSize: 18,

@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 17,
     fontWeight: "bold",
+    marginRight: 5, 
   },
   itemStatus: {
     fontSize: 17,
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0f7e0", 
     borderRadius: 5, 
     padding: 5, 
-    marginLeft: 5,
+  
   },
   itemRow: {
     flexDirection: "row",

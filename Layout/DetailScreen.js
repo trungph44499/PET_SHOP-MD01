@@ -163,13 +163,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 16,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 10,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: 40,
-    paddingHorizontal: 10,
+    marginTop: 20,
+ 
   },
   txt: {
     marginTop: 10,

@@ -117,7 +117,7 @@ const ShippingAddress = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image style={styles.icon} source={require('../../Image/back.png')} />
         </TouchableOpacity>
-        <Text style={styles.title}>Danh sách địa chỉ giao hàng</Text>
+        <Text style={styles.title}>Shipping address </Text>
       </View>
 
       <FlatList
@@ -131,6 +131,8 @@ const ShippingAddress = ({ navigation }) => {
       >
         <Image style={styles.addIcon} source={require('../../Image/add.png')} />
       </TouchableOpacity>
+
+     
     </View>
   );
 };
@@ -214,13 +216,14 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'gray',
+    elevation: 8,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   addIcon: {
     width: 25,
     height: 25,
-    tintColor: 'white',
+    tintColor: 'black',
   },
 });

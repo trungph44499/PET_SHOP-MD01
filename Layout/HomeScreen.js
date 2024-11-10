@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 18,
     fontWeight: "bold",
+    marginRight: 5, 
   },
   itemStatus: {
     fontSize: 18,
@@ -283,7 +284,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0f7e0", // Nền màu nhẹ
     borderRadius: 5, // Bo góc
     padding: 5, // Thêm khoảng cách bên trong
-    marginLeft: 5, // Khoảng cách với tên sản phẩm
   },
 
   itemRow: {
