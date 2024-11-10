@@ -209,7 +209,7 @@ export default Payment2;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7F7F7",
+    backgroundColor: "white",
     padding: 20,
   },
   header: {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 45,
     borderBottomWidth: 2,
-    borderBottomColor: "#000000", // Chỉnh sửa màu gạch ngang thành đen
+    borderBottomColor: "#D3D3D3", // Chỉnh sửa màu gạch ngang thành đen
     padding: 10,
     marginBottom: 10,
     borderRadius: 8,
@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 13,
+    marginLeft:10
   },
   scrollContainer: {
     marginBottom: 80,

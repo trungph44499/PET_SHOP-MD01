@@ -17,6 +17,25 @@ function Main() {
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
 
+  function convertStatus(status) {
+    var statusResult = "";
+    switch (status) {
+      case "reject":
+        statusResult = "Đã từ chối";
+        break;
+      case "success":
+        statusResult = "Đã xác nhận";
+        break;
+      case "pending":
+        statusResult = "Chờ xác nhận";
+        break;
+
+      default:
+        break;
+    }
+    return statusResult;
+  }
+
   websocket.onmessage = function (result) {
     const data = JSON.parse(result.data);
 
@@ -63,7 +82,7 @@ function Main() {
               <td>{item.location}</td>
               <td>{item.number}</td>
               <td>{item.products.map((e) => `${e.name}, `)}</td>
-              <td>{item.status}</td>
+              <td>{convertStatus(item.status)}</td>
 
               <td>
                 <button
@@ -82,7 +101,9 @@ function Main() {
                         `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,
-                          status: "pending",
+                          email: item.email,
+                          products: item.products,
+                          status: "success",
                         }
                       );
 
@@ -114,6 +135,8 @@ function Main() {
                         `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,
+                          email: item.email,
+                          products: item.products,
                           status: "reject",
                         }
                       );

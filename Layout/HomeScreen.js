@@ -16,7 +16,7 @@ import SliderShow from "./components/SliderShow";
 import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 
 
-export const URL = 'http://192.168.100.34';
+export const URL = `http://192.168.1.93`;
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -61,9 +61,7 @@ const HomeScreen = ({ navigation }) => {
       >
         <Image source={{ uri: item.img }} style={styles.itemImage} />
         <View style={styles.itemRow}>
-          {/* Hiển thị tên sản phẩm */}
           <Text style={styles.itemName}>{item.name}</Text>
-          {/* Nếu trạng thái sản phẩm là "New", hiển thị nhãn "New" trong thẻ Text riêng */}
           {item.status === "New" && (
             <Text style={styles.itemStatus}>{item.status}</Text>
           )}
@@ -244,7 +242,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: "100%",
-    backgroundColor: "#F6F6F6",
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 12,
   },
   image: {
@@ -291,8 +289,8 @@ const styles = StyleSheet.create({
   itemRow: {
     flexDirection: "row",
     alignItems: "center",
-    flexWrap: "wrap", // Cho phép nội dung bọc lại khi không đủ chỗ
-    // marginVertical: 1, // Khoảng cách giữa các dòng
+    flexWrap: "wrap", 
+
   },
   itemStyle: {
     fontSize: 16,

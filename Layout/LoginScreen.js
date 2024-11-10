@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,21 +21,6 @@ const LoginScreen = (props) => {
   const [pass, setPass] = useState("");
   const [showPass, setShowPass] = useState(true);
   const [checkRemember, setCheckRemember] = useState(false);
-
-  useEffect(() => {
-    const checkUserLogin = async () => {
-      const savedUser = await AsyncStorage.getItem("User");
-      const rememberMe = await AsyncStorage.getItem("RememberMe");
-
-      if (savedUser && rememberMe === "true") {
-        // Nếu có thông tin người dùng và đã tick "Nhớ tài khoản", chuyển đến Main
-        /* khi tick vào nút nhớ tài khoản trước khi đăng nhập
-              thì lần đăng nhập tiếp theo sẽ chuyển vào màn home luôn */
-        props.navigation.navigate("Main");
-      }
-    };
-    checkUserLogin();
-  }, []);
 
   const CheckLogin = async () => {
     if (email === "") {
@@ -58,8 +44,6 @@ const LoginScreen = (props) => {
           if (checkRemember) {
             await AsyncStorage.setItem("User", email);
             await AsyncStorage.setItem("RememberMe", "true"); // Lưu trạng thái "Nhớ tài khoản"
-          } else {
-            await AsyncStorage.removeItem("RememberMe"); // Xóa nếu không tick
           }
           props.navigation.navigate("Main");
         }
@@ -80,6 +64,7 @@ const LoginScreen = (props) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <StatusBar hidden />
         <View style={styles.container}>
           <Image
             style={{ width: 400, height: 200 }}

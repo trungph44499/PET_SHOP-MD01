@@ -16,10 +16,15 @@ import Petcare from "../Layout/Petcare";
 import Petcare2 from "../Layout/Petcare2";
 import Payment from "../Layout/Payment";
 import Payment2 from "../Layout/Payment2";
-import FinalBill from "../Layout/FinalBill";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
 import HistoryPay from "../Layout/history-pay/HistoryPay";
-import Profilesetting from "../Layout/Profilesetting";
+
+
+import AddPaymentMethod from "../Layout/payment/AddPaymentMethod";
+import AddShippingAddrees from "../Layout/payment/AddShippingAddrees";
+import PaymentMethod from "../Layout/payment/PaymentMethod";
+import ShippingAddrees from "../Layout/payment/ShippingAddrees";
+
 
 
 const Tab = createBottomTabNavigator();
@@ -116,8 +121,12 @@ const MainNavigator = () => {
       <Stack.Screen name="Payment" component={Payment} />
       <Stack.Screen name="Payment2" component={Payment2} />
       <Stack.Screen name="history-pay" component={HistoryPay} />
-      <Stack.Screen name="Profilesetting" component={Profilesetting} />
+      <Stack.Screen name="ShippingAddrees" component={ShippingAddrees} />
+      <Stack.Screen name="AddShippingAddrees" component={AddShippingAddrees} />
+      <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
+      <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
     </Stack.Navigator>
+
   );
 };
 

@@ -1,3 +1,4 @@
+
 import {
   Image,
   ScrollView,
@@ -20,19 +21,19 @@ const ProfileScreen = ({ navigation, route }) => {
 
   const [scale] = useState(new Animated.Value(1));
 
-  const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.8,
-      useNativeDriver: true,
-    }).start();
-  };
+  // const handlePressIn = () => {
+  //   Animated.spring(scale, {
+  //     toValue: 0.8,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
 
-  const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  };
+  // const handlePressOut = () => {
+  //   Animated.spring(scale, {
+  //     toValue: 1,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
 
   const retrieveData = async () => {
     try {
@@ -57,16 +58,15 @@ const ProfileScreen = ({ navigation, route }) => {
       retrieveData();
     }, [])
   );
-
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
-            // onPress={() => navigation.goBack()}
+            onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
-            <Image style={styles.icon} source={require("../Image/search.png")} />
+            <Image style={styles.icon} source={require("../Image/back.png")} />
           </TouchableOpacity>
           <Text style={styles.headerText}>PROFILE</Text>
           <TouchableOpacity onPress={() => {
@@ -97,7 +97,7 @@ const ProfileScreen = ({ navigation, route }) => {
             );
           }}>
             <Image source={require("../Image/out.png")}
-              style={{ width: 60, height: 60 , borderRadius:20}}
+              style={{ width: 60, height: 60, borderRadius: 20 }}
 
             />
           </TouchableOpacity>
@@ -125,17 +125,26 @@ const ProfileScreen = ({ navigation, route }) => {
 
         <View style={styles.option}>
 
+        <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
+            onPress={() => navigation.navigate("Petcare")}>
+            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Pet care </Text>
+            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Reviews for 5 item </Text>
+            <Image source={require("../Image/backk.png")}
+              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+            />
+          </TouchableOpacity>
+
           <TouchableOpacity style={{ width: 360, height: 70, padding: 15, borderTopLeftRadius: 20, borderTopEndRadius: 20, backgroundColor: '#F5F5F5' }}
-            
             onPress={() => navigation.navigate("history-pay")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>My orders </Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Lịch sử mua hàng </Text>
             <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Already have 10 orders</Text>
             <Image source={require("../Image/backk.png")}
               style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}>
+          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
+           onPress={() => navigation.navigate("ShippingAddrees")}>
             <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Shipping Addresses </Text>
             <Text style={{ fontSize: 10, color: "#A9A9A9" }}>03 Addresses </Text>
             <Image source={require("../Image/backk.png")}
@@ -143,7 +152,8 @@ const ProfileScreen = ({ navigation, route }) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}>
+          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
+           onPress={() => navigation.navigate("PaymentMethod")}>
             <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Payment Method </Text>
             <Text style={{ fontSize: 10, color: "#A9A9A9" }}>You have 2 cards </Text>
             <Image source={require("../Image/backk.png")}
@@ -152,31 +162,23 @@ const ProfileScreen = ({ navigation, route }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
-            onPress={() => navigation.navigate("Petcare")}>
-            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>My reviews </Text>
+            onPress={() => navigation.navigate("ManageUser")}>
+            <Text style={{ fontWeight: 'bold', fontSize: 17 }}> Chỉnh sửa thông tin</Text>
             <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Reviews for 5 item </Text>
             <Image source={require("../Image/backk.png")}
               style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
             />
           </TouchableOpacity>
-
-
-
-          
-
-
+          <TouchableOpacity style={{ width: 360, height: 70, padding: 15, backgroundColor: '#F5F5F5' }}
+            onPress={() => navigation.navigate("PassReset")}>
+            <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Đổi mật khẩu </Text>
+            <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Reviews for 5 item </Text>
+            <Image source={require("../Image/backk.png")}
+              style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
+            />
+          </TouchableOpacity>
+      
         </View>
-
-
-        <TouchableOpacity style={{ width: 360, height: 70, padding: 15, borderBottomStartRadius: 20, borderBottomEndRadius: 20, backgroundColor: '#F5F5F5' }}
-        onPress={() => navigation.navigate("Profilesetting")}
-        >
-          <Text style={{ fontWeight: 'bold', fontSize: 17 }}>Setting</Text>
-          <Text style={{ fontSize: 10, color: "#A9A9A9" }}>Notification, Password, FAQ, Contact</Text>
-          <Image source={require("../Image/backk.png")}
-            style={{ width: 40, height: 40, position: 'absolute', top: 15, left: 300 }}
-          />
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );

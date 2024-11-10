@@ -19,12 +19,29 @@ function Main() {
 
   websocket.onmessage = function (result) {
     const data = JSON.parse(result.data);
-    
+
     if (data.type == "pet-care") {
       getAllPetCare();
     }
   };
+  function convertStatus(status) {
+    var statusResult = "";
+    switch (status) {
+      case "reject":
+        statusResult = "Đã từ chối";
+        break;
+      case "success":
+        statusResult = "Đã xác nhận";
+        break;
+      case "pending":
+        statusResult = "Chờ xác nhận";
+        break;
 
+      default:
+        break;
+    }
+    return statusResult;
+  }
   async function getAllPetCare() {
     try {
       const {
@@ -53,6 +70,9 @@ function Main() {
             <th scope="col">Name</th>
             <th scope="col">Phone</th>
             <th scope="col">Message</th>
+            <th scope="col">Status</th>
+            <th scope="col">Confirm</th>
+            <th scope="col">Reject</th>
           </tr>
         </thead>
         <tbody>
@@ -63,22 +83,75 @@ function Main() {
               <td>{item.name}</td>
               <td>{item.phone}</td>
               <td>{item.message}</td>
+              <td>{convertStatus(item.status)}</td>
+              <td>
+                <button
+                  disabled={
+                    item.status == "reject" || item.status == "success"
+                      ? true
+                      : false
+                  }
+                  onClick={async function () {
+                    const resultCheck = window.confirm("Confirm payment?");
+                    if (resultCheck) {
+                      const {
+                        status,
+                        data: { response, type },
+                      } = await axios.post(
+                        `${json_config[0].url_connect}/pet-care/update`,
+                        {
+                          id: item._id,
+                          email: item.email,
+                          service: item.service,
+                          status: "success",
+                        }
+                      );
 
-              {/* <td>
-                <button onClick={() => {}} className="btn btn-primary">
+                      if (status == 200) {
+                        window.alert(response);
+                        if (type) getAllPetCare();
+                      }
+                    }
+                  }}
+                  className="btn btn-primary"
+                >
                   Confirm
                 </button>
               </td>
               <td>
                 <button
-                  className="btn btn-secondary"
-                  onClick={async () => {
-                    const result = window.confirm("Sure delete ");
+                  disabled={
+                    item.status == "reject" || item.status == "success"
+                      ? true
+                      : false
+                  }
+                  onClick={async function () {
+                    const resultCheck = window.confirm("Reject payment?");
+                    if (resultCheck) {
+                      const {
+                        status,
+                        data: { response, type },
+                      } = await axios.post(
+                        `${json_config[0].url_connect}/pet-care/update`,
+                        {
+                          id: item._id,
+                          email: item.email,
+                          service: item.service,
+                          status: "reject",
+                        }
+                      );
+
+                      if (status == 200) {
+                        window.alert(response);
+                        if (type) getAllPetCare();
+                      }
+                    }
                   }}
+                  className="btn btn-secondary"
                 >
                   Reject
                 </button>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

@@ -58,7 +58,7 @@ const DetailProduct = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
        <StatusBar hidden />
       <View style={styles.container}>
         <View style={styles.header}>

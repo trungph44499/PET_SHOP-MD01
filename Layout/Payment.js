@@ -13,28 +13,26 @@ import UnderLine from "../components/UnderLine";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { URL } from "./HomeScreen";
 import axios from "axios";
+import { validateSDT } from "./utils/stringUtils";
 
 const Payment = ({ navigation, route }) => {
   const { total, listItem } = route.params;
-  const [user, setuser] = useState({});
+  const [user, setUser] = useState({});
   const day = new Date().getDay();
   const month = new Date().getMonth();
-  const [ship, setship] = useState(true);
-  const [card, setcard] = useState(true);
-  const [err, seterr] = useState(false);
-  const [diaChi, setdiaChi] = useState("");
-  const [soDienThoai, setsoDienThoai] = useState("");
+  const [ship, setShip] = useState(true);
+  const [card, setCard] = useState(true);
+  const [err, setErr] = useState(false);
+  const [diaChi, setDiaChi] = useState("");
+  const [soDienThoai, setSoDienThoai] = useState("");
 
   const retrieveData = async () => {
     try {
       const UserData = await AsyncStorage.getItem("@UserLogin");
       if (UserData != null) {
-        const {
-          status,
-          data: { response },
-        } = await axios.post(URL + "/users/getUser", { email: UserData });
+        const { status, data: { response } } = await axios.post(URL + "/users/getUser", { email: UserData });
         if (status == 200) {
-          setuser(...response);
+          setUser(...response);
         }
       }
     } catch (error) {
@@ -66,74 +64,36 @@ const Payment = ({ navigation, route }) => {
       <ScrollView>
         <View style={styles.section}>
           <UnderLine value={"Thông tin khách hàng"} color={"black"} />
-          <TextInput
-            placeholder="Nhập họ tên"
-            style={styles.input}
-            value={user.fullname}
-            editable={false}
-          />
-          <TextInput
-            placeholder="Nhập email"
-            style={styles.input}
-            value={user.email}
-            editable={false}
-          />
-          <TextInput
-            placeholder="Nhập địa chỉ"
-            style={styles.input}
-            onChangeText={(txt) => setdiaChi(txt)}
-          />
-          {err && diaChi === "" && (
-            <Text style={styles.errorText}>Vui lòng nhập địa chỉ</Text>
-          )}
-          <TextInput
-            placeholder="Nhập số điện thoại"
-            style={styles.input}
-            onChangeText={(txt) => setsoDienThoai(txt)}
-            keyboardType="numeric"
-          />
-          {err && soDienThoai === "" && (
-            <Text style={styles.errorText}>Vui lòng nhập số điện thoại</Text>
-          )}
-          {err && isNaN(soDienThoai) && (
-            <Text style={styles.errorText}>Số điện thoại chưa đúng</Text>
-          )}
+          <TextInput placeholder="Nhập họ tên" style={styles.input} value={user.fullname} editable={false} />
+          <TextInput placeholder="Nhập email" style={styles.input} value={user.email} editable={false} />
+          <TextInput placeholder="Nhập địa chỉ" style={styles.input} onChangeText={(txt) => setDiaChi(txt)} />
+          {err && diaChi === "" && <Text style={styles.errorText}>Vui lòng nhập địa chỉ</Text>}
+          <TextInput placeholder="Nhập số điện thoại" style={styles.input} onChangeText={(txt) => setSoDienThoai(txt)} keyboardType="numeric" />
+          {err && soDienThoai === "" && <Text style={styles.errorText}>Vui lòng nhập số điện thoại</Text>}
+          {err && !validateSDT(soDienThoai) && <Text style={styles.errorText}>Số điện thoại chưa đúng</Text>}
         </View>
 
         <View style={styles.section}>
-          <UnderLine value={"Phương thức thanh toán"} color={"black"} />
-          <Pressable onPress={() => setship(!ship)} style={styles.paymentOption}>
-            <UnderLine
-              value={"Giao hàng nhanh - 15.000đ"}
-              color={"gray"}
-              color2={ship ? "green" : "gray"}
-              value2={`Dự kiến giao hàng ${day + 3}-${day + 5}/${month + 1}`}
-            />
+          <UnderLine value={"Phương thức vận chuyển"} color={"black"} />
+          <Pressable onPress={() => setShip(true)} style={styles.paymentOption}>
+            <UnderLine value={"Giao hàng nhanh - 15.000đ"} color={"gray"} color2={ship ? "green" : "gray"} value2={`Dự kiến giao hàng ${day + 3}-${day + 5}/${month + 1}`} />
             {ship && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
           </Pressable>
 
-          <Pressable onPress={() => setship(!ship)} style={styles.paymentOption}>
-            <UnderLine
-              value={"Giao hàng COD - 20.000đ"}
-              color={"gray"}
-              color2={!ship ? "green" : "gray"}
-              value2={`Dự kiến giao hàng ${day + 2}-${day + 4}/${month + 1}`}
-            />
+          <Pressable onPress={() => setShip(false)} style={styles.paymentOption}>
+            <UnderLine value={"Giao hàng COD - 20.000đ"} color={"gray"} color2={!ship ? "green" : "gray"} value2={`Dự kiến giao hàng ${day + 2}-${day + 4}/${month + 1}`} />
             {!ship && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
           </Pressable>
         </View>
 
         <View style={styles.section}>
           <UnderLine value={"Hình thức thanh toán"} color={"black"} />
-          <Pressable onPress={() => setcard(!card)} style={styles.paymentOption}>
-            <UnderLine
-              value={"Thẻ VISA/MASTERCARD"}
-              color={"gray"}
-              color2={card ? "green" : "gray"}
-            />
+          <Pressable onPress={() => setCard(true)} style={styles.paymentOption}>
+            <UnderLine value={"Thẻ VISA/MASTERCARD"} color={"gray"} color2={card ? "green" : "gray"} />
             {card && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
           </Pressable>
-          <Pressable onPress={() => setcard(!card)} style={styles.paymentOption}>
+
+          <Pressable onPress={() => setCard(false)} style={styles.paymentOption}>
             <UnderLine value={"Thẻ ATM"} color={"gray"} color2={!card ? "green" : "gray"} />
             {!card && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
           </Pressable>
@@ -152,31 +112,17 @@ const Payment = ({ navigation, route }) => {
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.totalLabel}>Tổng tiền :</Text>
-            <Text style={styles.totalAmount}>
-              {formatPrice(total + (ship ? 15000 : 20000))}
-            </Text>
+            <Text style={styles.totalAmount}>{formatPrice(total + (ship ? 15000 : 20000))}</Text>
           </View>
         </View>
 
         <TouchableOpacity
           onPress={() => {
-            soDienThoai && diaChi
-              ? navigation.navigate("Payment2", {
-                  user: user,
-                  total: total,
-                  ship: ship,
-                  diaChi: diaChi,
-                  soDienThoai: soDienThoai,
-                  listItem: listItem,
-                })
-              : seterr(true);
+            soDienThoai && diaChi && validateSDT(soDienThoai)
+              ? navigation.navigate("Payment2", { user, total, ship, diaChi, soDienThoai, listItem })
+              : setErr(true);
           }}
-          style={[
-            styles.continueButton,
-            {
-              backgroundColor: soDienThoai && diaChi ? "#825640" : "gray",
-            },
-          ]}
+          style={[styles.continueButton, { backgroundColor: soDienThoai && diaChi ? "#825640" : "gray" }]}
         >
           <Text style={styles.continueButtonText}>Tiếp tục</Text>
         </TouchableOpacity>
@@ -190,122 +136,101 @@ export default Payment;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
-    padding: 20,
-    
+    backgroundColor: "white",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    backgroundColor: "#FFF",
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    backgroundColor: "white",
+
   },
   backIcon: {
     width: 24,
     height: 24,
   },
   headerText: {
-    textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FF6B6B",
+    color: "#000",
   },
   section: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    padding: 15,
     backgroundColor: "#fff",
-    marginBottom: 15,
     borderRadius: 10,
+    marginVertical: 8,
     shadowColor: "#000",
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
+    shadowRadius: 4,
+    
   },
   input: {
-    width: "100%",
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    marginBottom: 10,
-    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderColor: "#D3D3D3",
     borderRadius: 8,
-    backgroundColor: "#fdfdfd",
-    fontSize: 16,
-    textAlign: "left",  // Căn trái cho trường nhập liệu
+    padding: 12,
+    fontSize: 15,
+    marginBottom: 8,
   },
   errorText: {
     color: "#d9534f",
     fontSize: 13,
     marginBottom: 5,
-    textAlign: "left",  // Căn trái cho thông báo lỗi
+    marginLeft:10
   },
   paymentOption: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 12,
-    borderBottomColor: "#f2f2f2",
+    paddingVertical: 10,
+    borderBottomColor: "#eaeaea",
     borderBottomWidth: 1,
-    textAlign: "left",  // Căn trái cho phương thức thanh toán
+    width:"100%", // Đảm bảo phần tử chiếm đầy chiều rộng
   },
+
   checkIcon: {
-    width: 24,
-    height: 24,
-    marginLeft: 10,
+    width: 18,
+    height: 18,
   },
   footer: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    padding: 20,
     backgroundColor: "#FFF",
-    elevation: 4,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 6,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  summary: {
-    marginBottom: 20,
   },
   summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
+    paddingVertical: 5,
   },
   textBold: {
     fontSize: 16,
     fontWeight: "500",
     color: "#333",
-    textAlign: "left",  // Căn trái cho thông tin tạm tính và phí vận chuyển
   },
   totalLabel: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
-    textAlign: "left",  // Căn trái cho tổng tiền
   },
   totalAmount: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#d9534f",
-    textAlign: "right",  // Căn phải cho tổng số tiền
   },
   continueButton: {
-    paddingVertical: 14,
+    paddingVertical: 15,
     borderRadius: 8,
-    backgroundColor: "#5cb85c",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 6,
   },
   continueButtonText: {
     color: "#FFF",

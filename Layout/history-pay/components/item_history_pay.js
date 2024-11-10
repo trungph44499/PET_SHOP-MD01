@@ -7,11 +7,11 @@ import {
   Text,
   ToastAndroid,
   View,
+  Alert,
 } from "react-native";
 import { numberUtils, upperCaseFirstItem } from "../../utils/stringUtils";
 import axios from "axios";
 import { URL } from "../../HomeScreen";
-import { Alert } from "react-native";
 
 export default function ({ item, getAllHistoryPay }) {
   function convertStatus(status) {
@@ -66,28 +66,30 @@ export default function ({ item, getAllHistoryPay }) {
 
   return (
     <View style={styles.container}>
-      <ScrollView key={item._id}>
-        {item.products.map((e) => (
-          <View key={e.id} style={styles.item}>
-            <Image source={{ uri: e.image }} style={styles.image} />
-            <View>
-              <Text style={{ color: "gray" }}>
-                Mã sản phẩm: {upperCaseFirstItem(e.id.slice(-5))}
-              </Text>
-              <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                Tên sản phẩm: {e.name}
-              </Text>
-              <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                Giá tiền: {numberUtils(e.price)}
-              </Text>
-              <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                Số lượng : {e.quantity}
-              </Text>
-            </View>
-            <View />
+      {item.products.map((e) => (
+        <View key={e.id} style={styles.item}>
+          <Image source={{ uri: e.image }} style={styles.image} />
+          <View>
+            <Text style={{ color: "gray" }}>
+              Mã sản phẩm: {upperCaseFirstItem(e.id.slice(-5))}
+            </Text>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{ fontSize: 15, fontWeight: "bold", width: "50%" }}
+            >
+              {e.name}
+            </Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              Giá tiền: {numberUtils(e.price)}
+            </Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              Số lượng : {e.quantity}
+            </Text>
           </View>
-        ))}
-      </ScrollView>
+          <View />
+        </View>
+      ))}
       <View
         style={{
           flexDirection: "row",
@@ -110,19 +112,19 @@ export default function ({ item, getAllHistoryPay }) {
 }
 const styles = StyleSheet.create({
   item: {
-    height: 150,
+    height: 120,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
     borderBottomColor: "#333",
     borderBottomWidth: 0.5,
   },
   image: {
     width: 100,
     height: 100,
+    marginHorizontal: 15,
   },
   container: {
-    height: 200,
     backgroundColor: "white",
     borderRadius: 12,
     padding: 8,

@@ -50,7 +50,11 @@ export default function () {
       <ScrollView>
         {dataHistory.length > 0 &&
           dataHistory.map((item) => (
-            <ItemHistory item={item} getAllHistoryPay={getAllHistoryPay} />
+            <ItemHistory
+              key={item._id}
+              item={item}
+              getAllHistoryPay={getAllHistoryPay}
+            />
           ))}
       </ScrollView>
     </View>
