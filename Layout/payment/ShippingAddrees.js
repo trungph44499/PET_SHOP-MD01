@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'react-native';
+import { CheckBox } from '@react-native-community/checkbox';
+import Checkbox from 'expo-checkbox';
 
 const ShippingAddress = ({ navigation }) => {
   const [shippingAddresses, setShippingAddresses] = useState([]);
   const [emailUser, setEmailUser] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
 
   // Hàm lấy email người dùng từ AsyncStorage
   const fetchUserEmail = async () => {
@@ -120,6 +123,72 @@ const ShippingAddress = ({ navigation }) => {
         <Text style={styles.title}>Shipping address </Text>
       </View>
 
+      <View style={{ flexDirection: 'row' }}>
+        <Checkbox
+          value={isChecked}
+          onValueChange={(newValue) => setIsChecked(newValue)}
+          style={{ marginTop: 3 }}
+        />
+        <Text style={{ fontSize: 20, marginLeft: 10 }}>Use as the shipping address</Text>
+      </View>
+
+      <View style={{ widthL: 300, height: 120, backgroundColor: '#FAFAFA', margin: 5 }}>
+
+        <View style={{ flexDirection: 'row', padding: 15, borderBottomWidth: 1, borderColor: '#D3D3D3' }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 150 }}>Bruno Fernande </Text>
+          <TouchableOpacity>
+            <Image source={require("../../Image/edit.png")}
+              style={{ width: 30, height: 30 }} />
+          </TouchableOpacity>
+
+        </View>
+        <Text style={{ fontSize: 18, padding: 10, color: '#D3D3D3' }}>25 rue Roert latouche, Nice, 06200, Cote D'azur, France</Text>
+      </View>
+
+      <View style={{ flexDirection: 'row', marginTop: 15 }}>
+        <Checkbox
+          value={isChecked}
+          onValueChange={(newValue) => setIsChecked(newValue)}
+          style={{ marginTop: 3 }}
+        />
+        <Text style={{ fontSize: 20, marginLeft: 10 }}>Use as the shipping address</Text>
+      </View>
+
+      <View style={{ widthL: 300, height: 120, backgroundColor: '#FAFAFA', margin: 5 }}>
+
+        <View style={{ flexDirection: 'row', padding: 15, borderBottomWidth: 1, borderColor: '#D3D3D3' }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 150 }}>Bruno Fernande </Text>
+          <TouchableOpacity>
+            <Image source={require("../../Image/edit.png")}
+              style={{ width: 30, height: 30 }} />
+          </TouchableOpacity>
+        </View>
+        <Text style={{ fontSize: 18, padding: 10, color: '#D3D3D3' }}>25 rue Roert latouche, Nice, 06200, Cote D'azur, France</Text>
+      </View>
+
+      <View style={{ flexDirection: 'row', marginTop: 15 }}>
+        <Checkbox
+          value={isChecked}
+          onValueChange={(newValue) => setIsChecked(newValue)}
+          style={{ marginTop: 3 }}
+        />
+        <Text style={{ fontSize: 20, marginLeft: 10 }}>Use as the shipping address</Text>
+      </View>
+
+      <View style={{ widthL: 300, height: 120, backgroundColor: '#FAFAFA', margin: 5 }}>
+
+        <View style={{ flexDirection: 'row', padding: 15, borderBottomWidth: 1, borderColor: '#D3D3D3' }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginRight: 150 }}>Bruno Fernande </Text>
+          <TouchableOpacity>
+            <Image source={require("../../Image/edit.png")}
+              style={{ width: 30, height: 30 }} />
+          </TouchableOpacity>
+
+
+        </View>
+        <Text style={{ fontSize: 18, padding: 10, color: '#D3D3D3' }}>25 rue Roert latouche, Nice, 06200, Cote D'azur, France</Text>
+      </View>
+
       <FlatList
         data={shippingAddresses}
         renderItem={renderItem}
@@ -132,7 +201,7 @@ const ShippingAddress = ({ navigation }) => {
         <Image style={styles.addIcon} source={require('../../Image/add.png')} />
       </TouchableOpacity>
 
-     
+
     </View>
   );
 };
