@@ -329,6 +329,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: "center",
     elevation: 5,
+    position:'absolute',
+    top:300,
+    left:30
   },
   modalTitle: {
     fontSize: 18,
