@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const PaymentMethod = ({ navigation }) => {
-  const [paymentMethods, setPaymentMethods] = useState([]);
   const [emailUser, setEmailUser] = useState('');
+  const [paymentMethods, setPaymentMethods] = useState([]);
   const [checkRemember, setCheckRemember] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // Trạng thái refreshing
 
   const fetchUserEmail = async () => {
     try {
@@ -38,6 +39,13 @@ const PaymentMethod = ({ navigation }) => {
     }
   };
 
+  // Hàm handle pull-to-refresh
+  const handleRefresh = async () => {
+    setRefreshing(true); // Bắt đầu refreshing
+    await fetchPaymentMethods(); // Tải lại danh sách phương thức thanh toán
+    setRefreshing(false); // Kết thúc refreshing
+  };
+
   const deletePaymentMethod = async (index) => {
     Alert.alert(
       'Xác nhận',
@@ -50,13 +58,16 @@ const PaymentMethod = ({ navigation }) => {
         {
           text: 'Xóa',
           onPress: async () => {
-            const updatedPaymentMethods = [...paymentMethods];
-            updatedPaymentMethods.splice(index, 1);
-
             try {
-              await AsyncStorage.setItem(emailUser + '_paymentMethods', JSON.stringify(updatedPaymentMethods));
-              setPaymentMethods(updatedPaymentMethods);
-              Alert.alert('Thành công', 'Phương thức thanh toán đã được xóa');
+              const storedPaymentMethods = await AsyncStorage.getItem(emailUser + '_paymentMethods');
+              if (storedPaymentMethods) {
+                const updatedPaymentMethods = JSON.parse(storedPaymentMethods);
+                updatedPaymentMethods.splice(index, 1);
+
+                await AsyncStorage.setItem(emailUser + '_paymentMethods', JSON.stringify(updatedPaymentMethods));
+                Alert.alert('Thành công', 'Phương thức thanh toán đã được xóa');
+                fetchPaymentMethods(); // Cập nhật lại danh sách sau khi xóa
+              }
             } catch (error) {
               console.error('Lỗi khi xóa phương thức thanh toán:', error);
               Alert.alert('Lỗi', 'Không thể xóa phương thức thanh toán');
@@ -71,7 +82,6 @@ const PaymentMethod = ({ navigation }) => {
   const editPaymentMethod = (paymentMethod, index) => {
     navigation.navigate('AddPaymentMethod', {
       emailUser,
-      setPaymentMethods,
       paymentMethod,
       index,
     });
@@ -87,24 +97,18 @@ const PaymentMethod = ({ navigation }) => {
     }
   }, [emailUser]);
 
-  useEffect(() => {
-    if (emailUser) {
-      fetchPaymentMethods();
-    }
-  }, [emailUser]);
   const formatCardNumber = (cardNumber) => {
     if (!cardNumber) return '**** **** **** ****';
     const lastFourDigits = cardNumber.slice(-4);
     return `**** **** **** ${lastFourDigits}`;
   };
 
-
   const renderItem = ({ item, index }) => (
     <TouchableOpacity onPress={() => editPaymentMethod(item, index)} style={styles.paymentMethodContainer}>
       <View>
-        <LinearGradient 
-         colors={['#4c669f', '#3b5998', '#192f6a']} 
-         locations={[0, 0.5, 1]} // Điều chỉnh vị trí của các màu để tạo hiệu ứng gợn sóng
+        <LinearGradient
+          colors={['#4c669f', '#3b5998', '#192f6a']}
+          locations={[0, 0.5, 1]} // Điều chỉnh vị trí của các màu để tạo hiệu ứng gợn sóng
           style={styles.cardPreview}>
           <TouchableOpacity
             style={styles.deleteIconContainer}
@@ -121,7 +125,6 @@ const PaymentMethod = ({ navigation }) => {
               source={require('../../Image/visa.png')} // Bạn cần thêm logo visa
               style={styles.visaLogo}
             />
-
           </View>
           <View style={{ padding: 10 }}>
             <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
@@ -146,18 +149,48 @@ const PaymentMethod = ({ navigation }) => {
           >
             <Image
               style={{ width: 20, height: 20 }}
-              source={
-                checkRemember
-                  ? require("../../Image/check-box.png")
-                  : require("../../Image/square.png")
+              source={checkRemember
+                ? require("../../Image/check-box.png")
+                : require("../../Image/square.png")
               }
             />
           </TouchableOpacity>
-          <Text style={{ marginLeft: 10 }}>Use as default payment method</Text>
+          <Text style={{ marginLeft: 10 }}>Sử dụng làm phương thức thanh toán mặc định</Text>
         </View>
       </View>
     </TouchableOpacity>
   );
+
+  if (paymentMethods.length === 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Image style={styles.icon} source={require('../../Image/back.png')} />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Phương thức thanh toán</Text>
+        </View>
+
+        {/* Thông báo nếu không có phương thức thanh toán */}
+        <Text style={styles.emptyStateText}>Chưa có phương thức thanh toán</Text>
+
+        {/* Pull-to-refresh khi không có phương thức thanh toán */}
+        <FlatList
+          data={[]}
+          renderItem={() => null}
+          keyExtractor={() => 'empty'}
+          onRefresh={handleRefresh} // Thêm sự kiện pull-to-refresh
+          refreshing={refreshing} // Cập nhật trạng thái refreshing
+        />
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('AddPaymentMethod', { emailUser })}
+        >
+          <Image style={styles.addIcon} source={require('../../Image/add.png')} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -165,18 +198,21 @@ const PaymentMethod = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image style={styles.icon} source={require('../../Image/back.png')} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Danh sách phương thức thanh toán</Text>
-      </View>
+        <Text style={styles.headerText}>Phương thức thanh toán</Text>
+
+      </View> 
 
       <FlatList
         data={paymentMethods}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={styles.listContentContainer}
+        // contentContainerStyle={styles.listContentContainer}
+        onRefresh={handleRefresh} 
+        refreshing={refreshing} 
       />
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate('AddPaymentMethod', { emailUser, setPaymentMethods })}
+        onPress={() => navigation.navigate('AddPaymentMethod', { emailUser })} // Chỉ truyền emailUser
       >
         <Image style={styles.addIcon} source={require('../../Image/add.png')} />
       </TouchableOpacity>
@@ -198,8 +234,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  emptyStateText:{
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#888',
+  },
   paymentMethodContainer: {
-    // backgroundColor: '#f8f8f8',
     borderRadius: 5,
   },
   paymentMethodText: {
@@ -341,11 +381,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
   },
-  // cardHeader: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'flex-end',
-  //   alignItems: 'center',
-  // },
   deleteIcon: {
     width: 25,
     height: 25,
@@ -364,7 +399,6 @@ const styles = StyleSheet.create({
   checkbox: {
     flexDirection: "row",
     marginBottom: 20,
-
   }
 });
 

@@ -6,6 +6,7 @@ import {
   View,
   RefreshControl,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { URL } from "./HomeScreen";
@@ -15,25 +16,33 @@ const NoticeScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    getData();
-    const interval = setInterval(() => {
-      getData();
-    }, 1000); // Fetch data every 60 seconds
-
-    return () => clearInterval(interval); // Clear interval on component unmount
-  }, []);
-
+  // Hàm lấy dữ liệu
   const getData = async () => {
     const email = await AsyncStorage.getItem("@UserLogin");
+
+    // Gọi API để lấy dữ liệu
     const url = `${URL}/notification?email=${email}`;
-    const res = await fetch(url);
-    if (res.ok) {
-      const data = await res.json();
-      setData(data.reverse()); // Reverse the data array here
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setData(data.reverse()); // Lưu dữ liệu và đảo ngược
+      } else {
+        Alert.alert("Lỗi", "Không thể tải thông báo");
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Lỗi kết nối", "Không thể kết nối đến máy chủ");
     }
   };
 
+  // Hàm gọi lại dữ liệu khi người dùng kéo xuống (pull-to-refresh)
+  const onRefresh = () => {
+    setRefreshing(true);
+    getData().then(() => setRefreshing(false)); // Khi lấy dữ liệu xong thì tắt refreshing
+  };
+
+  // Hàm chuyển đổi trạng thái
   function convertStatus(status) {
     var statusResult = "";
     var statusColor = "";
@@ -56,6 +65,7 @@ const NoticeScreen = ({ navigation }) => {
     return { statusResult, statusColor };
   }
 
+  // Hàm chuyển đổi ngày giờ
   function convertDate(date) {
     let dateObj = new Date(date);
 
@@ -76,17 +86,29 @@ const NoticeScreen = ({ navigation }) => {
     return formattedDate;
   }
 
+  // Hàm render từng item trong danh sách
   const renderItem = ({ item }) => {
     return (
       <View style={styles.bgitem}>
         <View style={styles.item}>
           <Image source={{ uri: item.image }} style={styles.image} />
           <View style={styles.textContainer}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: convertStatus(item.status).statusColor, textTransform: 'uppercase' }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                color: convertStatus(item.status).statusColor,
+                textTransform: "uppercase",
+              }}
+            >
               {convertStatus(item.status).statusResult}
             </Text>
-            <Text style={{ fontSize: 16, textTransform: 'uppercase' }}>{item.service.toUpperCase()}</Text>
-            <Text style={{ fontSize: 14, textTransform: 'uppercase' }}>{item.type}</Text>
+            <Text style={{ fontSize: 16, textTransform: "uppercase" }}>
+              {item.service.toUpperCase()}
+            </Text>
+            <Text style={{ fontSize: 14, textTransform: "uppercase" }}>
+              {item.type}
+            </Text>
             <Text>{convertDate(item.date)}</Text>
           </View>
         </View>
@@ -94,10 +116,10 @@ const NoticeScreen = ({ navigation }) => {
     );
   };
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    getData().then(() => setRefreshing(false));
-  };
+  // useEffect để lấy dữ liệu ngay khi component được render lần đầu tiên
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -115,13 +137,15 @@ const NoticeScreen = ({ navigation }) => {
         <View />
       </View>
 
+      {/* Hiển thị thông báo khi không có dữ liệu */}
       {data.length === 0 ? (
         <View>
-          <Text style={{ textAlign: "center" }}>
+          <Text style={{ textAlign: "center", fontSize: 16 }}>
             Hiện chưa có thông báo nào cho bạn
           </Text>
         </View>
       ) : (
+        // Hiển thị danh sách thông báo với pull-to-refresh
         <FlatList
           showsVerticalScrollIndicator={false}
           data={data}
@@ -147,7 +171,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   image: {
     width: 80,

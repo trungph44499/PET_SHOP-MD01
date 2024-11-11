@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Alert, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Image } from 'react-native';
 
 const ShippingAddress = ({ navigation }) => {
   const [shippingAddresses, setShippingAddresses] = useState([]);
   const [emailUser, setEmailUser] = useState('');
+  const [refreshing, setRefreshing] = useState(false); // Trạng thái refreshing
 
   // Hàm lấy email người dùng từ AsyncStorage
   const fetchUserEmail = async () => {
@@ -30,7 +30,6 @@ const ShippingAddress = ({ navigation }) => {
         return;
       }
 
-      // Sử dụng một key duy nhất cho địa chỉ giao hàng, tránh trùng với phương thức thanh toán
       const storedShippingAddresses = await AsyncStorage.getItem(emailUser + '_shippingAddresses');
       if (storedShippingAddresses) {
         setShippingAddresses(JSON.parse(storedShippingAddresses));
@@ -40,15 +39,25 @@ const ShippingAddress = ({ navigation }) => {
     }
   };
 
-  // Hàm xóa địa chỉ giao hàng
+  // Hàm xóa địa chỉ giao hàng với xác nhận
+  const confirmDelete = (index) => {
+    Alert.alert(
+      'Xác nhận xóa',
+      'Bạn có chắc chắn muốn xóa địa chỉ này?',
+      [
+        { text: 'Hủy', style: 'cancel' },
+        { text: 'Xóa', onPress: () => deleteShippingAddress(index) },
+      ]
+    );
+  };
+
   const deleteShippingAddress = async (index) => {
     const updatedShippingAddresses = [...shippingAddresses];
-    updatedShippingAddresses.splice(index, 1); // Xóa địa chỉ tại index
+    updatedShippingAddresses.splice(index, 1);
 
     try {
-      // Cập nhật lại danh sách địa chỉ giao hàng trong AsyncStorage
       await AsyncStorage.setItem(emailUser + '_shippingAddresses', JSON.stringify(updatedShippingAddresses));
-      setShippingAddresses(updatedShippingAddresses); // Cập nhật lại trạng thái trong ứng dụng
+      setShippingAddresses(updatedShippingAddresses);
       Alert.alert('Thành công', 'Địa chỉ giao hàng đã được xóa');
     } catch (error) {
       console.error('Lỗi khi xóa địa chỉ giao hàng:', error);
@@ -60,10 +69,16 @@ const ShippingAddress = ({ navigation }) => {
   const editShippingAddress = (address, index) => {
     navigation.navigate('AddShippingAddrees', {
       emailUser,
-      setShippingAddresses,
-      address, // Chuyển thông tin địa chỉ giao hàng cần chỉnh sửa
-      index,   // Chuyển index để biết là chỉnh sửa item nào
+      address,
+      index,
     });
+  };
+
+  // Hàm handle pull-to-refresh
+  const handleRefresh = async () => {
+    setRefreshing(true); // Bắt đầu refreshing
+    await fetchShippingAddresses(); // Tải lại danh sách địa chỉ
+    setRefreshing(false); // Kết thúc refreshing
   };
 
   useEffect(() => {
@@ -92,18 +107,16 @@ const ShippingAddress = ({ navigation }) => {
       </Text>
 
       <View style={styles.buttonContainer}>
-        {/* Nút Sửa */}
         <TouchableOpacity
           style={styles.editButton}
-          onPress={() => editShippingAddress(item, index)} // Chỉnh sửa khi nhấn nút
+          onPress={() => editShippingAddress(item, index)}
         >
           <Text style={styles.editButtonText}>Sửa</Text>
         </TouchableOpacity>
 
-        {/* Nút Xóa */}
         <TouchableOpacity
           style={styles.deleteButton}
-          onPress={() => deleteShippingAddress(index)} // Xóa khi nhấn nút
+          onPress={() => confirmDelete(index)}
         >
           <Text style={styles.deleteButtonText}>Xóa</Text>
         </TouchableOpacity>
@@ -111,33 +124,63 @@ const ShippingAddress = ({ navigation }) => {
     </View>
   );
 
+  if (shippingAddresses.length === 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <Image style={styles.icon} source={require('../../Image/back.png')} />
+          </TouchableOpacity>
+          <Text style={styles.title}>Địa chỉ giao hàng</Text>
+        </View>
+        <Text style={styles.emptyStateText}>Chưa có địa chỉ giao hàng</Text>
+
+        {/* Pull-to-refresh khi không có địa chỉ */}
+        <FlatList
+          data={[]}
+          renderItem={() => null}
+          keyExtractor={() => 'empty'}
+          onRefresh={handleRefresh} // Thêm sự kiện pull-to-refresh
+          refreshing={refreshing} // Cập nhật trạng thái refreshing
+        />
+
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('AddShippingAddrees', { emailUser })}
+        >
+          <Image style={styles.addIcon} source={require('../../Image/add.png')} />
+        </TouchableOpacity>
+      </View>
+
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Image style={styles.icon} source={require('../../Image/back.png')} />
         </TouchableOpacity>
-        <Text style={styles.title}>Shipping address </Text>
+        <Text style={styles.title}>Địa chỉ giao hàng</Text>
       </View>
 
       <FlatList
         data={shippingAddresses}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
+        onRefresh={handleRefresh} // Thêm sự kiện pull-to-refresh
+        refreshing={refreshing} // Cập nhật trạng thái refreshing
       />
+
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate('AddShippingAddrees', { emailUser, setShippingAddresses })}
+        onPress={() => navigation.navigate('AddShippingAddrees', { emailUser })}
       >
         <Image style={styles.addIcon} source={require('../../Image/add.png')} />
       </TouchableOpacity>
-
-     
     </View>
   );
 };
-
-export default ShippingAddress;
 
 const styles = StyleSheet.create({
   container: {
@@ -226,4 +269,16 @@ const styles = StyleSheet.create({
     height: 25,
     tintColor: 'black',
   },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyStateText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#888',
+  },
 });
+
+export default ShippingAddress;

@@ -3,21 +3,43 @@ import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, Image, To
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const AddPaymentMethod = ({ route, navigation }) => {
-  const { emailUser, setPaymentMethods, paymentMethod, index } = route.params;  // Nhận email, setPaymentMethods, và thông tin chỉnh sửa từ route.params
+// Hàm kiểm tra thông tin thẻ
+const validateCardInfo = (cardNumber, cardHolderName, cvv, expirationDate) => {
+  if (!cardHolderName || !cardNumber || !cvv || !expirationDate) {
+    return 'Vui lòng nhập đầy đủ thông tin thẻ!';
+  }
+  if (!/^\d{16}$/.test(cardNumber)) {
+    return 'Số thẻ phải có 16 chữ số!';
+  }
+  if (!/^\d{2}\/\d{2}$/.test(expirationDate)) {
+    return 'Ngày hết hạn phải có định dạng MM/YY!';
+  }
+  const [month, year] = expirationDate.split('/');
+  const expDate = new Date(`20${year}-${month}-01`);
+  const currentDate = new Date();
+  if (expDate < currentDate) {
+    return 'Ngày hết hạn phải là một ngày trong tương lai!';
+  }
+  if (!/^\d{3}$/.test(cvv)) {
+    return 'CVV phải có 3 chữ số!';
+  }
+  return null; // Nếu tất cả hợp lệ
+};
 
-  // Trạng thái để lưu các thông tin nhập từ người dùng
+const AddPaymentMethod = ({ route, navigation }) => {
+  const { emailUser, paymentMethod, index } = route.params;
+
   const [cardHolderName, setCardHolderName] = useState(paymentMethod?.cardHolderName || '');
   const [cardNumber, setCardNumber] = useState(paymentMethod?.cardNumber || '');
   const [cvv, setCvv] = useState(paymentMethod?.cvv || '');
   const [expirationDate, setExpirationDate] = useState(paymentMethod?.expirationDate || '');
-
 
   const handleCardNumberChange = (text) => {
     if (text.length <= 16) {
       setCardNumber(text);
     }
   };
+
   const handleCardHolderNameChange = (text) => {
     const regex = /^[a-zA-Z\s\u00C0-\u024F\u1E00-\u1EFF]*$/;
     if (!regex.test(text)) {
@@ -26,6 +48,7 @@ const AddPaymentMethod = ({ route, navigation }) => {
     }
     setCardHolderName(text);
   };
+
   const handleCvvChange = (text) => {
     if (text.length <= 3) {
       setCvv(text);
@@ -57,69 +80,35 @@ const AddPaymentMethod = ({ route, navigation }) => {
     }
   };
 
-  // Hàm lưu hoặc cập nhật phương thức thanh toán vào AsyncStorage
   const savePaymentMethod = async () => {
-    if (!cardHolderName || !cardNumber || !cvv || !expirationDate) {
-      Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ thông tin thẻ!');
-      return false;
-    }
-    // Kiểm tra số thẻ có đúng 16 chữ số không
-    if (!/^\d{16}$/.test(cardNumber)) {
-      Alert.alert('Lỗi', 'Số thẻ phải có 16 chữ số!');
-      return false;
+    const validationError = validateCardInfo(cardNumber, cardHolderName, cvv, expirationDate);
+    if (validationError) {
+      Alert.alert('Lỗi', validationError);
+      return;
     }
 
-    // Kiểm tra ngày hết hạn theo định dạng MM/YY và phải là ngày tương lai
-    if (!/^\d{2}\/\d{2}$/.test(expirationDate)) {
-      Alert.alert('Lỗi', 'Ngày hết hạn phải có định dạng MM/YY!');
-      return false;
-    }
-    const [month, year] = expirationDate.split('/');
-    const expDate = new Date(`20${year}-${month}-01`);
-    const currentDate = new Date();
-    if (expDate < currentDate) {
-      Alert.alert('Lỗi', 'Ngày hết hạn phải là một ngày trong tương lai!');
-      return false;
-    }
-
-    // Kiểm tra CVV có đúng 3 chữ số không
-    if (!/^\d{3}$/.test(cvv)) {
-      Alert.alert('Lỗi', 'CVV phải có 3 chữ số!');
-      return false;
-    }
-    const newPaymentMethod = {
-      cardHolderName,
-      cardNumber,
-      cvv,
-      expirationDate,
-    };
-
+    const newPaymentMethod = { cardHolderName, cardNumber, cvv, expirationDate };
+    
     try {
       const storedPaymentMethods = await AsyncStorage.getItem(emailUser + '_paymentMethods');
       let paymentMethods = storedPaymentMethods ? JSON.parse(storedPaymentMethods) : [];
 
+      // Nếu có index thì sửa, nếu không thì thêm mới
       if (index !== undefined) {
-        // Nếu có index, tức là đang sửa phương thức thanh toán, cập nhật phương thức thanh toán tại index
         paymentMethods[index] = newPaymentMethod;
       } else {
-        // Nếu không có index, tức là thêm mới phương thức thanh toán
         paymentMethods.push(newPaymentMethod);
       }
 
-      // Lưu lại danh sách phương thức thanh toán đã cập nhật vào AsyncStorage
       await AsyncStorage.setItem(emailUser + '_paymentMethods', JSON.stringify(paymentMethods));
-
-      // Cập nhật lại trạng thái trong màn hình chính
-      setPaymentMethods(paymentMethods);
-
-      // Thông báo thành công và quay lại màn hình trước
       Alert.alert('Thành công', 'Phương thức thanh toán đã được lưu');
-      navigation.goBack();
+      navigation.goBack(); // Quay lại màn hình trước
     } catch (error) {
       console.error('Lỗi khi lưu phương thức thanh toán:', error);
       Alert.alert('Lỗi', 'Không thể lưu phương thức thanh toán');
     }
   };
+
   const formatCardNumber = (number) => {
     return number.replace(/(\d{4})(?=\d)/g, '$1 ');
   };
@@ -136,29 +125,20 @@ const AddPaymentMethod = ({ route, navigation }) => {
       <View style={styles.content}>
         <LinearGradient
           colors={['#4c669f', '#3b5998', '#192f6a']}
-          locations={[0, 0.5, 1]} // Điều chỉnh vị trí của các màu để tạo hiệu ứng gợn sóng
+          locations={[0, 0.5, 1]}
           style={styles.cardPreview}>
           <View style={styles.cardHeader}>
-            <Image
-              source={require('../../Image/card.png')} // Bạn cần thêm hình ảnh chip thẻ
-              style={styles.chipImage}
-            />
-            <Image
-              source={require('../../Image/visa.png')} // Bạn cần thêm logo visa
-              style={styles.visaLogo}
-            />
-
+            <Image source={require('../../Image/card.png')} style={styles.chipImage} />
+            <Image source={require('../../Image/visa.png')} style={styles.visaLogo} />
           </View>
           <View style={{ padding: 10 }}>
             <Text style={styles.cardLabelSo}>SỐ THẺ</Text>
             <Text style={styles.cardNumber}>{formatCardNumber(cardNumber) || '**** **** **** ****'}</Text>
-
             <View style={styles.cardFooter}>
               <View>
                 <Text style={styles.cardLabel}>CHỦ THẺ</Text>
                 <Text style={styles.cardValueName}>{cardHolderName || 'NAME'}</Text>
               </View>
-
               <View>
                 <Text style={styles.cardLabel}>HẾT HẠN</Text>
                 <Text style={styles.cardValue}>{expirationDate || 'MM/YY'}</Text>
@@ -170,7 +150,7 @@ const AddPaymentMethod = ({ route, navigation }) => {
             </View>
           </View>
         </LinearGradient>
-        <View style={{marginTop: 20}}>
+        
         <TextInput
           style={styles.input}
           placeholder="Số thẻ"
@@ -185,25 +165,25 @@ const AddPaymentMethod = ({ route, navigation }) => {
           onChangeText={handleCardHolderNameChange}
         />
         <View style={styles.inputDayCVV}>
-        <TextInput
-          style={styles.inputDay}
-          placeholder="Ngày hết hạn (MM/YY)"
-          keyboardType="numeric"
-          value={expirationDate}
-          onChangeText={handleExpiryDateChange}
-          maxLength={5}
-        />
-        <TextInput
-          style={styles.inputCVV}
-          placeholder="CVV"
-          keyboardType="numeric"
-          value={cvv}
-          secureTextEntry
-          onChangeText={handleCvvChange}
-        />
-        </View>
+          <TextInput
+            style={styles.inputDay}
+            placeholder="Ngày hết hạn (MM/YY)"
+            keyboardType="numeric"
+            value={expirationDate}
+            onChangeText={handleExpiryDateChange}
+            maxLength={5}
+          />
+          <TextInput
+            style={styles.inputCVV}
+            placeholder="CVV"
+            keyboardType="numeric"
+            value={cvv}
+            secureTextEntry
+            onChangeText={handleCvvChange}
+          />
         </View>
       </View>
+
       <TouchableOpacity style={styles.submitButton} onPress={savePaymentMethod}>
         <Text style={styles.submitText}>Lưu</Text>
       </TouchableOpacity>
@@ -220,19 +200,13 @@ const styles = StyleSheet.create({
     top: 0,
     backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
   input: {
-    height: 40,
+    height: 60,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 15,
-    paddingHorizontal: 10,
     borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
   },
   content: {
     flex: 1,
@@ -308,19 +282,11 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     width: 30,
   },
-  input: {
-    height: 60,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  inputDayCVV:{
+  inputDayCVV: {
     flexDirection: 'row',
     marginBottom: 20,
   },
-  inputDay:{
+  inputDay: {
     flex: 1,
     height: 60,
     borderColor: '#ccc',
@@ -329,7 +295,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginRight: 10,
   },
-  inputCVV:{
+  inputCVV: {
     flex: 1,
     height: 60,
     borderColor: '#ccc',
@@ -358,19 +324,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-  deleteButton: {
-    backgroundColor: 'red',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  deleteButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 16,
-  }
 });
 
 export default AddPaymentMethod;

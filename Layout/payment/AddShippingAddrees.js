@@ -1,32 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AddShippingAddrees = ({ route, navigation }) => {
-  const { emailUser, setShippingAddresses, address, index } = route.params;
+const AddShippingAddress = ({ route, navigation }) => {
+  const { emailUser, address, index } = route.params || {}; // Lấy tham số từ route.params
 
-  // Trạng thái để lưu thông tin địa chỉ nhập vào
   const [fullName, setFullName] = useState(address?.fullName || '');
   const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || '');
   const [addressText, setAddressText] = useState(address?.address || '');
   const [city, setCity] = useState(address?.city || '');
 
-  // Hàm kiểm tra tính hợp lệ của các thông tin nhập
   const validateForm = () => {
-    // Kiểm tra các trường bắt buộc
     if (!fullName || !phoneNumber || !addressText || !city) {
       Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ thông tin!');
       return false;
     }
 
-    // Kiểm tra định dạng số điện thoại
-    const phoneRegex = /^[0-9]{10,11}$/; // Số điện thoại phải có 10 hoặc 11 chữ số
+    const phoneRegex = /^[0-9]{10,11}$/;
     if (!phoneRegex.test(phoneNumber)) {
-      Alert.alert('Lỗi', 'Số điện thoại không hợp lệ! Vui lòng nhập lại.');
+      Alert.alert('Lỗi', 'Số điện thoại không hợp lệ!');
       return false;
     }
 
-    // Kiểm tra chiều dài của các trường địa chỉ
     if (addressText.length < 3) {
       Alert.alert('Lỗi', 'Địa chỉ phải có ít nhất 3 ký tự.');
       return false;
@@ -40,7 +35,6 @@ const AddShippingAddrees = ({ route, navigation }) => {
     return true;
   };
 
-  // Hàm lưu hoặc cập nhật địa chỉ giao hàng
   const saveAddress = async () => {
     if (!validateForm()) return;
 
@@ -51,18 +45,21 @@ const AddShippingAddrees = ({ route, navigation }) => {
       storedAddresses = storedAddresses ? JSON.parse(storedAddresses) : [];
 
       if (index !== undefined) {
-        // Nếu có index, thì cập nhật địa chỉ tại index đó
+        // Chỉnh sửa địa chỉ
         storedAddresses[index] = newAddress;
       } else {
-        // Nếu không có index, thêm địa chỉ mới vào danh sách
+        // Thêm địa chỉ mới
         storedAddresses.push(newAddress);
       }
 
+      // Lưu lại địa chỉ mới vào AsyncStorage
       await AsyncStorage.setItem(emailUser + '_shippingAddresses', JSON.stringify(storedAddresses));
-      setShippingAddresses(storedAddresses); // Cập nhật lại danh sách địa chỉ giao hàng
 
       Alert.alert('Thành công', 'Địa chỉ đã được lưu!');
-      navigation.goBack(); // Quay lại màn hình trước
+
+      // Quay lại màn hình trước và gửi dữ liệu cập nhật (nếu cần)
+      navigation.goBack(); // Trở lại màn hình trước
+
     } catch (error) {
       console.error('Lỗi khi lưu địa chỉ:', error);
       Alert.alert('Lỗi', 'Không thể lưu địa chỉ');
@@ -103,8 +100,7 @@ const AddShippingAddrees = ({ route, navigation }) => {
         value={city}
         onChangeText={setCity}
       />
-{/* 
-      <Button title="Lưu" onPress={saveAddress} /> */}
+
       <TouchableOpacity style={styles.submitButton} onPress={saveAddress}>
         <Text style={styles.submitText}>Lưu</Text>
       </TouchableOpacity>
@@ -117,7 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    top: 0,
     backgroundColor: '#fff',
   },
   header: {
@@ -125,16 +120,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 30,
   },
-  backButton: {
-    position: 'absolute',
-    left: 0,
-    zIndex: 1,
-  },
   headerText: {
     flex: 1,
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 0,
+    zIndex: 1,
   },
   icon: {
     width: 20,
@@ -161,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddShippingAddrees;
+export default AddShippingAddress;
