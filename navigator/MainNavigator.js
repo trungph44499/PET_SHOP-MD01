@@ -24,6 +24,7 @@ import AddPaymentMethod from "../Layout/payment/AddPaymentMethod";
 import AddShippingAddrees from "../Layout/payment/AddShippingAddrees";
 import PaymentMethod from "../Layout/payment/PaymentMethod";
 import ShippingAddrees from "../Layout/payment/ShippingAddrees";
+import DetailHistoryPay from "../Layout/history-pay/DetailHistoryPay";
 
 
 
@@ -125,6 +126,7 @@ const MainNavigator = () => {
       <Stack.Screen name="AddShippingAddrees" component={AddShippingAddrees} />
       <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
       <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
+      <Stack.Screen name="DetailHistoryPay" component={DetailHistoryPay} />
     </Stack.Navigator>
 
   );

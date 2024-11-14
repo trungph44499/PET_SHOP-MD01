@@ -47,13 +47,14 @@ export default function () {
         <Text style={styles.headerText}>Lịch sử thanh toán</Text>
         <View />
       </View>
-      <ScrollView>
+      <ScrollView style={{marginTop:20}}>
         {dataHistory.length > 0 &&
           dataHistory.map((item) => (
             <ItemHistory
               key={item._id}
               item={item}
               getAllHistoryPay={getAllHistoryPay}
+              
             />
           ))}
       </ScrollView>
@@ -63,7 +64,9 @@ export default function () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
   },
   header: {
     flexDirection: "row",
