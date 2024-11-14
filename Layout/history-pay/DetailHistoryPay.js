@@ -107,7 +107,7 @@ const DetailHistoryPay = ({ route }) => {
             <ScrollView>
                 <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
                     <UnderLine value={'Thông tin khách hàng'} color={'black'} />
-                    <Text style={styles.textGray}>Tên: {user.fullname}</Text>
+                    <Text style={styles.textGray}>{item.fullname}</Text>
                     <Text style={styles.textGray}>{item.email}</Text>
                     <Text style={styles.textGray}>{item.location}</Text>
                     <Text style={styles.textGray}>{item.number}</Text>
