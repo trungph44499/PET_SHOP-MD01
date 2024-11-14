@@ -155,7 +155,7 @@ const PaymentMethod = ({ navigation }) => {
               }
             />
           </TouchableOpacity>
-          <Text style={{ marginLeft: 10 }}>Sử dụng làm phương thức thanh toán mặc định</Text>
+          <Text style={styles.checkboxText}>Sử dụng làm phương thức thanh toán </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -399,7 +399,12 @@ const styles = StyleSheet.create({
   checkbox: {
     flexDirection: "row",
     marginBottom: 20,
-  }
+  },
+  checkboxText: {
+    fontSize: 16,
+    marginLeft: 10, 
+    fontWeight: "bold"
+  },
 });
 
 export default PaymentMethod;

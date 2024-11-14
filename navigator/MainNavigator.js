@@ -128,6 +128,7 @@ const MainNavigator = () => {
       <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
       <Stack.Screen name="DetailHistoryPay" component={DetailHistoryPay} />
     </Stack.Navigator>
+   
 
   );
 };

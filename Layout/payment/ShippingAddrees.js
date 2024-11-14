@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ShippingAddress = ({ navigation }) => {
   const [shippingAddresses, setShippingAddresses] = useState([]);
   const [emailUser, setEmailUser] = useState('');
+  const [checkRemember, setCheckRemember] = useState(false);
   const [refreshing, setRefreshing] = useState(false); // Trạng thái refreshing
 
   // Hàm lấy email người dùng từ AsyncStorage
@@ -92,35 +93,40 @@ const ShippingAddress = ({ navigation }) => {
   }, [emailUser]);
 
   const renderItem = ({ item, index }) => (
-    <View style={styles.addressContainer}>
-      <Text style={styles.addressText}>
-        <Text style={styles.bold}>Họ và tên: </Text>{item.fullName}
-      </Text>
-      <Text style={styles.addressText}>
-        <Text style={styles.bold}>Số điện thoại: </Text>{item.phoneNumber}
-      </Text>
-      <Text style={styles.addressText}>
-        <Text style={styles.bold}>Địa chỉ: </Text>{item.address}
-      </Text>
-      <Text style={styles.addressText}>
-        <Text style={styles.bold}>Thành phố: </Text>{item.city}
-      </Text>
-
-      <View style={styles.buttonContainer}>
+    <View style={{marginBottom: 20}}>
+      <View style={styles.checkbox}>
         <TouchableOpacity
-          style={styles.editButton}
-          onPress={() => editShippingAddress(item, index)}
+          onPress={() => setCheckRemember(!checkRemember)}
         >
-          <Text style={styles.editButtonText}>Sửa</Text>
+          <Image
+            style={{ width: 20, height: 20 }}
+            source={checkRemember
+              ? require("../../Image/check-box.png")
+              : require("../../Image/square.png")
+            }
+          />
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => confirmDelete(index)}
-        >
-          <Text style={styles.deleteButtonText}>Xóa</Text>
-        </TouchableOpacity>
+        <Text style={styles.checkboxText}>Sử dụng làm địa chỉ giao hàng</Text>
       </View>
+      <TouchableOpacity
+        onPress={() => editShippingAddress(item, index)}
+        style={styles.item}
+      >
+        <View style={{ flexDirection: 'row', alignItems: "center", borderBottomWidth: 1, borderColor: '#D3D3D3' }}>
+          <Text style={{ flex: 1, fontSize: 20, fontWeight: 'bold', padding: 15 }}>{item.fullName} </Text>
+          <TouchableOpacity
+            onPress={() => confirmDelete(index)}
+            style={{ padding: 15 }}
+          >
+            <Image style={styles.deleteIcon} source={require('../../Image/cancel.png')} />
+          </TouchableOpacity>
+
+        </View>
+        <View style={{padding: 15}}>
+        <Text style={styles.bold}>Địa chỉ: {item.address} </Text>
+        <Text style={styles.bold}>Thành phố: {item.city} </Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 
@@ -196,47 +202,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  bold: {
-    fontWeight: 'bold',
-  },
-  addressContainer: {
+  checkbox: {
+    flexDirection: "row",
     marginBottom: 20,
-    padding: 10,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 5,
   },
-  addressText: {
+  bold: {
     fontSize: 16,
-    marginVertical: 5,
+    color: '#808080',
+    fontWeight: 'regular'
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
+  deleteIcon: {
+    width: 25,
+    height: 25,
+    tintColor: 'black',
   },
-  editButton: {
-    padding: 10,
-    backgroundColor: 'orange',
-    borderRadius: 5,
-    alignItems: 'center',
-    width: '45%',
-  },
-  editButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  deleteButton: {
-    padding: 10,
-    backgroundColor: 'red',
-    borderRadius: 5,
-    alignItems: 'center',
-    width: '45%',
-  },
-  deleteButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  checkboxText: {
+    fontSize: 16,
+    marginLeft: 10, 
+    fontWeight: "bold"
   },
   header: {
     flexDirection: 'row',
@@ -251,6 +234,13 @@ const styles = StyleSheet.create({
   icon: {
     width: 20,
     height: 20,
+  },
+  item: {
+    marginBottom: 20,
+    marginHorizontal: 5,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+    elevation: 5,
   },
   addButton: {
     position: 'absolute',
