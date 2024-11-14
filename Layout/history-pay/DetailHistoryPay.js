@@ -1,4 +1,4 @@
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, Image } from "react-native";
@@ -112,7 +112,22 @@ const DetailHistoryPay = ({ route }) => {
                     <Text style={styles.textGray}>{item.location}</Text>
                     <Text style={styles.textGray}>{item.number}</Text>
                 </View>
-                <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
+
+                <View style={styles.section}>
+                    <UnderLine value={"Phương thức vận chuyển"} color={"black"} />
+                    <Pressable style={styles.paymentOption}>
+                        <Text style={styles.textGray}>{item.ship}</Text>
+                    </Pressable>
+                </View>
+
+                <View style={styles.section}>
+                    <UnderLine value={"Hình thức thanh toán"} color={"black"} />
+                    <Pressable  style={styles.paymentOption}>
+                    <Text style={styles.textGray}>{item.paymentMethod}</Text>
+                    </Pressable>
+                </View>
+
+                <View style={{ paddingHorizontal: 20, gap: 10}}>
                     <UnderLine value={'Đơn hàng đã chọn'} color={'black'} />
                     {item.products.map((e) => (
                         <View key={e.id} style={{ flexDirection: 'row' }}>
@@ -179,5 +194,17 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         marginHorizontal: 15,
+    },
+    section: {
+        padding: 15,
+    },
+    paymentOption: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingVertical: 10,
+        borderBottomColor: "#eaeaea",
+        borderBottomWidth: 1,
+        width: "100%",
     },
 });

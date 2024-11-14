@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 3,
     marginHorizontal: 10,
+    marginBottom: 20,
   },
   productId: {
     backgroundColor: "#825640",

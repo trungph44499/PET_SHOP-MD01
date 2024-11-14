@@ -59,7 +59,7 @@ const ProfileScreen = ({ navigation, route }) => {
     }, [])
   );
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: "#FFFFFF"}}>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
