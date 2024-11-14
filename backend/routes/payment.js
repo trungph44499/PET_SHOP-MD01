@@ -57,16 +57,20 @@ router.get("/filter", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-  const { email, location, number, products } = req.body;
+  const {  fullname, email, location, number, ship, paymentMethod, products } = req.body;
   try {
     const result = await paymentModel.insertMany({
+      fullname: fullname,
       email: email,
       location: location,
       number: number,
+      ship: ship,
+      paymentMethod: paymentMethod,
       products: products,
     });
     if (result.length > 0) {
       const resultNotification = await notificationModel.insertMany({
+        fullname: fullname,
         email: email,
         image: products[0].image,
         service: products[0].name,

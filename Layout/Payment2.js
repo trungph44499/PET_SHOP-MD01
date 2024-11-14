@@ -18,7 +18,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 const Payment2 = ({ route }) => {
-  const { listItem, total, user, soDienThoai, diaChi, ship } = route.params;
+  const { listItem, total, user, soDienThoai, paymentMethod, diaChi, ship } = route.params;
   const navigation = useNavigation();
   const day = new Date().getDay();
   const month = new Date().getMonth();
@@ -34,9 +34,12 @@ const Payment2 = ({ route }) => {
         status,
         data: { response, type },
       } = await axios.post(`${URL}/pay/add`, {
+        fullname: user.fullname,
         email: user.email,
         location: diaChi,
         number: soDienThoai,
+        ship: ship,
+        paymentMethod: paymentMethod,
         products: listItem,
       });
       if (status === 200) {
@@ -92,7 +95,7 @@ const Payment2 = ({ route }) => {
 
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.section}>
-          <UnderLine value={"Nhập thông tin thẻ"} color={"#000000"} />
+          <UnderLine value={"Nhập thông tin thẻ"} color={"black"} />
           <TextInput
             placeholder="XXXX XXXX XXXX XXXX"
             style={styles.input}
@@ -129,20 +132,14 @@ const Payment2 = ({ route }) => {
         </View>
 
         <View style={styles.section}>
-          <UnderLine value={"Phương thức thanh toán"} color={"#000000"} />
-          {ship ? (
-            <UnderLine
-              value={"Giao hàng nhanh - 15.000đ"}
-              color={"#000000"}
-              value2={`Dự kiến giao hàng ${day + 3}-${day + 5}/${month + 1}`}
-            />
-          ) : (
-            <UnderLine
-              value={"Giao hàng COD - 20.000đ"}
-              color={"#000000"}
-              value2={`Dự kiến giao hàng ${day + 2}-${day + 4}/${month + 1}`}
-            />
-          )}
+          <UnderLine value={"Phương thức vận chuyển"} color={"#000000"} />
+          <Text style={styles.textStyl}>{ship}</Text>
+        </View>
+        <View style={styles.section}>
+          <UnderLine value={"Phương thức vận chuyển"} color={"#000000"} />
+      
+          <Text style={styles.textStyl}>{paymentMethod}</Text>
+
         </View>
 
         <View style={styles.section}>
@@ -177,9 +174,9 @@ const Payment2 = ({ route }) => {
           </View>
           <View style={styles.amountColumn}>
             <Text style={styles.textBold}>{numberUtils(total)}</Text>
-            <Text style={styles.textBold}>{ship ? "15.000 đ" : "20.000 đ"}</Text>
+            <Text style={styles.textBold}>{ship === "Giao hàng nhanh - 15.000đ" ? "15.000 đ" : "20.000 đ"}</Text>
             <Text style={styles.totalAmount}>
-              {numberUtils(total + (ship ? 15000 : 20000))}
+              {numberUtils(total + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000))}
             </Text>
           </View>
         </View>
@@ -231,7 +228,7 @@ const styles = StyleSheet.create({
   textGray: {
     fontSize: 16,
     color: "#555",
-    marginBottom: 5,
+    marginTop: 10,
   },
   input: {
     width: "100%",
@@ -250,9 +247,15 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     marginBottom: 30,
+    padding: 10
   },
   section: {
     marginVertical: 15,
+  },
+  textStyl:{
+    marginTop: 10,
+    fontSize: 16,
+    color: 'green',
   },
   item: {
     flexDirection: "row",

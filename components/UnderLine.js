@@ -6,11 +6,11 @@ const UnderLine = ({ value, color, value2, color2 }) => {
     <View
       style={{
         borderBottomColor: color,
-        borderBottomWidth: 1,
-        paddingVertical: 7,
+        borderBottomWidth: 2,
+        paddingBottom: 5,
       }}
     >
-      <Text style={{ color: color2, fontSize: 14, fontWeight: "bold" }}>
+      <Text style={{ color: color2, fontSize: 16, fontWeight: "bold" }}>
         {value || ""}
       </Text>
       {value2 != null ? <Text style={{ color }}>{value2 || ""}</Text> : null}
