@@ -70,7 +70,7 @@ const Petcare2 = () => {
       setMessage("");
       setService("");
     } else {
-      ToastAndroid.show("Data empty!", ToastAndroid.SHORT);
+      ToastAndroid.show("Vui lòng điền đủ thông tin!", ToastAndroid.SHORT);
     }
   };
 
