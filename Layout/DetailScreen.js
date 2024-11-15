@@ -126,7 +126,7 @@ const DetailProduct = ({ navigation, route }) => {
             <Text style={styles.txt}>
               Số lượng:{" "}
               <Text style={{ color: "green", fontWeight: "bold" }}>
-                còn {item.quantity} sp
+                còn {item.quantity} sản phẩm
               </Text>
               {"\n"}_______________________________________________{"\n"}
             </Text>
