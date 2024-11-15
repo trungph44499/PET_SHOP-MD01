@@ -1,8 +1,6 @@
 import React from "react";
 import {
-  Button,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   ToastAndroid,
@@ -17,25 +15,27 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function ({ item, getAllHistoryPay }) {
   const navigation = useNavigation();
-  
+
+  // Hàm chuyển đổi trạng thái đơn hàng
   function convertStatus(status) {
     let result = "";
-    var statusColor = "";
-    if (status == "pending") {
+    let statusColor = "";
+    if (status === "pending") {
       result = "Chờ xác nhận";
       statusColor = "gray";
     }
-    if (status == "success") {
+    if (status === "success") {
       result = "Đã xác nhận";
       statusColor = "green";
     }
-    if (status == "reject") {
+    if (status === "reject") {
       result = "Đã hủy";
       statusColor = "red";
     }
     return { result, statusColor };
   }
 
+  // Xác nhận hủy đơn hàng
   function rejectBuyProduct() {
     Alert.alert(
       "Xác nhận hủy đơn hàng",
@@ -52,17 +52,21 @@ export default function ({ item, getAllHistoryPay }) {
               const {
                 status,
                 data: { response, type },
-              } = await axios.post(`${URL}/pay/update`, {
-                id: item._id,
-                status: "reject",
+              } = await axios.post(`${URL}/pay/update`, 
+                {
+                  id: item._id,
+                  email: item.email,
+                  products: item.products,
+                  status: "reject",
               });
 
-              if (status == 200) {
+              if (status === 200) {
                 ToastAndroid.show(response, ToastAndroid.SHORT);
                 if (type) getAllHistoryPay();
               }
             } catch (error) {
-              console.log(error);
+              console.error(error);
+              ToastAndroid.show("Đã xảy ra lỗi khi hủy đơn hàng", ToastAndroid.SHORT);
             }
           },
           style: "destructive",
@@ -73,9 +77,12 @@ export default function ({ item, getAllHistoryPay }) {
   }
 
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       {item.products.map((e) => (
-        <TouchableOpacity key={e.id} onPress={() => navigation.navigate("DetailHistoryPay", { item, e })}>
+        <TouchableOpacity
+          key={e.id}
+          onPress={() => navigation.navigate("DetailHistoryPay", { item, e })}
+        >
           <View style={styles.item}>
             <Image source={{ uri: e.image }} style={styles.image} />
             <View>
@@ -103,25 +110,43 @@ export default function ({ item, getAllHistoryPay }) {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <View style={{flexDirection:'row'}}>
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-          Trạng thái:
-        </Text>
-        <Text style={{ fontSize: 15, fontWeight: "bold", color: convertStatus(item.status).statusColor, textTransform: 'uppercase', left:2}}>
-          {convertStatus(item.status).result}
-        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>Trạng thái:</Text>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: "bold",
+              color: convertStatus(item.status).statusColor,
+              textTransform: "uppercase",
+              marginLeft: 5,
+            }}
+          >
+            {convertStatus(item.status).result}
+          </Text>
         </View>
-        
 
-        <Button
-          disabled={item.status != "pending"}
-          onPress={() => rejectBuyProduct(item.email)}
-          title="Hủy đơn hàng"
-        />
+        {/* Button Hủy đơn hàng */}
+        {/* <TouchableOpacity
+          disabled={item.status !== "pending"}
+          onPress={rejectBuyProduct}
+          style={[
+            styles.rejectButton,
+            item.status !== "pending" && styles.disabledButton,
+          ]}
+        >
+          <Text
+            style={[
+              styles.rejectButtonText,
+              item.status !== "pending" && styles.disabledButtonText,
+            ]}
+          >
+            Hủy đơn hàng
+          </Text>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -155,5 +180,22 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.35,
     elevation: 10,
+  },
+  rejectButton: {
+    backgroundColor: "red",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+  rejectButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  disabledButton: {
+    backgroundColor: "#d3d3d3",
+  },
+  disabledButtonText: {
+    color: "#a9a9a9",
   },
 });

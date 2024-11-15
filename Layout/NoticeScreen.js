@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { URL } from "./HomeScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const NoticeScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -48,15 +49,15 @@ const NoticeScreen = ({ navigation }) => {
     var statusColor = "";
     switch (status) {
       case "reject":
-        statusResult = "Đã từ chối";
+        statusResult = "Đơn hàng đã được hủy";
         statusColor = "red";
         break;
       case "success":
-        statusResult = "Đã xác nhận";
+        statusResult = "Đơn hàng đang được giao";
         statusColor = "green";
         break;
       case "pending":
-        statusResult = "Chờ xác nhận";
+        statusResult = "Đang chờ được xác nhận";
         statusColor = "black";
         break;
       default:
@@ -115,11 +116,12 @@ const NoticeScreen = ({ navigation }) => {
       </View>
     );
   };
-
-  // useEffect để lấy dữ liệu ngay khi component được render lần đầu tiên
-  useEffect(() => {
-    getData();
-  }, []);
+  // Dùng useFocusEffect để tải lại dữ liệu mỗi khi màn hình có focus
+  useFocusEffect(
+    React.useCallback(() => {
+      getData(); // Gọi lại hàm getData khi màn hình nhận focus
+    }, [])
+  );
 
   return (
     <View style={styles.container}>

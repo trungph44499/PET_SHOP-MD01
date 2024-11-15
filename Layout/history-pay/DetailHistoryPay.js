@@ -15,9 +15,9 @@ const DetailHistoryPay = ({ route }) => {
     const [Bill, setBill] = useState([]);
     const [user, setuser] = useState([]);
     const [dataHistory, setDataHistory] = useState([]);
-    // console.log(dataHistory);
-    // console.log(id_bill);
-    // console.log(e);
+    const [orderStatus, setOrderStatus] = useState(item.status); // Trạng thái đơn hàng
+
+    // Lấy thông tin đơn hàng
     const getBill = async () => {
         const url = `${URL}/hoadons?id=${id_bill}`;
         const res = await fetch(url);
@@ -28,6 +28,7 @@ const DetailHistoryPay = ({ route }) => {
         }
     }
 
+    // Lấy thông tin người dùng
     const retrieveData = async () => {
         try {
             const UserData = await AsyncStorage.getItem('User');
@@ -38,6 +39,8 @@ const DetailHistoryPay = ({ route }) => {
             console.log(error);
         }
     }
+
+    // Lấy lịch sử thanh toán
     async function getAllHistoryPay() {
         try {
             const email = await AsyncStorage.getItem("@UserLogin");
@@ -53,13 +56,20 @@ const DetailHistoryPay = ({ route }) => {
             console.log(error);
         }
     }
-    useEffect(() => {
-        getBill()
-        retrieveData()
-        getAllHistoryPay();
-    }, [])
 
+    useEffect(() => {
+        getBill();
+        retrieveData();
+        getAllHistoryPay();
+    }, []);
+
+    // Hàm hủy đơn hàng
     function rejectBuyProduct() {
+        if (orderStatus === 'reject') {
+            Alert.alert("Đơn hàng đã bị hủy", "Bạn không thể hủy đơn hàng này nữa.");
+            return;
+        }
+        
         Alert.alert(
             "Xác nhận hủy đơn hàng",
             "Bạn có chắc chắn muốn hủy đơn hàng không?",
@@ -76,12 +86,16 @@ const DetailHistoryPay = ({ route }) => {
                                 status,
                                 data: { response, type },
                             } = await axios.post(`${URL}/pay/update`, {
-                                data: { type },
+                                id: item._id,
+                                email: item.email,
+                                products: item.products,
                                 status: "reject",
                             });
 
-                            if (status == 200) {
+                            if (status === 200) {
+                                setOrderStatus("reject"); // Cập nhật trạng thái tại frontend
                                 if (type) await getAllHistoryPay();
+                                Alert.alert("Hủy đơn hàng thành công!");
                             }
                         } catch (error) {
                             console.log(error);
@@ -127,7 +141,7 @@ const DetailHistoryPay = ({ route }) => {
                     </Pressable>
                 </View>
 
-                <View style={{ paddingHorizontal: 20, gap: 10}}>
+                <View style={{ paddingHorizontal: 20, gap: 10 }}>
                     <UnderLine value={'Đơn hàng đã chọn'} color={'black'} />
                     {item.products.map((e) => (
                         <View key={e.id} style={{ flexDirection: 'row' }}>
@@ -146,12 +160,18 @@ const DetailHistoryPay = ({ route }) => {
                     <Text style={styles.textBold}>Đã thanh toán</Text>
                     <Text style={styles.textBold}>{numberUtils(totalAmount)}</Text>
                 </View>
-                <TouchableOpacity onPress={rejectBuyProduct}
+                {/* Button Hủy đơn hàng */}
+                <TouchableOpacity 
+                    onPress={rejectBuyProduct}
                     style={{
-                        borderRadius: 9, padding: 12, alignItems: 'center',
-                        backgroundColor: '#825640',
+                        borderRadius: 9, 
+                        padding: 12, 
+                        alignItems: 'center',
+                        backgroundColor: orderStatus === "reject" ? '#d3d3d3' : '#825640', // Thay đổi màu nút nếu đơn hàng đã bị hủy
                     }}>
-                    <Text style={{ fontSize: 16, color: 'white' }}>Hủy đơn hàng</Text>
+                    <Text style={{ fontSize: 16, color: 'white' }}>
+                        {orderStatus === "reject" ? 'Đơn hàng đã bị hủy' : 'Hủy đơn hàng'}
+                    </Text>
                 </TouchableOpacity>
             </View>
         </View>

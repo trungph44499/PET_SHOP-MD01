@@ -8,7 +8,9 @@ const paymentSchema = new mongoose.Schema({
   paymentMethod: String,
   products: [],
   status: { default: "pending", type: String },//pending,success,reject
-});
+ },
+  { timestamps: true } // Tạo trường create
+);
 
 const paymentModel = mongoose.model("payments", paymentSchema);
 module.exports = paymentModel;
