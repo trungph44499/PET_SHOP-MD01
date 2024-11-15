@@ -147,7 +147,7 @@ const CartScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
           <Text
-            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
+            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold", textTransform: 'uppercase' }}
           >
             Giỏ hàng
           </Text>
@@ -242,7 +242,7 @@ const CartScreen = ({ navigation }) => {
             >
               <Text>Tạm tính :</Text>
 
-              <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                 {numberUtils(totalPrice)}
               </Text>
             </View>
@@ -251,7 +251,7 @@ const CartScreen = ({ navigation }) => {
             >
               <Text>Số lượng :</Text>
 
-              <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                 {totalProduct} sản phẩm
               </Text>
             </View>
@@ -270,7 +270,7 @@ const CartScreen = ({ navigation }) => {
               }}
               style={styles.checkoutButton}
             >
-              <Text style={{ color: "white" }}>Tiến hành thanh toán</Text>
+              <Text style={{ color: "white", fontSize: 18 }}>Tiến hành thanh toán</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -279,12 +279,13 @@ const CartScreen = ({ navigation }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
     gap: 16,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FAFAFA',
   },
   header: {
     flexDirection: "row",
@@ -296,21 +297,31 @@ const styles = StyleSheet.create({
     height: 160,
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
+    justifyContent: "space-between", 
+    borderBottomWidth: 1, //dòng kẻ nhỏ màu xám dưới item
+    borderColor: '#E0E0E0',
     width: "100%",
     gap: 10,
-  },
+    paddingVertical: 10,
+    paddingHorizontal: 15, 
+    borderRadius: 10,
+    backgroundColor: '#FFF',
+    backgroundColor: '#FFF', 
+    shadowColor: "transparent",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+    marginBottom: 10,
+},
+
   image: {
     width: 120,
     height: 120,
     padding: 5,
     borderRadius: 10,
     borderWidth: 1,
-  },
-  cardCotainer: {
-    height: "100%",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    borderColor: '#E0E0E0',
   },
   cardModal: {
     width: "90%",
@@ -325,40 +336,33 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  btnModal: {
-    padding: 14,
-    borderRadius: 10,
-    backgroundColor: "#825640",
-    marginVertical: 20,
-    width: "100%",
-    alignItems: "center",
-  },
-  textBold: {
-    fontSize: 16,
-    fontWeight: "400",
-  },
   checkoutButton: {
-    borderRadius: 9,
-    padding: 12,
+    borderRadius: 10,
+    paddingVertical: 15,
     alignItems: "center",
-    backgroundColor: "#825640",
-  },
-  emptyCartContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
+    backgroundColor: "#FF7043",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   emptyCartText: {
     textAlign: "center",
     fontSize: 16,
-    color: "black",
+    color: "#757575",
+    marginVertical: 10,
   },
   addButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: "#825640",
+    backgroundColor: "#FF7043",
     borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   addButtonText: {
     color: "white",

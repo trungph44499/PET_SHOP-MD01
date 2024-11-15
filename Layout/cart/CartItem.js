@@ -169,14 +169,29 @@ export default function CartItemComponent({ item }) {
   );
 }
 const styles = StyleSheet.create({
+
   item: {
     height: 160,
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
+    justifyContent: "space-between",
+    borderBottomWidth: 1, // dòng kẻ nhỏ màu xám dưới item
+    borderColor: '#E0E0E0',
     width: "100%",
     gap: 10,
-  },
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    backgroundColor: '#FFF',
+    backgroundColor: '#FFF',
+    shadowColor: "transparent",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    elevation: 0,
+    marginBottom: 10,
+},
+
   image: {
     width: 120,
     height: 120,
