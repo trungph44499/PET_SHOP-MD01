@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid, Image, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { URL } from './HomeScreen'; // Đảm bảo URL đã được định nghĩa
@@ -15,22 +14,25 @@ const SearchScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchUserEmail = async () => {
       const userEmail = await AsyncStorage.getItem('@UserLogin');
-      setEmailUser(userEmail);
+      if (userEmail) {
+        setEmailUser(userEmail);
+      }
     };
+    fetchUserEmail();
+  }, []);
 
-    const fetchSearchHistory = async () => {
-      if (emailUser) {
+  useEffect(() => {
+    if (emailUser) {
+      const fetchSearchHistory = async () => {
         try {
           const response = await axios.get(`${URL}/searchs/history`, { params: { emailUser } });
           setListSearch(response.data || []);
         } catch (error) {
           console.error("Lỗi khi lấy lịch sử tìm kiếm:", error);
         }
-      }
-    };
-
-    fetchUserEmail();
-    fetchSearchHistory();
+      };
+      fetchSearchHistory();
+    }
   }, [emailUser]);
 
   useEffect(() => {
@@ -43,13 +45,13 @@ const SearchScreen = ({ navigation }) => {
           });
           setProducts(response.data.response || []);
         } catch (error) {
-          console.error("Lỗi:", error.response ? error.response.data : error.message);
+          console.error("Lỗi tìm kiếm:", error.response ? error.response.data : error.message);
           ToastAndroid.show('Không thể tìm kiếm sản phẩm!', ToastAndroid.SHORT);
         } finally {
           setLoading(false);
         }
       } else {
-        setProducts([]); // Clear products when search text is empty
+        setProducts([]); // Xóa kết quả khi không có nội dung tìm kiếm
       }
     };
 
@@ -58,7 +60,7 @@ const SearchScreen = ({ navigation }) => {
     }, 500); // Thời gian trễ để tránh gửi yêu cầu quá nhiều
 
     return () => clearTimeout(delayDebounceFn);
-  }, [txtSearch]);
+  }, [txtSearch, emailUser]);
 
   const handleSetTxtSearch = (txt) => {
     setTxtSearch(txt);
@@ -82,13 +84,12 @@ const SearchScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity
-          onPress={() => navigation.goBack()}>
-          <Image style={{ width: 20, height: 20 }} source={require('../Image/back.png')} />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image style={styles.icon} source={require('../Image/back.png')} />
         </TouchableOpacity>
         <Text style={styles.title}>TÌM KIẾM</Text>
         <TouchableOpacity onPress={resetSearch}>
-          <Image style={{ width: 20, height: 20 }} source={require('../Image/reset.png')} />
+          <Image style={styles.icon} source={require('../Image/reset.png')} />
         </TouchableOpacity>
       </View>
 
@@ -119,7 +120,7 @@ const SearchScreen = ({ navigation }) => {
                   keyExtractor={(item) => item._id.toString()}
                   renderItem={({ item }) => (
                     <View style={styles.searchHistory}>
-                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                      <View style={styles.historyRow}>
                         <Image style={styles.icon} source={require('../Image/clock.png')} />
                         <Text style={styles.historyText} onPress={() => handleSetTxtSearch(item.txt)}>
                           {item.txt}
@@ -144,9 +145,12 @@ const SearchScreen = ({ navigation }) => {
                       data={products}
                       keyExtractor={(item) => item._id.toString()}
                       renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('DetailScreen', { item })} style={styles.itemDog}>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate('DetailScreen', { item })}
+                          style={styles.item}
+                        >
                           <Image source={{ uri: item.img }} style={styles.itemImage} />
-                          <View style={{ gap: 5 }}>
+                          <View style={styles.itemDetails}>
                             <Text style={styles.productName}>{item.name}</Text>
                             <Text style={styles.productPrice}>{item.price} đ</Text>
                             <Text style={styles.productQuantity}>Còn {item.quantity} sp</Text>
@@ -166,7 +170,6 @@ const SearchScreen = ({ navigation }) => {
 };
 
 export default SearchScreen;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -201,7 +204,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10, // Giảm độ cao bóng trên Android để cân đối
+    elevation: 10,
   },
   searchInput: {
     flex: 1,
@@ -246,6 +249,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
+  historyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   noResultText: {
     fontSize: 16,
     color: '#999',
@@ -258,7 +266,7 @@ const styles = StyleSheet.create({
     color: '#555',
     marginBottom: 10,
   },
-  itemDog: {
+  item: {
     padding: 15,
     backgroundColor: '#FFF',
     borderRadius: 12,
@@ -279,6 +287,9 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 12,
     marginRight: 15,
+  },
+  itemDetails: {
+    gap: 5,
   },
   productName: {
     fontSize: 16,
