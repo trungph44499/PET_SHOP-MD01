@@ -83,7 +83,7 @@ const SearchScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={resetSearch}>
-          <Image style={{ width: 20, height: 20 }} source={require('../Image/reset.png')} />
+          <Image style={{ width: 20, height: 20, tintColor: '#A05E56' }} source={require('../Image/reset.png')} />
         </TouchableOpacity>
         <Text style={styles.title}>TÌM KIẾM</Text>
         <View style={{ width: 20 }}></View>
@@ -146,7 +146,7 @@ const SearchScreen = ({ navigation }) => {
                           <View style={{ gap: 5 }}>
                             <Text style={styles.productName}>{item.name}</Text>
                             <Text style={styles.productPrice}>{item.price} đ</Text>
-                            <Text style={styles.productQuantity}>Còn {item.quantity} sp</Text>
+                            <Text style={styles.productQuantity}>Còn {item.quantity} sản phẩm</Text>
                           </View>
                         </TouchableOpacity>
                       )}
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   recentSearchTitle: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '500',
     color: '#555',
     marginBottom: 10,
@@ -289,6 +289,6 @@ const styles = StyleSheet.create({
   },
   productQuantity: {
     fontSize: 14,
-    color: '#666',
+    color: '#00CC00',
   },
 });
