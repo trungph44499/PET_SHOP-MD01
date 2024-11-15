@@ -68,7 +68,7 @@ const LoginScreen = (props) => {
         <View style={styles.container}>
           <Image
             style={{ width: 400, height: 200 }}
-            source={require("../Image/logo_1.png")}
+            source={require("../Image/logo.png")}
           />
           <View style={{ gap: 10 }}>
             <Text style={styles.titleText}>Chào mừng bạn</Text>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFFDF8",
+    backgroundColor: "#FFFFFF",
   },
   input: {
     borderRadius: 10,

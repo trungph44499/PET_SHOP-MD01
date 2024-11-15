@@ -90,7 +90,7 @@ const Register = (props) => {
       <ScrollView contentContainerStyle={styles.container}>
         <Image
           style={{ width: 210, height: 100, marginBottom: 10, marginTop: 20 }}
-          source={require("../Image/logo_1.png")}
+          source={require("../Image/logo.png")}
         />
         <View style={styles.formContainer}>
           <Text style={styles.titleText}>Tạo tài khoản</Text>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFFDF8",
+    backgroundColor: "#FFFFFF",
     paddingBottom: 20,
   },
   formContainer: {

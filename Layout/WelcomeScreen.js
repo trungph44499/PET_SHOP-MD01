@@ -47,7 +47,7 @@ const WelcomeScreen = () => {
   return (
     <View style={styles.background}>
       <Animated.View style={{ opacity: fadeAnim }}>
-        <Image style={styles.img} source={require('../Image/logo_1.png')} />
+        <Image style={styles.img} source={require('../Image/logo.png')} />
       </Animated.View>
       <Text style={styles.welcomeText}>Chào mừng đến với Pet Shop Accessories!</Text>
       <ActivityIndicator color={'#A05E56'} size="large" />
@@ -59,15 +59,15 @@ export default WelcomeScreen;
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: '#FFFDF8',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     height: '100%',
     justifyContent: 'center',
     padding: 20,
   },
   img: {
-    width: 260,
-    height: 260,
+    width: 400,
+    height: 200,
     marginBottom: 20,
   },
   welcomeText: {

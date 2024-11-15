@@ -58,7 +58,8 @@ const DetailProduct = ({ navigation, route }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+    <ScrollView>
       <StatusBar hidden />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -73,16 +74,19 @@ const DetailProduct = ({ navigation, route }) => {
       </View>
       <Image source={{ uri: item.img }} style={styles.productImage} />
       <View style={styles.detailsContainer}>
-        <View style={styles.productId}>
+        {/* <View style={styles.productId}>
           <Text style={styles.productIdText}>
             {upperCaseFirstItem(item._id.slice(-5))}
           </Text>
-        </View>
+        </View> */}
         <View style={styles.priceQuantityContainer}>
           <Text style={styles.priceText}>{numberUtils(item.price)}</Text>
         </View>
         <View style={styles.descriptionContainer}>
           <Text style={styles.sectionTitle}>Chi tiết sản phẩm</Text>
+          <Text style={styles.detailText}>
+            <Text style={styles.availableQuantity}>Mã sp:</Text> {upperCaseFirstItem(item._id.slice(-5))}
+          </Text>
           {item.origin && (
             <Text style={styles.detailText}>
               <Text style={styles.availableQuantity}>Xuất xứ:</Text> {item.origin}
@@ -97,11 +101,18 @@ const DetailProduct = ({ navigation, route }) => {
             </Text>
           )}
         </View>
-        <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
-          <Text style={styles.addToCartText}>Thêm vào giỏ hàng</Text>
-        </TouchableOpacity>
+      
       </View>
     </ScrollView>
+    <View style={styles.rowCart}>
+        <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
+        <Image style={styles.cartButton} source={require("../Image/cart_01.png")} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={addToCart} style={styles.addMuaNgayButton}>
+          <Text style={styles.addToCartText}>Mua ngay</Text>
+        </TouchableOpacity>
+        </View>
+    </View>
   );
 };
 
@@ -170,7 +181,8 @@ const styles = StyleSheet.create({
     color: "#EB4F26",
   },
   descriptionContainer: {
-    marginTop: 16,
+    marginTop: 10,
+    marginBottom: 40,
   },
   sectionTitle: {
     fontSize: 18,
@@ -185,16 +197,34 @@ const styles = StyleSheet.create({
     color: "green",
     fontWeight: "bold",
   },
-  addToCartButton: {
-    borderRadius: 10,
-    padding: 12,
-    alignItems: "center",
-    backgroundColor: "#825640",
-    marginTop: 30,
-  },
   addToCartText: {
     color: "#FFF",
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "bold",
+  },
+  rowCart:{
+    position: 'absolute',
+    flexDirection: "row",
+    bottom: 1,
+    
+  },
+  cartButton: {
+    width: 30,
+    height: 30,
+    color: "white"
+  },
+  addToCartButton: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#54A798", 
+    height: 50,
+  },
+  addMuaNgayButton: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#DD5939",
+    height: 50,
   },
 });
