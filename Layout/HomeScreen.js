@@ -60,11 +60,12 @@ const HomeScreen = ({ navigation }) => {
         style={styles.itemDog}
       >
         <Image source={{ uri: item.img }} style={styles.itemImage} />
-        <View style={styles.itemRow}>
-          <Text style={styles.itemName}>{item.name}</Text>
-          {item.status === "New" && (
+        {item.status === "New" && (
             <Text style={styles.itemStatus}>{item.status}</Text>
           )}
+        <View style={styles.itemRow}>
+          <Text style={styles.itemName}>{item.name}</Text>
+         
         </View>
         <Text style={styles.itemStyle}>
           Mã SP: {upperCaseFirstItem(item._id.slice(-5))}
@@ -82,20 +83,23 @@ const HomeScreen = ({ navigation }) => {
           <View>
             <Text
               style={{
-                color: "#F79515",
+                color: "#000000",
                 fontSize: 23,
                 marginTop: 30,
                 fontWeight: "400",
+                letterSpacing: 2 
               }}
             >
               Pet Shop
             </Text>
             <Text
               style={{
-                color: "#F79515",
+                color: "#000000",
                 fontSize: 23,
                 fontWeight: "400",
                 marginBottom: 10,
+                letterSpacing: 2 
+                
               }}
             >
               Mua gì cũng có !!
@@ -147,7 +151,7 @@ const HomeScreen = ({ navigation }) => {
           <Text
             style={{
               fontSize: 14,
-              color: "green",
+              color: "#000000",
               fontWeight: "bold",
               textDecorationLine: "underline",
             }}
@@ -176,7 +180,7 @@ const HomeScreen = ({ navigation }) => {
           <Text
             style={{
               fontSize: 14,
-              color: "green",
+              color: "#000000",
               fontWeight: "bold",
               textDecorationLine: "underline",
             }}
@@ -212,7 +216,7 @@ const HomeScreen = ({ navigation }) => {
           <Text
             style={{
               fontSize: 14,
-              color: "green",
+              color: "#000000",
               fontWeight: "bold",
               textDecorationLine: "underline",
             }}
@@ -277,12 +281,15 @@ const styles = StyleSheet.create({
     marginRight: 5, 
   },
   itemStatus: {
+    position: "absolute",
+    top: '47%',
+    right: '8%',
     fontSize: 18,
     fontStyle: "italic",
     color: "green",
     fontWeight: "bold", // Làm cho chữ đậm hơn
     backgroundColor: "#e0f7e0", // Nền màu nhẹ
-    borderRadius: 5, // Bo góc
+    borderRadius: 12, // Bo góc
     padding: 5, // Thêm khoảng cách bên trong
   },
 
@@ -311,9 +318,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     position: "absolute",
-    top: 40, // Khoảng cách từ trên cùng
-    right: 30, // Khoảng cách từ bên trái
+    top: "5%", // Khoảng cách từ trên cùng
+    right: "7%", // Khoảng cách từ bên trái
     backgroundColor: "white",
+    elevation: 10,
     padding: 10,
     borderRadius: 30,
   },

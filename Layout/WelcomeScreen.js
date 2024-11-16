@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeText: {
-    fontSize: 24,            
+    fontSize: 22,            
     color: '#A05E56',
     fontWeight: 'bold',      
     textAlign: 'center',

@@ -144,7 +144,7 @@ const Payment = ({ navigation, route }) => {
               ? navigation.navigate("Payment2", { user, total, ship, diaChi, soDienThoai, paymentMethod, listItem })
               : setErr(true);
           }}
-          style={[styles.continueButton, { backgroundColor: soDienThoai && diaChi ? "#825640" : "gray" }]}
+          style={[styles.continueButton, { backgroundColor: soDienThoai && diaChi ? "#a97053" : "gray" }]}
         >
           <Text style={styles.continueButtonText}>Tiếp tục</Text>
         </TouchableOpacity>

@@ -104,7 +104,7 @@ paddingBottom:90
     height: 50,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#825640",
+    borderColor: "#a97053",
     textAlign: "center",
     fontSize: 18,
 
@@ -114,7 +114,7 @@ paddingBottom:90
     width: '50%',
     height: 50,
     borderRadius: 20,
-    backgroundColor: "#825640",
+    backgroundColor: "#a97053",
     padding: 15,
     alignItems: "center",
     marginBottom:40

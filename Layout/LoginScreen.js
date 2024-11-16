@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     borderRadius: 20,
-    backgroundColor: "#825640",
+    backgroundColor: "#a97053",
     padding: 15,
     alignItems: "center",
   },

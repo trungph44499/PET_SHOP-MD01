@@ -112,10 +112,10 @@ const ProfileScreen = ({ navigation, route }) => {
             style={{ width: 80, height: 80, borderRadius: 40 }}
           />
           <View style={{ marginLeft: 10 }}>
-            <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 5 }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 5,  letterSpacing: 2 }}>
               {user.fullname}
             </Text>
-            <Text style={{ fontSize: 15, color: "#808080" }}>
+            <Text style={{ fontSize: 15, color: "#808080",  letterSpacing: 1  }}>
               {user.email}
             </Text>
           </View>

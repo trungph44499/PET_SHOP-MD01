@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         textAlign: 'left', // Căn trái cho mô tả
     },
     closeButton: {
-        backgroundColor: '#825640',
+        backgroundColor: '#a97053',
         padding: 10,
         borderRadius: 20,
     },

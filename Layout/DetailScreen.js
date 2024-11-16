@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   productId: {
-    backgroundColor: "#825640",
+    backgroundColor: "#a97053",
     borderRadius: 8,
     padding: 8,
     alignSelf: "flex-start",

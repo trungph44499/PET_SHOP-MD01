@@ -270,7 +270,7 @@ const CartScreen = ({ navigation }) => {
               }}
               style={styles.checkoutButton}
             >
-              <Text style={{ color: "white" }}>Tiến hành thanh toán</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 16, color: "white"}}>Tiến hành thanh toán</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
   btnModal: {
     padding: 14,
     borderRadius: 10,
-    backgroundColor: "#825640",
+    backgroundColor: "#a97053",
     marginVertical: 20,
     width: "100%",
     alignItems: "center",
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     padding: 12,
     alignItems: "center",
-    backgroundColor: "#825640",
+    backgroundColor: "#a97053",
   },
   emptyCartContainer: {
     flex: 1,
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   addButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: "#825640",
+    backgroundColor: "#a97053",
     borderRadius: 5,
   },
   addButtonText: {

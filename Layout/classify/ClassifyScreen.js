@@ -100,15 +100,16 @@ export default ClassifyScreen = ({ navigation, route }) => {
             style={styles.itemDog}
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />
-            <View style={styles.itemRow}>
-              <Text style={styles.itemName}>
-                {item.name}
-              </Text>
-              {item.status === "New" && (
+            {item.status === "New" && (
                 <Text style={styles.itemStatus}>
                   {item.status}
                 </Text>
               )}
+            <View style={styles.itemRow}>
+              <Text style={styles.itemName}>
+                {item.name}
+              </Text>
+          
             </View>
             <Text style={styles.itemType}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
@@ -159,14 +160,16 @@ const styles = StyleSheet.create({
     marginRight: 5, 
   },
   itemStatus: {
-    fontSize: 17,
+    position: "absolute",
+    top: '48%',
+    right: '8%',
+    fontSize: 18,
     fontStyle: "italic",
     color: "green",
-    fontWeight: "bold", 
-    backgroundColor: "#e0f7e0", 
-    borderRadius: 5, 
-    padding: 5, 
-  
+    fontWeight: "bold", // Làm cho chữ đậm hơn
+    backgroundColor: "#e0f7e0", // Nền màu nhẹ
+    borderRadius: 12, // Bo góc
+    padding: 5, // Thêm khoảng cách bên trong
   },
   itemRow: {
     flexDirection: "row",

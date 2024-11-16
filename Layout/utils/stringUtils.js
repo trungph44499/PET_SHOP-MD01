@@ -4,7 +4,7 @@ export function numberUtils(x) {
 }
 // viết hoa chữ cái đầu tiên
 export function upperCaseFirstItem(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  return string.toUpperCase();
 }
 export const validateSDT = (sdt) => {
   const regex2 = /^(?:\+84|0)([0-9]{9})$/;

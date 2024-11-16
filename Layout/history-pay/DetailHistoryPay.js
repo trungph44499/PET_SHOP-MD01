@@ -167,7 +167,7 @@ const DetailHistoryPay = ({ route }) => {
                         borderRadius: 9, 
                         padding: 12, 
                         alignItems: 'center',
-                        backgroundColor: orderStatus === "reject" ? '#d3d3d3' : '#825640', // Thay đổi màu nút nếu đơn hàng đã bị hủy
+                        backgroundColor: orderStatus === "reject" ? '#d3d3d3' : '#a97053', // Thay đổi màu nút nếu đơn hàng đã bị hủy
                     }}>
                     <Text style={{ fontSize: 16, color: 'white' }}>
                         {orderStatus === "reject" ? 'Đơn hàng đã bị hủy' : 'Hủy đơn hàng'}

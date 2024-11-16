@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   btnModal: {
     padding: 14,
     borderRadius: 10,
-    backgroundColor: "#825640",
+    backgroundColor: "#a97053",
     marginVertical: 20,
     width: "100%",
     alignItems: "center",

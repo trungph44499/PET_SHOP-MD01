@@ -129,7 +129,7 @@ const FinalBill = ({ route }) => {
                 }}
                     style={{
                         borderRadius: 9, padding: 12, alignItems: 'center',
-                        backgroundColor: '#825640',
+                        backgroundColor: '#a97053',
                     }}>
                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Quay về trang chủ</Text>
                 </TouchableOpacity>
