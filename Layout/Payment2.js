@@ -176,7 +176,7 @@ const Payment2 = ({ route }) => {
             <Text style={styles.textBold}>{numberUtils(total)}</Text>
             <Text style={styles.textBold}>{ship === "Giao hàng nhanh - 15.000đ" ? "15.000 đ" : "20.000 đ"}</Text>
             <Text style={styles.totalAmount}>
-              {numberUtils(total + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000))}
+            {numberUtils(parseInt(total) + (ship === "Giao hàng nhanh - 15.000đ" ? parseInt(15000) : parseInt(20000)))}
             </Text>
           </View>
         </View>

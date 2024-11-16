@@ -26,6 +26,9 @@ const Payment = ({ navigation, route }) => {
   const [diaChi, setDiaChi] = useState("");
   const [soDienThoai, setSoDienThoai] = useState("");
 
+  console.log("tong tien: ", total);
+  
+
   const retrieveData = async () => {
     try {
       const UserData = await AsyncStorage.getItem("@UserLogin");
@@ -126,7 +129,7 @@ const Payment = ({ navigation, route }) => {
         <View style={styles.summary}>
           <View style={styles.summaryRow}>
             <Text style={styles.textBold}>Tạm tính :</Text>
-            <Text style={styles.textBold}>{formatPrice(total)}</Text>
+            <Text style={styles.textBold}>{formatPrice(parseInt(total))}</Text>
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.textBold}>Phí vận chuyển :</Text>
@@ -134,7 +137,7 @@ const Payment = ({ navigation, route }) => {
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.totalLabel}>Tổng tiền :</Text>
-            <Text style={styles.totalAmount}>{formatPrice(total + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000))}</Text>
+            <Text style={styles.totalAmount}>{formatPrice(parseInt(total) + (ship === "Giao hàng nhanh - 15.000đ" ? parseInt(15000) : parseInt(20000)))}</Text>
           </View>
         </View>
 

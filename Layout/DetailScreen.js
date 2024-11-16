@@ -28,8 +28,9 @@ const DetailProduct = ({ navigation, route }) => {
       total: item.price,
       listItem: [{ 
         id: item._id,
+        image: item.img,
         name: item.name,
-        img: item.img,
+        type: item.type,
         price: item.price,
         quantity: 1, 
       }],
