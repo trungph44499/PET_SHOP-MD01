@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { URL } from "./HomeScreen";
-import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+import { numberUtils, upperCaseItem } from "./utils/stringUtils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -106,7 +106,7 @@ const DetailProduct = ({ navigation, route }) => {
           <View style={styles.descriptionContainer}>
             <Text style={styles.sectionTitle}>Chi tiết sản phẩm</Text>
             <Text style={styles.detailText}>
-              <Text style={styles.availableQuantity}>Mã sp:</Text> {upperCaseFirstItem(item._id.slice(-5))}
+              <Text style={styles.availableQuantity}>Mã sp:</Text> {upperCaseItem(item._id.slice(-5))}
             </Text>
             {item.origin && (
               <Text style={styles.detailText}>
@@ -175,12 +175,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   detailsContainer: {
-    padding: 16,
+    padding: 20,
     backgroundColor: "#FFF",
-    marginTop: 10,
-    borderRadius: 10,
-    elevation: 3,
-    marginHorizontal: 10,
     marginBottom: 20,
   },
   productId: {
@@ -197,7 +193,6 @@ const styles = StyleSheet.create({
   priceQuantityContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
   },
   priceText: {
     fontSize: 24,
@@ -214,10 +209,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   detailText: {
-    fontSize: 14,
+    fontSize: 16,
     marginBottom: 8,
   },
   availableQuantity: {
+    fontSize: 16,
     color: "green",
     fontWeight: "bold",
   },
@@ -229,7 +225,7 @@ const styles = StyleSheet.create({
   rowCart: {
     position: 'absolute',
     flexDirection: "row",
-    bottom: 1,
+    bottom: 0,
 
   },
   cartButton: {

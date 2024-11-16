@@ -6,6 +6,7 @@ const paymentSchema = new mongoose.Schema({
   number: String,
   ship: String,
   paymentMethod: String,
+  totalPrice: Number,
   products: [],
   status: { default: "pending", type: String },//pending,success,reject
  },

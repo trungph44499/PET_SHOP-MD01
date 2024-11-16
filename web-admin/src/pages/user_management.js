@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import "./css/css.css";
-import { webSocketContext } from "../context/WebSocketContext";
+// import { webSocketContext } from "../context/WebSocketContext";
 
 export default function UserManagement() {
   return (
@@ -16,7 +16,7 @@ export default function UserManagement() {
 }
 
 function Main() {
-  const ws = useContext(webSocketContext);
+
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
 
@@ -33,7 +33,7 @@ function Main() {
       const { status, data } = await axios.post(
         `${json_config[0].url_connect}/users/getAllUser`
       );
-      if (status == 200) {
+      if (status === 200) {
         setData(data);
       }
     } catch (error) {
@@ -99,7 +99,7 @@ function Main() {
                       password: password.current.value,
                     }
                   );
-                  if (status == 200) {
+                  if (status === 200) {
                     window.alert(response);
                     if (type) {
                       await getAllUser();
@@ -164,7 +164,7 @@ function Main() {
                       pass: password.current.value,
                     }
                   );
-                  if (status == 200) {
+                  if (status === 200) {
                     window.alert(response);
                     if (type) {
                       setIsAdd(false);
@@ -214,7 +214,7 @@ function Main() {
           {data.map((item) => (
             <tr key={item._id}>
               <th>
-                <img src={item.avatar} height={50} width={50} />
+                <img src={item.avatar} height={50} width={50} alt={item.fullname || "Hình ảnh user"} />
               </th>
               <td>{item.fullname}</td>
               <td>{item.email}</td>
@@ -251,7 +251,7 @@ function Main() {
                           email: item.email,
                         }
                       );
-                      if (status == 200) {
+                      if (status === 200) {
                         window.alert(response);
                         if (type) {
                           await getAllUser();

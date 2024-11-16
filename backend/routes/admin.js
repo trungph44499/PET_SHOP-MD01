@@ -23,19 +23,19 @@ router.post("/login", async (req, res) => {
       if (findAdmin.type == "admin") {
         res.status(200).json({
           isAdmin: true,
-          response: "Admin login complete",
+          response: "Đăng nhập admin thành công!",
           type: true,
         });
         return;
       }
       res
         .status(200)
-        .json({ isAdmin: false, response: "Staff login complete", type: true });
+        .json({ isAdmin: false, response: "Đăng nhập nhân viên thành công!", type: true });
       return;
     }
     res
       .status(200)
-      .json({ isAdmin: false, response: "Login failed", type: false });
+      .json({ isAdmin: false, response: "Đăng nhập thất bại!", type: false });
   } catch (error) {
     console.log(error);
   }

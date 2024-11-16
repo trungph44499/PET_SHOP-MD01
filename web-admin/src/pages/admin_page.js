@@ -26,7 +26,7 @@ function Main() {
       const { status, data } = await axios.post(
         `${json_config[0].url_connect}/admin`
       );
-      if (status == 200) {
+      if (status === 200) {
         setData(data);
       }
     } catch (error) {
@@ -106,7 +106,7 @@ function Main() {
                       password: password.current.value,
                     }
                   );
-                  if (status == 200) {
+                  if (status === 200) {
                     window.alert(response);
                     if (type) {
                       await getAllAdmin();
@@ -173,7 +173,7 @@ function Main() {
                       password: password.current.value,
                     }
                   );
-                  if (status == 200) {
+                  if (status === 200) {
                     window.alert(response);
                     if (type) {
                       setIsAdd(false);
@@ -227,7 +227,7 @@ function Main() {
               <td>{item.fullname}</td>
               <td>{item.username}</td>
               <td>{item.password}</td>
-              <td>{item.type == "admin" ? "Admin" : "Staff"}</td>
+              <td>{item.type === "admin" ? "Admin" : "Staff"}</td>
               <td>{item.status ? "Active" : "Blocked"}</td>
               <td>
                 <button
@@ -261,7 +261,7 @@ function Main() {
                           username: item.username,
                         }
                       );
-                      if (status == 200) {
+                      if (status === 200) {
                         window.alert(response);
                         if (type) {
                           await getAllAdmin();
@@ -292,7 +292,7 @@ function Main() {
                             status: !item.status,
                           }
                         );
-                        if (status == 200) {
+                        if (status === 200) {
                           window.alert(response);
                           if (type) {
                             await getAllAdmin();

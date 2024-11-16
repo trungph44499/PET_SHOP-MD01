@@ -26,3 +26,12 @@
     }
 }
 
+/* Cài đặt chiều rộng cố định cho các cột */
+.table th, .table td {
+    max-width: 150px;  /* Đặt chiều rộng tối đa cho các cột */
+    white-space: nowrap;  /* Ngăn cản việc xuống dòng */
+    overflow: hidden;  /* Cắt bỏ phần nội dung thừa */
+    text-overflow: ellipsis;  /* Hiển thị ba dấu chấm khi văn bản quá dài */
+    word-wrap: break-word;  /* Đảm bảo không có từ nào bị cắt đứt */
+  }
+  
