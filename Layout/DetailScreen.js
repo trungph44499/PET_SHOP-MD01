@@ -11,11 +11,32 @@ import {
 } from "react-native";
 import axios from "axios";
 import { URL } from "./HomeScreen";
-import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+import { numberUtils, upperCaseItem } from "./utils/stringUtils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const DetailProduct = ({ navigation, route }) => {
   const { item } = route.params;
+
+  const buyNow = () => {
+    if (item.quantity < 1) {
+      ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
+      return;
+    }
+  
+    navigation.navigate("Payment", {
+      total: item.price,
+      listItem: [{ 
+        id: item._id,
+        image: item.img,
+        name: item.name,
+        type: item.type,
+        price: item.price,
+        quantity: 1, 
+      }],
+    });
+  };
+
 
   const addToCart = async () => {
     try {
@@ -59,59 +80,62 @@ const DetailProduct = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-    <ScrollView>
-      <StatusBar hidden />
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={styles.icon} source={require("../Image/back.png")} />
-        </TouchableOpacity>
-        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-          {item.name}
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("CartScreen")}>
-          <Image style={styles.cartIcon} source={require("../Image/cart.png")} />
-        </TouchableOpacity>
-      </View>
-      <Image source={{ uri: item.img }} style={styles.productImage} />
-      <View style={styles.detailsContainer}>
-        {/* <View style={styles.productId}>
+      <ScrollView>
+        <StatusBar hidden />
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image style={styles.icon} source={require("../Image/back.png")} />
+          </TouchableOpacity>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+            {item.name}
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("CartScreen")}>
+            <Image style={styles.cartIcon} source={require("../Image/cart.png")} />
+          </TouchableOpacity>
+        </View>
+        <Image source={{ uri: item.img }} style={styles.productImage} />
+        <View style={styles.detailsContainer}>
+          {/* <View style={styles.productId}>
           <Text style={styles.productIdText}>
             {upperCaseFirstItem(item._id.slice(-5))}
           </Text>
         </View> */}
-        <View style={styles.priceQuantityContainer}>
-          <Text style={styles.priceText}>{numberUtils(item.price)}</Text>
-        </View>
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.sectionTitle}>Chi tiết sản phẩm</Text>
-          <Text style={styles.detailText}>
-            <Text style={styles.availableQuantity}>Mã sp:</Text> {upperCaseFirstItem(item._id.slice(-5))}
-          </Text>
-          {item.origin && (
+          <View style={styles.priceQuantityContainer}>
+            <Text style={styles.priceText}>{numberUtils(item.price)}</Text>
+          </View>
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.sectionTitle}>Chi tiết sản phẩm</Text>
             <Text style={styles.detailText}>
-              <Text style={styles.availableQuantity}>Xuất xứ:</Text> {item.origin}
+              <Text style={styles.availableQuantity}>Mã sp:</Text> {upperCaseItem(item._id.slice(-5))}
             </Text>
-          )}
-          <Text style={styles.detailText}>
-            <Text style={styles.availableQuantity}>Số lượng:</Text> {item.quantity}
-          </Text>
-          {item.description && (
+            {item.origin && (
+              <Text style={styles.detailText}>
+                <Text style={styles.availableQuantity}>Xuất xứ:</Text> {item.origin}
+              </Text>
+            )}
             <Text style={styles.detailText}>
-              <Text style={styles.availableQuantity}>Mô tả:</Text> {item.description}
+              <Text style={styles.availableQuantity}>Số lượng:</Text> {item.quantity}
             </Text>
-          )}
+            {item.description && (
+              <Text style={styles.detailText}>
+                <Text style={styles.availableQuantity}>Mô tả:</Text> {item.description}
+              </Text>
+            )}
+          </View>
+
         </View>
-      
-      </View>
-    </ScrollView>
-    <View style={styles.rowCart}>
+      </ScrollView>
+      <View style={styles.rowCart}>
+
         <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
-        <Image style={styles.cartButton} source={require("../Image/cart_01.png")} />
+          <Image style={styles.cartButton} source={require("../Image/cart_01.png")} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={addToCart} style={styles.addMuaNgayButton}>
+
+        <TouchableOpacity onPress={buyNow} style={styles.addMuaNgayButton}>
           <Text style={styles.addToCartText}>Mua ngay</Text>
         </TouchableOpacity>
-        </View>
+
+      </View>
     </View>
   );
 };
@@ -151,12 +175,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   detailsContainer: {
-    padding: 16,
+    padding: 20,
     backgroundColor: "#FFF",
-    marginTop: 10,
-    borderRadius: 10,
-    elevation: 3,
-    marginHorizontal: 10,
     marginBottom: 20,
   },
   productId: {
@@ -173,7 +193,6 @@ const styles = StyleSheet.create({
   priceQuantityContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
   },
   priceText: {
     fontSize: 24,
@@ -190,10 +209,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   detailText: {
-    fontSize: 14,
+    fontSize: 16,
     marginBottom: 8,
   },
   availableQuantity: {
+    fontSize: 16,
     color: "green",
     fontWeight: "bold",
   },
@@ -202,11 +222,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
   },
-  rowCart:{
+  rowCart: {
     position: 'absolute',
     flexDirection: "row",
-    bottom: 1,
-    
+    bottom: 0,
+
   },
   cartButton: {
     width: 30,
@@ -217,7 +237,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#54A798", 
+    backgroundColor: "#54A798",
     height: 50,
   },
   addMuaNgayButton: {

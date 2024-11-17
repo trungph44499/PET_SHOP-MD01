@@ -85,7 +85,7 @@ const HomeScreen = ({ navigation }) => {
               style={{
                 color: "#000000",
                 fontSize: 23,
-                marginTop: 30,
+                marginTop: "7%",
                 fontWeight: "400",
                 letterSpacing: 2 
               }}
@@ -286,9 +286,9 @@ const styles = StyleSheet.create({
     right: '8%',
     fontSize: 18,
     fontStyle: "italic",
-    color: "green",
+    color: "#FFFFFF",
     fontWeight: "bold", // Làm cho chữ đậm hơn
-    backgroundColor: "#e0f7e0", // Nền màu nhẹ
+    backgroundColor: "#bcea82", // Nền màu nhẹ
     borderRadius: 12, // Bo góc
     padding: 5, // Thêm khoảng cách bên trong
   },

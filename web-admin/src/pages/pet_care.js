@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
@@ -17,15 +17,46 @@ function Main() {
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
 
-  websocket.onmessage = function (result) {
-    const data = JSON.parse(result.data);
-
-    if (data.type == "pet-care") {
-      getAllPetCare();
+  const getAllPetCare = useCallback(async () => {
+    try {
+      const {
+        status,
+        data: { response },
+      } = await axios.get(`${json_config[0].url_connect}/pet-care`);
+      if (status === 200) {
+        setData(response);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  };
-  function convertStatus(status) {
-    var statusResult = "";
+  }, []);
+
+  useEffect(() => {
+    // Kiểm tra xem WebSocket đã được khởi tạo chưa
+    if (websocket) {
+      // Lắng nghe sự kiện message từ WebSocket
+      websocket.onmessage = function (result) {
+        const data = JSON.parse(result.data);
+
+        if (data.type === "pet-care") {
+          getAllPetCare();
+        }
+      };
+    }
+    
+    // Gọi hàm lấy dữ liệu khi component mount
+    getAllPetCare();
+
+    // Clean up WebSocket khi component unmount
+    return () => {
+      if (websocket) {
+        websocket.onmessage = null; // Hủy lắng nghe sự kiện message khi component unmount
+      }
+    };
+  }, [websocket, getAllPetCare]); // Chạy khi websocket hoặc getAllPetCare thay đổi
+
+  const convertStatus = (status) => {
+    let statusResult = "";
     switch (status) {
       case "reject":
         statusResult = "Đã từ chối";
@@ -36,29 +67,11 @@ function Main() {
       case "pending":
         statusResult = "Chờ xác nhận";
         break;
-
       default:
         break;
     }
     return statusResult;
-  }
-  async function getAllPetCare() {
-    try {
-      const {
-        status,
-        data: { response },
-      } = await axios.get(`${json_config[0].url_connect}/pet-care`);
-      if (status == 200) {
-        setData(response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    getAllPetCare();
-  }, []);
+  };
 
   return (
     <div>
@@ -87,9 +100,7 @@ function Main() {
               <td>
                 <button
                   disabled={
-                    item.status == "reject" || item.status == "success"
-                      ? true
-                      : false
+                    item.status === "reject" || item.status === "success"
                   }
                   onClick={async function () {
                     const resultCheck = window.confirm("Confirm payment?");
@@ -107,7 +118,7 @@ function Main() {
                         }
                       );
 
-                      if (status == 200) {
+                      if (status === 200) {
                         window.alert(response);
                         if (type) getAllPetCare();
                       }
@@ -121,9 +132,7 @@ function Main() {
               <td>
                 <button
                   disabled={
-                    item.status == "reject" || item.status == "success"
-                      ? true
-                      : false
+                    item.status === "reject" || item.status === "success"
                   }
                   onClick={async function () {
                     const resultCheck = window.confirm("Reject payment?");
@@ -141,7 +150,7 @@ function Main() {
                         }
                       );
 
-                      if (status == 200) {
+                      if (status === 200) {
                         window.alert(response);
                         if (type) getAllPetCare();
                       }

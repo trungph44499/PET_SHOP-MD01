@@ -20,8 +20,6 @@ import { useNavigation } from "@react-navigation/native";
 const Payment2 = ({ route }) => {
   const { listItem, total, user, soDienThoai, paymentMethod, diaChi, ship } = route.params;
   const navigation = useNavigation();
-  const day = new Date().getDay();
-  const month = new Date().getMonth();
   const [card, setcard] = useState("");
   const [cardname, setcardname] = useState("");
   const [carddate, setcarddate] = useState("");
@@ -40,6 +38,7 @@ const Payment2 = ({ route }) => {
         number: soDienThoai,
         ship: ship,
         paymentMethod: paymentMethod,
+        totalPrice: parseInt(total),
         products: listItem,
       });
       if (status === 200) {
@@ -53,7 +52,7 @@ const Payment2 = ({ route }) => {
             list: listItem,
             emailUser: user.email,
           });
-          if (_type) navigation.popToTop();
+          navigation.popToTop();
         }
       }
     } catch (error) {
@@ -137,7 +136,7 @@ const Payment2 = ({ route }) => {
         </View>
         <View style={styles.section}>
           <UnderLine value={"Phương thức vận chuyển"} color={"#000000"} />
-      
+
           <Text style={styles.textStyl}>{paymentMethod}</Text>
 
         </View>
@@ -176,7 +175,7 @@ const Payment2 = ({ route }) => {
             <Text style={styles.textBold}>{numberUtils(total)}</Text>
             <Text style={styles.textBold}>{ship === "Giao hàng nhanh - 15.000đ" ? "15.000 đ" : "20.000 đ"}</Text>
             <Text style={styles.totalAmount}>
-              {numberUtils(total + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000))}
+              {numberUtils(parseInt(total) + (ship === "Giao hàng nhanh - 15.000đ" ? parseInt(15000) : parseInt(20000)))}
             </Text>
           </View>
         </View>
@@ -243,7 +242,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 13,
-    marginLeft:10
+    marginLeft: 10
   },
   scrollContainer: {
     marginBottom: 30,
@@ -252,7 +251,7 @@ const styles = StyleSheet.create({
   section: {
     marginVertical: 15,
   },
-  textStyl:{
+  textStyl: {
     marginTop: 10,
     fontSize: 16,
     color: 'green',
@@ -334,9 +333,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: "center",
     elevation: 5,
-    position:'absolute',
+    position: 'absolute',
     bottom: 20,
-    
+
   },
   modalTitle: {
     fontSize: 18,

@@ -19,6 +19,7 @@ function Main() {
   const [dataUpdate, setDataUpdate] = useState({});
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const [selectedType, setSelectedType] = useState(""); // State để lưu giá trị lọc loại sản phẩm
 
   const _image = useRef();
   const _name = useRef();
@@ -35,7 +36,7 @@ function Main() {
         status,
         data: { response },
       } = await axios.get(`${json_config[0].url_connect}/products`);
-      if (status == 200) {
+      if (status === 200) {
         setData(response);
       }
     } catch (error) {
@@ -47,10 +48,30 @@ function Main() {
     getAllProduct();
   }, []);
 
+  // Lọc dữ liệu sản phẩm theo loại (type)
+  const filteredData = selectedType
+    ? data.filter((item) => item.type === selectedType)
+    : data;
+
   return (
     <div>
+      {/* Dropdown lọc loại sản phẩm */}
+      <div className="filter">
+        <select
+          className="form-select"
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="">Tất cả loại</option>
+          <option value="dog">Chó</option>
+          <option value="cat">Mèo</option>
+          <option value="accessory">Phụ kiện</option>
+        </select>
+      </div>
+
       {isUpdate && (
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
+          {/* Form cập nhật sản phẩm */}
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -70,21 +91,13 @@ function Main() {
               <span className="input-group-text" style={{ width: 100 }}>
                 Price
               </span>
-              <input
-                ref={_price}
-                type="number"
-                defaultValue={dataUpdate.price}
-              />
+              <input ref={_price} type="number" defaultValue={dataUpdate.price} />
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Origin
               </span>
-              <input
-                ref={_origin}
-                type="text"
-                defaultValue={dataUpdate.origin}
-              />
+              <input ref={_origin} type="text" defaultValue={dataUpdate.origin} />
             </div>
           </div>
           <div className="d-flex flex-row mb-2">
@@ -92,21 +105,16 @@ function Main() {
               <span className="input-group-text" style={{ width: 100 }}>
                 Quantity
               </span>
-              <input
-                ref={_quantity}
-                type="number"
-                defaultValue={dataUpdate.quantity}
-              />
+              <input ref={_quantity} type="number" defaultValue={dataUpdate.quantity} />
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Status
               </span>
-              <input
-                ref={_status}
-                type="text"
-                defaultValue={dataUpdate.status}
-              />
+              <select ref={_status} defaultValue={dataUpdate.status}>
+                <option value="New">New</option>
+                <option value="Old">Old</option>
+              </select>
             </div>
           </div>
           <div className="d-flex flex-row mb-2">
@@ -114,17 +122,17 @@ function Main() {
               <span className="input-group-text" style={{ width: 100 }}>
                 Type
               </span>
-              <input ref={_type} type="text" defaultValue={dataUpdate.type} />
+              <select ref={_type} defaultValue={dataUpdate.type}>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="accessory">Accessory</option>
+              </select>
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Description
               </span>
-              <input
-                ref={_description}
-                type="text"
-                defaultValue={dataUpdate.description}
-              />
+              <input ref={_description} type="text" defaultValue={dataUpdate.description} />
             </div>
           </div>
           <div className="d-flex flex-row mb-2">
@@ -132,18 +140,18 @@ function Main() {
               className="btn btn-primary"
               onClick={async () => {
                 if (
-                  _status.current.value != "New" &&
-                  _status.current.value != "Old"
+                  _status.current.value !== "New" &&
+                  _status.current.value !== "Old"
                 ) {
                   window.alert("Must input Status New or Old");
                   return;
                 }
                 if (
-                  _type.current.value != "dog" &&
-                  _type.current.value != "cat" &&
-                  _type.current.value != "accessory"
+                  _type.current.value !== "dog" &&
+                  _type.current.value !== "cat" &&
+                  _type.current.value !== "accessory"
                 ) {
-                  window.alert("Must input Type cat or dot or accessory");
+                  window.alert("Must input Type dog, cat, or accessory");
                   return;
                 }
                 try {
@@ -164,7 +172,7 @@ function Main() {
                       description: _description.current.value,
                     }
                   );
-                  if (status == 200) {
+                  if (status === 200) {
                     window.alert(response);
                     if (type) {
                       await getAllProduct();
@@ -188,8 +196,10 @@ function Main() {
           </div>
         </div>
       )}
+
       {isAdd && (
         <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
+          {/* Form thêm mới sản phẩm */}
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -231,7 +241,10 @@ function Main() {
               <span className="input-group-text" style={{ width: 100 }}>
                 Status
               </span>
-              <input ref={_status} type="text" />
+              <select ref={_status}>
+                <option value="New">New</option>
+                <option value="Old">Old</option>
+              </select>
             </div>
           </div>
           <div className="d-flex flex-row mb-2">
@@ -239,7 +252,11 @@ function Main() {
               <span className="input-group-text" style={{ width: 100 }}>
                 Type
               </span>
-              <input ref={_type} type="text" />
+              <select ref={_type}>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="accessory">Accessory</option>
+              </select>
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -253,31 +270,31 @@ function Main() {
               className="btn btn-primary"
               onClick={async () => {
                 if (
-                  _image.current.value == "" ||
-                  _name.current.value == "" ||
-                  _price.current.value == "" ||
-                  _origin.current.value == "" ||
-                  _quantity.current.value == "" ||
-                  _status.current.value == "" ||
-                  _type.current.value == "" ||
-                  _description.current.value == ""
+                  _image.current.value === "" ||
+                  _name.current.value === "" ||
+                  _price.current.value === "" ||
+                  _origin.current.value === "" ||
+                  _quantity.current.value === "" ||
+                  _status.current.value === "" ||
+                  _type.current.value === "" ||
+                  _description.current.value === ""
                 ) {
                   window.alert("Input is empty");
                   return;
                 }
                 if (
-                  _status.current.value != "New" &&
-                  _status.current.value != "Old"
+                  _status.current.value !== "New" &&
+                  _status.current.value !== "Old"
                 ) {
                   window.alert("Must input Status New or Old");
                   return;
                 }
                 if (
-                  _type.current.value != "dog" &&
-                  _type.current.value != "cat" &&
-                  _type.current.value != "accessory"
+                  _type.current.value !== "dog" &&
+                  _type.current.value !== "cat" &&
+                  _type.current.value !== "accessory"
                 ) {
-                  window.alert("Must input Type cat or dot or accessory");
+                  window.alert("Must input Type dog, cat, or accessory");
                   return;
                 }
                 try {
@@ -297,7 +314,7 @@ function Main() {
                       description: _description.current.value,
                     }
                   );
-                  if (status == 200) {
+                  if (status === 200) {
                     window.alert(response);
                     if (type) {
                       await getAllProduct();
@@ -321,6 +338,7 @@ function Main() {
           </div>
         </div>
       )}
+
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
           style={{ borderRadius: 30, height: 50, width: 50 }}
@@ -332,6 +350,8 @@ function Main() {
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
+      
+      {/* Bảng sản phẩm đã lọc */}
       <table className="table">
         <thead>
           <tr>
@@ -348,10 +368,10 @@ function Main() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <tr key={item._id}>
               <td>
-                <img src={item.img} height={50} width={50} />
+                <img src={item.img} height={50} width={50} alt={item.name || "Hình ảnh sản phẩm"} />
               </td>
               <td>{item.name}</td>
               <td>{item.price}</td>
@@ -390,7 +410,7 @@ function Main() {
                           id: item._id,
                         }
                       );
-                      if (status == 200) {
+                      if (status === 200) {
                         window.alert(response);
                         if (type) {
                           await getAllProduct();

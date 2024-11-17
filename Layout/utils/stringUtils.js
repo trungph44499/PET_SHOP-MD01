@@ -2,10 +2,17 @@
 export function numberUtils(x) {
   return parseInt(x).toLocaleString("en-ES") + " ₫";
 }
+
 // viết hoa chữ cái đầu tiên
 export function upperCaseFirstItem(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+// viết hoa chữ cái đầu tiên
+export function upperCaseItem(string) {
   return string.toUpperCase();
 }
+
 export const validateSDT = (sdt) => {
   const regex2 = /^(?:\+84|0)([0-9]{9})$/;
   return regex2.test(sdt);

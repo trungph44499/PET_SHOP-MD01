@@ -57,7 +57,7 @@ router.get("/filter", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-  const {  fullname, email, location, number, ship, paymentMethod, products } = req.body;
+  const {  fullname, email, location, number, ship, paymentMethod, totalPrice, products } = req.body;
   try {
     const result = await paymentModel.insertMany({
       fullname: fullname,
@@ -66,6 +66,7 @@ router.post("/add", async (req, res) => {
       number: number,
       ship: ship,
       paymentMethod: paymentMethod,
+      totalPrice: totalPrice,
       products: products,
     });
     if (result.length > 0) {

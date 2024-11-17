@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getListClassify } from "./function";
-import { numberUtils, upperCaseFirstItem } from "../utils/stringUtils";
+import { numberUtils, upperCaseFirstItem, upperCaseItem } from "../utils/stringUtils";
 
 export default ClassifyScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]);
@@ -111,7 +111,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
               </Text>
           
             </View>
-            <Text style={styles.itemType}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
+            <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
           </TouchableOpacity>
         )}
@@ -165,9 +165,9 @@ const styles = StyleSheet.create({
     right: '8%',
     fontSize: 18,
     fontStyle: "italic",
-    color: "green",
+    color: "#FFFFFF",
     fontWeight: "bold", // Làm cho chữ đậm hơn
-    backgroundColor: "#e0f7e0", // Nền màu nhẹ
+    backgroundColor: "#bcea82", // Nền màu nhẹ
     borderRadius: 12, // Bo góc
     padding: 5, // Thêm khoảng cách bên trong
   },
