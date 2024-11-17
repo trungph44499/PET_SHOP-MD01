@@ -7,22 +7,104 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UnderLine from "../../components/UnderLine";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { URL } from "../HomeScreen";
 import axios from "axios";
-import { numberUtils, upperCaseFirstItem } from "../utils/stringUtils";
+import { numberUtils, upperCaseItem } from "../utils/stringUtils";
 import CheckBoxCustom from "../components/CheckBoxCustom";
+import { Toast } from "../utils/toastUtil";
+import { Alert } from "react-native";  // Import Alert
 
 const Payment = ({ navigation, route }) => {
   const { total, listItem } = route.params;
   const day = new Date().getDay();
   const month = new Date().getMonth();
+
   const [ship, setShip] = useState("Giao hàng nhanh - 15.000đ");
   const [shippingAddresses, setShippingAddresses] = useState({});
   const [checkboxSeletectPayment, setCheckboxSelectPayment] = useState(-1);
   const [paymentMethods, setPaymentMethods] = useState({});
+
+  const checkShippingAddresses = JSON.stringify(shippingAddresses) === "{}";
+  const checkPaymentMethod = JSON.stringify(paymentMethods) === "{}";
+
+  const totalPrice = parseInt(total);
+
+  async function _payment() {
+    try {
+      let _userEmail = await AsyncStorage.getItem("@UserLogin");
+      if (!_userEmail) {
+        Toast("Không tìm thấy người dùng");
+        return;
+      }
+      if (checkShippingAddresses) {
+        Toast("Chưa chọn địa chỉ nhận hàng");
+        return;
+      }
+
+      if (checkboxSeletectPayment != 1 && checkboxSeletectPayment != 0) {
+        Toast("Chưa chọn phương thức thanh toán");
+        return;
+      }
+
+      if (checkboxSeletectPayment === 1 && checkPaymentMethod) {
+        Toast("Chưa chọn thẻ VISA");
+        return;
+      }
+
+      // Hiển thị thông báo xác nhận
+      Alert.alert(
+        "Xác nhận thanh toán",
+        "Bạn có chắc chắn muốn thanh toán không?",
+        [
+          {
+            text: "Hủy",
+            onPress: () => console.log("Thanh toán bị hủy"),
+            style: "cancel",
+          },
+          {
+            text: "Đồng ý",
+            onPress: async () => {
+              // Thực hiện thanh toán nếu người dùng nhấn "Đồng ý"
+              let _paymentObject = {
+                fullname: shippingAddresses.fullName,
+                email: _userEmail,
+                location: `${shippingAddresses.address}, ${shippingAddresses.city}`,
+                number: shippingAddresses.phoneNumber,
+                ship: ship,
+                paymentMethod: checkboxSeletectPayment == 0 ? "Thanh toán khi nhận hàng" : "Thẻ VISA/MASTERCARD",
+                totalPrice: totalPrice,
+                products: listItem,
+              };
+
+              const {
+                status,
+                data: { response, type },
+              } = await axios.post(`${URL}/pay/add`, _paymentObject);
+              if (status === 200) {
+                Toast(response);
+                if (type) {
+                  const {
+                    status: _status,
+                    data: { type: _type },
+                  } = await axios.post(`${URL}/carts/removeAllFromCart`, {
+                    list: listItem,
+                    emailUser: _userEmail,
+                  });
+                  navigation.popToTop();
+                }
+              }
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const formatPrice = (price) => {
     return price.toLocaleString("vi-VN", {
@@ -90,7 +172,7 @@ const Payment = ({ navigation, route }) => {
         <View style={styles.section}>
           <UnderLine value={"Địa chỉ nhận hàng"} color={"black"} />
 
-          {JSON.stringify(shippingAddresses) === "{}" ? (
+          {checkShippingAddresses ? (
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("ShippingAddrees");
@@ -114,7 +196,7 @@ const Payment = ({ navigation, route }) => {
                 <Text style={styles.bold}>Thêm địa chỉ nhận hàng</Text>
                 <Image
                   style={styles.deleteIcon}
-                  source={require("../../Image/backk.png")}
+                  source={require("../../Image/left.png")}
                 />
               </View>
             </TouchableOpacity>
@@ -167,7 +249,7 @@ const Payment = ({ navigation, route }) => {
                       <Text
                         style={{
                           fontWeight: "300",
-                          fontSize: 14,
+                          fontSize: 18,
                         }}
                       >
                         {shippingAddresses.phoneNumber}
@@ -181,15 +263,14 @@ const Payment = ({ navigation, route }) => {
                       }}
                     >
                       <Text style={styles.bold}>
-                        Địa chỉ: {shippingAddresses.address},
-                        {shippingAddresses.city}
+                        Địa chỉ: {shippingAddresses.address}, {shippingAddresses.city}
                       </Text>
                     </View>
                   </View>
                 </View>
                 <Image
                   style={styles.deleteIcon}
-                  source={require("../../Image/backk.png")}
+                  source={require("../../Image/left.png")}
                 />
               </View>
             </TouchableOpacity>
@@ -203,7 +284,7 @@ const Payment = ({ navigation, route }) => {
                 <Image source={{ uri: item.image }} style={styles.image} />
                 <View style={styles.itemInfo}>
                   <Text style={styles.itemCode}>
-                    Mã sản phẩm: {upperCaseFirstItem(item.id.slice(-5))}
+                    Mã sản phẩm: {upperCaseItem(item.id.slice(-5))}
                   </Text>
                   <Text style={styles.itemName}>Tên sản phẩm: {item.name}</Text>
                   <Text style={styles.itemPrice}>
@@ -274,27 +355,28 @@ const Payment = ({ navigation, route }) => {
             />
             <View
               style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                height: 60,
+                marginBottom: 10,
+                marginHorizontal: 5,
                 borderRadius: 5,
                 backgroundColor: "#fff",
                 elevation: 5,
-                paddingVertical: 10,
-                paddingLeft: 20,
-                paddingRight: 10,
-                flex: 1,
-                marginHorizontal: 5,
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between",
                   alignItems: "center",
+                  padding: 10,
                 }}
               >
-                <Text style={styles.bold}>Thanh toán khi nhận hàng</Text>
+                <Text style={{ flex: 1, fontSize: 16 }}>Thanh toán khi nhận hàng</Text>
                 <Image
-                  style={styles.deleteIcon}
-                  source={require("../../Image/backk.png")}
+                  style={styles.leftIcon}
+                  source={require("../../Image/left.png")}
                 />
               </View>
             </View>
@@ -312,34 +394,33 @@ const Payment = ({ navigation, route }) => {
                 setCheckboxSelectPayment(1);
               }}
             />
-            {JSON.stringify(paymentMethods) === "{}" ? (
+            {checkPaymentMethod ? (
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("PaymentMethod");
                 }}
                 style={{
+                  flex: 1,
+                  height: 60,
+                  justifyContent: "center",
+                  alignItems: "center",
                   marginBottom: 10,
+                  marginHorizontal: 5,
                   borderRadius: 5,
                   backgroundColor: "#fff",
                   elevation: 5,
-                  paddingVertical: 10,
-                  paddingLeft: 20,
-                  paddingRight: 10,
-                  flex: 1,
-                  marginHorizontal: 5,
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    padding: 10
                   }}
                 >
-                  <Text style={styles.bold}>Thêm thẻ thanh toán</Text>
+                  <Text style={{ flex: 1, fontSize: 16 }}>Thêm thẻ thanh toán</Text>
                   <Image
-                    style={styles.deleteIcon}
-                    source={require("../../Image/backk.png")}
+                    style={styles.leftIcon}
+                    source={require("../../Image/left.png")}
                   />
                 </View>
               </TouchableOpacity>
@@ -349,6 +430,8 @@ const Payment = ({ navigation, route }) => {
                   navigation.navigate("PaymentMethod");
                 }}
                 style={{
+                  flex: 1,
+                  height: 60,
                   marginBottom: 10,
                   marginHorizontal: 5,
                   borderRadius: 5,
@@ -367,54 +450,24 @@ const Payment = ({ navigation, route }) => {
                   <View
                     style={{
                       flexDirection: "row",
+                      alignItems: 'center',
+                      flex: 1
                     }}
                   >
                     <Image
-                      style={[styles.deleteIcon, { tintColor: "blue" }]}
+                      style={[styles.iconCard,]}
+                      source={require("../../Image/card.png")}
+                    />
+                    <Image
+                      style={[styles.iconCard, { tintColor: "blue" }]}
                       source={require("../../Image/visa.png")}
                     />
-                    <View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: "bold",
-                            marginHorizontal: 5,
-                          }}
-                        >
-                          {paymentMethods.cardHolderName}
-                        </Text>
-                        <Text
-                          style={{
-                            fontWeight: "300",
-                            fontSize: 14,
-                            marginTop: 3,
-                          }}
-                        >
-                          {paymentMethods.expirationDate}
-                        </Text>
-                      </View>
-                      <View style={{ height: 5 }} />
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text style={styles.bold}>
-                          Số thẻ: **** *** {paymentMethods.cardNumber.slice(-3)}
-                        </Text>
-                      </View>
-                    </View>
+                    <Text style={styles.textCard}>**** **** **** {paymentMethods.cardNumber.slice(-4)}
+                    </Text>
                   </View>
                   <Image
-                    style={styles.deleteIcon}
-                    source={require("../../Image/backk.png")}
+                    style={styles.leftIcon}
+                    source={require("../../Image/left.png")}
                   />
                 </View>
               </TouchableOpacity>
@@ -427,7 +480,7 @@ const Payment = ({ navigation, route }) => {
         <View style={styles.summary}>
           <View style={styles.summaryRow}>
             <Text style={styles.textBold}>Tạm tính :</Text>
-            <Text style={styles.textBold}>{formatPrice(total)}</Text>
+            <Text style={styles.textBold}>{formatPrice(totalPrice)}</Text>
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.textBold}>Phí vận chuyển :</Text>
@@ -439,19 +492,17 @@ const Payment = ({ navigation, route }) => {
             <Text style={styles.totalLabel}>Tổng tiền :</Text>
             <Text style={styles.totalAmount}>
               {formatPrice(
-                total + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000)
+                totalPrice + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000)
               )}
             </Text>
           </View>
         </View>
 
         <TouchableOpacity
-          onPress={() => {
-            console.log(listItem);
-          }}
+          onPress={_payment}
           style={[styles.continueButton, { backgroundColor: "#a97053" }]}
         >
-          <Text style={styles.continueButtonText}>Tiếp tục</Text>
+          <Text style={styles.continueButtonText}>Thanh toán</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -522,12 +573,13 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: "#FFF",
     borderRadius: 12,
+    marginHorizontal: 5,
     marginBottom: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 3,
+    elevation: 5,
   },
   checkIcon: {
     width: 18,
@@ -573,10 +625,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  iconCard: {
+    width: 40,
+    height: 40,
+  },
   deleteIcon: {
     width: 20,
     height: 20,
     marginTop: 2,
+  },
+  leftIcon: {
+    width: 20,
+    height: 20,
+  },
+  textCard: {
+    fontSize: 16,
+    color: "#808080",
+    fontWeight: "regular",
+    marginLeft: 10
   },
   bold: {
     fontSize: 16,
@@ -594,19 +660,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemCode: {
+    fontSize: 16,
     fontWeight: "bold",
     color: "#FF6B6B",
   },
   itemName: {
     color: "#555",
+    fontSize: 16,
   },
   itemPrice: {
     color: "#FF6B6B",
+    fontSize: 16,
   },
   itemQuantity: {
     color: "#555",
-  },
-  itemQuantity: {
-    color: "#555",
+    fontSize: 16,
   },
 });

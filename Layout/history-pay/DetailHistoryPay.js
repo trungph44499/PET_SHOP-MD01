@@ -7,26 +7,14 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { URL } from '../HomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { numberUtils } from '../utils/stringUtils';
+import { numberUtils, upperCaseItem } from "../utils/stringUtils";
 
 const DetailHistoryPay = ({ route }) => {
     const navigation = useNavigation();
-    const { id_bill, item, e } = route.params;
-    const [Bill, setBill] = useState([]);
+    const { item } = route.params;
     const [user, setuser] = useState([]);
-    const [dataHistory, setDataHistory] = useState([]);
     const [orderStatus, setOrderStatus] = useState(item.status); // Trạng thái đơn hàng
 
-    // Lấy thông tin đơn hàng
-    const getBill = async () => {
-        const url = `${URL}/hoadons?id=${id_bill}`;
-        const res = await fetch(url);
-        if (res.ok) {
-            const data = await res.json();
-            setBill(data[0]);
-            console.log(data[0]);
-        }
-    }
 
     // Lấy thông tin người dùng
     const retrieveData = async () => {
@@ -58,7 +46,6 @@ const DetailHistoryPay = ({ route }) => {
     }
 
     useEffect(() => {
-        getBill();
         retrieveData();
         getAllHistoryPay();
     }, []);
@@ -69,7 +56,7 @@ const DetailHistoryPay = ({ route }) => {
             Alert.alert("Đơn hàng đã bị hủy", "Bạn không thể hủy đơn hàng này nữa.");
             return;
         }
-        
+
         Alert.alert(
             "Xác nhận hủy đơn hàng",
             "Bạn có chắc chắn muốn hủy đơn hàng không?",
@@ -119,7 +106,7 @@ const DetailHistoryPay = ({ route }) => {
                 <Text style={styles.headerText}>Chi tiết đơn hàng</Text>
             </View>
             <ScrollView>
-                <View style={{ paddingHorizontal: 20, gap: 10, marginTop: 30 }}>
+                <View style={{ paddingHorizontal: 10, gap: 10, marginTop: 30 }}>
                     <UnderLine value={'Thông tin khách hàng'} color={'black'} />
                     <Text style={styles.textGray}>{item.fullname}</Text>
                     <Text style={styles.textGray}>{item.email}</Text>
@@ -130,26 +117,33 @@ const DetailHistoryPay = ({ route }) => {
                 <View style={styles.section}>
                     <UnderLine value={"Phương thức vận chuyển"} color={"black"} />
                     <Pressable style={styles.paymentOption}>
-                        <Text style={styles.textGray}>{item.ship}</Text>
+                        <Text style={styles.textGreen}>{item.ship}</Text>
                     </Pressable>
                 </View>
 
                 <View style={styles.section}>
                     <UnderLine value={"Hình thức thanh toán"} color={"black"} />
-                    <Pressable  style={styles.paymentOption}>
-                    <Text style={styles.textGray}>{item.paymentMethod}</Text>
+                    <Pressable style={styles.paymentOption}>
+                        <Text style={styles.textGreen}>{item.paymentMethod}</Text>
                     </Pressable>
                 </View>
 
                 <View style={{ paddingHorizontal: 20, gap: 10 }}>
                     <UnderLine value={'Đơn hàng đã chọn'} color={'black'} />
-                    {item.products.map((e) => (
-                        <View key={e.id} style={{ flexDirection: 'row' }}>
-                            <Image source={{ uri: e.image }} style={styles.image} />
-                            <View style={{ flex: 1 }}>
-                                <Text style={styles.textGray}>{e.name}</Text>
-                                <Text style={styles.textGray}>{numberUtils(e.price)}</Text>
-                                <Text style={styles.textGray}>{e.quantity}</Text>
+                    {item.products.map((item) => (
+                        <View key={item.id} style={{ flexDirection: 'row' }}>
+                            <Image source={{ uri: item.image }} style={styles.image} />
+                            <View style={{ flex: 1, justifyContent: "center" }}>
+                                <Text style={styles.textItem}>
+                                    Mã sản phẩm: {upperCaseItem(item.id.slice(-5))}
+                                </Text>
+                                <Text style={styles.textItem}>Tên sản phẩm: {item.name}</Text>
+                                <Text style={styles.textItem}>
+                                    Giá tiền: {numberUtils(item.price)}
+                                </Text>
+                                <Text style={styles.textItem}>
+                                    Số lượng: {item.quantity}
+                                </Text>
                             </View>
                         </View>
                     ))}
@@ -157,19 +151,19 @@ const DetailHistoryPay = ({ route }) => {
             </ScrollView>
             <View style={{ width: '90%', marginVertical: 20, marginHorizontal: '5%', gap: 20 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={styles.textBold}>Đã thanh toán</Text>
-                    <Text style={styles.textBold}>{numberUtils(totalAmount)}</Text>
+                    <Text style={styles.textPay}>Đã thanh toán</Text>
+                    <Text style={styles.textPay}>{numberUtils(totalAmount)}</Text>
                 </View>
                 {/* Button Hủy đơn hàng */}
-                <TouchableOpacity 
+                <TouchableOpacity
                     onPress={rejectBuyProduct}
                     style={{
-                        borderRadius: 9, 
-                        padding: 12, 
+                        borderRadius: 9,
+                        padding: 12,
                         alignItems: 'center',
                         backgroundColor: orderStatus === "reject" ? '#d3d3d3' : '#a97053', // Thay đổi màu nút nếu đơn hàng đã bị hủy
                     }}>
-                    <Text style={{ fontSize: 16, color: 'white' }}>
+                    <Text style={{ fontSize: 16, color: 'white', fontWeight: "bold" }}>
                         {orderStatus === "reject" ? 'Đơn hàng đã bị hủy' : 'Hủy đơn hàng'}
                     </Text>
                 </TouchableOpacity>
@@ -202,9 +196,23 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
     },
+    textPay: {
+        fontSize: 18,
+        color: '#d9534f',
+        fontWeight: "bold"
+    },
     textGray: {
         fontSize: 16,
-        color: 'black'
+        color: 'black', 
+    },
+    textGreen: {
+        fontSize: 16,
+        color: 'green'
+    },
+    textItem: {
+        fontSize: 16,
+        color: 'black',
+        fontWeight: "bold"
     },
     textBold: {
         fontSize: 16,
@@ -216,7 +224,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
     },
     section: {
-        padding: 15,
+        padding: 10,
     },
     paymentOption: {
         flexDirection: "row",
