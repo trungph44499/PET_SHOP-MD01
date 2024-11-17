@@ -1,34 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Image,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AddShippingAddress = ({ route, navigation }) => {
-  const { emailUser, address, index } = route.params || {}; // Lấy tham số từ route.params
+  const { emailUser, address, index } = route.params || {};
 
-  const [fullName, setFullName] = useState(address?.fullName || '');
-  const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || '');
-  const [addressText, setAddressText] = useState(address?.address || '');
-  const [city, setCity] = useState(address?.city || '');
+  const [fullName, setFullName] = useState(address?.fullName || "");
+  const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || "");
+  const [addressText, setAddressText] = useState(address?.address || "");
+  const [city, setCity] = useState(address?.city || "");
 
   const validateForm = () => {
     if (!fullName || !phoneNumber || !addressText || !city) {
-      Alert.alert('Lỗi', 'Vui lòng nhập đầy đủ thông tin!');
+      Alert.alert("Lỗi", "Vui lòng nhập đầy đủ thông tin!");
       return false;
     }
 
     const phoneRegex = /^[0-9]{10,11}$/;
     if (!phoneRegex.test(phoneNumber)) {
-      Alert.alert('Lỗi', 'Số điện thoại không hợp lệ!');
+      Alert.alert("Lỗi", "Số điện thoại không hợp lệ!");
       return false;
     }
 
     if (addressText.length < 3) {
-      Alert.alert('Lỗi', 'Địa chỉ phải có ít nhất 3 ký tự.');
+      Alert.alert("Lỗi", "Địa chỉ phải có ít nhất 3 ký tự.");
       return false;
     }
 
     if (city.length < 3) {
-      Alert.alert('Lỗi', 'Tên thành phố phải có ít nhất 3 ký tự.');
+      Alert.alert("Lỗi", "Tên thành phố phải có ít nhất 3 ký tự.");
       return false;
     }
 
@@ -41,7 +49,9 @@ const AddShippingAddress = ({ route, navigation }) => {
     const newAddress = { fullName, phoneNumber, address: addressText, city };
 
     try {
-      let storedAddresses = await AsyncStorage.getItem(emailUser + '_shippingAddresses');
+      let storedAddresses = await AsyncStorage.getItem(
+        emailUser + "_shippingAddresses"
+      );
       storedAddresses = storedAddresses ? JSON.parse(storedAddresses) : [];
 
       if (index !== undefined) {
@@ -53,26 +63,33 @@ const AddShippingAddress = ({ route, navigation }) => {
       }
 
       // Lưu lại địa chỉ mới vào AsyncStorage
-      await AsyncStorage.setItem(emailUser + '_shippingAddresses', JSON.stringify(storedAddresses));
+      await AsyncStorage.setItem(
+        emailUser + "_shippingAddresses",
+        JSON.stringify(storedAddresses)
+      );
 
-      Alert.alert('Thành công', 'Địa chỉ đã được lưu!');
+      Alert.alert("Thành công", "Địa chỉ đã được lưu!");
 
       // Quay lại màn hình trước và gửi dữ liệu cập nhật (nếu cần)
       navigation.goBack(); // Trở lại màn hình trước
-
     } catch (error) {
-      console.error('Lỗi khi lưu địa chỉ:', error);
-      Alert.alert('Lỗi', 'Không thể lưu địa chỉ');
+      console.error("Lỗi khi lưu địa chỉ:", error);
+      Alert.alert("Lỗi", "Không thể lưu địa chỉ");
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Image style={styles.icon} source={require('../../Image/back.png')} />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Image style={styles.icon} source={require("../../Image/back.png")} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>{address ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}</Text>
+        <Text style={styles.headerText}>
+          {address ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ mới"}
+        </Text>
       </View>
 
       <TextInput
@@ -113,21 +130,21 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 30,
   },
   headerText: {
     flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     zIndex: 1,
   },
@@ -137,23 +154,23 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 60,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
   },
   submitButton: {
-    backgroundColor: '#3D5C99',
+    backgroundColor: "#3D5C99",
     padding: 15,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   submitText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

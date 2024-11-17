@@ -20,8 +20,6 @@ import { useNavigation } from "@react-navigation/native";
 const Payment2 = ({ route }) => {
   const { listItem, total, user, soDienThoai, paymentMethod, diaChi, ship } = route.params;
   const navigation = useNavigation();
-  const day = new Date().getDay();
-  const month = new Date().getMonth();
   const [card, setcard] = useState("");
   const [cardname, setcardname] = useState("");
   const [carddate, setcarddate] = useState("");
