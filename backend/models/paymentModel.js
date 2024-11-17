@@ -4,10 +4,10 @@ const paymentSchema = new mongoose.Schema({
   email: String,
   location: String,
   number: String,
-  ship: String,
-  paymentMethod: String,
+  ship: String,//Giao hàng nhanh - 15.000đ, Giao hàng COD - 20.000đ
+  paymentMethod: String,//direct, visa
   products: [],
-  status: { default: "pending", type: String },//pending,success,reject
+  status: { default: "pending", type: String },//pending, success, reject
  },
   { timestamps: true } // Tạo trường create
 );

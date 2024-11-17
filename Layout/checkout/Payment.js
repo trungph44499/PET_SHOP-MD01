@@ -7,22 +7,81 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UnderLine from "../../components/UnderLine";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { URL } from "../HomeScreen";
 import axios from "axios";
 import { numberUtils, upperCaseFirstItem } from "../utils/stringUtils";
 import CheckBoxCustom from "../components/CheckBoxCustom";
+import { Toast } from "../utils/toastUtil";
 
 const Payment = ({ navigation, route }) => {
   const { total, listItem } = route.params;
   const day = new Date().getDay();
   const month = new Date().getMonth();
+
   const [ship, setShip] = useState("Giao hàng nhanh - 15.000đ");
   const [shippingAddresses, setShippingAddresses] = useState({});
   const [checkboxSeletectPayment, setCheckboxSelectPayment] = useState(-1);
   const [paymentMethods, setPaymentMethods] = useState({});
+
+  const checkShippingAddresses = JSON.stringify(shippingAddresses) === "{}";
+  const checkPaymentMethod = JSON.stringify(paymentMethods) === "{}";
+
+  async function _payment() {
+    try {
+      let _userEmail = await AsyncStorage.getItem("@UserLogin");
+      if (!_userEmail) {
+        Toast("Không tìm thấy người dùng");
+        return;
+      }
+      if (checkShippingAddresses) {
+        Toast("Chưa chọn địa chỉ nhận hàng");
+        return;
+      }
+
+      if (checkboxSeletectPayment != 1 && checkboxSeletectPayment != 0) {
+        Toast("Chưa chọn phương thức thanh toán");
+        return;
+      }
+
+      if (checkboxSeletectPayment === 1 && checkPaymentMethod) {
+        Toast("Chưa chọn thẻ VISA");
+        return;
+      }
+
+      let _paymentObject = {
+        fullname: shippingAddresses.fullName,
+        email: _userEmail,
+        location: `${shippingAddresses.address}, ${shippingAddresses.city}`,
+        number: shippingAddresses.phoneNumber,
+        ship: ship,
+        paymentMethod: checkboxSeletectPayment == 0 ? "direct" : "visa",
+        products: listItem,
+      };
+
+      const {
+        status,
+        data: { response, type },
+      } = await axios.post(`${URL}/pay/add`, _paymentObject);
+      if (status === 200) {
+        Toast(response);
+        if (type) { 
+          const {
+            status: _status,
+            data: { type: _type },
+          } = await axios.post(`${URL}/carts/removeAllFromCart`, {
+            list: listItem,
+            emailUser: _userEmail,
+          });
+          if (_type) navigation.popToTop();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const formatPrice = (price) => {
     return price.toLocaleString("vi-VN", {
@@ -90,7 +149,7 @@ const Payment = ({ navigation, route }) => {
         <View style={styles.section}>
           <UnderLine value={"Địa chỉ nhận hàng"} color={"black"} />
 
-          {JSON.stringify(shippingAddresses) === "{}" ? (
+          {checkShippingAddresses ? (
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("ShippingAddrees");
@@ -312,7 +371,7 @@ const Payment = ({ navigation, route }) => {
                 setCheckboxSelectPayment(1);
               }}
             />
-            {JSON.stringify(paymentMethods) === "{}" ? (
+            {checkPaymentMethod ? (
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("PaymentMethod");
@@ -446,12 +505,10 @@ const Payment = ({ navigation, route }) => {
         </View>
 
         <TouchableOpacity
-          onPress={() => {
-            console.log(listItem);
-          }}
+          onPress={_payment}
           style={[styles.continueButton, { backgroundColor: "#a97053" }]}
         >
-          <Text style={styles.continueButtonText}>Tiếp tục</Text>
+          <Text style={styles.continueButtonText}>Thanh toán</Text>
         </TouchableOpacity>
       </View>
     </View>
