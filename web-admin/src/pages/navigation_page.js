@@ -154,6 +154,13 @@ export default function NavigationPage({ child }) {
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faUser} />}
+            onClick={() => navigator("/revenue-tatistics")}
+          >
+            Revenue statistics
+          </MenuItem>
+          <MenuItem
+            style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faHippo} />}
             onClick={() => navigator("/product")}
           >
