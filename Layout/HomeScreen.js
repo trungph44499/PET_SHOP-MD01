@@ -16,7 +16,7 @@ import SliderShow from "./components/SliderShow";
 import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
 import ip from "./config/ipconfig.json";
 
-export const URL = `http://${ip.ip}`;
+export const URL = `http://192.168.1.2`;
 
 const { width: screenWidth } = Dimensions.get("window");
 
