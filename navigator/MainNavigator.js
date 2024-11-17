@@ -14,19 +14,15 @@ import ManageUser from "../Layout/ManageUser";
 import PassReset from "../Layout/PassReset";
 import Petcare from "../Layout/Petcare";
 import Petcare2 from "../Layout/Petcare2";
-import Payment from "../Layout/Payment";
+import Payment from "../Layout/checkout/Payment";
 import Payment2 from "../Layout/Payment2";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
 import HistoryPay from "../Layout/history-pay/HistoryPay";
-
-
-import AddPaymentMethod from "../Layout/payment/AddPaymentMethod";
-import AddShippingAddrees from "../Layout/payment/AddShippingAddrees";
-import PaymentMethod from "../Layout/payment/PaymentMethod";
-import ShippingAddrees from "../Layout/payment/ShippingAddrees";
+import AddPaymentMethod from "../Layout/checkout/AddPaymentMethod";
+import AddShippingAddrees from "../Layout/checkout/AddShippingAddrees";
+import PaymentMethod from "../Layout/checkout/PaymentMethod";
+import ShippingAddrees from "../Layout/checkout/ShippingAddrees";
 import DetailHistoryPay from "../Layout/history-pay/DetailHistoryPay";
-
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

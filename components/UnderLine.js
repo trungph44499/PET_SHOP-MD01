@@ -8,6 +8,7 @@ const UnderLine = ({ value, color, value2, color2 }) => {
         borderBottomColor: color,
         borderBottomWidth: 2,
         paddingBottom: 5,
+        marginBottom:10
       }}
     >
       <Text style={{ color: color2, fontSize: 16, fontWeight: "bold" }}>
