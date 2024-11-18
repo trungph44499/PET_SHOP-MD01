@@ -101,7 +101,7 @@ const DetailHistoryPay = ({ route }) => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.icon} source={require("../../Image/back.png")} />
+                    <Image style={styles.icon} source={require("../../Image/left-back.png")} />
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Chi tiết đơn hàng</Text>
             </View>

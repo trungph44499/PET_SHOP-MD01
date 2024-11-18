@@ -85,7 +85,7 @@ const AddShippingAddress = ({ route, navigation }) => {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
-          <Image style={styles.icon} source={require("../../Image/back.png")} />
+          <Image style={styles.icon} source={require("../../Image/left-back.png")} />
         </TouchableOpacity>
         <Text style={styles.headerText}>
           {address ? "Chỉnh sửa địa chỉ" : "Thêm địa chỉ mới"}

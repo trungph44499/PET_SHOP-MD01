@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { getListClassify } from '../Layout/classify/function';
+// import { getListClassify } from '../Layout/classify/function';
 import { numberUtils, upperCaseItem } from "./utils/stringUtils";
+import axios from 'axios';
+import { URL } from './HomeScreen';
 
 export default NewProductScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
 
   async function getData() {
-    const dogs = await getListClassify('dog');
-    const cats = await getListClassify('cat');
-    const accessories = await getListClassify('accessory');
-
-    const allProducts = [...dogs, ...cats, ...accessories];
-
-    const newProducts = allProducts.filter(item => item.status === 'New');
-
-    setData(newProducts);
+    try {
+      const { status, data: { response } } = await axios.get(`${URL}/products`);
+      if (status === 200) {
+        const newProducts = response.filter(item => item.status === 'New');
+        setData(newProducts); // Lưu tất cả sản phẩm vào state
+      }
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    }
   }
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export default NewProductScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{ width: 20, height: 20 }}
-            source={require('../Image/back.png')}
+            source={require('../Image/left-back.png')}
           />
         </TouchableOpacity>
         <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>

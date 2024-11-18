@@ -169,7 +169,7 @@ const ShippingAddress = ({ navigation }) => {
           >
             <Image
               style={styles.icon}
-              source={require("../../Image/back.png")}
+              source={require("../../Image/left-back.png")}
             />
           </TouchableOpacity>
           <Text style={styles.title}>Địa chỉ giao hàng</Text>
@@ -207,7 +207,7 @@ const ShippingAddress = ({ navigation }) => {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
-          <Image style={styles.icon} source={require("../../Image/back.png")} />
+          <Image style={styles.icon} source={require("../../Image/left-back.png")} />
         </TouchableOpacity>
         <Text style={styles.title}>Địa chỉ giao hàng</Text>
       </View>

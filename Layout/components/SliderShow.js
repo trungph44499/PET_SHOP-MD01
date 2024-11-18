@@ -31,8 +31,8 @@ export default function () {
 }
 const styles = StyleSheet.create({
   img: {
-    resizeMode: "center",
+    resizeMode: 'contain',
     height: 200,
-    width: "auto",
+    width: width
   },
 });

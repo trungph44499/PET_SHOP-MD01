@@ -92,7 +92,7 @@ const Petcare2 = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{ width: 20, height: 20 }}
-            source={require("../Image/back.png")}
+            source={require("../Image/left-back.png")}
           />
         </TouchableOpacity>
         <Text style={styles.title}>Liên hệ với chúng tôi</Text>

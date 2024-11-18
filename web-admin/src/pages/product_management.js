@@ -20,6 +20,7 @@ function Main() {
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const [selectedType, setSelectedType] = useState(""); // State để lưu giá trị lọc loại sản phẩm
+  const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
 
   const _image = useRef();
   const _name = useRef();
@@ -29,13 +30,12 @@ function Main() {
   const _status = useRef();
   const _type = useRef();
   const _description = useRef();
+  const _weight = useRef();  // Thêm ref cho trường weight
+  const _sex = useRef();  // Thêm ref cho trường sex
 
   async function getAllProduct() {
     try {
-      const {
-        status,
-        data: { response },
-      } = await axios.get(`${json_config[0].url_connect}/products`);
+      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/products`);
       if (status === 200) {
         setData(response);
       }
@@ -44,14 +44,28 @@ function Main() {
     }
   }
 
+  async function getCategories() {
+    try {
+      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/product-categories`); // API lấy danh mục sản phẩm
+      if (status === 200) {
+        setCategories(response); // Lưu danh mục vào state
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getAllProduct();
+    getCategories(); // Lấy danh sách loại sản phẩm
   }, []);
 
   // Lọc dữ liệu sản phẩm theo loại (type)
   const filteredData = selectedType
-    ? data.filter((item) => item.type === selectedType)
+    ? data.filter((item) => item.type._id  === selectedType)
     : data;
+
+  console.log("Filtered Data:", filteredData);  // Kiểm tra dữ liệu sau khi lọc
 
   return (
     <div>
@@ -63,9 +77,11 @@ function Main() {
           onChange={(e) => setSelectedType(e.target.value)}
         >
           <option value="">Tất cả loại</option>
-          <option value="dog">Chó</option>
-          <option value="cat">Mèo</option>
-          <option value="accessory">Phụ kiện</option>
+          {categories.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -86,6 +102,7 @@ function Main() {
               <input ref={_name} type="text" defaultValue={dataUpdate.name} />
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -100,6 +117,7 @@ function Main() {
               <input ref={_origin} type="text" defaultValue={dataUpdate.origin} />
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -117,15 +135,18 @@ function Main() {
               </select>
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Type
               </span>
               <select ref={_type} defaultValue={dataUpdate.type}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="accessory">Accessory</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="input-group">
@@ -135,6 +156,29 @@ function Main() {
               <input ref={_description} type="text" defaultValue={dataUpdate.description} />
             </div>
           </div>
+
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Weight
+              </span>
+              <input ref={_weight} type="text" defaultValue={dataUpdate.weight} />
+            </div>
+          </div>
+
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Sex
+              </span>
+              <select ref={_sex} defaultValue={dataUpdate.sex}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Unisex">Unisex</option>
+              </select>
+            </div>
+          </div>
+
           <div className="d-flex flex-row mb-2">
             <button
               className="btn btn-primary"
@@ -146,19 +190,9 @@ function Main() {
                   window.alert("Must input Status New or Old");
                   return;
                 }
-                if (
-                  _type.current.value !== "dog" &&
-                  _type.current.value !== "cat" &&
-                  _type.current.value !== "accessory"
-                ) {
-                  window.alert("Must input Type dog, cat, or accessory");
-                  return;
-                }
+
                 try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
+                  const { status, data: { response, type } } = await axios.post(
                     `${json_config[0].url_connect}/products/update`,
                     {
                       id: dataUpdate._id,
@@ -170,8 +204,11 @@ function Main() {
                       status: _status.current.value,
                       type: _type.current.value,
                       description: _description.current.value,
+                      weight: _weight.current.value,  // Gửi weight khi cập nhật
+                      sex: _sex.current.value,  // Gửi sex khi cập nhật
                     }
                   );
+
                   if (status === 200) {
                     window.alert(response);
                     if (type) {
@@ -187,10 +224,7 @@ function Main() {
               Update
             </button>
             <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsUdpdate(false)}
-            >
+            <button className="btn btn-secondary" onClick={() => setIsUdpdate(false)}>
               Quit
             </button>
           </div>
@@ -247,15 +281,18 @@ function Main() {
               </select>
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Type
               </span>
               <select ref={_type}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="accessory">Accessory</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="input-group">
@@ -265,6 +302,29 @@ function Main() {
               <input ref={_description} type="text" />
             </div>
           </div>
+
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Weight
+              </span>
+              <input ref={_weight} type="text" />
+            </div>
+          </div>
+
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Sex
+              </span>
+              <select ref={_sex}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Unisex">Unisex</option>
+              </select>
+            </div>
+          </div>
+
           <div className="d-flex flex-row mb-2">
             <button
               className="btn btn-primary"
@@ -277,31 +337,16 @@ function Main() {
                   _quantity.current.value === "" ||
                   _status.current.value === "" ||
                   _type.current.value === "" ||
-                  _description.current.value === ""
+                  _description.current.value === "" ||
+                  _weight.current.value === "" || 
+                  _sex.current.value === ""  // Kiểm tra sex
                 ) {
                   window.alert("Input is empty");
                   return;
                 }
-                if (
-                  _status.current.value !== "New" &&
-                  _status.current.value !== "Old"
-                ) {
-                  window.alert("Must input Status New or Old");
-                  return;
-                }
-                if (
-                  _type.current.value !== "dog" &&
-                  _type.current.value !== "cat" &&
-                  _type.current.value !== "accessory"
-                ) {
-                  window.alert("Must input Type dog, cat, or accessory");
-                  return;
-                }
+
                 try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
+                  const { status, data: { response, type } } = await axios.post(
                     `${json_config[0].url_connect}/products/add`,
                     {
                       image: _image.current.value,
@@ -312,8 +357,11 @@ function Main() {
                       status: _status.current.value,
                       type: _type.current.value,
                       description: _description.current.value,
+                      weight: _weight.current.value,
+                      sex: _sex.current.value,  // Gửi sex khi thêm sản phẩm
                     }
                   );
+
                   if (status === 200) {
                     window.alert(response);
                     if (type) {
@@ -329,10 +377,7 @@ function Main() {
               Add
             </button>
             <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsAdd(false)}
-            >
+            <button className="btn btn-secondary" onClick={() => setIsAdd(false)}>
               Quit
             </button>
           </div>
@@ -350,7 +395,7 @@ function Main() {
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
-      
+
       {/* Bảng sản phẩm đã lọc */}
       <table className="table">
         <thead>
@@ -363,6 +408,8 @@ function Main() {
             <th scope="col">Status</th>
             <th scope="col">Type</th>
             <th scope="col">Description</th>
+            <th scope="col">Weight</th> {/* Thêm cột Weight */}
+            <th scope="col">Sex</th> {/* Thêm cột Sex */}
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
@@ -371,15 +418,22 @@ function Main() {
           {filteredData.map((item) => (
             <tr key={item._id}>
               <td>
-                <img src={item.img} height={50} width={50} alt={item.name || "Hình ảnh sản phẩm"} />
+                <img
+                  src={item.img}
+                  height={50}
+                  width={50}
+                  alt={item.name || "Hình ảnh sản phẩm"}
+                />
               </td>
               <td>{item.name}</td>
               <td>{item.price}</td>
               <td>{item.origin}</td>
               <td>{item.quantity}</td>
               <td>{item.status}</td>
-              <td>{item.type}</td>
+              <td>{item.type ? item.type.name : "Unknown"}</td> {/* Render name của type */}
               <td>{item.description}</td>
+              <td>{item.weight}</td> {/* Hiển thị Weight */}
+              <td>{item.sex}</td> {/* Hiển thị Sex */}
               <td>
                 <button
                   onClick={async () => {
@@ -401,10 +455,7 @@ function Main() {
                   onClick={async () => {
                     const result = window.confirm("Sure delete " + item.name);
                     if (result) {
-                      const {
-                        status,
-                        data: { response, type },
-                      } = await axios.post(
+                      const { status, data: { response, type } } = await axios.post(
                         `${json_config[0].url_connect}/products/delete`,
                         {
                           id: item._id,
