@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     // Lọc sản phẩm khi có sự thay đổi về selectedCategory hoặc products
     if (selectedCategory) {
-      console.log("Selected Category ID: ", selectedCategory._id); // Log category ID
+      // console.log("Selected Category ID: ", selectedCategory._id); // Log category ID
       const filtered = products.filter((product) => {
         return product.type._id === selectedCategory._id; // So sánh type và category ID
       });
@@ -161,7 +161,6 @@ const HomeScreen = ({ navigation }) => {
                 color: "#000000",
                 fontSize: 24,
                 fontWeight: "600",
-                marginBottom: 2,
               }}
             >
               Pet Shop
@@ -169,7 +168,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <SliderShow />
           <TouchableOpacity
-            style={styles.newSP}
+            style={styles.textNew}
             onPress={() => navigation.navigate("NewProductScreen")}
           >
             <Text
@@ -249,7 +248,8 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
   },
   flatListContainer: {
     marginBottom: 5,
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     position: "absolute",
-    top: "5%", // Khoảng cách từ trên cùng
+    top: "4%", // Khoảng cách từ trên cùng
     right: "7%", // Khoảng cách từ bên trái
     backgroundColor: "white",
     elevation: 10,
@@ -328,7 +328,10 @@ const styles = StyleSheet.create({
     padding: 12,
     justifyContent: "flex-end",
     flexDirection: "row",
-  }
+  }, 
+  textNew: {   
+   marginTop: 10,
+}
 });
 
 export default HomeScreen;
