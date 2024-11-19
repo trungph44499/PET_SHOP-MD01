@@ -76,21 +76,21 @@ const Payment = ({ navigation, route }) => {
         <View style={styles.section}>
           <UnderLine value={"Phương thức vận chuyển"} color={"black"} />
           <Pressable onPress={() => setShip("Giao hàng nhanh - 15.000đ")} style={styles.paymentOption}>
-            <UnderLine
-              value={"Giao hàng nhanh - 15.000đ"}
-              color={"gray"}
-              color2={ship === "Giao hàng nhanh - 15.000đ" ? "green" : "gray"}
-              value2={`Dự kiến giao hàng ${day + 3}-${day + 5}/${month + 1}`}
+            <UnderLine 
+            value={"Giao hàng nhanh - 15.000đ"} 
+            color={"gray"} 
+            color2={ship === "Giao hàng nhanh - 15.000đ" ? "green" : "gray"} 
+            value2={`Dự kiến giao hàng ${day + 3}-${day + 5}/${month + 1}`} 
             />
             {ship === "Giao hàng nhanh - 15.000đ" && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
           </Pressable>
 
           <Pressable onPress={() => setShip("Giao hàng COD - 20.000đ")} style={styles.paymentOption}>
-            <UnderLine
-              value={"Giao hàng COD - 20.000đ"}
-              color={"gray"}
-              color2={ship === "Giao hàng COD - 20.000đ" ? "green" : "gray"}
-              value2={`Dự kiến giao hàng ${day + 2}-${day + 4}/${month + 1}`}
+            <UnderLine 
+            value={"Giao hàng COD - 20.000đ"} 
+            color={"gray"} 
+            color2={ship === "Giao hàng COD - 20.000đ" ? "green" : "gray"} 
+            value2={`Dự kiến giao hàng ${day + 2}-${day + 4}/${month + 1}`} 
             />
             {ship === "Giao hàng COD - 20.000đ" && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
           </Pressable>
@@ -98,28 +98,28 @@ const Payment = ({ navigation, route }) => {
 
         <View style={styles.section}>
 
-          <UnderLine value={"Hình thức thanh toán"} color={"black"} />
+      <UnderLine value={"Hình thức thanh toán"} color={"black"} />
 
-          {/* Thẻ VISA/MASTERCARD */}
-          <Pressable onPress={() => setPaymentMethod("Thẻ VISA/MASTERCARD")} style={styles.paymentOption}>
-            <UnderLine
-              value={"Thẻ VISA/MASTERCARD"}
-              color={"gray"}
-              color2={paymentMethod === "Thẻ VISA/MASTERCARD" ? "green" : "gray"}
-            />
-            {paymentMethod === "Thẻ VISA/MASTERCARD" && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
-          </Pressable>
+      {/* Thẻ VISA/MASTERCARD */}
+      <Pressable onPress={() => setPaymentMethod("Thẻ VISA/MASTERCARD")} style={styles.paymentOption}>
+        <UnderLine 
+          value={"Thẻ VISA/MASTERCARD"} 
+          color={"gray"} 
+          color2={paymentMethod === "Thẻ VISA/MASTERCARD" ? "green" : "gray"} 
+        />
+        {paymentMethod === "Thẻ VISA/MASTERCARD" && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
+      </Pressable>
 
-          {/* Thẻ ATM */}
-          <Pressable onPress={() => setPaymentMethod("Thẻ ATM")} style={styles.paymentOption}>
-            <UnderLine
-              value={"Thẻ ATM"}
-              color={"gray"}
-              color2={paymentMethod === "Thẻ ATM" ? "green" : "gray"}
-            />
-            {paymentMethod === "Thẻ ATM" && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
-          </Pressable>
-        </View>
+      {/* Thẻ ATM */}
+      <Pressable onPress={() => setPaymentMethod("Thẻ ATM")} style={styles.paymentOption}>
+        <UnderLine 
+          value={"Thẻ ATM"} 
+          color={"gray"} 
+          color2={paymentMethod === "Thẻ ATM" ? "green" : "gray"} 
+        />
+        {paymentMethod === "Thẻ ATM" && <Image style={styles.checkIcon} source={require("../Image/select.png")} />}
+      </Pressable>
+    </View>
       </ScrollView>
 
       <View style={styles.footer}>
@@ -130,7 +130,7 @@ const Payment = ({ navigation, route }) => {
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.textBold}>Phí vận chuyển :</Text>
-            <Text style={styles.textBold}>{ship === "Giao hàng nhanh - 15.000đ" ? "15.000đ" : "20.000đ"}</Text>
+            <Text style={styles.textBold}>{ship === "Giao hàng nhanh - 15.000đ" ? "15.000đ": "20.000đ"}</Text>
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.totalLabel}>Tổng tiền :</Text>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
-
+    
   },
   input: {
     borderBottomWidth: 1,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     color: "#d9534f",
     fontSize: 13,
     marginBottom: 5,
-    marginLeft: 10
+    marginLeft:10
   },
   paymentOption: {
     flexDirection: "row",
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomColor: "#eaeaea",
     borderBottomWidth: 1,
-    width: "100%", // Đảm bảo phần tử chiếm đầy chiều rộng
+    width:"100%", // Đảm bảo phần tử chiếm đầy chiều rộng
   },
 
   checkIcon: {

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import url_config from "../config.json";
+import "../login.css"; // Import the CSS file
 
 export default function LoginPage() {
   const navigation = useNavigate();
@@ -32,22 +33,24 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="m-2 d-flex flex-column justify-content-center align-items-center vh-100">
-      <h2>Login</h2>
-      <input ref={username} className="col-md-2 mb-2" placeholder="Username" />
-      <input
-        ref={password}
-        className="col-md-2 mb-2"
-        type="password"
-        placeholder="Password"
-      />
-      <button
-        ref={btnLogin}
-        onClick={loginForm}
-        className="col-md-1 btn btn-success"
-      >
-        Login
-      </button>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Đăng nhập</h2>
+        <input ref={username} className="login-input" placeholder="Tên đăng nhập" />
+        <input
+          ref={password}
+          className="login-input"
+          type="password"
+          placeholder="Mật khẩu"
+        />
+        <button
+          ref={btnLogin}
+          onClick={loginForm}
+          className="login-button"
+        >
+          Login
+        </button>
+      </div>
     </div>
   );
 }
