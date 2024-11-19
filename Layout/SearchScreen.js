@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   historyText: {
     width: "50%",
