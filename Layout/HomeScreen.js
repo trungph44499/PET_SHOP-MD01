@@ -103,7 +103,8 @@ const HomeScreen = ({ navigation }) => {
             height: 65,
             borderRadius: 10,
             backgroundColor: isSelected ? "#0FA2FF" : "#FBEEC2", // Cập nhật màu nền ở đây nếu cần
-            elevation: 3,
+            borderWidth: 1,
+            borderColor: "#C47500",
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.2,
@@ -144,8 +145,8 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar hidden />
-        <View style={{ width: screenWidth, height: 300 }}>
-          <View style={{ marginTop: "3%", }}>
+        <View style={{ width: screenWidth, height: 280 }}>
+          <View style={{ marginTop: "1%", }}>
             <Text
               style={{
                 color: "#000000",
@@ -160,8 +161,7 @@ const HomeScreen = ({ navigation }) => {
                 color: "#000000",
                 fontSize: 24,
                 fontWeight: "600",
-                marginBottom: 10,
-             
+                marginBottom: 2,
               }}
             >
               Pet Shop
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   },
   itemDog: {
     backgroundColor: "white",
-    width: "45%",
+    width: "47%",
     borderRadius: 12,
     padding: 12,
     marginVertical: 10,

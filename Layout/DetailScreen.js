@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   priceText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "gray",
+    color: "#DD5939",
     letterSpacing: 1
   },
   descriptionContainer: {
