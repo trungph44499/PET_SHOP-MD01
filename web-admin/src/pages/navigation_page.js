@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
-import { faCircle, faUser } from "@fortawesome/free-regular-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { myColor } from "../styles/color";
 import {
   faChevronLeft,
