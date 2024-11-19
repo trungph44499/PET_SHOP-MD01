@@ -48,7 +48,7 @@ export default function LoginPage() {
           onClick={loginForm}
           className="login-button"
         >
-          Login
+          Đăng nhập
         </button>
       </div>
     </div>
