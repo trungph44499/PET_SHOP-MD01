@@ -13,20 +13,20 @@
   import { URL } from "./HomeScreen";
   import { numberUtils, upperCaseItem } from "./utils/stringUtils";
   import AsyncStorage from "@react-native-async-storage/async-storage";
-  import * as Font from 'expo-font';
+  // import * as Font from 'expo-font';
 
   const DetailProduct = ({ navigation, route }) => {
     const { item } = route.params;
     var [count, setCount] = useState(1);
     const [fontLoaded, setFontLoaded] = useState(false);
 
-    useEffect(() => {
-      // Tải font tùy chỉnh
-      Font.loadAsync({
-        'Roboto-Italic': require('../assets/fonts/Roboto-Italic.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),  // Đặt tên rõ ràng cho font
-      }).then(() => setFontLoaded(true));
-    }, []);
+    // useEffect(() => {
+    //   // Tải font tùy chỉnh
+    //   Font.loadAsync({
+    //     'Roboto-Italic': require('../assets/fonts/Roboto-Italic.ttf'),
+    //     'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),  // Đặt tên rõ ràng cho font
+    //   }).then(() => setFontLoaded(true));
+    // }, []);
 
     const addProdct = () => {
       if (count < item.quantity) {
@@ -112,7 +112,7 @@
 
           <View style={styles.detailsContainer}>
             <View style={styles.itemPrice}>
-              <Text style={[styles.title, { fontFamily: 'Roboto-Bold' }]}>
+              <Text style={styles.title}>
                 {item.name}
                 </Text>
               <View style={styles.buttonPrice}>
@@ -237,7 +237,7 @@
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#F5F5F5",
+      backgroundColor: "#FFFFFF",
     },
     iconBack: {
       width: 26,
@@ -254,7 +254,7 @@
     title: {
       flex: 1,
       fontSize: 24,
-    
+      fontWeight: "bold"
     },
     productImage: {
       width: "100%",
@@ -263,7 +263,7 @@
     },
     detailsContainer: {
       padding: 20,
-      backgroundColor: "#EFEFEF",
+      backgroundColor: "#FFFFFF",
       marginBottom: 20,
     },
     productId: {
@@ -291,7 +291,7 @@
     textDescriptionConten: {
       fontSize: 15,
       color: "black",
-      fontWeight: "500",
+      fontWeight: "450",
     },
     addToCartText: {
       color: "#FFF",
@@ -334,7 +334,7 @@
       backgroundColor: "#FFFFFF",
       padding: 10, borderRadius: 10,
       marginHorizontal: 5,
-      elevation: 2
+      elevation: 6
     },
     itemBackgroud: {
       padding: 10, backgroundColor: '#FBEEC2',
@@ -366,7 +366,7 @@
       alignItems: "center"
     },
     btn: {
-      padding: 8,
+      padding: 5,
       borderRadius: 20,
       borderWidth: 1,
       borderColor: "black"

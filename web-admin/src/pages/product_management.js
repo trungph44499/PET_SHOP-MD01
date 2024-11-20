@@ -197,6 +197,9 @@ function Main() {
     <div>
       {/* Dropdown lọc loại sản phẩm */}
       <div className="filter">
+      <header className="header">
+        <h1>Quản lý sản phẩm</h1>
+      </header>
         <select
           className="form-select"
           value={selectedType}
