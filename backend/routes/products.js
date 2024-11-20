@@ -1,11 +1,12 @@
 const express = require("express");
+const mongoose = require("mongoose"); // Đảm bảo bạn import mongoose
 const router = express.Router();
 const productModel = require("../models/productModel");
 
 // Lấy tất cả sản phẩm
 router.get("/", async (req, res) => {
   try {
-    const getProducts = await productModel.find({});
+    const getProducts = await productModel.find({}).populate('type', 'name'); // Populate trường 'name' từ 'productCategory'
     res.status(200).send({ response: getProducts });
   } catch (error) {
     console.log(error);
@@ -13,12 +14,13 @@ router.get("/", async (req, res) => {
   }
 });
 
+
 // Lấy thông tin sản phẩm theo ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const product = await productModel.findById(id);
+    const product = await productModel.findById(id).populate('type', 'name');
     if (product) {
       res.status(200).json({ response: product });
     } else {
@@ -30,81 +32,91 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-
+// Thêm mới sản phẩm
 router.post("/add", async (req, res) => {
-  var img = req.body.image ?? "";
-  var name = req.body.name ?? "";
-  var price = req.body.price ?? "";
-  var origin = req.body.origin ?? "";
-  var quantity = req.body.quantity ?? "";
-  var status = req.body.status ?? "";
-  var type = req.body.type ?? "";
-  var description = req.body.description ?? "";
+  const { image, name, price, origin, quantity, weight, sex, status, type, description } = req.body;
+
   try {
-    const addProduct = await productModel.insertMany({
-      img: img,
+    // Kiểm tra type có phải là ObjectId hợp lệ không
+    if (!mongoose.Types.ObjectId.isValid(type)) {
+      return res.status(400).json({ response: "Invalid category ID!" });
+    }
+
+    const newProduct = new productModel({
+      img: image,
       name: name,
       price: price,
       origin: origin,
       quantity: quantity,
+      weight: weight,
+      sex: sex,
       status: status,
-      type: type,
+      type: type, // Đây là ObjectId tham chiếu đến danh mục
       description: description,
     });
-    if (addProduct.length > 0) {
-      res.status(200).json({ response: "Add product complete!", type: true });
-    } else {
-      res.status(200).json({ response: "Error add product!", type: false });
-    }
+
+    const savedProduct = await newProduct.save();
+    res.status(200).json({ response: "Add product complete!", type: true, product: savedProduct });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ response: "Error add product!" });
   }
 });
+
+// Cập nhật sản phẩm
 router.post("/update", async (req, res) => {
-  var id = req.body.id;
-  var img = req.body.image ?? "";
-  var name = req.body.name ?? "";
-  var price = req.body.price ?? "";
-  var origin = req.body.origin ?? "";
-  var quantity = req.body.quantity ?? "";
-  var status = req.body.status ?? "";
-  var type = req.body.type ?? "";
-  var description = req.body.description ?? "";
+  const { id, image, name, price, origin, quantity, weight, sex, status, type, description } = req.body;
+
   try {
-    const updateProduct = await productModel.findByIdAndUpdate(id, {
-      img: img,
+    // Kiểm tra type có phải là ObjectId hợp lệ không
+    if (type && !mongoose.Types.ObjectId.isValid(type)) {
+      return res.status(400).json({ response: "Invalid category ID!" });
+    }
+
+    const updatedProduct = await productModel.findByIdAndUpdate(id, {
+      img: image,
       name: name,
       price: price,
       origin: origin,
       quantity: quantity,
+      weight, weight,
+      sex: sex,
       status: status,
-      type: type,
+      type: type, // Cập nhật trường type
       description: description,
-    });
-    if (updateProduct != null) {
-      res
-        .status(200)
-        .json({ response: "Update product complete!", type: true });
+    }, { new: true }); // Trả về bản cập nhật mới
+
+    if (updatedProduct) {
+      res.status(200).json({ response: "Update product complete!", type: true, product: updatedProduct });
     } else {
-      res.status(200).json({ response: "Error Update product!", type: false });
+      res.status(400).json({ response: "Error Update product!", type: false });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ response: "Có lỗi xảy ra!" });
   }
 });
+
+// Xóa sản phẩm
 router.post("/delete", async (req, res) => {
-  var id = req.body.id;
+  const { id } = req.body;
+  
   try {
+    // Kiểm tra xem sản phẩm có tồn tại không
+    const product = await productModel.findById(id);
+    if (!product) {
+      return res.status(404).json({ response: "Sản phẩm không tồn tại!" });
+    }
+
     const deleteProduct = await productModel.deleteOne({ _id: id });
     if (deleteProduct.deletedCount > 0) {
-      res
-        .status(200)
-        .json({ response: "Delete product complete!", type: true });
+      res.status(200).json({ response: "Delete product complete!", type: true });
     } else {
       res.status(200).json({ response: "Error Delete product!", type: false });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ response: "Có lỗi xảy ra!" });
   }
 });
 

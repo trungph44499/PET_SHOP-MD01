@@ -5,15 +5,18 @@ import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { myColor } from "../styles/color";
 import {
-  faBookOpen,
   faChevronLeft,
   faChevronRight,
   faComputer,
-  faHippo,
-  faPenFancy,
   faSignOut,
+  faDog,
+  faMoneyBill,
+  faHand,
+  faProjectDiagram,
+  faStore
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';  // Import SweetAlert2
 
 export default function NavigationPage({ child }) {
   const navigator = useNavigate();
@@ -24,6 +27,24 @@ export default function NavigationPage({ child }) {
     const admin = window.localStorage.getItem("@isAdmin");
     setIsAdmin(admin);
   }, []);
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Bạn có chắc chắn muốn đăng xuất?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Đăng xuất',
+      cancelButtonText: 'Hủy',
+      position: 'top',  // Chỉnh vị trí xuất hiện của hộp thoại
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Xóa thông tin đăng nhập và chuyển hướng
+        window.localStorage.removeItem("@isAdmin");
+        navigator("/", { replace: true });
+      }
+    });
+  };
 
   return (
     <div
@@ -59,7 +80,7 @@ export default function NavigationPage({ child }) {
               marginTop: 15,
             }}
           >
-            Welcome {isAdmin == "true" ? "Admin" : "Staff"}
+            Welcome {isAdmin === "true" ? "Admin" : "Staff"}
           </p>
         </div>
         <div
@@ -117,7 +138,7 @@ export default function NavigationPage({ child }) {
           )}
         </div>
         <Menu>
-          {isAdmin == "true" && (
+          {isAdmin === "true" && (
             <MenuItem
               style={{ textAlign: "start" }}
               icon={<FontAwesomeIcon icon={faComputer} />}
@@ -135,21 +156,35 @@ export default function NavigationPage({ child }) {
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faHippo} />}
+            icon={<FontAwesomeIcon icon={faStore} />}
+            onClick={() => navigator("/revenue-tatistics")}
+          >
+            Revenue statistics
+          </MenuItem>
+          <MenuItem
+            style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faProjectDiagram} />}
+            onClick={() => navigator("/category")}
+          >
+            Category management
+          </MenuItem>
+          <MenuItem
+            style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faDog} />}
             onClick={() => navigator("/product")}
           >
             Product management
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faBookOpen} />}
+            icon={<FontAwesomeIcon icon={faHand} />}
             onClick={() => navigator("/confirm-product")}
           >
             Pet Care
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faPenFancy} />}
+            icon={<FontAwesomeIcon icon={faMoneyBill} />}
             onClick={() => navigator("/payment")}
           >
            Payment
@@ -173,16 +208,16 @@ export default function NavigationPage({ child }) {
               height: 0,
             }}
           >
-            User
+            Logout
           </p>
         </div>
         <Menu>
-          <MenuItem
+        <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faSignOut} />}
-            onClick={() => navigator("/", { replace: true })}
+            onClick={handleLogout}
           >
-            Logout
+            Đăng xuất
           </MenuItem>
         </Menu>
       </Sidebar>

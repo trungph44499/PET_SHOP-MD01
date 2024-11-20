@@ -8,9 +8,10 @@ const UnderLine = ({ value, color, value2, color2 }) => {
         borderBottomColor: color,
         borderBottomWidth: 2,
         paddingBottom: 5,
+        marginBottom:10
       }}
     >
-      <Text style={{ color: color2, fontSize: 16, fontWeight: "bold" }}>
+      <Text style={{ color: color2, fontSize: 17, fontWeight: "bold" }}>
         {value || ""}
       </Text>
       {value2 != null ? <Text style={{ color }}>{value2 || ""}</Text> : null}

@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { getListClassify } from '../Layout/classify/function';
-import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+// import { getListClassify } from '../Layout/classify/function';
+import { numberUtils, upperCaseItem } from "./utils/stringUtils";
+import axios from 'axios';
+import { URL } from './HomeScreen';
 
 export default NewProductScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
 
   async function getData() {
-    const dogs = await getListClassify('dog');
-    const cats = await getListClassify('cat');
-    const accessories = await getListClassify('accessory');
-
-    const allProducts = [...dogs, ...cats, ...accessories];
-
-    const newProducts = allProducts.filter(item => item.status === 'New');
-
-    setData(newProducts);
+    try {
+      const { status, data: { response } } = await axios.get(`${URL}/products`);
+      if (status === 200) {
+        const newProducts = response.filter(item => item.status === 'New');
+        setData(newProducts); // Lưu tất cả sản phẩm vào state
+      }
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    }
   }
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export default NewProductScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{ width: 20, height: 20 }}
-            source={require('../Image/back.png')}
+            source={require('../Image/left-back.png')}
           />
         </TouchableOpacity>
         <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>
@@ -70,7 +72,7 @@ export default NewProductScreen = ({ navigation }) => {
               </Text>
           
             </View>
-            <Text style={styles.itemType}>Mã SP: {upperCaseFirstItem(item._id.slice(-5))}</Text>
+            <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
           </TouchableOpacity>
         )}
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: 5,
   },
   itemProduct: {
     backgroundColor: 'white',
@@ -124,9 +126,9 @@ const styles = StyleSheet.create({
     right: '8%',
     fontSize: 18,
     fontStyle: "italic",
-    color: "green",
+    color: "#FFFFFF",
     fontWeight: "bold", // Làm cho chữ đậm hơn
-    backgroundColor: "#e0f7e0", // Nền màu nhẹ
+    backgroundColor: "#bcea82", // Nền màu nhẹ
     borderRadius: 12, // Bo góc
     padding: 5, // Thêm khoảng cách bên trong
   },

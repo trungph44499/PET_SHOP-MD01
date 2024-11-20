@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
@@ -17,49 +17,53 @@ function Main() {
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
 
+  // Hàm chuyển đổi trạng thái sang ngôn ngữ dễ hiểu
   function convertStatus(status) {
-    var statusResult = "";
     switch (status) {
       case "reject":
-        statusResult = "Đã từ chối";
-        break;
+        return "Đã từ chối";
       case "success":
-        statusResult = "Đã xác nhận";
-        break;
+        return "Đã xác nhận";
       case "pending":
-        statusResult = "Chờ xác nhận";
-        break;
-
+        return "Chờ xác nhận";
       default:
-        break;
+        return "";
     }
-    return statusResult;
   }
 
-  websocket.onmessage = function (result) {
-    const data = JSON.parse(result.data);
-
-    if (data.type == "payment") {
-      getAllPayment();
-    }
-  };
-
-  async function getAllPayment() {
+  // Lấy dữ liệu thanh toán
+  const getAllPayment = useCallback(async () => {
     try {
-      const { status, data } = await axios.get(
-        `${json_config[0].url_connect}/pay`
-      );
-      if (status == 200) {
+      const { status, data } = await axios.get(`${json_config[0].url_connect}/pay`);
+      if (status === 200) {
         setData(data);
       }
     } catch (error) {
       console.log(error);
     }
-  }
-
-  useEffect(() => {
-    getAllPayment();
   }, []);
+
+  // Thiết lập WebSocket và lắng nghe tin nhắn
+  useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = (result) => {
+        const data = JSON.parse(result.data);
+        if (data.type === "payment") {
+          getAllPayment();  // Gọi lại getAllPayment khi nhận được thông báo từ WebSocket
+        }
+      };
+    }
+
+    // Lấy dữ liệu thanh toán khi component mount
+    getAllPayment();
+
+    // Cleanup WebSocket khi component unmount
+    return () => {
+      if (websocket) {
+        websocket.onmessage = null; // Hủy lắng nghe sự kiện message khi component unmount
+      }
+    };
+  }, [websocket, getAllPayment]);  // Chạy lại nếu websocket hoặc getAllPayment thay đổi
 
   return (
     <div>
@@ -86,18 +90,11 @@ function Main() {
 
               <td>
                 <button
-                  disabled={
-                    item.status == "reject" || item.status == "success"
-                      ? true
-                      : false
-                  }
-                  onClick={async function () {
+                  disabled={item.status === "reject" || item.status === "success"}
+                  onClick={async () => {
                     const resultCheck = window.confirm("Confirm payment?");
                     if (resultCheck) {
-                      const {
-                        status,
-                        data: { response, type },
-                      } = await axios.post(
+                      const { status, data: { response, type } } = await axios.post(
                         `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,
@@ -107,9 +104,9 @@ function Main() {
                         }
                       );
 
-                      if (status == 200) {
+                      if (status === 200) {
                         window.alert(response);
-                        if (type) getAllPayment();
+                        if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
                       }
                     }
                   }}
@@ -120,18 +117,11 @@ function Main() {
               </td>
               <td>
                 <button
-                  disabled={
-                    item.status == "reject" || item.status == "success"
-                      ? true
-                      : false
-                  }
-                  onClick={async function () {
+                  disabled={item.status === "reject" || item.status === "success"}
+                  onClick={async () => {
                     const resultCheck = window.confirm("Reject payment?");
                     if (resultCheck) {
-                      const {
-                        status,
-                        data: { response, type },
-                      } = await axios.post(
+                      const { status, data: { response, type } } = await axios.post(
                         `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,
@@ -141,9 +131,9 @@ function Main() {
                         }
                       );
 
-                      if (status == 200) {
+                      if (status === 200) {
                         window.alert(response);
-                        if (type) getAllPayment();
+                        if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
                       }
                     }
                   }}

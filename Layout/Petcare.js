@@ -54,7 +54,7 @@ const Petcare = ({ navigation }) => {
                 <TouchableOpacity onPress={() => navigation.goBack()} accessibilityLabel="Quay lại">
                     <Image
                         style={{ width: 20, height: 20 }}
-                        source={require("../Image/back.png")}
+                        source={require("../Image/left-back.png")}
                     />
                 </TouchableOpacity>
                 <Text style={styles.title}>Dịch vụ chăm sóc thú cưng </Text>

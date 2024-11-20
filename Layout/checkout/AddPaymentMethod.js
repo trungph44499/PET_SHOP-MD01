@@ -117,7 +117,7 @@ const AddPaymentMethod = ({ route, navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Image style={styles.icon} source={require('../../Image/back.png')} />
+          <Image style={styles.icon} source={require('../../Image/left-back.png')} />
         </TouchableOpacity>
         <Text style={styles.headerText}>{paymentMethod ? 'Chỉnh sửa phương thức thanh toán' : 'Thêm phương thức thanh toán'}</Text>
       </View>

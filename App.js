@@ -24,7 +24,7 @@ export default function App() {
       }
 
       setcheckWelcome(false);
-    }, 3000);
+    }, 5000);
     return () => clearTimeout(timeout);
   }, []);
 

@@ -9,7 +9,9 @@ export const getListClassify = async (type) => {
       data: { response },
     } = await axios.get(`${URL}/products`);
     if (status == 200) {
-      data = response.filter((item) => item.type == type);
+      console.log("type: ",type);
+      
+      data = response.filter((item) => item.type._id === type);
     }
     return data;
   } catch (err) {

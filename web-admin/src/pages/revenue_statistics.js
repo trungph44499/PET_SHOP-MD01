@@ -7,7 +7,7 @@ import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import "./css/css.css";
 // import { webSocketContext } from "../context/WebSocketContext";
 
-export default function UserManagement() {
+export default function RevenueStatistics() {
   return (
     <div>
       <NavigationPage child={<Main />} />
