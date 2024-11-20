@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd } from "@fortawesome/free-solid-svg-icons";
-import "./css/css.css";
-// import { webSocketContext } from "../context/WebSocketContext";
+import "./css/rev.css";
+import { webSocketContext } from "../context/WebSocketContext";
+
 
 export default function RevenueStatistics() {
   return (
@@ -16,257 +15,121 @@ export default function RevenueStatistics() {
 }
 
 function Main() {
+  const [selectedCategory, setSelectedCategory] = useState("Tất cả");
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const [data, setData] = useState([]);
-  const [dataUpdate, setDataUpdate] = useState({});
+  const websocket = useContext(webSocketContext);
 
-  const [isUpdate, setIsUdpdate] = useState(false);
-  const [isAdd, setIsAdd] = useState(false);
-
-  const avatar = useRef();
-  const fullname = useRef();
-  const email = useRef();
-  const password = useRef();
-
-  async function getAllUser() {
+  function convertStatus(status) {
+    switch (status) {
+      case "reject":
+        return "Đã từ chối";
+      case "success":
+        return "Đã xác nhận";
+      case "pending":
+        return "Chờ xác nhận";
+      default:
+        return "";
+    }
+  }
+  const getAllPayment = useCallback(async () => {
     try {
-      const { status, data } = await axios.post(
-        `${json_config[0].url_connect}/users/getAllUser`
-      );
+      const { status, data } = await axios.get(`${json_config[0].url_connect}/pay`);
       if (status === 200) {
         setData(data);
       }
     } catch (error) {
       console.log(error);
     }
-  }
-
-  useEffect(() => {
-    getAllUser();
   }, []);
 
+  useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = (result) => {
+        const data = JSON.parse(result.data);
+        if (data.type === "payment") {
+          getAllPayment();  
+        }
+      };
+    }
+
+ 
+    getAllPayment();
+
+ 
+    return () => {
+      if (websocket) {
+        websocket.onmessage = null; 
+      }
+    };
+  }, [websocket, getAllPayment]);
+
+  
+
   return (
-    <div>
-      {isUpdate && (
-        <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Avatar
-            </span>
-            <input ref={avatar} type="text" defaultValue={dataUpdate.avatar} />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
-            </span>
-            <input
-              ref={fullname}
-              type="text"
-              defaultValue={dataUpdate.fullname}
-            />
-          </div>
-          <div className="input-group">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Email
-            </span>
-            <input
-              ref={email}
-              disabled
-              type="text"
-              defaultValue={dataUpdate.email}
-            />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Password
-            </span>
-            <input ref={password} type="text" defaultValue={dataUpdate.pass} />
-          </div>
-          <div className="d-flex flex-row">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/users/update`,
-                    {
-                      avatar: avatar.current.value,
-                      fullname: fullname.current.value,
-                      email: email.current.value,
-                      password: password.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllUser();
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Update
-            </button>
-            <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsUdpdate(false)}
-            >
-              Quit
-            </button>
-          </div>
-        </div>
-      )}
-      {isAdd && (
-        <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Avatar
-            </span>
-            <input ref={avatar} type="text" />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
-            </span>
-            <input ref={fullname} type="text" />
-          </div>
-          <div className="input-group">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Email
-            </span>
-            <input ref={email} type="text" />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Password
-            </span>
-            <input ref={password} type="text" />
-          </div>
-          <div className="d-flex flex-row">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/users/register`,
-                    {
-                      name: fullname.current.value,
-                      email: email.current.value,
-                      pass: password.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      setIsAdd(false);
-                      await getAllUser();
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Add
-            </button>
-            <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsAdd(false)}
-            >
-              Quit
-            </button>
-          </div>
-        </div>
-      )}
-      <div style={{ position: "fixed", bottom: 50, right: 50 }}>
-        <button
-          style={{ borderRadius: 30, height: 50, width: 50 }}
-          onClick={() => {
-            setIsUdpdate(false);
-            setIsAdd(true);
-          }}
+    <div className="container">
+      <header className="header">
+        <h1>Thống Kê</h1>
+      </header>
+
+      <div className="dropdown-section">
+        <label htmlFor="category">Chọn danh mục: </label>
+        <select
+          id="category"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <FontAwesomeIcon icon={faAdd} size="xl" />
-        </button>
+          <option value="Tất cả">Tất cả</option>
+          <option value="Chó">Chó</option>
+          <option value="Mèo">Mèo</option>
+          <option value="Phụ kiện">Phụ kiện</option>
+        </select>
       </div>
-      <table className="table">
+
+      <div className="stats-section">
+        <div className="stat-box">
+          <h3>Doanh Thu Ngày</h3>
+          <p>5,000,000 VNĐ</p>
+        </div>
+        <div className="stat-box">
+          <h3>Doanh Thu Tháng</h3>
+          <p>30,000,000 VNĐ</p>
+        </div>
+        <div className="stat-box">
+          <h3>Doanh Thu Năm</h3>
+          <p>360,000,000 VNĐ</p>
+        </div>
+      </div>
+
+      <div className="transactions-section">
+        <h2>Danh Sách Giao Dịch</h2>
+        <table className="table">
         <thead>
           <tr>
-            <th scope="col">Avatar</th>
-            <th scope="col">Fullname</th>
             <th scope="col">Email</th>
-            <th scope="col">Password</th>
-            <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Location</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Product</th>
+            <th scope="col">Status</th>
+            <th scope="col">Total amount</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr key={item._id}>
-              <th>
-                <img src={item.avatar} height={50} width={50} alt={item.fullname || "Hình ảnh user"} />
-              </th>
-              <td>{item.fullname}</td>
               <td>{item.email}</td>
-              <td>{item.pass}</td>
-              <td>
-                <button
-                  onClick={() => {
-                    setIsUdpdate(false);
-                    setTimeout(() => {
-                      setDataUpdate(item);
-                      setIsAdd(false);
-                      setIsUdpdate(true);
-                    }, 500);
-                  }}
-                  className="btn btn-primary"
-                >
-                  Update
-                </button>
-              </td>
-              <td>
-                <button
-                  className="btn btn-secondary"
-                  onClick={async () => {
-                    const result = window.confirm(
-                      "Sure delete " + item.fullname
-                    );
-                    if (result) {
-                      const {
-                        status,
-                        data: { response, type },
-                      } = await axios.post(
-                        `${json_config[0].url_connect}/users/delete`,
-                        {
-                          email: item.email,
-                        }
-                      );
-                      if (status === 200) {
-                        window.alert(response);
-                        if (type) {
-                          await getAllUser();
-                        }
-                      }
-                    }
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
+              <td>{item.location}</td>
+              <td>{item.number}</td>
+              <td>{item.products.map((e) => `${e.name}, `)}</td>
+              <td>{convertStatus(item.status)}</td>
+              <td>{item.total}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

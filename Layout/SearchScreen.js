@@ -57,7 +57,7 @@ const SearchScreen = ({ navigation }) => {
 
     const delayDebounceFn = setTimeout(() => {
       searchProducts();
-    }, 500); // Thời gian trễ để tránh gửi yêu cầu quá nhiều
+    }, 1000); // Thời gian trễ để tránh gửi yêu cầu quá nhiều
 
     return () => clearTimeout(delayDebounceFn);
   }, [txtSearch, emailUser]);

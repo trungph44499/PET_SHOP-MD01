@@ -1,0 +1,59 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* background: linear-gradient(to right, #ff7e5f, #feb47b); */
+    background-image: linear-gradient(to top, #ff7e5f 0%, #feb47b 100%);
+    /* Màu nền gradient cho container */
+}
+
+.login-box {
+    background-color: #ffffff;
+    /* Màu nền cho box */
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-box h2 {
+    color: #333333;
+    /* Màu chữ cho tiêu đề */
+    margin-bottom: 20px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-top: 10px;
+    /* Màu nền cho input */
+}
+
+.login-input:focus {
+    border-color: #007bff;
+    /* Màu viền khi focus */
+    outline: none;
+}
+
+.login-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    /* Màu nền cho button */
+    color: #ffffff;
+    /* Màu chữ cho button */
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+    /* Màu nền khi hover */
+}

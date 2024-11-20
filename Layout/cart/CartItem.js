@@ -153,7 +153,7 @@ export default function CartItemComponent({ item }) {
                 <Text
                   onPress={() => setModalVisible(false)}
                   style={{
-                    textDecorationLine: "underline",
+                    //textDecorationLine: "underline",
                     fontWeight: "bold",
                     fontSize: 16,
                   }}
@@ -169,14 +169,28 @@ export default function CartItemComponent({ item }) {
   );
 }
 const styles = StyleSheet.create({
+  
   item: {
-    height: 160,
+    height: 150, 
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    width: "100%",
+    justifyContent: "space-between",
     gap: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 12, 
+    backgroundColor: '#FFF', 
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.15, 
+    shadowRadius: 4,
+    elevation: 3, 
+    marginVertical: 8, 
+    zIndex: 1, 
+    overflow: "hidden", 
+    marginHorizontal: 10
   },
+  
   image: {
     width: 120,
     height: 120,
@@ -206,14 +220,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "400",
   },
+  
   btnModal: {
     padding: 14,
-    borderRadius: 10,
-    backgroundColor: "#a97053",
+    borderRadius: 10, // Bo góc mềm mại
+    backgroundColor: "#a97053", // Màu nâu cho nút
     marginVertical: 20,
     width: "100%",
     alignItems: "center",
+    shadowColor: "#000", // Đổ bóng cho nút
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    elevation: 4,
   },
+  
   icon: {
     width: 10,
     height: 10,
