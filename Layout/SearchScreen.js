@@ -85,7 +85,7 @@ const SearchScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={styles.icon} source={require('../Image/back.png')} />
+          <Image style={styles.icon} source={require('../Image/left-back.png')} />
         </TouchableOpacity>
         <Text style={styles.title}>TÌM KIẾM</Text>
         <TouchableOpacity onPress={resetSearch}>
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   historyText: {
     width: "50%",

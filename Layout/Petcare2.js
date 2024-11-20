@@ -6,8 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   ToastAndroid,
+  ActivityIndicator,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { webSocketContext } from "./websocket/WebSocketContext";
@@ -21,6 +21,7 @@ const Petcare2 = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);  // Thêm trạng thái tải
   const websocket = useContext(webSocketContext);
   const navigation = useNavigation();
 
@@ -29,27 +30,35 @@ const Petcare2 = () => {
     { key: "2", value: "Dịch vụ 2" },
   ];
 
+  // Kiểm tra số điện thoại hợp lệ
+  const validatePhone = (phone) => {
+    const phoneRegex = /^[0-9]{10,11}$/; // Kiểm tra số điện thoại
+    return phoneRegex.test(phone);
+  };
+
   const handleSubmit = async () => {
     const email = await AsyncStorage.getItem("@UserLogin");
     if (
-      service != "" &&
-      name != "" &&
-      email != null &&
-      phone != "" &&
-      message != ""
+      service !== "" &&
+      name !== "" &&
+      email !== null &&
+      phone !== "" &&
+      message !== "" &&
+      validatePhone(phone)  // Kiểm tra số điện thoại
     ) {
+      setIsLoading(true);  // Hiển thị biểu tượng tải
       try {
-        const {
-          status,
-          data: { response, type },
-        } = await axios.post(URL + "/pet-care/add", {
+        const { status, data: { response, type } } = await axios.post(URL + "/pet-care/add", {
           service,
           name,
           email,
           phone,
           message,
         });
-        if (status == 200) {
+
+        setIsLoading(false);  // Ẩn biểu tượng tải
+
+        if (status === 200) {
           ToastAndroid.show(response, ToastAndroid.SHORT);
           if (type) {
             websocket.send(
@@ -62,15 +71,18 @@ const Petcare2 = () => {
           navigation.goBack();
         }
       } catch (error) {
-        console.log(error);
+        setIsLoading(false);  // Ẩn biểu tượng tải
+        console.error(error);
+        ToastAndroid.show("Đã có lỗi xảy ra, vui lòng thử lại!", ToastAndroid.SHORT);  // Thông báo lỗi
       }
 
+      // Xóa form sau khi gửi thành công
       setName("");
       setPhone("");
       setMessage("");
       setService("");
     } else {
-      ToastAndroid.show("Vui lòng điền đủ thông tin!", ToastAndroid.SHORT);
+      ToastAndroid.show("Vui lòng điền đủ thông tin và kiểm tra lại số điện thoại!", ToastAndroid.SHORT);
     }
   };
 
@@ -80,11 +92,12 @@ const Petcare2 = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{ width: 20, height: 20 }}
-            source={require("../Image/back.png")}
+            source={require("../Image/left-back.png")}
           />
         </TouchableOpacity>
         <Text style={styles.title}>Liên hệ với chúng tôi</Text>
       </View>
+
       <TextInput
         style={styles.input}
         placeholder="Tên của bạn"
@@ -108,6 +121,7 @@ const Petcare2 = () => {
         multiline={true}
         numberOfLines={4}
       />
+      
       <SelectList
         setSelected={(val) => setService(val)}
         data={services}
@@ -117,7 +131,11 @@ const Petcare2 = () => {
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Đăng ký dịch vụ</Text>
+        {isLoading ? (
+          <ActivityIndicator size="small" color="#fff" />  // Hiển thị biểu tượng tải
+        ) : (
+          <Text style={styles.buttonText}>Đăng ký dịch vụ</Text>
+        )}
       </TouchableOpacity>
     </View>
   );

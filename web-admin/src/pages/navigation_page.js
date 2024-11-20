@@ -2,17 +2,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
-import { faCircle, faUser } from "@fortawesome/free-regular-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { myColor } from "../styles/color";
 import {
   faArchway,
-  faBookOpen,
   faChevronLeft,
   faChevronRight,
   faComputer,
-  faHippo,
-  faPenFancy,
   faSignOut,
+  faDog,
+  faMoneyBill,
+  faHand,
+  faProjectDiagram,
+  faStore
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';  // Import SweetAlert2
@@ -155,28 +157,37 @@ export default function NavigationPage({ child }) {
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
+
             icon={<FontAwesomeIcon icon={faArchway} />}
+
             onClick={() => navigator("/revenue-tatistics")}
           >
             Revenue statistics
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faHippo} />}
+            icon={<FontAwesomeIcon icon={faProjectDiagram} />}
+            onClick={() => navigator("/category")}
+          >
+            Category management
+          </MenuItem>
+          <MenuItem
+            style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faDog} />}
             onClick={() => navigator("/product")}
           >
             Product management
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faBookOpen} />}
+            icon={<FontAwesomeIcon icon={faHand} />}
             onClick={() => navigator("/confirm-product")}
           >
             Pet Care
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faPenFancy} />}
+            icon={<FontAwesomeIcon icon={faMoneyBill} />}
             onClick={() => navigator("/payment")}
           >
            Payment
@@ -200,7 +211,7 @@ export default function NavigationPage({ child }) {
               height: 0,
             }}
           >
-            User
+            Logout
           </p>
         </div>
         <Menu>

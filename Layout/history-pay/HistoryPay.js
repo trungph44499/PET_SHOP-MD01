@@ -60,11 +60,34 @@ export default function HistoryScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={styles.icon} source={require("../../Image/back.png")} />
+          <Image style={styles.icon} source={require("../../Image/left-back.png")} />
         </TouchableOpacity>
         <Text style={styles.headerText}>Lịch sử thanh toán</Text>
-        <View />
       </View>
+      <View style={styles.buttonItem}>
+          <TouchableOpacity style={styles.button}>
+            <Image
+              source={require("../../Image/confirm.png")}
+              style={{ height: 30, width: 30 }}
+            />
+            <Text>Chờ xác nhận</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Image
+              source={require("../../Image/box.png")}
+              style={{ height: 30, width: 30 }}
+            />
+            <Text>Chờ lấy hàng</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Image
+              source={require("../../Image/truck.png")}
+              style={{ height: 30, width: 30 }}
+            />
+            <Text>Chờ giao hàng</Text>
+          </TouchableOpacity>
+
+        </View>
 
       {/* Hiển thị trạng thái loading */}
       {loading ? (
@@ -126,4 +149,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#888",
   },
+  buttonItem:{
+    marginTop: 20,
+    flexDirection: "row", 
+    justifyContent: "center"
+  },
+  button:{
+    flex: 1,
+    alignItems: "center"
+  }
 });

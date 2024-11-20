@@ -88,7 +88,7 @@ const PassReset = ({ navigation }) => {
         <View>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-              <Image style={styles.icon} source={require('../Image/back.png')} />
+              <Image style={styles.icon} source={require('../Image/left-back.png')} />
             </TouchableOpacity>
             <Text style={styles.headerText}>Đổi mật khẩu</Text>
           </View>

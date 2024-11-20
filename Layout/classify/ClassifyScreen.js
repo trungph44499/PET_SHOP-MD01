@@ -9,13 +9,29 @@ import {
 import React, { useEffect, useState } from "react";
 import { getListClassify } from "./function";
 import { numberUtils, upperCaseFirstItem, upperCaseItem } from "../utils/stringUtils";
+import axios from "axios";
+import { URL } from "../HomeScreen";
 
 export default ClassifyScreen = ({ navigation, route }) => {
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+  const [data, setData] = useState([]); // Dữ liệu sản phẩm
+  const [filteredData, setFilteredData] = useState([]); // Dữ liệu sản phẩm đã lọc
+  const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
   const [showNewOnly, setShowNewOnly] = useState(false);
-  const { type } = route.params;
+  const { type } = route.params; // type là ID danh mục
 
+  // Lấy danh sách danh mục
+  async function getAllCategories() {
+    try {
+      const { status, data: { response } } = await axios.get(`${URL}/product-categories`);
+      if (status === 200) {
+        setCategories(response);
+      }
+    } catch (error) {
+      console.log("Error fetching categories:", error);
+    }
+  }
+
+  // Lấy dữ liệu sản phẩm
   async function getData() {
     const result = await getListClassify(type);
     setData(result);
@@ -23,14 +39,20 @@ export default ClassifyScreen = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    getData();
+    getAllCategories(); // Lấy danh mục
+    getData(); // Lấy dữ liệu sản phẩm
   }, []);
+
+  // Tìm tên danh mục từ ID
+  const getCategoryName = (categoryId) => {
+    const category = categories.find(cat => cat._id === categoryId);
+    return category ? category.name : "Unknown Category";
+  };
 
   const showAllProducts = () => {
     setShowNewOnly(false);
     setFilteredData(data);
   };
-
 
   const filterNewProducts = () => {
     setShowNewOnly(true);
@@ -48,11 +70,11 @@ export default ClassifyScreen = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{ width: 20, height: 20 }}
-            source={require("../../Image/back.png")}
+            source={require("../../Image/left-back.png")}
           />
         </TouchableOpacity>
         <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          {upperCaseFirstItem(type) + "s"}
+          {upperCaseFirstItem(getCategoryName(type)) + "s"} {/* Hiển thị tên danh mục */}
         </Text>
         <TouchableOpacity
           style={{ width: 50 }}
@@ -89,7 +111,6 @@ export default ClassifyScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
 
-
       <FlatList
         numColumns={2}
         data={filteredData}
@@ -101,15 +122,14 @@ export default ClassifyScreen = ({ navigation, route }) => {
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />
             {item.status === "New" && (
-                <Text style={styles.itemStatus}>
-                  {item.status}
-                </Text>
-              )}
+              <Text style={styles.itemStatus}>
+                {item.status}
+              </Text>
+            )}
             <View style={styles.itemRow}>
               <Text style={styles.itemName}>
                 {item.name}
               </Text>
-          
             </View>
             <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
@@ -131,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 20,
+    paddingVertical: 5,
   },
   itemDog: {
     backgroundColor: "white",
@@ -157,7 +177,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 17,
     fontWeight: "bold",
-    marginRight: 5, 
+    marginRight: 5,
   },
   itemStatus: {
     position: "absolute",
@@ -175,7 +195,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flexWrap: "wrap",
-    
   },
   itemType: {
     fontSize: 15,

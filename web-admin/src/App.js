@@ -8,6 +8,7 @@ import WebSocketContext from "./context/WebSocketContext";
 import PetCare from "./pages/pet_care";
 import Payment from "./pages/payment";
 import RevenueStatistics from "./pages/revenue_statistics";
+import ProductCategories from "./pages/productCategories_management";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/confirm-product" element={<PetCare />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/revenue-tatistics" element={<RevenueStatistics />} />
+              <Route path="/category" element={<ProductCategories />} />
             </Routes>
           </BrowserRouter>
         }

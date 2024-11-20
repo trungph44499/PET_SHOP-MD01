@@ -4,8 +4,9 @@ export function numberUtils(x) {
 }
 
 // viết hoa chữ cái đầu tiên
-export function upperCaseFirstItem(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+export function upperCaseFirstItem(str) {
+  if (!str || typeof str !== 'string') return ''; // Kiểm tra giá trị đầu vào
+  return str.charAt(0).toUpperCase() + str.slice(1); 
 }
 
 // viết hoa chữ cái đầu tiên
