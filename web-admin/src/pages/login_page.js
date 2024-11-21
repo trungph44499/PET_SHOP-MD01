@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import url_config from "../config.json";
-import "../login.css"; // Import the CSS file
+import "../pages/css/login.css"; // Import the CSS file
 import Swal from "sweetalert2";  // Import SweetAlert2
 
 export default function LoginPage() {

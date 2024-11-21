@@ -15,7 +15,7 @@ export function upperCaseFirstItem(str) {
   return str.charAt(0).toUpperCase() + str.slice(1); 
 }
 
-// viết hoa chữ cái đầu tiên
+// viết hoa chữ cái 
 export function upperCaseItem(string) {
   return string.toUpperCase();
 }

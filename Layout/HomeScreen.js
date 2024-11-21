@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SliderShow from "./components/SliderShow";
-import { numberUtils, upperCaseFirstItem } from "./utils/stringUtils";
+import { numberUtils, upperCaseItem } from "./utils/stringUtils";
 import ip from "./config/ipconfig.json";
 
 export const URL = `http://${ip.ip}`;
@@ -134,7 +134,7 @@ const HomeScreen = ({ navigation }) => {
         )}
         <Text style={styles.itemName}>{item.name}</Text>
         <Text style={styles.itemStyle}>
-          Mã SP: {upperCaseFirstItem(item._id.slice(-5))}
+          Mã SP: {upperCaseItem(item._id.slice(-5))}
         </Text>
         <Text style={styles.price}>{numberUtils(item.price)}</Text>
       </TouchableOpacity>
