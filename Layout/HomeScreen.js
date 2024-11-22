@@ -11,7 +11,7 @@ import {
   StatusBar,
 } from "react-native";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import SliderShow from "./components/SliderShow";
 import { numberUtils, upperCaseItem } from "./utils/stringUtils";
 import ip from "./config/ipconfig.json";
@@ -27,73 +27,68 @@ const HomeScreen = ({ navigation }) => {
   const [filteredProducts, setFilteredProducts] = useState([]); // Lưu danh sách sản phẩm đã lọc
 
   // Lấy tất cả các danh mục sản phẩm
-  async function getAllCategories() {
+  const getAllCategories = useCallback(async () => {
     try {
       const { status, data: { response } } = await axios.get(`${URL}/product-categories`);
       if (status === 200) {
-        // Lọc các danh mục có status là true
         const validCategories = response.filter(category => category.status === true);
-        setCategories(validCategories); // Cập nhật các danh mục hợp lệ vào state
+        setCategories(validCategories);
       }
     } catch (error) {
       console.log("Error fetching categories:", error);
     }
-  }
+  }, []);
+
   // Lấy tất cả sản phẩm
-  async function getListProduct() {
+  const getListProduct = useCallback(async () => {
     try {
       const { status, data: { response } } = await axios.get(`${URL}/products`);
       if (status === 200) {
-        setProducts(response); // Lưu tất cả sản phẩm vào state
+        setProducts(response);
       }
     } catch (error) {
       console.log("Error fetching products:", error);
     }
-  }
+  }, []);
 
   useEffect(() => {
     getAllCategories();
     getListProduct();
-  }, []);
+  }, [getAllCategories, getListProduct]);
 
   useEffect(() => {
-    // Kiểm tra nếu không có category được chọn, chọn category đầu tiên
     if (!selectedCategory && categories.length > 0) {
       setSelectedCategory(categories[0]); // Chọn category đầu tiên
     }
-  }, [categories]); // Chạy lại khi danh sách categories thay đổi
+  }, [categories, selectedCategory]);
 
   useEffect(() => {
-    // Lọc sản phẩm khi có sự thay đổi về selectedCategory hoặc products
     if (selectedCategory) {
-      // console.log("Selected Category ID: ", selectedCategory._id); // Log category ID
       const filtered = products.filter((product) => {
-        return product.type._id === selectedCategory._id; // So sánh type và category ID
+        return product.type._id === selectedCategory._id;
       });
-      setFilteredProducts(filtered); // Cập nhật danh sách sản phẩm đã lọc
+      setFilteredProducts(filtered);
     } else {
-      setFilteredProducts(products); // Nếu không có category được chọn, hiển thị tất cả sản phẩm
+      setFilteredProducts(products);
     }
-  }, [selectedCategory, products]); // Trigger lại khi selectedCategory hoặc products thay đổi
+  }, [selectedCategory, products]);
 
   // Hàm điều hướng đến màn hình ClassifyScreen
-  function goToClassifyScreen(type) {
+  const goToClassifyScreen = useCallback((type) => {
     navigation.navigate("ClassifyScreen", { type: type });
-  }
-  function goToDetailScreen(item) {
-    navigation.navigate("DetailScreen", { item: item });
-  }
+  }, [navigation]);
 
-  function ItemCategory({ category }) {
-    const isSelected = selectedCategory && selectedCategory._id === category._id;  // Kiểm tra xem category hiện tại có được chọn không
+  const goToDetailScreen = useCallback((item) => {
+    navigation.navigate("DetailScreen", { item: item });
+  }, [navigation]);
+
+  const ItemCategory = ({ category }) => {
+    const isSelected = selectedCategory && selectedCategory._id === category._id;
 
     return (
       <TouchableOpacity
         style={styles.categoryItem}
-        onPress={() => {
-          // console.log("Category selected: ", category);  // Log xem category khi chọn
-          setSelectedCategory(category); // Cập nhật category đã chọn
-        }}
+        onPress={() => setSelectedCategory(category)}
       >
         <View
           style={{
@@ -102,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
             width: 70,
             height: 65,
             borderRadius: 10,
-            backgroundColor: isSelected ? "#0FA2FF" : "#FBEEC2", // Cập nhật màu nền ở đây nếu cần
+            backgroundColor: isSelected ? "#0FA2FF" : "#FBEEC2",
             borderWidth: 1,
             borderColor: "#C47500",
             shadowColor: "#000",
@@ -113,16 +108,14 @@ const HomeScreen = ({ navigation }) => {
         >
           <Image source={{ uri: category.img }} style={styles.categoryImage} />
         </View>
-        <Text
-          style={styles.categoryName}
-        >
+        <Text style={styles.categoryName}>
           {category.name}
         </Text>
       </TouchableOpacity>
     );
-  }
+  };
 
-  function ItemList(item) {
+  const ItemList = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => goToDetailScreen(item)}
@@ -132,114 +125,67 @@ const HomeScreen = ({ navigation }) => {
         {item.status === "New" && (
           <Text style={styles.itemStatus}>{item.status}</Text>
         )}
-        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
+          {item.name}
+        </Text>
         <Text style={styles.itemStyle}>
           Mã SP: {upperCaseItem(item._id.slice(-5))}
         </Text>
         <Text style={styles.price}>{numberUtils(item.price)}</Text>
       </TouchableOpacity>
     );
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar hidden />
         <View style={{ width: screenWidth, height: 280 }}>
-          <View style={{ marginTop: "1%", }}>
-            <Text
-              style={{
-                color: "#000000",
-                fontSize: 20,
-                fontWeight: "450",
-              }}
-            >
-              Welcome,
-            </Text>
-            <Text
-              style={{
-                color: "#000000",
-                fontSize: 24,
-                fontWeight: "600",
-              }}
-            >
-              Pet Shop
-            </Text>
-          </View>
+          <Text style={styles.welcomeText}>Welcome,</Text>
+          <Text style={styles.petShopText}>Pet Shop</Text>
           <SliderShow />
           <TouchableOpacity
             style={styles.textNew}
             onPress={() => navigation.navigate("NewProductScreen")}
           >
-            <Text
-              style={{
-                fontSize: 17,
-                color: "black",
-                fontWeight: "bold",
-                // textDecorationLine: "underline",
-              }}
-            >
-              Xem hàng mới về ➭
-            </Text>
+            <Text style={styles.textNewContent}>Xem hàng mới về ➭</Text>
           </TouchableOpacity>
         </View>
-        {/* Hiển thị danh sách danh mục */}
+
         <View>
-          <Text
-            style={{
-              color: "#000000",
-              fontSize: 23,
-              fontWeight: "bold",
-              marginTop: 10,
-              marginBottom: 10,
-            }}
-          >
-            Category
-          </Text>
+          <Text style={styles.categoryTitle}>Category</Text>
           <FlatList
             data={categories}
             renderItem={({ item }) => <ItemCategory category={item} />}
             keyExtractor={(item) => item._id}
-            horizontal={true} // Cuộn ngang
-            showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.flatListContainer}
           />
         </View>
 
-        {/* Hiển thị danh sách sản phẩm đã lọc */}
         <View>
           <FlatList
             numColumns={2}
             scrollEnabled={false}
-            data={filteredProducts.slice(0, 6)} // Chỉ lấy 6 sản phẩm đầu tiên
+            data={filteredProducts.slice(0, 6)}
             keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <ItemList {...item} />}
+            renderItem={({ item }) => <ItemList item={item} />}
           />
           <TouchableOpacity
             onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id)}
             style={styles.textXemthem}
           >
-            <Text
-              style={{
-                fontSize: 14,
-                color: "#000000",
-                fontWeight: "bold",
-                textDecorationLine: "underline",
-              }}
-            >
-              Xem thêm
-            </Text>
+            <Text style={styles.textXemthemContent}>Xem thêm</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+
       <TouchableOpacity
         style={styles.cart}
         onPress={() => navigation.navigate("CartScreen")}
       >
-        <Image
-          source={require("../Image/cart.png")}
-          style={{ height: 30, width: 30 }}
-        />
+        <Image source={require("../Image/cart.png")} style={styles.cartIcon} />
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -251,6 +197,16 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 20,
     backgroundColor: "#FFFFFF"
+  },
+  welcomeText: {
+    color: "#000000",
+    fontSize: 20,
+    fontWeight: "450",
+  },
+  petShopText: {
+    color: "#000000",
+    fontSize: 24,
+    fontWeight: "600",
   },
   flatListContainer: {
     marginBottom: 5,
@@ -301,8 +257,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   itemName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
+    color: "#000",
+    marginBottom: 5,
+    // Thêm các thuộc tính để kiểm soát việc cắt chữ
+    overflow: 'hidden',
+    width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStyle: {
     fontSize: 14,
@@ -317,22 +278,44 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     position: "absolute",
-    top: "4%", // Khoảng cách từ trên cùng
-    right: "7%", // Khoảng cách từ bên trái
+    top: "4%",
+    right: "7%",
     backgroundColor: "white",
     elevation: 10,
     padding: 10,
     borderRadius: 30,
+  },
+  cartIcon: {
+    height: 30,
+    width: 30,
+  },
+  textNew: {
+    marginTop: 10,
+  },
+  textNewContent: {
+    fontSize: 17,
+    color: "black",
+    fontWeight: "bold",
+  },
+  categoryTitle: {
+    color: "#000000",
+    fontSize: 23,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 10,
   },
   textXemthem: {
     width: "100%",
     padding: 12,
     justifyContent: "flex-end",
     flexDirection: "row",
-  }, 
-  textNew: {   
-   marginTop: 10,
-}
+  },
+  textXemthemContent: {
+    fontSize: 14,
+    color: "#000000",
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+  }
 });
 
 export default HomeScreen;

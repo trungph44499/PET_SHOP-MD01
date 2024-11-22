@@ -33,6 +33,7 @@ export default function CartItemComponent({ item }) {
             image: item.img,
             price: item.price,
             quantity: count,
+            size: item.size,
             status: !checkBox,
           });
           setCheckBox(!checkBox);
@@ -40,13 +41,16 @@ export default function CartItemComponent({ item }) {
         value={checkBox}
       />
       <Image source={{ uri: item.img }} style={styles.image} />
-      <View style={{ padding: 10, justifyContent: "space-between" }}>
-        <Text style={{ marginBottom: 10, fontWeight: "bold", fontSize: 16 }}>
+      <View style={{ flex: 1, padding: 10, justifyContent: "space-between" }}>
+        <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
           {item.name}
+        </Text>
+        <Text style={{ marginBottom: 5, fontSize: 16 }}>
+          {item.size}
         </Text>
         <Text
           style={{
-            marginBottom: 10,
+            marginBottom: 5,
             fontWeight: "bold",
             fontSize: 16,
             color: "#ff4c4c",
@@ -66,6 +70,7 @@ export default function CartItemComponent({ item }) {
                   price: item.price,
                   image: item.img,
                   quantity: count - 1,
+                  size: item.size,
                   status: checkBox,
                 });
               }
@@ -89,6 +94,7 @@ export default function CartItemComponent({ item }) {
                   price: item.price,
                   image: item.img,
                   quantity: count + 1,
+                  size: item.size,
                   status: checkBox,
                 });
               }
@@ -169,28 +175,25 @@ export default function CartItemComponent({ item }) {
   );
 }
 const styles = StyleSheet.create({
-  
   item: {
-    height: 150, 
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     gap: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 12, 
-    backgroundColor: '#FFF', 
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    backgroundColor: '#FFF',
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 }, 
-    shadowOpacity: 0.15, 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
     shadowRadius: 4,
-    elevation: 3, 
-    marginVertical: 8, 
-    zIndex: 1, 
-    overflow: "hidden", 
-    marginHorizontal: 10
+    elevation: 3,
+    marginBottom: 20,
+    overflow: "hidden",
+    marginHorizontal: 2
   },
-  
   image: {
     width: 120,
     height: 120,
@@ -220,7 +223,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "400",
   },
-  
   btnModal: {
     padding: 14,
     borderRadius: 10, // Bo góc mềm mại
@@ -234,7 +236,6 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 4,
   },
-  
   icon: {
     width: 10,
     height: 10,
@@ -244,5 +245,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 2,
     backgroundColor: "#E0E0E0"
+  },
+  itemName: {
+    fontSize: 16,
+    color: "#000",
+    fontWeight: "bold",
+    overflow: 'hidden',
+    width: '100%',
+    marginBottom: 5,
   },
 });

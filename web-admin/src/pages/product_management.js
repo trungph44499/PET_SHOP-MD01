@@ -25,13 +25,11 @@ function Main() {
   const _image = useRef();
   const _name = useRef();
   const _price = useRef();
-  const _origin = useRef();
   const _quantity = useRef();
   const _status = useRef();
   const _type = useRef();
   const _description = useRef();
-  const _weight = useRef();  // Thêm ref cho trường weight
-  const _sex = useRef();  // Thêm ref cho trường sex
+  const _size = useRef(); // Thêm size vào đây
 
   async function getAllProduct() {
     try {
@@ -70,13 +68,11 @@ function Main() {
       _image.current.value === "" ||
       _name.current.value === "" ||
       _price.current.value === "" ||
-      _origin.current.value === "" ||
       _quantity.current.value === "" ||
       _status.current.value === "" ||
       _type.current.value === "" ||
       _description.current.value === "" ||
-      _weight.current.value === "" ||
-      _sex.current.value === ""
+      _size.current.value === "" // Kiểm tra size
     ) {
       return "Vui lòng điền đầy đủ thông tin!";
     }
@@ -89,14 +85,8 @@ function Main() {
       return "Số lượng sản phẩm không thể nhỏ hơn 0!";
     }
 
-    const validSexValues = ["Male", "Female", "Unisex"];
-    if (!validSexValues.includes(_sex.current.value)) {
-      return "Giới tính phải là Male, Female hoặc Unisex!";
-    }
-
     return null;
   };
-
   // Hàm xử lý thêm sản phẩm
   const handleAddProduct = async () => {
     const errorMessage = validateProductData();
@@ -104,7 +94,8 @@ function Main() {
       window.alert(errorMessage);
       return;
     }
-
+    // Chuyển đổi chuỗi size thành mảng
+    const sizeArray = _size.current.value.split(',').map(size => size.trim());
     try {
       const { status, data: { response, type } } = await axios.post(
         `${json_config[0].url_connect}/products/add`,
@@ -112,13 +103,11 @@ function Main() {
           image: _image.current.value,
           name: _name.current.value,
           price: _price.current.value,
-          origin: _origin.current.value,
           quantity: _quantity.current.value,
           status: _status.current.value,
           type: _type.current.value,
           description: _description.current.value,
-          weight: _weight.current.value,
-          sex: _sex.current.value,
+          size: sizeArray, // Cập nhật mảng size
         }
       );
 
@@ -133,7 +122,6 @@ function Main() {
       console.log(error);
     }
   };
-
   // Hàm xử lý cập nhật sản phẩm
   const handleUpdateProduct = async () => {
     const errorMessage = validateProductData();
@@ -141,6 +129,8 @@ function Main() {
       window.alert(errorMessage);
       return;
     }
+    // Chuyển đổi chuỗi size thành mảng
+    const sizeArray = _size.current.value.split(',').map(size => size.trim());
 
     try {
       const { status, data: { response, type } } = await axios.post(
@@ -150,13 +140,11 @@ function Main() {
           image: _image.current.value,
           name: _name.current.value,
           price: _price.current.value,
-          origin: _origin.current.value,
           quantity: _quantity.current.value,
           status: _status.current.value,
           type: _type.current.value,
           description: _description.current.value,
-          weight: _weight.current.value,
-          sex: _sex.current.value,
+          size: sizeArray, // Gửi mảng size
         }
       );
 
@@ -171,7 +159,6 @@ function Main() {
       console.log(error);
     }
   };
-
   // Hàm xử lý xóa sản phẩm
   const handleDeleteProduct = async (productId) => {
     const result = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
@@ -192,14 +179,13 @@ function Main() {
       }
     }
   };
-
   return (
     <div>
       {/* Dropdown lọc loại sản phẩm */}
       <div className="filter">
-      <header className="header">
-        <h1>Quản lý sản phẩm</h1>
-      </header>
+        <header className="header">
+          <h1>Quản lý sản phẩm</h1>
+        </header>
         <select
           className="form-select"
           value={selectedType}
@@ -213,40 +199,43 @@ function Main() {
           ))}
         </select>
       </div>
-
       {isUpdate && (
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           {/* Form cập nhật sản phẩm */}
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
+                Category
+              </span>
+              <select ref={_type} defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
                 Image
               </span>
               <input ref={_image} type="text" defaultValue={dataUpdate.img} />
             </div>
+          </div>
+          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Name
               </span>
               <input ref={_name} type="text" defaultValue={dataUpdate.name} />
             </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Price
               </span>
               <input ref={_price} type="number" defaultValue={dataUpdate.price} />
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Age
-              </span>
-              <input ref={_origin} type="text" defaultValue={dataUpdate.origin} />
-            </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -264,47 +253,23 @@ function Main() {
               </select>
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Category
+                Size
               </span>
-              <select ref={_type} defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}>
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+              <input
+                ref={_size}
+                type="text"
+                placeholder="M,L,XL"
+                defaultValue={dataUpdate.size ? dataUpdate.size.join(', ') : ''} // Hiển thị mảng size
+              />
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Description
               </span>
               <input ref={_description} type="text" defaultValue={dataUpdate.description} />
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Weight
-              </span>
-              <input ref={_weight} type="text" defaultValue={dataUpdate.weight} />
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Sex
-              </span>
-              <select ref={_sex} defaultValue={dataUpdate.sex}>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Unisex">Unisex</option>
-              </select>
             </div>
           </div>
 
@@ -319,40 +284,44 @@ function Main() {
           </div>
         </div>
       )}
-
       {isAdd && (
         <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
           {/* Form thêm mới sản phẩm */}
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
+                Category
+              </span>
+              <select ref={_type}>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
                 Image
               </span>
               <input ref={_image} type="text" />
             </div>
+
+          </div>
+          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Name
               </span>
               <input ref={_name} type="text" />
             </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Price
               </span>
               <input ref={_price} type="number" />
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Age
-              </span>
-              <input ref={_origin} type="text" />
-            </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -370,47 +339,23 @@ function Main() {
               </select>
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Category
+                Size
               </span>
-              <select ref={_type}>
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+              <input
+                ref={_size}
+                type="text"
+                placeholder="Ví dụ: M,L,XL"
+                defaultValue={dataUpdate.size ? dataUpdate.size.join(', ') : ''} // Hiển thị mảng size
+              />
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Description
               </span>
               <input ref={_description} type="text" />
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Weight
-              </span>
-              <input ref={_weight} type="text" />
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Sex
-              </span>
-              <select ref={_sex}>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Unisex">Unisex</option>
-              </select>
             </div>
           </div>
 
@@ -425,7 +370,6 @@ function Main() {
           </div>
         </div>
       )}
-
       {/* Nút thêm sản phẩm */}
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
@@ -438,7 +382,6 @@ function Main() {
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
-
       {/* Bảng sản phẩm đã lọc */}
       <table className="table">
         <thead>
@@ -446,13 +389,11 @@ function Main() {
             <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
-            <th scope="col">Age</th>
             <th scope="col">Quantity</th>
             <th scope="col">Status</th>
             <th scope="col">Category</th>
             <th scope="col">Description</th>
-            <th scope="col">Weight</th>
-            <th scope="col">Sex</th>
+            <th scope="col">Size</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
@@ -470,13 +411,11 @@ function Main() {
               </td>
               <td>{item.name}</td>
               <td>{item.price}</td>
-              <td>{item.origin}</td>
               <td>{item.quantity}</td>
               <td>{item.status}</td>
               <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
-              <td>{item.weight}</td>
-              <td>{item.sex}</td>
+              <td>{item.size ? item.size.join(', ') : ''}</td> {/* Hiển thị mảng size như chuỗi ngăn cách bởi dấu phẩy */}
               <td>
                 <button
                   onClick={async () => {

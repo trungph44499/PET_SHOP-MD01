@@ -74,7 +74,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           />
         </TouchableOpacity>
         <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          {upperCaseFirstItem(getCategoryName(type)) + "s"} {/* Hiển thị tên danh mục */}
+          {upperCaseFirstItem(getCategoryName(type))} {/* Hiển thị tên danh mục */}
         </Text>
         <TouchableOpacity
           style={{ width: 50 }}
@@ -127,7 +127,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
               </Text>
             )}
             <View style={styles.itemRow}>
-              <Text style={styles.itemName}>
+              <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
                 {item.name}
               </Text>
             </View>
@@ -175,9 +175,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   itemName: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
-    marginRight: 5,
+    color: "#000",
+    marginBottom: 5,
+    // Thêm các thuộc tính để kiểm soát việc cắt chữ
+    overflow: 'hidden',
+    width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStatus: {
     position: "absolute",
