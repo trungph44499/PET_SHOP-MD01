@@ -183,7 +183,7 @@ const DetailProduct = ({ navigation, route }) => {
             </View>
           </View>
           <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 5 }}>Kích thước</Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 5 }}>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {item.size && item.size.length > 0 ? (
               item.size.map((size, index) => (
                 <TouchableOpacity
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   productImage: {
     width: "100%",
     height: 330,
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
   detailsContainer: {
     paddingHorizontal: 20,
@@ -385,6 +385,7 @@ const styles = StyleSheet.create({
   sizeButton: {
     padding: 8,
     marginLeft: 10,
+    marginTop: 5,
     backgroundColor: "#CDDCEA", // Màu mặc định của nút
     borderRadius: 8
   },
