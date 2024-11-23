@@ -67,6 +67,9 @@ function Main() {
 
   return (
     <div>
+       <header className="header">
+        <h1>Xác nhận thanh toán</h1>
+      </header>
       <table className="table">
         <thead>
           <tr>

@@ -6,18 +6,18 @@ import Carousel from "react-native-reanimated-carousel";
 const { width } = Dimensions.get("window");
 const listBanner = [
   require("../../Image/banner_pet01.png"),
-  require("../../Image/banner_pet03.png"),
   require("../../Image/banner_pet02.png"),
-  require("../../Image/banner_pet05.png"),
+  require("../../Image/banner_pet04.png"),
+  require("../../Image/banner_pet03.png"),
 ];
 
 export default function () {
   return (
     <Carousel
-      height={200}
+      height={180}
       width={width}
       loop
-      mode="parallax"
+      mode="default"
       autoPlay={true}
       data={listBanner}
       scrollAnimationDuration={1000}
@@ -31,8 +31,10 @@ export default function () {
 }
 const styles = StyleSheet.create({
   img: {
-    resizeMode: 'contain',
-    height: 200,
-    width: width
+    resizeMode: 'cover',
+    height: 180,
+    width: width,
+    margin: 10,
+    borderRadius: 20, 
   },
 });

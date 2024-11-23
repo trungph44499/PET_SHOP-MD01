@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, Image, TouchableOpacity, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -12,13 +12,13 @@ const validateCardInfo = (cardNumber, cardHolderName, cvv, expirationDate) => {
     return 'Số thẻ phải có 16 chữ số!';
   }
   if (!/^\d{2}\/\d{2}$/.test(expirationDate)) {
-    return 'Ngày hết hạn phải có định dạng MM/YY!';
+    return 'Năm hết hạn phải có định dạng MM/YY!';
   }
   const [month, year] = expirationDate.split('/');
   const expDate = new Date(`20${year}-${month}-01`);
   const currentDate = new Date();
   if (expDate < currentDate) {
-    return 'Ngày hết hạn phải là một ngày trong tương lai!';
+    return 'Năm hết hạn phải là một năm trong tương lai!';
   }
   if (!/^\d{3}$/.test(cvv)) {
     return 'CVV phải có 3 chữ số!';
@@ -35,9 +35,13 @@ const AddPaymentMethod = ({ route, navigation }) => {
   const [expirationDate, setExpirationDate] = useState(paymentMethod?.expirationDate || '');
 
   const handleCardNumberChange = (text) => {
-    if (text.length <= 16) {
-      setCardNumber(text);
+    // Loại bỏ tất cả các ký tự không phải là số
+    const cleanedText = text.replace(/\D/g, '');
+    // Giới hạn độ dài của số thẻ là 16 chữ số
+    if (cleanedText.length > 16) {
+      return;
     }
+    setCardNumber(cleanedText);
   };
 
   const handleCardHolderNameChange = (text) => {
@@ -56,27 +60,29 @@ const AddPaymentMethod = ({ route, navigation }) => {
   };
 
   const handleExpiryDateChange = (text) => {
-    if (text.length === 0) {
+    // Loại bỏ tất cả các ký tự không phải là số hoặc dấu "/"
+    const cleanedText = text.replace(/[^0-9\/]/g, '');
+    if (cleanedText.length === 0) {
       setExpirationDate('');
-    } else if (text.length === 2 && !text.includes('/')) {
-      const month = parseInt(text, 10);
+    } else if (cleanedText.length === 2 && !cleanedText.includes('/')) {
+      const month = parseInt(cleanedText, 10);
       if (month > 12) {
         Alert.alert('Lỗi', 'Tháng phải nằm trong khoảng từ 01 đến 12!');
         setExpirationDate('');
       } else {
-        setExpirationDate(text + '/');
+        setExpirationDate(cleanedText + '/');
       }
-    } else if (text.length === 5) {
-      const [month, year] = text.split('/');
+    } else if (cleanedText.length === 5) {
+      const [month, year] = cleanedText.split('/');
       if (parseInt(year, 10) < 24) {
-        Alert.alert('Lỗi', 'Ngày hết hạn phải là một ngày trong tương lai!');
+        Alert.alert('Lỗi', 'Năm hết hạn phải là một năm trong tương lai!');
       } else {
-        setExpirationDate(text);
+        setExpirationDate(cleanedText);
       }
-    } else if (text.length === 3 && text[2] !== '/') {
-      setExpirationDate(text.slice(0, 2) + '/' + text[2]);
+    } else if (cleanedText.length === 3 && cleanedText[2] !== '/') {
+      setExpirationDate(cleanedText.slice(0, 2) + '/' + cleanedText[2]);
     } else {
-      setExpirationDate(text);
+      setExpirationDate(cleanedText);
     }
   };
 
@@ -88,7 +94,7 @@ const AddPaymentMethod = ({ route, navigation }) => {
     }
 
     const newPaymentMethod = { cardHolderName, cardNumber, cvv, expirationDate };
-    
+
     try {
       const storedPaymentMethods = await AsyncStorage.getItem(emailUser + '_paymentMethods');
       let paymentMethods = storedPaymentMethods ? JSON.parse(storedPaymentMethods) : [];
@@ -150,7 +156,7 @@ const AddPaymentMethod = ({ route, navigation }) => {
             </View>
           </View>
         </LinearGradient>
-        
+
         <TextInput
           style={styles.input}
           placeholder="Số thẻ"

@@ -1,0 +1,104 @@
+.container {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dropdown-section {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.stats-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  flex: 1;
+  text-align: center;
+  background-color: #f4f4f4;
+  padding: 15px;
+  margin: 0 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.transactions-section {
+  margin-top: 20px;
+}
+
+.transactions-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transactions-section th,
+.transactions-section td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.transactions-section th {
+  background-color: #f4f4f4;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Canh nội dung bắt đầu ở trên cùng */
+  z-index: 1000;
+  padding-top: 20px; /* Thêm khoảng cách từ trên xuống cho modal */
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column; /* Đảm bảo các phần tử trong modal xếp theo chiều dọc */
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.btn-detail {
+  background-color: #007BFF; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 10px; 
+  transition: background-color 0.3s ease; 
+}
+
+.btn-detail:hover {
+  background-color: #0056b3; 
+}
+
+

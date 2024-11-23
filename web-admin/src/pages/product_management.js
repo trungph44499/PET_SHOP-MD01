@@ -19,19 +19,17 @@ function Main() {
   const [dataUpdate, setDataUpdate] = useState({});
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const [selectedType, setSelectedType] = useState(""); // State để lưu giá trị lọc loại sản phẩm
-  const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
+  const [selectedType, setSelectedType] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const _image = useRef();
   const _name = useRef();
   const _price = useRef();
-  const _origin = useRef();
   const _quantity = useRef();
   const _status = useRef();
   const _type = useRef();
   const _description = useRef();
-  const _weight = useRef();  // Thêm ref cho trường weight
-  const _sex = useRef();  // Thêm ref cho trường sex
+  const _size = useRef(); // Thêm size vào đây
 
   async function getAllProduct() {
     try {
@@ -46,9 +44,9 @@ function Main() {
 
   async function getCategories() {
     try {
-      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/product-categories`); // API lấy danh mục sản phẩm
+      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/product-categories`);
       if (status === 200) {
-        setCategories(response); // Lưu danh mục vào state
+        setCategories(response);
       }
     } catch (error) {
       console.log(error);
@@ -57,20 +55,137 @@ function Main() {
 
   useEffect(() => {
     getAllProduct();
-    getCategories(); // Lấy danh sách loại sản phẩm
+    getCategories();
   }, []);
 
-  // Lọc dữ liệu sản phẩm theo loại (type)
   const filteredData = selectedType
-    ? data.filter((item) => item.type._id  === selectedType)
+    ? data.filter((item) => item.type._id === selectedType)
     : data;
 
-  console.log("Filtered Data:", filteredData);  // Kiểm tra dữ liệu sau khi lọc
+  // Hàm kiểm tra dữ liệu hợp lệ
+  const validateProductData = () => {
+    if (
+      _image.current.value === "" ||
+      _name.current.value === "" ||
+      _price.current.value === "" ||
+      _quantity.current.value === "" ||
+      _status.current.value === "" ||
+      _type.current.value === "" ||
+      _description.current.value === "" ||
+      _size.current.value === "" // Kiểm tra size
+    ) {
+      return "Vui lòng điền đầy đủ thông tin!";
+    }
 
+    if (parseFloat(_price.current.value) <= 0) {
+      return "Giá sản phẩm phải lớn hơn 0!";
+    }
+
+    if (parseInt(_quantity.current.value) < 0) {
+      return "Số lượng sản phẩm không thể nhỏ hơn 0!";
+    }
+
+    return null;
+  };
+  // Hàm xử lý thêm sản phẩm
+  const handleAddProduct = async () => {
+    const errorMessage = validateProductData();
+    if (errorMessage) {
+      window.alert(errorMessage);
+      return;
+    }
+    // Chuyển đổi chuỗi size thành mảng
+    const sizeArray = _size.current.value.split(',').map(size => size.trim());
+    try {
+      const { status, data: { response, type } } = await axios.post(
+        `${json_config[0].url_connect}/products/add`,
+        {
+          image: _image.current.value,
+          name: _name.current.value,
+          price: _price.current.value,
+          quantity: _quantity.current.value,
+          status: _status.current.value,
+          type: _type.current.value,
+          description: _description.current.value,
+          size: sizeArray, // Cập nhật mảng size
+        }
+      );
+
+      if (status === 200) {
+        window.alert(response);
+        if (type) {
+          await getAllProduct();
+          setIsAdd(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // Hàm xử lý cập nhật sản phẩm
+  const handleUpdateProduct = async () => {
+    const errorMessage = validateProductData();
+    if (errorMessage) {
+      window.alert(errorMessage);
+      return;
+    }
+    // Chuyển đổi chuỗi size thành mảng
+    const sizeArray = _size.current.value.split(',').map(size => size.trim());
+
+    try {
+      const { status, data: { response, type } } = await axios.post(
+        `${json_config[0].url_connect}/products/update`,
+        {
+          id: dataUpdate._id,
+          image: _image.current.value,
+          name: _name.current.value,
+          price: _price.current.value,
+          quantity: _quantity.current.value,
+          status: _status.current.value,
+          type: _type.current.value,
+          description: _description.current.value,
+          size: sizeArray, // Gửi mảng size
+        }
+      );
+
+      if (status === 200) {
+        window.alert(response);
+        if (type) {
+          await getAllProduct();
+          setIsUdpdate(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // Hàm xử lý xóa sản phẩm
+  const handleDeleteProduct = async (productId) => {
+    const result = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+    if (result) {
+      try {
+        const { status, data: { response, type } } = await axios.post(
+          `${json_config[0].url_connect}/products/delete`,
+          { id: productId }
+        );
+        if (status === 200) {
+          window.alert(response);
+          if (type) {
+            await getAllProduct();
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   return (
     <div>
       {/* Dropdown lọc loại sản phẩm */}
       <div className="filter">
+        <header className="header">
+          <h1>Quản lý sản phẩm</h1>
+        </header>
         <select
           className="form-select"
           value={selectedType}
@@ -84,40 +199,43 @@ function Main() {
           ))}
         </select>
       </div>
-
       {isUpdate && (
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           {/* Form cập nhật sản phẩm */}
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
+                Category
+              </span>
+              <select ref={_type} defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
                 Image
               </span>
               <input ref={_image} type="text" defaultValue={dataUpdate.img} />
             </div>
+          </div>
+          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Name
               </span>
               <input ref={_name} type="text" defaultValue={dataUpdate.name} />
             </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Price
               </span>
               <input ref={_price} type="number" defaultValue={dataUpdate.price} />
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Origin
-              </span>
-              <input ref={_origin} type="text" defaultValue={dataUpdate.origin} />
-            </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -135,19 +253,17 @@ function Main() {
               </select>
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Type
+                Size
               </span>
-              <select ref={_type} defaultValue={dataUpdate.type}>
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+              <input
+                ref={_size}
+                type="text"
+                placeholder="M,L,XL"
+                defaultValue={dataUpdate.size ? dataUpdate.size.join(', ') : ''} // Hiển thị mảng size
+              />
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -158,69 +274,7 @@ function Main() {
           </div>
 
           <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Weight
-              </span>
-              <input ref={_weight} type="text" defaultValue={dataUpdate.weight} />
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Sex
-              </span>
-              <select ref={_sex} defaultValue={dataUpdate.sex}>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Unisex">Unisex</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                if (
-                  _status.current.value !== "New" &&
-                  _status.current.value !== "Old"
-                ) {
-                  window.alert("Must input Status New or Old");
-                  return;
-                }
-
-                try {
-                  const { status, data: { response, type } } = await axios.post(
-                    `${json_config[0].url_connect}/products/update`,
-                    {
-                      id: dataUpdate._id,
-                      image: _image.current.value,
-                      name: _name.current.value,
-                      price: _price.current.value,
-                      origin: _origin.current.value,
-                      quantity: _quantity.current.value,
-                      status: _status.current.value,
-                      type: _type.current.value,
-                      description: _description.current.value,
-                      weight: _weight.current.value,  // Gửi weight khi cập nhật
-                      sex: _sex.current.value,  // Gửi sex khi cập nhật
-                    }
-                  );
-
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllProduct();
-                      setIsUdpdate(false);
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
+            <button className="btn btn-primary" onClick={handleUpdateProduct}>
               Update
             </button>
             <div style={{ width: 5 }} />
@@ -230,40 +284,44 @@ function Main() {
           </div>
         </div>
       )}
-
       {isAdd && (
         <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
           {/* Form thêm mới sản phẩm */}
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
+                Category
+              </span>
+              <select ref={_type}>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
                 Image
               </span>
               <input ref={_image} type="text" />
             </div>
+
+          </div>
+          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Name
               </span>
               <input ref={_name} type="text" />
             </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Price
               </span>
               <input ref={_price} type="number" />
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Origin
-              </span>
-              <input ref={_origin} type="text" />
-            </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -281,19 +339,17 @@ function Main() {
               </select>
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Type
+                Size
               </span>
-              <select ref={_type}>
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+              <input
+                ref={_size}
+                type="text"
+                placeholder="Ví dụ: M,L,XL"
+                defaultValue={dataUpdate.size ? dataUpdate.size.join(', ') : ''} // Hiển thị mảng size
+              />
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -304,76 +360,7 @@ function Main() {
           </div>
 
           <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Weight
-              </span>
-              <input ref={_weight} type="text" />
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Sex
-              </span>
-              <select ref={_sex}>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Unisex">Unisex</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                if (
-                  _image.current.value === "" ||
-                  _name.current.value === "" ||
-                  _price.current.value === "" ||
-                  _origin.current.value === "" ||
-                  _quantity.current.value === "" ||
-                  _status.current.value === "" ||
-                  _type.current.value === "" ||
-                  _description.current.value === "" ||
-                  _weight.current.value === "" || 
-                  _sex.current.value === ""  // Kiểm tra sex
-                ) {
-                  window.alert("Input is empty");
-                  return;
-                }
-
-                try {
-                  const { status, data: { response, type } } = await axios.post(
-                    `${json_config[0].url_connect}/products/add`,
-                    {
-                      image: _image.current.value,
-                      name: _name.current.value,
-                      price: _price.current.value,
-                      origin: _origin.current.value,
-                      quantity: _quantity.current.value,
-                      status: _status.current.value,
-                      type: _type.current.value,
-                      description: _description.current.value,
-                      weight: _weight.current.value,
-                      sex: _sex.current.value,  // Gửi sex khi thêm sản phẩm
-                    }
-                  );
-
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllProduct();
-                      setIsAdd(false);
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
+            <button className="btn btn-primary" onClick={handleAddProduct}>
               Add
             </button>
             <div style={{ width: 5 }} />
@@ -383,7 +370,7 @@ function Main() {
           </div>
         </div>
       )}
-
+      {/* Nút thêm sản phẩm */}
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
           style={{ borderRadius: 30, height: 50, width: 50 }}
@@ -395,7 +382,6 @@ function Main() {
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
-
       {/* Bảng sản phẩm đã lọc */}
       <table className="table">
         <thead>
@@ -403,13 +389,11 @@ function Main() {
             <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
-            <th scope="col">Origin</th>
             <th scope="col">Quantity</th>
             <th scope="col">Status</th>
-            <th scope="col">Type</th>
+            <th scope="col">Category</th>
             <th scope="col">Description</th>
-            <th scope="col">Weight</th> {/* Thêm cột Weight */}
-            <th scope="col">Sex</th> {/* Thêm cột Sex */}
+            <th scope="col">Size</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
@@ -427,13 +411,11 @@ function Main() {
               </td>
               <td>{item.name}</td>
               <td>{item.price}</td>
-              <td>{item.origin}</td>
               <td>{item.quantity}</td>
               <td>{item.status}</td>
-              <td>{item.type ? item.type.name : "Unknown"}</td> {/* Render name của type */}
+              <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
-              <td>{item.weight}</td> {/* Hiển thị Weight */}
-              <td>{item.sex}</td> {/* Hiển thị Sex */}
+              <td>{item.size ? item.size.join(', ') : ''}</td> {/* Hiển thị mảng size như chuỗi ngăn cách bởi dấu phẩy */}
               <td>
                 <button
                   onClick={async () => {
@@ -452,23 +434,7 @@ function Main() {
               <td>
                 <button
                   className="btn btn-secondary"
-                  onClick={async () => {
-                    const result = window.confirm("Sure delete " + item.name);
-                    if (result) {
-                      const { status, data: { response, type } } = await axios.post(
-                        `${json_config[0].url_connect}/products/delete`,
-                        {
-                          id: item._id,
-                        }
-                      );
-                      if (status === 200) {
-                        window.alert(response);
-                        if (type) {
-                          await getAllProduct();
-                        }
-                      }
-                    }
-                  }}
+                  onClick={() => handleDeleteProduct(item._id)}
                 >
                   Delete
                 </button>

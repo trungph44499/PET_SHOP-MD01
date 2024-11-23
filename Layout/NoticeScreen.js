@@ -104,10 +104,13 @@ const NoticeScreen = ({ navigation }) => {
             >
               {convertStatus(item.status).statusResult}
             </Text>
-            <Text style={{ fontSize: 16, textTransform: "uppercase" }}>
+            <Text
+              style={styles.itemName}
+              numberOfLines={1} ellipsizeMode="tail"
+            >
               {item.service.toUpperCase()}
             </Text>
-            <Text style={{ fontSize: 14, textTransform: "uppercase" }}>
+            <Text style={{ fontSize: 14, textTransform: "uppercase", color: 'red' }}>
               {item.type}
             </Text>
             <Text>{convertDate(item.date)}</Text>
@@ -192,10 +195,19 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   bgitem: {
+    flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
   textContainer: {
     marginLeft: 10,
+    flex: 1,
+  },
+  itemName: {
+    fontSize: 16,
+    color: "#000",
+    overflow: 'hidden',
+    width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
+    textTransform: "uppercase",
   },
 });

@@ -147,7 +147,7 @@ const CartScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
           <Text
-            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}
+            style={{ textAlign: "center", fontSize: 18, fontWeight: "bold", textTransform: 'uppercase' }}
           >
             Giỏ hàng
           </Text>
@@ -176,7 +176,7 @@ const CartScreen = ({ navigation }) => {
           visible={modalAllVisible}
           onRequestClose={() => setModalAllVisible(false)}
         >
-          <View style={styles.cardCotainer}>
+          <View style={styles.cardContainer}>
             <View style={styles.cardModal}>
               <Text style={styles.textBold}>Xác nhận xóa tất cả đơn hàng?</Text>
               <Text style={{ fontSize: 14, color: "gray", fontWeight: "400" }}>
@@ -198,7 +198,7 @@ const CartScreen = ({ navigation }) => {
               <Text
                 onPress={() => setModalAllVisible(false)}
                 style={{
-                  textDecorationLine: "underline",
+                  //textDecorationLine: "underline",
                   fontWeight: "bold",
                   fontSize: 16,
                 }}
@@ -280,26 +280,43 @@ const CartScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  
   container: {
     flex: 1,
-    padding: 20,
-    gap: 16,
-    backgroundColor: '#FFFFFF'
+    paddingHorizontal: 20, 
+    paddingVertical: 10,
+    gap: 16, 
+    backgroundColor: '#FFFFFF', 
+    overflow: "visible", 
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 5,
+    zIndex: 2, 
   },
   item: {
-    height: 160,
+    height: 150, 
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    width: "100%",
+    justifyContent: "space-between",
     gap: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 12, 
+    backgroundColor: '#FFF', 
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.15, 
+    shadowRadius: 4, 
+    elevation: 3, 
+    marginVertical: 8, 
+    zIndex: 1, 
+    overflow: "hidden",
+    marginHorizontal: 10
   },
+      
   image: {
     width: 120,
     height: 120,
@@ -307,7 +324,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
   },
-  cardCotainer: {
+  cardContainer: {
     height: "100%",
     justifyContent: "flex-end",
     alignItems: "center",
@@ -327,21 +344,33 @@ const styles = StyleSheet.create({
   },
   btnModal: {
     padding: 14,
-    borderRadius: 10,
-    backgroundColor: "#a97053",
+    borderRadius: 10, // Bo góc mềm mại
+    backgroundColor: "#a97053", // Màu nâu cho nút
     marginVertical: 20,
     width: "100%",
     alignItems: "center",
+    shadowColor: "#000", // Đổ bóng cho nút
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    elevation: 4,
   },
+  
   textBold: {
     fontSize: 16,
     fontWeight: "400",
   },
+  
   checkoutButton: {
-    borderRadius: 9,
-    padding: 12,
+    borderRadius: 9, // Bo góc mềm mại
+    padding: 12, // Padding cho kích thước nút
     alignItems: "center",
-    backgroundColor: "#a97053",
+    backgroundColor: "#a97053", // Màu nền
+    shadowColor: "#000", // Màu bóng
+    shadowOffset: { width: 0, height: 4 }, // Đổ bóng dưới nút
+    shadowOpacity: 0.2, // Độ trong suốt của bóng
+    shadowRadius: 4, // Độ mờ của bóng
+    elevation: 5, // Hiệu ứng nổi trên Android
   },
   emptyCartContainer: {
     flex: 1,

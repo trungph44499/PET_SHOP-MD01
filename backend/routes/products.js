@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
 
 // Thêm mới sản phẩm
 router.post("/add", async (req, res) => {
-  const { image, name, price, origin, quantity, weight, sex, status, type, description } = req.body;
+  const { image, name, price, quantity, size, status, type, description } = req.body;
 
   try {
     // Kiểm tra type có phải là ObjectId hợp lệ không
@@ -46,10 +46,8 @@ router.post("/add", async (req, res) => {
       img: image,
       name: name,
       price: price,
-      origin: origin,
       quantity: quantity,
-      weight: weight,
-      sex: sex,
+      size: size,
       status: status,
       type: type, // Đây là ObjectId tham chiếu đến danh mục
       description: description,
@@ -65,7 +63,7 @@ router.post("/add", async (req, res) => {
 
 // Cập nhật sản phẩm
 router.post("/update", async (req, res) => {
-  const { id, image, name, price, origin, quantity, weight, sex, status, type, description } = req.body;
+  const { id, image, name, price, quantity, size, status, type, description } = req.body;
 
   try {
     // Kiểm tra type có phải là ObjectId hợp lệ không
@@ -77,10 +75,8 @@ router.post("/update", async (req, res) => {
       img: image,
       name: name,
       price: price,
-      origin: origin,
       quantity: quantity,
-      weight, weight,
-      sex: sex,
+      size: size,
       status: status,
       type: type, // Cập nhật trường type
       description: description,
