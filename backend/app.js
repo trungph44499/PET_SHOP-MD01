@@ -14,6 +14,7 @@ var petCareRouter = require("./routes/petCare");
 var paymentRouter = require("./routes/payment");
 var notificationRouter = require("./routes/notification");
 var productCategoryRoter = require("./routes/productCategory");
+var chatRouter = require("./routes/chat");
 
 var app = express();
 app.use(logger("dev"));
@@ -33,5 +34,6 @@ app.use("/pet-care", petCareRouter);
 app.use("/pay", paymentRouter);
 app.use("/notification", notificationRouter);
 app.use("/product-categories", productCategoryRoter);
+app.use("/chat", chatRouter);
 
 module.exports = app;

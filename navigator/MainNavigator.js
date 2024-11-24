@@ -23,6 +23,7 @@ import AddShippingAddrees from "../Layout/checkout/AddShippingAddrees";
 import PaymentMethod from "../Layout/checkout/PaymentMethod";
 import ShippingAddrees from "../Layout/checkout/ShippingAddrees";
 import DetailHistoryPay from "../Layout/history-pay/DetailHistoryPay";
+import ChatScreen from "../Layout/chat/ChatScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -123,9 +124,15 @@ const MainNavigator = () => {
       <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
       <Stack.Screen name="AddPaymentMethod" component={AddPaymentMethod} />
       <Stack.Screen name="DetailHistoryPay" component={DetailHistoryPay} />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Customer care",
+        }}
+        name="ChatScreen"
+        component={ChatScreen}
+      />
     </Stack.Navigator>
-   
-
   );
 };
 

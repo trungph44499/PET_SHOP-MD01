@@ -11,5 +11,5 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-, "Layout/NoticeScreen.js", "Layout/NoticeScreen.js"  ]
+, "Layout/NoticeScreen.js", "Layout/NoticeScreen.js", "Layout/chat/models/UserChatModel.js", "Layout/chat/models/ChatModel.js"  ]
 }
