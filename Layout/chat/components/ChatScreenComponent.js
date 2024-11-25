@@ -39,12 +39,15 @@ export default function ChatScreenComponent() {
   }, []);
 
   const onSend = async (message) => {
-    await websocket.send(
-      JSON.stringify({ message: message[0], email: "admin", type: "take care" })
-    );
-
     const result = await sendMessage(...message);
     if (result) {
+      await websocket.send(
+        JSON.stringify({
+          message: message[0],
+          email: "admin",
+          type: "take care",
+        })
+      );
     }
   };
 

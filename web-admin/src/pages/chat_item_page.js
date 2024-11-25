@@ -1,11 +1,19 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import json_config from "../config.json";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { webSocketContext } from "../context/WebSocketContext";
+import NavigationPage from "./navigation_page";
 
 export default function ChatItemPage() {
+  return (
+    <div>
+      <NavigationPage child={<Main />} />
+    </div>
+  );
+}
+function Main() {
   const { email } = useParams();
   const [inputData, setInputData] = useState("");
   const [data, setData] = useState([]);
@@ -16,7 +24,7 @@ export default function ChatItemPage() {
     const { message, type } = json;
     console.log(message);
 
-    if (type == "take care") {
+    if (type === "take care") {
       setData((previousMessages) => [...previousMessages, message]);
     }
   };
@@ -28,7 +36,7 @@ export default function ChatItemPage() {
           json_config[0].url_connect + "/chat",
           { email }
         );
-        if (status == 200) {
+        if (status === 200) {
           setData(data.map((item) => item.message));
         }
       } catch (error) {
@@ -54,18 +62,17 @@ export default function ChatItemPage() {
       email,
     };
     try {
-      await websocket.send(
-        JSON.stringify({ message: mess.message, email, type: "take care" })
-      );
-      setInputData("");
-
       const { status, data } = await axios.post(
         json_config[0].url_connect + "/chat/add",
         mess
       );
 
-      if (status == 200) {
+      if (status === 200) {
         if (data) {
+          await websocket.send(
+            JSON.stringify({ message: mess.message, email, type: "take care" })
+          );
+          setInputData("");
         }
       }
       return false;
@@ -87,11 +94,11 @@ export default function ChatItemPage() {
             <div
               key={item._id}
               className={`${
-                item.user._id == "admin" ? "text-end" : "text-start"
+                item.user._id === "admin" ? "text-end" : "text-start"
               }`}
             >
               <div>
-                {item.user._id != "admin" && (
+                {item.user._id !== "admin" && (
                   <img
                     src={item.user.avatar}
                     height={30}
@@ -122,7 +129,7 @@ export default function ChatItemPage() {
           />
           <button
             onClick={sendMessage}
-            disabled={inputData.length == 0}
+            disabled={inputData.length === 0}
             className="btn btn-outline-secondary"
             type="button"
             id="button-addon2"
