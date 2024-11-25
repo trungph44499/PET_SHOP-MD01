@@ -125,7 +125,7 @@ const HomeScreen = ({ navigation }) => {
         {item.status === "New" && (
           <Text style={styles.itemStatus}>{item.status}</Text>
         )}
-        <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
+        <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">
           {item.name}
         </Text>
         <Text style={styles.itemStyle}>
@@ -163,8 +163,26 @@ const HomeScreen = ({ navigation }) => {
             contentContainerStyle={styles.flatListContainer}
           />
         </View>
+        
 
         <View>
+        <Text style={styles.animalsTitle}>Dogs</Text>
+          <FlatList
+            numColumns={2}
+            scrollEnabled={false}
+            data={filteredProducts.slice(0, 6)}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => <ItemList item={item} />}
+          />
+          <TouchableOpacity
+            onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id)}
+            style={styles.textXemthem}
+          >
+            <Text style={styles.textXemthemContent}>Xem thêm</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+        <Text style={styles.animalsTitle}>Cats</Text>
           <FlatList
             numColumns={2}
             scrollEnabled={false}
@@ -228,7 +246,7 @@ const styles = StyleSheet.create({
     width: "47%",
     borderRadius: 12,
     padding: 12,
-    marginVertical: 10,
+    marginVertical: 5,
     marginRight: 20,
     gap: 10,
     shadowColor: "black",
@@ -303,6 +321,12 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontWeight: "bold",
     marginTop: 10,
+    marginBottom: 10,
+  },
+  animalsTitle: {
+    color: "#000000",
+    fontSize: 23,
+    fontWeight: "bold",
     marginBottom: 10,
   },
   textXemthem: {

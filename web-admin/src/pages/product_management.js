@@ -30,6 +30,7 @@ function Main() {
   const _type = useRef();
   const _description = useRef();
   const _size = useRef(); // Thêm size vào đây
+  const _animals = useRef(); // Thêm animals vào đây
 
   async function getAllProduct() {
     try {
@@ -72,7 +73,8 @@ function Main() {
       _status.current.value === "" ||
       _type.current.value === "" ||
       _description.current.value === "" ||
-      _size.current.value === "" // Kiểm tra size
+      _size.current.value === "" || // Kiểm tra size
+      _animals.current.value === "" // Kiểm tra animals
     ) {
       return "Vui lòng điền đầy đủ thông tin!";
     }
@@ -108,6 +110,7 @@ function Main() {
           type: _type.current.value,
           description: _description.current.value,
           size: sizeArray, // Cập nhật mảng size
+          animals: _animals.current.value, // Thêm animals
         }
       );
 
@@ -145,6 +148,7 @@ function Main() {
           type: _type.current.value,
           description: _description.current.value,
           size: sizeArray, // Gửi mảng size
+          animals: _animals.current.value, // Thêm animals
         }
       );
 
@@ -272,6 +276,18 @@ function Main() {
               <input ref={_description} type="text" defaultValue={dataUpdate.description} />
             </div>
           </div>
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Animals
+              </span>
+              <select ref={_animals} defaultValue={dataUpdate.animals}>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="all">All</option>
+              </select>
+            </div>
+          </div>
 
           <div className="d-flex flex-row mb-2">
             <button className="btn btn-primary" onClick={handleUpdateProduct}>
@@ -358,6 +374,18 @@ function Main() {
               <input ref={_description} type="text" />
             </div>
           </div>
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Animals
+              </span>
+              <select ref={_animals} defaultValue={dataUpdate.animals}>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+                <option value="all">All</option>
+              </select>
+            </div>
+          </div>
 
           <div className="d-flex flex-row mb-2">
             <button className="btn btn-primary" onClick={handleAddProduct}>
@@ -394,6 +422,7 @@ function Main() {
             <th scope="col">Category</th>
             <th scope="col">Description</th>
             <th scope="col">Size</th>
+            <th scope="col">Animals</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
@@ -416,6 +445,7 @@ function Main() {
               <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
               <td>{item.size ? item.size.join(', ') : ''}</td> {/* Hiển thị mảng size như chuỗi ngăn cách bởi dấu phẩy */}
+              <td>{item.animals}</td>
               <td>
                 <button
                   onClick={async () => {

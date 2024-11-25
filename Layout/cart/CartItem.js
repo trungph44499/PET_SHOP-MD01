@@ -45,14 +45,14 @@ export default function CartItemComponent({ item }) {
         <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
           {item.name}
         </Text>
-        <Text style={{ marginBottom: 5, fontSize: 16 }}>
+        <Text style={{ marginBottom: 5, fontSize: 14 }}>
           {item.size}
         </Text>
         <Text
           style={{
             marginBottom: 5,
             fontWeight: "bold",
-            fontSize: 16,
+            fontSize: 15,
             color: "#ff4c4c",
           }}
         >
@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     borderWidth: 1,
+    resizeMode: "contain"
   },
   cardCotainer: {
     height: "100%",
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E0E0E0"
   },
   itemName: {
-    fontSize: 16,
+    fontSize: 15,
     color: "#000",
     fontWeight: "bold",
     overflow: 'hidden',
