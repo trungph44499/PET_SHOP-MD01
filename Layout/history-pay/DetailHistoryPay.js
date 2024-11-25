@@ -222,6 +222,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         marginHorizontal: 15,
+        resizeMode: "contain"
     },
     section: {
         padding: 10,

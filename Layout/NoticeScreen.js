@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     borderWidth: 1,
+    resizeMode: "contain"
   },
   item: {
     flexDirection: "row",

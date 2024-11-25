@@ -186,13 +186,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: '#FFF',
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: 20,
+    marginBottom: 15,
     overflow: "hidden",
-    marginHorizontal: 2
+    marginHorizontal: 2,
+    marginTop: 2
   },
   image: {
     width: 120,
