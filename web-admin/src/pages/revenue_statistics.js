@@ -31,6 +31,10 @@ function Main() {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dailyRevenue, setDailyRevenue] = useState(0);
+  const [isFilterByDate, setIsFilterByDate] = useState(false);
+
+
+
 
   const calculateDailyRevenue = (transactions, date) => {
     if (!date) return 0;
@@ -142,9 +146,17 @@ function Main() {
     };
   }, [websocket, getAllPayment]);
 
+  const filteredData = isFilterByDate
+    ? data.filter((item) => {
+      const transactionDate = new Date(item.createdAt);
+      return transactionDate.toDateString() === selectedDate.toDateString();
+    })
+    : data;
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
 
   const nextPage = () => {
     if (currentPage < Math.ceil(data.length / itemsPerPage)) {
@@ -220,9 +232,19 @@ function Main() {
               dateFormat="dd/MM/yyyy"
               className="date-picker"
             />
+            <div>
+              <input
+                type="checkbox"
+                id="filterByDate"
+                checked={isFilterByDate}
+                onChange={(e) => setIsFilterByDate(e.target.checked)}
+              />
+              <label htmlFor="filterByDate"> Lọc danh sách theo ngày</label>
+            </div>
           </div>
           <p>{Number(dailyRevenue).toLocaleString("vi-VN")} VNĐ</p>
         </div>
+
 
         <div className="stat-box">
           <h3>Doanh Thu Tháng</h3>
@@ -272,29 +294,39 @@ function Main() {
               <th scope="col">Location</th>
               <th scope="col">Phone</th>
               <th scope="col">Product</th>
+              <th scope="col">Order Date</th>
               <th scope="col">Status</th>
               <th scope="col">Total amount</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item) => (
-              <tr key={item._id}>
-                <td>{item.email}</td>
-                <td>{item.location}</td>
-                <td>{item.number}</td>
-                <td>{item.products.map((e) => `${e.name}, `)}</td>
-                <td>{convertStatus(item.status)}</td>
-                <td>{Number(item.totalPrice).toLocaleString("vi-VN")} VNĐ</td>
-
-                <td>
-                  <button onClick={() => openModal(item)} className="btn-detail">
-                    Detail
-                  </button>
+            {filteredData.length > 0 ? (
+              currentItems.map((item) => (
+                <tr key={item._id}>
+                  <td>{item.email}</td>
+                  <td>{item.location}</td>
+                  <td>{item.number}</td>
+                  <td>{item.products.map((e) => `${e.name}, `)}</td>
+                  <td>{new Date(item.createdAt).toLocaleString("vi-VN")}</td>
+                  <td>{convertStatus(item.status)}</td>
+                  <td>{Number(item.totalPrice).toLocaleString("vi-VN")} VNĐ</td>
+                  <td>
+                    <button onClick={() => openModal(item)} className="btn-detail">
+                      Detail
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center", padding: "1rem" }}>
+                  Danh sách trống
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
+
         </table>
       </div>
 
