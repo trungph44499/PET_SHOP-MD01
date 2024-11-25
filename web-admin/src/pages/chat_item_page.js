@@ -54,11 +54,6 @@ export default function ChatItemPage() {
       email,
     };
     try {
-      await websocket.send(
-        JSON.stringify({ message: mess.message, email, type: "take care" })
-      );
-      setInputData("");
-
       const { status, data } = await axios.post(
         json_config[0].url_connect + "/chat/add",
         mess
@@ -66,6 +61,10 @@ export default function ChatItemPage() {
 
       if (status == 200) {
         if (data) {
+          await websocket.send(
+            JSON.stringify({ message: mess.message, email, type: "take care" })
+          );
+          setInputData("");
         }
       }
       return false;

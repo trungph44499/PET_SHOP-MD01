@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 140,
     borderRadius: 10,
+    resizeMode: "contain"
   },
   itemStatus: {
     position: "absolute",
