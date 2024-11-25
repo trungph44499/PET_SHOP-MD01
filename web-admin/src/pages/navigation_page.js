@@ -2,10 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
 import { myColor } from "../styles/color";
 import {
-  faArchway,
   faChevronLeft,
   faChevronRight,
   faComputer,
@@ -14,10 +13,10 @@ import {
   faMoneyBill,
   faHand,
   faProjectDiagram,
-  faStore
+  faStore,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';  // Import SweetAlert2
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 export default function NavigationPage({ child }) {
   const navigator = useNavigate();
@@ -31,13 +30,12 @@ export default function NavigationPage({ child }) {
 
   const handleLogout = () => {
     Swal.fire({
-      title: 'Bạn có chắc chắn muốn đăng xuất?',
-      icon: 'warning',
+      title: "Bạn có chắc chắn muốn đăng xuất?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Đăng xuất',
-      cancelButtonText: 'Hủy',
-      position: 'top',  // Chỉnh vị trí xuất hiện của hộp thoại
-
+      confirmButtonText: "Đăng xuất",
+      cancelButtonText: "Hủy",
+      position: "top", // Chỉnh vị trí xuất hiện của hộp thoại
     }).then((result) => {
       if (result.isConfirmed) {
         // Xóa thông tin đăng nhập và chuyển hướng
@@ -157,9 +155,7 @@ export default function NavigationPage({ child }) {
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-
-            icon={<FontAwesomeIcon icon={faArchway} />}
-
+            icon={<FontAwesomeIcon icon={faStore} />}
             onClick={() => navigator("/revenue-tatistics")}
           >
             Revenue statistics
@@ -190,7 +186,7 @@ export default function NavigationPage({ child }) {
             icon={<FontAwesomeIcon icon={faMoneyBill} />}
             onClick={() => navigator("/payment")}
           >
-           Payment
+            Payment
           </MenuItem>
         </Menu>
         <div
@@ -215,7 +211,7 @@ export default function NavigationPage({ child }) {
           </p>
         </div>
         <Menu>
-        <MenuItem
+          <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faSignOut} />}
             onClick={handleLogout}

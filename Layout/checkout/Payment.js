@@ -286,9 +286,12 @@ const Payment = ({ navigation, route }) => {
                   <Text style={styles.itemCode}>
                     Mã sản phẩm: {upperCaseItem(item.id.slice(-5))}
                   </Text>
-                  <Text style={styles.itemName}>Tên sản phẩm: {item.name}</Text>
+                  <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">Tên sản phẩm: {item.name}</Text>
                   <Text style={styles.itemPrice}>
                     Giá tiền: {numberUtils(item.price)}
+                  </Text>
+                  <Text style={styles.itemSize} numberOfLines={1} ellipsizeMode="tail">
+                    Kích thước: {item.size}
                   </Text>
                   <Text style={styles.itemQuantity}>
                     Số lượng: {item.quantity}
@@ -586,7 +589,8 @@ const styles = StyleSheet.create({
     height: 18,
   },
   footer: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -656,24 +660,33 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   itemInfo: {
+    justifyContent: "center",
     marginLeft: 15,
     flex: 1,
   },
   itemCode: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#FF6B6B",
+
   },
   itemName: {
-    color: "#555",
     fontSize: 16,
+    color: "#000",
+    // Thêm các thuộc tính để kiểm soát việc cắt chữ
+    fontWeight: "500",  
+    overflow: 'hidden',
+    width: '100%', 
   },
   itemPrice: {
-    color: "#FF6B6B",
+    fontWeight: "400",
     fontSize: 16,
   },
   itemQuantity: {
-    color: "#555",
     fontSize: 16,
+    fontWeight: "500",  
+  },
+  itemSize: {
+    fontSize: 16,
+    fontWeight: "500",  
   },
 });

@@ -17,7 +17,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
   const [filteredData, setFilteredData] = useState([]); // Dữ liệu sản phẩm đã lọc
   const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
   const [showNewOnly, setShowNewOnly] = useState(false);
-  const { type } = route.params; // type là ID danh mục
+  const { type, animals } = route.params; // type là ID danh mục
 
   // Lấy danh sách danh mục
   async function getAllCategories() {
@@ -33,7 +33,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
 
   // Lấy dữ liệu sản phẩm
   async function getData() {
-    const result = await getListClassify(type);
+    const result = await getListClassify(type, animals);
     setData(result);
     setFilteredData(result);
   }
@@ -74,7 +74,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           />
         </TouchableOpacity>
         <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          {upperCaseFirstItem(getCategoryName(type)) + "s"} {/* Hiển thị tên danh mục */}
+          {upperCaseFirstItem(getCategoryName(type))} {/* Hiển thị tên danh mục */}
         </Text>
         <TouchableOpacity
           style={{ width: 50 }}
@@ -127,7 +127,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
               </Text>
             )}
             <View style={styles.itemRow}>
-              <Text style={styles.itemName}>
+              <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
                 {item.name}
               </Text>
             </View>
@@ -173,11 +173,16 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 130,
     borderRadius: 12,
+    resizeMode: "contain"
   },
   itemName: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
-    marginRight: 5,
+    color: "#000",
+    marginBottom: 5,
+    // Thêm các thuộc tính để kiểm soát việc cắt chữ
+    overflow: 'hidden',
+    width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStatus: {
     position: "absolute",

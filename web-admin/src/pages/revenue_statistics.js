@@ -224,7 +224,7 @@ function Main() {
         </div>
 
         <div className="stat-box">
-          <h3>Doanh Thu Theo Ngày</h3>
+          <h3>Doanh Thu Ngày</h3>
           <div className="calendar-section">
             <DatePicker
               selected={selectedDate}

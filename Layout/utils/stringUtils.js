@@ -1,6 +1,12 @@
 //chuyển số thành dạng ngăn cách có dấu . ví dụ 10000 => 10.000
 export function numberUtils(x) {
-  return parseInt(x).toLocaleString("en-ES") + " ₫";
+  const parsedNumber = parseInt(x);
+  if (isNaN(parsedNumber)) {
+    return "Giá trị không hợp lệ";  // Xử lý trường hợp không hợp lệ
+  }
+  
+  // Chuyển đổi số thành chuỗi và thay thế dấu phẩy thành dấu chấm
+  return parsedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + "₫";
 }
 
 // viết hoa chữ cái đầu tiên
@@ -9,7 +15,7 @@ export function upperCaseFirstItem(str) {
   return str.charAt(0).toUpperCase() + str.slice(1); 
 }
 
-// viết hoa chữ cái đầu tiên
+// viết hoa chữ cái 
 export function upperCaseItem(string) {
   return string.toUpperCase();
 }

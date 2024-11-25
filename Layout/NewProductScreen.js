@@ -62,15 +62,14 @@ export default NewProductScreen = ({ navigation }) => {
           >
             <Image source={{ uri: item.img }} style={styles.itemImage} />
             {item.status === "New" && (
-                <Text style={styles.itemStatus}>
-                  {item.status}
-                </Text>
-              )}
+              <Text style={styles.itemStatus}>
+                {item.status}
+              </Text>
+            )}
             <View style={styles.itemRow}>
-              <Text style={styles.itemName}>
+              <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
                 {item.name}
               </Text>
-          
             </View>
             <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
             <Text style={styles.price}>{numberUtils(item.price)}</Text>
@@ -114,11 +113,16 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 130,
     borderRadius: 12,
+    resizeMode: "contain"
   },
   itemName: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    marginRight: 5, 
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 5,
+    // Thêm các thuộc tính để kiểm soát việc cắt chữ
+    overflow: 'hidden',
+    width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStatus: {
     position: "absolute",
@@ -135,8 +139,8 @@ const styles = StyleSheet.create({
   itemRow: {
     flexDirection: "row",
     alignItems: "center",
-    flexWrap: "wrap", 
-  
+    flexWrap: "wrap",
+
   },
   itemType: {
     fontSize: 15,

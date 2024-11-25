@@ -57,7 +57,7 @@ const SearchScreen = ({ navigation }) => {
 
     const delayDebounceFn = setTimeout(() => {
       searchProducts();
-    }, 500); // Thời gian trễ để tránh gửi yêu cầu quá nhiều
+    }, 1000); // Thời gian trễ để tránh gửi yêu cầu quá nhiều
 
     return () => clearTimeout(delayDebounceFn);
   }, [txtSearch, emailUser]);
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   searchInput: {
     flex: 1,
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   itemImage: {
     width: 80,

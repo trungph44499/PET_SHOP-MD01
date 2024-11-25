@@ -43,7 +43,7 @@ function Main() {
         }
       };
     }
-    
+
     // Gọi hàm lấy dữ liệu khi component mount
     getAllPetCare();
 
@@ -75,6 +75,9 @@ function Main() {
 
   return (
     <div>
+      <header className="header">
+        <h1>Xác nhận dịch vụ</h1>
+      </header>
       <table className="table">
         <thead>
           <tr>
