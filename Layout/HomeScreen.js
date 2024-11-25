@@ -22,9 +22,11 @@ const { width: screenWidth } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
-  const [products, setProducts] = useState([]); // Lưu tất cả sản phẩm
   const [selectedCategory, setSelectedCategory] = useState(null); // Lưu danh mục sản phẩm đã chọn
-  const [filteredProducts, setFilteredProducts] = useState([]); // Lưu danh sách sản phẩm đã lọc
+  const [ListDogs, setListDogs] = useState([]);
+  const [ListCats, setListCats] = useState([]);
+  const [filteredDogs, setFilteredDogs] = useState([]);
+  const [filteredCats, setFilteredCats] = useState([]);
 
   // Lấy tất cả các danh mục sản phẩm
   const getAllCategories = useCallback(async () => {
@@ -44,7 +46,8 @@ const HomeScreen = ({ navigation }) => {
     try {
       const { status, data: { response } } = await axios.get(`${URL}/products`);
       if (status === 200) {
-        setProducts(response);
+        setListCats(response.filter((item) => item.animals === "cat"));
+        setListDogs(response.filter((item) => item.animals === "dog"));
       }
     } catch (error) {
       console.log("Error fetching products:", error);
@@ -64,18 +67,29 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (selectedCategory) {
-      const filtered = products.filter((product) => {
+      const filteredC = ListCats.filter((product) => {
         return product.type._id === selectedCategory._id;
       });
-      setFilteredProducts(filtered);
+      setFilteredCats(filteredC);
     } else {
-      setFilteredProducts(products);
+      setFilteredCats(ListCats);
     }
-  }, [selectedCategory, products]);
+  }, [selectedCategory, ListCats]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      const filteredD = ListDogs.filter((product) => {
+        return product.type._id === selectedCategory._id;
+      });
+      setFilteredDogs(filteredD);
+    } else {
+      setFilteredDogs(ListDogs);
+    }
+  }, [selectedCategory, ListDogs]);
 
   // Hàm điều hướng đến màn hình ClassifyScreen
-  const goToClassifyScreen = useCallback((type) => {
-    navigation.navigate("ClassifyScreen", { type: type });
+  const goToClassifyScreen = useCallback((type, animals) => {
+    navigation.navigate("ClassifyScreen", { type: type, animals: animals });
   }, [navigation]);
 
   const goToDetailScreen = useCallback((item) => {
@@ -163,38 +177,38 @@ const HomeScreen = ({ navigation }) => {
             contentContainerStyle={styles.flatListContainer}
           />
         </View>
-        
+
 
         <View>
-        <Text style={styles.animalsTitle}>Dogs</Text>
+          <Text style={styles.animalsTitle}>Dogs</Text>
           <FlatList
             numColumns={2}
             scrollEnabled={false}
-            data={filteredProducts.slice(0, 6)}
+            data={filteredDogs.slice(0, 6)}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => <ItemList item={item} />}
           />
           <TouchableOpacity
-            onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id)}
+            onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id, "dog")}
             style={styles.textXemthem}
           >
             <Text style={styles.textXemthemContent}>Xem thêm</Text>
           </TouchableOpacity>
         </View>
         <View>
-        <Text style={styles.animalsTitle}>Cats</Text>
+          <Text style={styles.animalsTitle}>Cats</Text>
           <FlatList
             numColumns={2}
             scrollEnabled={false}
-            data={filteredProducts.slice(0, 6)}
+            data={filteredCats.slice(0, 6)}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => <ItemList item={item} />}
           />
           <TouchableOpacity
-            onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id)}
+            onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id, "cat")}
             style={styles.textXemthem}
           >
-            <Text style={styles.textXemthemContent}>Xem thêm</Text>
+            <Text style={styles.textXemthemContent}>Xem thêm</Text> 
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { URL } from "../HomeScreen";
 
-export const getListClassify = async (type) => {
+export const getListClassify = async (type, animals) => {
   var data = [];
   try {
     const {
@@ -9,9 +9,12 @@ export const getListClassify = async (type) => {
       data: { response },
     } = await axios.get(`${URL}/products`);
     if (status == 200) {
-      // console.log("type: ",type);
+      // console.log("animals: ",animals);
       
-      data = response.filter((item) => item.type._id === type);
+      data = response.filter(
+        (item) => item.type._id === type && item.animals === animals
+      );
+      
     }
     return data;
   } catch (err) {

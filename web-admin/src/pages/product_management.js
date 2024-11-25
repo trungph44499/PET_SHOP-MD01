@@ -284,7 +284,7 @@ function Main() {
               <select ref={_animals} defaultValue={dataUpdate.animals}>
                 <option value="dog">Dog</option>
                 <option value="cat">Cat</option>
-                <option value="all">All</option>
+             
               </select>
             </div>
           </div>
@@ -382,7 +382,7 @@ function Main() {
               <select ref={_animals} defaultValue={dataUpdate.animals}>
                 <option value="dog">Dog</option>
                 <option value="cat">Cat</option>
-                <option value="all">All</option>
+              
               </select>
             </div>
           </div>

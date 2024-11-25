@@ -14,7 +14,6 @@ import { URL } from "./HomeScreen";
 import { numberUtils, upperCaseItem } from "./utils/stringUtils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 const DetailProduct = ({ navigation, route }) => {
   const { item } = route.params;
   var [count, setCount] = useState(1);
@@ -27,22 +26,28 @@ const DetailProduct = ({ navigation, route }) => {
       ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
       return;
     }
-  }
+  };
   const subtractProdct = () => {
     if (count > 1) {
       setCount(count - 1);
     } else {
-      ToastAndroid.show("Số lượng sản phẩm không thể nhỏ hơn 1!", ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Số lượng sản phẩm không thể nhỏ hơn 1!",
+        ToastAndroid.SHORT
+      );
       return;
     }
-  }
+  };
 
   const buyNow = () => {
     console.log("size: ", selectedSize);
 
     // Kiểm tra xem người dùng đã chọn kích thước hay chưa
     if (!selectedSize) {
-      ToastAndroid.show("Vui lòng chọn kích thước trước khi mua!", ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Vui lòng chọn kích thước trước khi mua!",
+        ToastAndroid.SHORT
+      );
       return; // Dừng lại nếu chưa chọn kích thước
     }
 
@@ -53,15 +58,17 @@ const DetailProduct = ({ navigation, route }) => {
 
     navigation.navigate("Payment", {
       total: item.price * parseInt(count),
-      listItem: [{
-        id: item._id,
-        image: item.img,
-        name: item.name,
-        type: item.type,
-        price: item.price,
-        quantity: parseInt(count),
-        size: selectedSize,
-      }],
+      listItem: [
+        {
+          id: item._id,
+          image: item.img,
+          name: item.name,
+          type: item.type,
+          price: item.price,
+          quantity: parseInt(count),
+          size: selectedSize,
+        },
+      ],
     });
   };
 
@@ -71,7 +78,10 @@ const DetailProduct = ({ navigation, route }) => {
 
       // Kiểm tra xem người dùng đã chọn kích thước hay chưa
       if (!selectedSize) {
-        ToastAndroid.show("Vui lòng chọn kích thước trước khi thêm!", ToastAndroid.SHORT);
+        ToastAndroid.show(
+          "Vui lòng chọn kích thước trước khi thêm!",
+          ToastAndroid.SHORT
+        );
         return; // Dừng lại nếu chưa chọn kích thước
       }
 
@@ -125,33 +135,46 @@ const DetailProduct = ({ navigation, route }) => {
             <View style={styles.buttonPrice}>
               <Text style={styles.priceText}>{numberUtils(item.price)}</Text>
             </View>
-            <Text style={styles.title}>  </Text>
+            <Text style={styles.title}> </Text>
           </View>
 
           <View style={styles.itemPrice}>
-            <View style={{ flexDirection: "row", flex: 1, }}>
-              <Image style={styles.starIcon} source={require("../Image/star.png")} />
-              <Image style={styles.starIcon} source={require("../Image/star.png")} />
-              <Image style={styles.starIcon} source={require("../Image/star.png")} />
-              <Image style={styles.starIcon} source={require("../Image/star.png")} />
-              <Image style={styles.starIcon} source={require("../Image/star.png")} />
+            <View style={{ flexDirection: "row", flex: 1 }}>
+              <Image
+                style={styles.starIcon}
+                source={require("../Image/star.png")}
+              />
+              <Image
+                style={styles.starIcon}
+                source={require("../Image/star.png")}
+              />
+              <Image
+                style={styles.starIcon}
+                source={require("../Image/star.png")}
+              />
+              <Image
+                style={styles.starIcon}
+                source={require("../Image/star.png")}
+              />
+              <Image
+                style={styles.starIcon}
+                source={require("../Image/star.png")}
+              />
               <Text style={{ marginLeft: 4 }}>(4.9)</Text>
             </View>
             <View style={styles.buttonAddCart}>
-              <TouchableOpacity
-                onPress={addProdct}
-                style={styles.btn}>
+              <TouchableOpacity onPress={addProdct} style={styles.btn}>
                 <Image
                   source={require("../Image/add.png")}
-                  style={styles.icon} />
+                  style={styles.icon}
+                />
               </TouchableOpacity>
               <Text style={{ marginHorizontal: 10 }}>{count}</Text>
-              <TouchableOpacity
-                onPress={subtractProdct}
-                style={styles.btn}>
+              <TouchableOpacity onPress={subtractProdct} style={styles.btn}>
                 <Image
                   source={require("../Image/subtract.png")}
-                  style={styles.icon} />
+                  style={styles.icon}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -166,7 +189,9 @@ const DetailProduct = ({ navigation, route }) => {
               </View>
               <View style={{ marginLeft: 10 }}>
                 <Text style={styles.textItem}>Mã sản phẩm</Text>
-                <Text style={styles.textItemItem}>{upperCaseItem(item._id.slice(-5))}</Text>
+                <Text style={styles.textItemItem}>
+                  {upperCaseItem(item._id.slice(-5))}
+                </Text>
               </View>
             </View>
             <View style={styles.itemRowRow}>
@@ -182,22 +207,26 @@ const DetailProduct = ({ navigation, route }) => {
               </View>
             </View>
           </View>
-          <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 5 }}>Kích thước</Text>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 5 }}>
+            Kích thước
+          </Text>
+          <View
+            style={{ flexDirection: "row", flexWrap: "wrap" }}
+          >
             {item.size && item.size.length > 0 ? (
               item.size.map((size, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
                     styles.sizeButton,
-                    selectedSize === size && { backgroundColor: "#C04643" } // Đổi màu khi chọn
+                    selectedSize === size && { backgroundColor: "#C04643" }, // Đổi màu khi chọn
                   ]}
                   onPress={() => setSelectedSize(size)} // Cập nhật kích thước được chọn
                 >
                   <Text
                     style={[
                       styles.sizeText,
-                      selectedSize === size && { color: "#FFFFFF" } // Đổi màu chữ khi chọn
+                      selectedSize === size && { color: "#FFFFFF" }, // Đổi màu chữ khi chọn
                     ]}
                   >
                     {upperCaseItem(size)}
@@ -217,27 +246,41 @@ const DetailProduct = ({ navigation, route }) => {
       </ScrollView>
       <View style={{ position: "absolute", top: "2%", left: "5%" }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={styles.iconBack} source={require("../Image/left-back.png")} />
+          <Image
+            style={styles.iconBack}
+            source={require("../Image/left-back.png")}
+          />
         </TouchableOpacity>
       </View>
       <View style={{ position: "absolute", top: "2%", right: "5%" }}>
         <TouchableOpacity onPress={() => navigation.navigate("CartScreen")}>
-          <Image style={styles.cartIcon} source={require("../Image/cart_shopping.png")} />
+          <Image
+            style={styles.cartIcon}
+            source={require("../Image/cart_shopping.png")}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.rowCart}>
-        <TouchableOpacity style={styles.addToCartButton}>
-          <Image style={styles.cartButton} source={require("../Image/messenger.png")} />
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={() => navigation.navigate("ChatScreen")}
+        >
+          <Image
+            style={styles.cartButton}
+            source={require("../Image/messenger.png")}
+          />
         </TouchableOpacity>
         <Text style={{ fontSize: 35, fontWeight: 100, color: "gray" }}>|</Text>
         <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
-          <Image style={styles.cartButton} source={require("../Image/cart_detail.png")} />
+          <Image
+            style={styles.cartButton}
+            source={require("../Image/cart_detail.png")}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={buyNow} style={styles.addMuaNgayButton}>
           <Text style={styles.addToCartText}>Mua ngay</Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );
@@ -311,12 +354,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   rowCart: {
-    position: 'absolute',
+    position: "absolute",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     bottom: 0,
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
   },
   cartButton: {
     width: 26,
@@ -338,45 +381,47 @@ const styles = StyleSheet.create({
   },
   itemRow: {
     flexDirection: "row",
-    marginVertical: 5
+    marginVertical: 5,
   },
   itemRowRow: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
-    padding: 10, borderRadius: 10,
+    padding: 10,
+    borderRadius: 10,
     marginHorizontal: 5,
-    elevation: 6
+    elevation: 6,
   },
   itemBackgroud: {
-    padding: 10, backgroundColor: '#FBEEC2',
-    borderRadius: 10
+    padding: 10,
+    backgroundColor: "#FBEEC2",
+    borderRadius: 10,
   },
   textItem: {
     fontSize: 14,
-    color: 'gray',
-    fontWeight: '600'
+    color: "gray",
+    fontWeight: "600",
   },
   textItemItem: {
     fontSize: 14,
-    color: 'black',
-    fontWeight: 'bold'
+    color: "black",
+    fontWeight: "bold",
   },
   itemPrice: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   buttonAddCart: {
     padding: 10,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   btn: {
     padding: 5,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "black"
+    borderColor: "black",
   },
   icon: {
     width: 10,
@@ -384,15 +429,15 @@ const styles = StyleSheet.create({
   },
   sizeButton: {
     padding: 8,
-    marginLeft: 10,
     marginTop: 5,
+    marginLeft: 10,
     backgroundColor: "#CDDCEA", // Màu mặc định của nút
-    borderRadius: 8
+    borderRadius: 8,
   },
   sizeText: {
     fontSize: 14,
     color: "#000000", // Màu chữ mặc định
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   buttonPrice: {
     paddingVertical: 5,
