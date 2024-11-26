@@ -95,7 +95,7 @@ const DetailHistoryPay = ({ route }) => {
         );
     }
 
-    const totalAmount = item.products.reduce((sum, product) => sum + product.price * product.quantity, 0);
+    // const totalAmount = item.products.reduce((sum, product) => sum + product.price * product.quantity, 0);
 
     return (
         <View style={styles.container}>
@@ -134,12 +134,14 @@ const DetailHistoryPay = ({ route }) => {
                         <View key={item.id} style={{ flexDirection: 'row' }}>
                             <Image source={{ uri: item.image }} style={styles.image} />
                             <View style={{ flex: 1, justifyContent: "center" }}>
-                                <Text style={styles.textItem}>
-                                    Mã sản phẩm: {upperCaseItem(item.id.slice(-5))}
+                                <Text style={styles.textItem} numberOfLines={1} ellipsizeMode="tail">
+                                    Tên sản phẩm: {item.name}
                                 </Text>
-                                <Text style={styles.textItem}>Tên sản phẩm: {item.name}</Text>
                                 <Text style={styles.textItem}>
                                     Giá tiền: {numberUtils(item.price)}
+                                </Text>
+                                <Text style={styles.textItem}>
+                                    Kích thước: {item.size}
                                 </Text>
                                 <Text style={styles.textItem}>
                                     Số lượng: {item.quantity}
@@ -152,7 +154,7 @@ const DetailHistoryPay = ({ route }) => {
             <View style={{ width: '90%', marginVertical: 20, marginHorizontal: '5%', gap: 20 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={styles.textPay}>Đã thanh toán</Text>
-                    <Text style={styles.textPay}>{numberUtils(totalAmount)}</Text>
+                    <Text style={styles.textPay}>{numberUtils(item.totalPrice)}</Text>
                 </View>
                 {/* Button Hủy đơn hàng */}
                 <TouchableOpacity
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
     },
     textGray: {
         fontSize: 16,
-        color: 'black', 
+        color: 'black',
     },
     textGreen: {
         fontSize: 16,
@@ -211,17 +213,19 @@ const styles = StyleSheet.create({
     },
     textItem: {
         fontSize: 16,
-        color: 'black',
-        fontWeight: "bold"
+        color: "#000",
+        fontWeight: "bold",
+        overflow: 'hidden',
+        width: '100%',
     },
     textBold: {
         fontSize: 16,
         fontWeight: 'bold'
     },
     image: {
-        width: 100,
-        height: 100,
-        marginHorizontal: 15,
+        width: 110,
+        height: 110,
+        marginRight: 15,
         resizeMode: "contain"
     },
     section: {

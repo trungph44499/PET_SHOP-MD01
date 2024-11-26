@@ -192,7 +192,11 @@ function Main() {
             <ul>
               {transaction.products.map((product, index) => (
                 <li key={index}>
-                  {product.name} - {Number(product.price).toLocaleString("vi-VN")} VNĐ
+                  <p><strong>Tên sản phẩm: </strong>{product.name}</p>
+                  <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
+                  <p><strong>Kích thước: </strong>{product.size}</p>
+                  <p><strong>Số lượng: </strong>{product.quantity}</p>
+                  {/* {product.name} - {Number(product.price).toLocaleString("vi-VN")} VNĐ */}
                 </li>
               ))}
             </ul>

@@ -4,31 +4,29 @@
   },
   "img": "https://m.media-amazon.com/images/I/81Kq9lRbqML._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Giường cho mèo Bedsure Calming ",
-  "price": 1000000,
-  "quantity": 10,
   "size": [
     {
       "sizeName": "M",
-      "price": 100000,
+      "price": 1000000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d11540fdb4d597d7c34"
+        "$oid": "6745aa59cac5c716a76904bd"
       }
     },
     {
       "sizeName": "L",
-      "price": 200000,
+      "price": 2000000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d11540fdb4d597d7c35"
+        "$oid": "6745aa59cac5c716a76904be"
       }
     },
     {
       "sizeName": "XL",
-      "price": 300000,
+      "price": 3000000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d11540fdb4d597d7c36"
+        "$oid": "6745aa59cac5c716a76904bf"
       }
     }
   ],
@@ -46,31 +44,29 @@
   },
   "img": "https://m.media-amazon.com/images/I/81aFbYJhsQL._AC_SX679_.jpg",
   "name": "Thức ăn khô cho mèo",
-  "price": 400000,
-  "quantity": 4,
   "size": [
     {
       "sizeName": "M",
-      "price": 100000,
+      "price": 250000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d2b540fdb4d597d7cc1"
+        "$oid": "6745a5cca19a42f69a041844"
       }
     },
     {
       "sizeName": "L",
-      "price": 200000,
+      "price": 300000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d2b540fdb4d597d7cc2"
+        "$oid": "6745a5cca19a42f69a041845"
       }
     },
     {
       "sizeName": "XL",
-      "price": 300000,
+      "price": 350000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d2b540fdb4d597d7cc3"
+        "$oid": "6745a5cca19a42f69a041846"
       }
     }
   ],
@@ -88,31 +84,29 @@
   },
   "img": "https://m.media-amazon.com/images/I/51KewME6QLL._AC_SX679_.jpg",
   "name": "Thức ăn hạt cho chó ",
-  "price": 100000000,
-  "quantity": 5,
   "size": [
     {
       "sizeName": "M",
-      "price": 100000,
+      "price": 130000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d3b540fdb4d597d7d08"
+        "$oid": "6745aad8cac5c716a7690514"
       }
     },
     {
       "sizeName": "L",
-      "price": 200000,
+      "price": 230000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d3b540fdb4d597d7d09"
+        "$oid": "6745aad8cac5c716a7690515"
       }
     },
     {
       "sizeName": "XL",
-      "price": 300000,
+      "price": 330000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d3b540fdb4d597d7d0a"
+        "$oid": "6745aad8cac5c716a7690516"
       }
     }
   ],
@@ -130,31 +124,29 @@
   },
   "img": "https://m.media-amazon.com/images/I/71GTm5lTp0L.__AC_SX300_SY300_QL70_FMwebp_.jpg",
   "name": "Thức ăn hạt Royal",
-  "price": 210000,
-  "quantity": 4,
   "size": [
     {
       "sizeName": "M",
-      "price": 100000,
+      "price": 120000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d52540fdb4d597d7d50"
+        "$oid": "6745aae9cac5c716a769056b"
       }
     },
     {
       "sizeName": "L",
-      "price": 200000,
+      "price": 220000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d52540fdb4d597d7d51"
+        "$oid": "6745aae9cac5c716a769056c"
       }
     },
     {
       "sizeName": "XL",
-      "price": 300000,
+      "price": 320000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d52540fdb4d597d7d52"
+        "$oid": "6745aae9cac5c716a769056d"
       }
     }
   ],
@@ -172,31 +164,29 @@
   },
   "img": "https://m.media-amazon.com/images/I/71553V8FDLL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Thức ăn hạt cho chó",
-  "price": 120000,
-  "quantity": 3,
   "size": [
     {
       "sizeName": "M",
-      "price": 100000,
+      "price": 110000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d65540fdb4d597d7d99"
+        "$oid": "6745a5e1a19a42f69a04189b"
       }
     },
     {
       "sizeName": "L",
-      "price": 200000,
+      "price": 210000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d65540fdb4d597d7d9a"
+        "$oid": "6745a5e1a19a42f69a04189c"
       }
     },
     {
       "sizeName": "XL",
-      "price": 300000,
+      "price": 310000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d65540fdb4d597d7d9b"
+        "$oid": "6745a5e1a19a42f69a04189d"
       }
     }
   ],
@@ -214,8 +204,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71IN6uno8ML._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Đồ chơi nhai cho chó Willjoy làm từ gỗ thông",
-  "price": 100000,
-  "quantity": 6,
   "size": [
     {
       "sizeName": "M",
@@ -256,8 +244,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71gOeWByAFL._AC_SX679_.jpg",
   "name": "Đồ chơi bóng đá có dây đeo cho chó QDAN",
-  "price": 210000,
-  "quantity": 6,
   "size": [
     {
       "sizeName": "M",
@@ -298,8 +284,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/8145aXf4ScL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Thức ăn ướt cho mèo Whole Paws",
-  "price": 419000,
-  "quantity": 6,
   "size": [
     {
       "sizeName": "M",
@@ -340,31 +324,29 @@
   },
   "img": "https://m.media-amazon.com/images/I/819LJ2mwOXL._AC_SX679_.jpg",
   "name": "Thức ăn cho mèo Purina Pro Plan Allergen Reduction",
-  "price": 310000,
-  "quantity": 7,
   "size": [
     {
       "sizeName": "M",
-      "price": 100000,
+      "price": 200000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d9e540fdb4d597d7ec7"
+        "$oid": "6745ab08cac5c716a76905c2"
       }
     },
     {
       "sizeName": "L",
-      "price": 200000,
+      "price": 250000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d9e540fdb4d597d7ec8"
+        "$oid": "6745ab08cac5c716a76905c3"
       }
     },
     {
       "sizeName": "XL",
-      "price": 300000,
+      "price": 350000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d9e540fdb4d597d7ec9"
+        "$oid": "6745ab08cac5c716a76905c4"
       }
     }
   ],
@@ -382,8 +364,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71bNP5QUiJS._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Lò xo xoắn ốc cho mèo Andiker",
-  "price": 10000,
-  "quantity": 4,
   "size": [
     {
       "sizeName": "M",
@@ -424,8 +404,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/81fSg1+32LL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Đồ chơi cho mèo Potaroma Cá Saury",
-  "price": 31000,
-  "quantity": 5,
   "size": [
     {
       "sizeName": "M",
@@ -466,8 +444,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/81mvdsz4wgL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
   "name": "Giường sưởi ấm cho thú cưng trong nhà ",
-  "price": 4000000,
-  "quantity": 5,
   "size": [
     {
       "sizeName": "M",
@@ -508,8 +484,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71fIDIyxppL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Giường cho mèo rabbitgoo dành cho mèo trong nhà",
-  "price": 5000000,
-  "quantity": 6,
   "size": [
     {
       "sizeName": "M",
@@ -550,8 +524,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71UECqrKYNL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Giường chỉnh hình Bedsure cho chó ",
-  "price": 4100000,
-  "quantity": 7,
   "size": [
     {
       "sizeName": "M",
@@ -592,8 +564,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/61E0gCG7yrS.__AC_SY300_SX300_QL70_FMwebp_.jpg",
   "name": "Giường cho chó nâng cao, làm mát, thoáng khí ",
-  "price": 1900000,
-  "quantity": 6,
   "size": [
     {
       "sizeName": "M",
@@ -634,8 +604,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/81OPxO1+oCL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Giường sofa chỉnh hình cho chó - Giường cực kỳ thoải mái cho chó cỡ vừa",
-  "price": 410000,
-  "quantity": 7,
   "size": [
     {
       "sizeName": "M",
@@ -676,8 +644,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/61Pe4-aFPOL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Áo khoác mùa đông cho chó EMUST",
-  "price": 410000,
-  "quantity": 7,
   "size": [
     {
       "sizeName": "M",
@@ -718,8 +684,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71tAibE7dUL.__AC_SY300_SX300_QL70_FMwebp_.jpg",
   "name": "Áo chui đầu cổ lọ thiết kế cho thú cưng",
-  "price": 310000,
-  "quantity": 6,
   "size": [
     {
       "sizeName": "M",
@@ -760,8 +724,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71WmzZ+xuYL._AC_SX679_.jpg",
   "name": "Áo len đan cho chó nhỏ Yorkie Chihuahua",
-  "price": 312000,
-  "quantity": 7,
   "size": [
     {
       "sizeName": "M",
@@ -802,8 +764,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/71mIzij-CoL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Trang phục Giáng sinh cho mèo Áo choàng xanh cho thú cưng có mũ có ngôi sao",
-  "price": 310000,
-  "quantity": 7,
   "size": [
     {
       "sizeName": "M",
@@ -844,8 +804,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/714cVV+kaKL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Áo hoodie cơ bản cho chó, mèo QWINEE",
-  "price": 123000,
-  "quantity": 7,
   "size": [
     {
       "sizeName": "M",
@@ -886,8 +844,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/51itKrppI2L._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Trang phục chó cao bồi NACOCO có mũ",
-  "price": 500000,
-  "quantity": 8,
   "size": [
     {
       "sizeName": "M",
@@ -928,8 +884,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/81GOSqfpwqL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Túi đựng bong bóng Henkelion cho chó mèo cỡ nhỏ",
-  "price": 1000000,
-  "quantity": 5,
   "size": [
     {
       "sizeName": "M",
@@ -970,8 +924,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/714VEPsgYrL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Ba lô đựng thú cưng được hãng hàng không chấp thuận cho chó nhỏ, mèo",
-  "price": 410000,
-  "quantity": 10,
   "size": [
     {
       "sizeName": "M",
@@ -1012,8 +964,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/81SxM7uoWdL._AC_SX679_.jpg",
   "name": "Dây nịt cho chó tobeDRI không kéo, có thể điều chỉnh, phản quang Oxford, dễ điều khiển",
-  "price": 100000,
-  "quantity": 5,
   "size": [
     {
       "sizeName": "M",
@@ -1054,8 +1004,6 @@
   },
   "img": "https://m.media-amazon.com/images/I/81eme8x97QL._AC_UL480_FMwebp_QL65_.jpg",
   "name": "Dây nịt chiến thuật hạng nặng cho chó lớn, không kéo, dây nịt cho thú cưng có thể điều chỉnh",
-  "price": 1000000,
-  "quantity": 6,
   "size": [
     {
       "sizeName": "M",

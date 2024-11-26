@@ -24,8 +24,6 @@ function Main() {
 
   const _image = useRef();
   const _name = useRef();
-  const _price = useRef();
-  const _quantity = useRef();
   const _status = useRef();
   const _type = useRef();
   const _description = useRef();
@@ -70,8 +68,6 @@ function Main() {
     if (
       _image.current.value === "" ||
       _name.current.value === "" ||
-      _price.current.value === "" ||
-      _quantity.current.value === "" ||
       _status.current.value === "" ||
       _type.current.value === "" ||
       _description.current.value === "" ||
@@ -79,14 +75,6 @@ function Main() {
       _animals.current.value === "" // Kiểm tra animals
     ) {
       return "Vui lòng điền đầy đủ thông tin!";
-    }
-
-    if (parseFloat(_price.current.value) <= 0) {
-      return "Giá sản phẩm phải lớn hơn 0!";
-    }
-
-    if (parseInt(_quantity.current.value) < 0) {
-      return "Số lượng sản phẩm không thể nhỏ hơn 0!";
     }
 
     return null;
@@ -117,8 +105,6 @@ function Main() {
         {
           image: _image.current.value,
           name: _name.current.value,
-          price: _price.current.value,
-          quantity: _quantity.current.value,
           status: _status.current.value,
           type: _type.current.value,
           description: _description.current.value,
@@ -165,9 +151,7 @@ function Main() {
         {
           id: dataUpdate._id,
           image: _image.current.value,
-          name: _name.current.value,
-          price: _price.current.value,
-          quantity: _quantity.current.value,
+          name: _name.current.value,       
           status: _status.current.value,
           type: _type.current.value,
           description: _description.current.value,
@@ -256,21 +240,7 @@ function Main() {
                 Name
               </span>
               <input ref={_name} type="text" defaultValue={dataUpdate.name} />
-            </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Price
-              </span>
-              <input ref={_price} type="number" defaultValue={dataUpdate.price} />
-            </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Quantity
-              </span>
-              <input ref={_quantity} type="number" defaultValue={dataUpdate.quantity} />
-            </div>
+            </div>        
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Status
@@ -378,21 +348,7 @@ function Main() {
                 Name
               </span>
               <input ref={_name} type="text" />
-            </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Price
-              </span>
-              <input ref={_price} type="number" />
-            </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Quantity
-              </span>
-              <input ref={_quantity} type="number" />
-            </div>
+            </div>        
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Status
@@ -485,13 +441,13 @@ function Main() {
         <thead>
           <tr>
             <th scope="col">Image</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
+            <th scope="col">Name</th>           
             <th scope="col">Status</th>
             <th scope="col">Category</th>
             <th scope="col">Description</th>
             <th scope="col">Size</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
             <th scope="col">Animals</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
@@ -508,14 +464,18 @@ function Main() {
                   alt={item.name || "Hình ảnh sản phẩm"}
                 />
               </td>
-              <td>{item.name}</td>
-              <td>{item.price}</td>
-              <td>{item.quantity}</td>
+              <td>{item.name}</td>            
               <td>{item.status}</td>
               <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
               <td>
                 {item.size ? item.size.map(s => s.sizeName).join(', ') : ''}
+              </td>
+              <td>
+                {item.size ? item.size.map(s => s.price).join(', ') : ''}
+              </td>
+              <td>
+                {item.size ? item.size.map(s => s.quantity).join(', ') : ''}
               </td>
               {/* Hiển thị mảng size như chuỗi ngăn cách bởi dấu phẩy */}
               <td>{item.animals}</td>

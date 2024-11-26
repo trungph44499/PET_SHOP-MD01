@@ -52,13 +52,13 @@ export default function ({ item, getAllHistoryPay }) {
               const {
                 status,
                 data: { response, type },
-              } = await axios.post(`${URL}/pay/update`, 
+              } = await axios.post(`${URL}/pay/update`,
                 {
                   id: item._id,
                   email: item.email,
                   products: item.products,
                   status: "reject",
-              });
+                });
 
               if (status === 200) {
                 ToastAndroid.show(response, ToastAndroid.SHORT);
@@ -85,19 +85,19 @@ export default function ({ item, getAllHistoryPay }) {
         >
           <View style={styles.item}>
             <Image source={{ uri: e.image }} style={styles.image} />
-            <View>
-              <Text style={{ color: "gray" }}>
-                Mã sản phẩm: {upperCaseFirstItem(e.id.slice(-5))}
-              </Text>
+            <View style={{ flex: 1 }}>
               <Text
                 numberOfLines={1}
                 ellipsizeMode="tail"
-                style={{ fontSize: 15, fontWeight: "bold", width: "50%" }}
+                style={styles.itemName}
               >
                 {e.name}
               </Text>
               <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                 Giá tiền: {numberUtils(e.price)}
+              </Text>
+              <Text style={{fontSize: 15, fontWeight: "bold"}} numberOfLines={1} ellipsizeMode="tail">
+                Kích thước: {e.size}
               </Text>
               <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                 Số lượng : {e.quantity}
@@ -154,6 +154,7 @@ export default function ({ item, getAllHistoryPay }) {
 
 const styles = StyleSheet.create({
   item: {
+    flex: 1,
     height: 120,
     width: "100%",
     flexDirection: "row",
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain"
   },
   container: {
+    flex: 1,
     backgroundColor: "white",
     borderRadius: 12,
     padding: 8,
@@ -198,5 +200,12 @@ const styles = StyleSheet.create({
   },
   disabledButtonText: {
     color: "#a9a9a9",
+  },
+  itemName: {
+    fontSize: 15,
+    color: "#000",
+    fontWeight: "bold",
+    overflow: 'hidden',
+    width: '100%',
   },
 });

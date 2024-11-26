@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
 
 // Thêm mới sản phẩm
 router.post("/add", async (req, res) => {
-  const { image, name, price, quantity, size, status, type, description, animals } = req.body;
+  const { image, name, size, status, type, description, animals } = req.body;
 
   // Chuyển đổi chuỗi size thành mảng đối tượng
   const sizeArray = size.map(item => ({
@@ -52,8 +52,6 @@ router.post("/add", async (req, res) => {
     const newProduct = new productModel({
       img: image,
       name: name,
-      price: price,
-      quantity: quantity,
       size: sizeArray,
       status: status,
       type: type, // Đây là ObjectId tham chiếu đến danh mục
@@ -71,7 +69,7 @@ router.post("/add", async (req, res) => {
 
 // Cập nhật sản phẩm
 router.post("/update", async (req, res) => {
-  const { id, image, name, price, quantity, size, status, type, description, animals } = req.body;
+  const { id, image, name, size, status, type, description, animals } = req.body;
 
   // Chuyển đổi chuỗi size thành mảng đối tượng
   const sizeArray = size.map(item => ({
@@ -89,8 +87,6 @@ router.post("/update", async (req, res) => {
     const updatedProduct = await productModel.findByIdAndUpdate(id, {
       img: image,
       name: name,
-      price: price,
-      quantity: quantity,
       size: sizeArray,
       status: status,
       type: type, // Cập nhật trường type

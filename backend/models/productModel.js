@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
   img: String,
   name: String,
-  price: Number,
-  quantity: Number,
   size: [
     {
       sizeName: String,   // Tên kích thước (ví dụ: "S", "M", "L")

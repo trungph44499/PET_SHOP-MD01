@@ -145,7 +145,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.itemStyle}>
           Mã SP: {upperCaseItem(item._id.slice(-5))}
         </Text>
-        <Text style={styles.price}>{numberUtils(item.price)}</Text>
+        <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
       </TouchableOpacity>
     );
   };
