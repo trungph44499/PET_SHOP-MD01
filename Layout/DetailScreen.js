@@ -18,9 +18,20 @@ const DetailProduct = ({ navigation, route }) => {
   const { item } = route.params;
   var [count, setCount] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState(item.price);
+  const [selectedQuantity, setSelectedQuantity] = useState(item.quantity);
+
+  useEffect(() => {
+    if (item.size && item.size.length > 0) {
+      const defaultSize = item.size[0];
+      setSelectedSize(defaultSize.sizeName);
+      setSelectedPrice(defaultSize.price);
+      setSelectedQuantity(defaultSize.quantity);
+    }
+  }, [item.size]);
 
   const addProdct = () => {
-    if (count < item.quantity) {
+    if (count < selectedQuantity) {
       setCount(count + 1);
     } else {
       ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
@@ -42,29 +53,28 @@ const DetailProduct = ({ navigation, route }) => {
   const buyNow = () => {
     console.log("size: ", selectedSize);
 
-    // Kiểm tra xem người dùng đã chọn kích thước hay chưa
     if (!selectedSize) {
       ToastAndroid.show(
         "Vui lòng chọn kích thước trước khi mua!",
         ToastAndroid.SHORT
       );
-      return; // Dừng lại nếu chưa chọn kích thước
+      return;
     }
 
-    if (item.quantity < 1) {
+    if (selectedQuantity < 1) {
       ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
       return;
     }
 
     navigation.navigate("Payment", {
-      total: item.price * parseInt(count),
+      total: selectedPrice * parseInt(count),
       listItem: [
         {
           id: item._id,
           image: item.img,
           name: item.name,
           type: item.type,
-          price: item.price,
+          price: selectedPrice,
           quantity: parseInt(count),
           size: selectedSize,
         },
@@ -76,16 +86,15 @@ const DetailProduct = ({ navigation, route }) => {
     try {
       const emailUser = await AsyncStorage.getItem("@UserLogin");
 
-      // Kiểm tra xem người dùng đã chọn kích thước hay chưa
       if (!selectedSize) {
         ToastAndroid.show(
           "Vui lòng chọn kích thước trước khi thêm!",
           ToastAndroid.SHORT
         );
-        return; // Dừng lại nếu chưa chọn kích thước
+        return;
       }
 
-      if (item.quantity < 1) {
+      if (selectedQuantity < 1) {
         ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
         return;
       }
@@ -96,8 +105,8 @@ const DetailProduct = ({ navigation, route }) => {
         img: item.img,
         name: item.name,
         type: item.type,
-        price: item.price,
-        quantity: item.quantity,
+        price: selectedPrice,
+        quantity: selectedQuantity,
         size: selectedSize,
       });
 
@@ -122,6 +131,12 @@ const DetailProduct = ({ navigation, route }) => {
     }
   };
 
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size.sizeName);
+    setSelectedPrice(size.price);
+    setSelectedQuantity(size.quantity);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -133,7 +148,7 @@ const DetailProduct = ({ navigation, route }) => {
 
           <View style={styles.itemPrice}>
             <View style={styles.buttonPrice}>
-              <Text style={styles.priceText}>{numberUtils(item.price)}</Text>
+              <Text style={styles.priceText}>{numberUtils(selectedPrice)}</Text>
             </View>
             <Text style={styles.title}> </Text>
           </View>
@@ -203,40 +218,38 @@ const DetailProduct = ({ navigation, route }) => {
               </View>
               <View style={{ marginLeft: 10 }}>
                 <Text style={styles.textItem}>Số lượng</Text>
-                <Text style={styles.textItemItem}>{item.quantity}</Text>
+                <Text style={styles.textItemItem}>{selectedQuantity}</Text>
               </View>
             </View>
           </View>
           <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 5 }}>
             Kích thước
           </Text>
-          {/* <View
-            style={{ flexDirection: "row", flexWrap: "wrap" }}
-          >
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {item.size && item.size.length > 0 ? (
               item.size.map((size, index) => (
                 <TouchableOpacity
                   key={index}
                   style={[
                     styles.sizeButton,
-                    selectedSize === size && { backgroundColor: "#C04643" }, // Đổi màu khi chọn
+                    selectedSize === size.sizeName && { backgroundColor: "#C04643" },
                   ]}
-                  onPress={() => setSelectedSize(size)} // Cập nhật kích thước được chọn
+                  onPress={() => handleSizeSelect(size)}
                 >
                   <Text
                     style={[
                       styles.sizeText,
-                      selectedSize === size && { color: "#FFFFFF" }, // Đổi màu chữ khi chọn
+                      selectedSize === size.sizeName && { color: "#FFFFFF" },
                     ]}
                   >
-                    {upperCaseItem(size)}
+                    {size.sizeName}
                   </Text>
                 </TouchableOpacity>
               ))
             ) : (
               <Text style={{ fontSize: 16, color: "gray" }}>Chưa có size</Text>
             )}
-          </View> */}
+          </View>
 
           <View style={{ marginTop: 5, marginBottom: 40 }}>
             <Text style={styles.textDescription}>Mô tả sản phẩm</Text>
@@ -431,12 +444,12 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 5,
     marginLeft: 10,
-    backgroundColor: "#CDDCEA", // Màu mặc định của nút
+    backgroundColor: "#CDDCEA",
     borderRadius: 8,
   },
   sizeText: {
     fontSize: 14,
-    color: "#000000", // Màu chữ mặc định
+    color: "#000000",
     fontWeight: "bold",
   },
   buttonPrice: {

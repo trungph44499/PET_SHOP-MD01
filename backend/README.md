@@ -51,5 +51,5 @@ có 2 cái truyền params với axios,
 - mongodb+srv://trungmvph44499:3E4riGHCN1noc8fj@mydatabase.bnquf.mongodb.net
 - 192.168.1.3
 
-//192.168.1.10
+//192.168.1.104
 
