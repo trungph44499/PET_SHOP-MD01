@@ -36,6 +36,13 @@ router.get("/:id", async (req, res) => {
 router.post("/add", async (req, res) => {
   const { image, name, price, quantity, size, status, type, description, animals } = req.body;
 
+  // Chuyển đổi chuỗi size thành mảng đối tượng
+  const sizeArray = size.map(item => ({
+    sizeName: item.sizeName,  // Ví dụ: "S", "M", "L"
+    price: item.price,        // Giá của kích thước đó
+    quantity: item.quantity   // Số lượng của kích thước đó
+  }));
+
   try {
     // Kiểm tra type có phải là ObjectId hợp lệ không
     if (!mongoose.Types.ObjectId.isValid(type)) {
@@ -47,7 +54,7 @@ router.post("/add", async (req, res) => {
       name: name,
       price: price,
       quantity: quantity,
-      size: size,
+      size: sizeArray,
       status: status,
       type: type, // Đây là ObjectId tham chiếu đến danh mục
       description: description,
@@ -66,6 +73,13 @@ router.post("/add", async (req, res) => {
 router.post("/update", async (req, res) => {
   const { id, image, name, price, quantity, size, status, type, description, animals } = req.body;
 
+  // Chuyển đổi chuỗi size thành mảng đối tượng
+  const sizeArray = size.map(item => ({
+    sizeName: item.sizeName,  // Ví dụ: "S", "M", "L"
+    price: item.price,        // Giá của kích thước đó
+    quantity: item.quantity   // Số lượng của kích thước đó
+  }));
+
   try {
     // Kiểm tra type có phải là ObjectId hợp lệ không
     if (type && !mongoose.Types.ObjectId.isValid(type)) {
@@ -77,7 +91,7 @@ router.post("/update", async (req, res) => {
       name: name,
       price: price,
       quantity: quantity,
-      size: size,
+      size: sizeArray,
       status: status,
       type: type, // Cập nhật trường type
       description: description,
@@ -98,7 +112,7 @@ router.post("/update", async (req, res) => {
 // Xóa sản phẩm
 router.post("/delete", async (req, res) => {
   const { id } = req.body;
-  
+
   try {
     // Kiểm tra xem sản phẩm có tồn tại không
     const product = await productModel.findById(id);

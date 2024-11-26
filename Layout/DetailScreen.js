@@ -210,7 +210,7 @@ const DetailProduct = ({ navigation, route }) => {
           <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 5 }}>
             Kích thước
           </Text>
-          <View
+          {/* <View
             style={{ flexDirection: "row", flexWrap: "wrap" }}
           >
             {item.size && item.size.length > 0 ? (
@@ -236,7 +236,7 @@ const DetailProduct = ({ navigation, route }) => {
             ) : (
               <Text style={{ fontSize: 16, color: "gray" }}>Chưa có size</Text>
             )}
-          </View>
+          </View> */}
 
           <View style={{ marginTop: 5, marginBottom: 40 }}>
             <Text style={styles.textDescription}>Mô tả sản phẩm</Text>

@@ -7,15 +7,38 @@
   "price": 1000000,
   "quantity": 10,
   "size": [
-    "Dài 20 x Rộng 20 x Cao 6",
-    "Dài 23 x Rộng 23 x Cao 8"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d11540fdb4d597d7c34"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d11540fdb4d597d7c35"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d11540fdb4d597d7c36"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
   "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -26,15 +49,38 @@
   "price": 400000,
   "quantity": 4,
   "size": [
-    "Bịch 1.5kg",
-    "Bịch 3kg"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d2b540fdb4d597d7cc1"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d2b540fdb4d597d7cc2"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d2b540fdb4d597d7cc3"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a71a335d8edceac0a6c4f"
   },
   "description": "Thịt gà, lúa mì nguyên cám, bột ngô gluten, mỡ gà, bã củ cải đường khô, dầu đậu nành, lúa mạch ngọc trai nứt, bột đậu nành, hương gan gà, canxi sulfat, axit lactic, dầu cá, kali clorua, dicalcium phosphate, choline clorua, muối iốt, vitamin (thực phẩm bổ sung vitamin E, L-ascorbyl-2-polyphosphate (nguồn vitamin C), thực phẩm bổ sung niacin, thiamine mononitrate, thực phẩm bổ sung vitamin A, canxi pantothenate, thực phẩm bổ sung vitamin B12, pyridoxine hydrochloride, thực phẩm bổ sung riboflavin, biotin, axit folic, thực phẩm bổ sung vitamin D3), taurine, khoáng chất (sắt sulfat, kẽm oxit, đồng sulfat, mangan oxit, canxi iodat, natri selenit), tocopherol hỗn hợp để tạo độ tươi, hương vị tự nhiên, beta-carotene.",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -45,15 +91,38 @@
   "price": 100000000,
   "quantity": 5,
   "size": [
-    "Bịch 1.5kg",
-    "Bịch 3kg"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d3b540fdb4d597d7d08"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d3b540fdb4d597d7d09"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d3b540fdb4d597d7d0a"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a71a335d8edceac0a6c4f"
   },
   "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -64,15 +133,38 @@
   "price": 210000,
   "quantity": 4,
   "size": [
-    "Bịch 1.5kg",
-    "Bịch 3kg"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d52540fdb4d597d7d50"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d52540fdb4d597d7d51"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d52540fdb4d597d7d52"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a71a335d8edceac0a6c4f"
   },
   "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -83,15 +175,38 @@
   "price": 120000,
   "quantity": 3,
   "size": [
-    "Bịch 1.5kg",
-    "Bịch 3kg"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d65540fdb4d597d7d99"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d65540fdb4d597d7d9a"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d65540fdb4d597d7d9b"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a71a335d8edceac0a6c4f"
   },
   "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -102,15 +217,38 @@
   "price": 100000,
   "quantity": 6,
   "size": [
-    "Gói 1 cái",
-    "Gói 2 cái"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d71540fdb4d597d7de3"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d71540fdb4d597d7de4"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d71540fdb4d597d7de5"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d72c36cf286f41f4aad"
   },
   "description": "GÓI 2 ĐỒ CHƠI NHAI TỰ NHIÊN - Bạn có một chú chó thích nhai que ngoài trời? Hãy xem đồ chơi nhai giống gỗ của chúng tôi dành cho những chú chó nhai hung dữ. Được làm từ gỗ thông thật và nylon bền, những đồ chơi cho chó này không chỉ trông mộc mạc tự nhiên mà còn được chế tạo để sử dụng lâu dài. Hoàn hảo cho những chú chó thích chơi đùa! ĐỒ CHƠI CHO CHÓ CỨNG CÓ HƯƠNG VỊ THỊT XÔNG KHÓI - Giữ cho người bạn lông lá của bạn say mê trong nhiều giờ với đồ chơi nhai có hương vị thịt xông khói dành cho chó lớn hung dữ! Chúng chứa hương vị thịt xông khói đích thực, lâu dài, an toàn với thực phẩm. Hoàn hảo cho niềm vui bất tận và đánh bại sự nhàm chán",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -121,15 +259,38 @@
   "price": 210000,
   "quantity": 6,
   "size": [
-    "Size 1",
-    "Size 2"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d7f540fdb4d597d7e2e"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d7f540fdb4d597d7e2f"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d7f540fdb4d597d7e30"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d72c36cf286f41f4aad"
   },
   "description": "ĐÂY!!!!! - Đồ chơi cho chó có thể giúp chó của bạn giải phóng năng lượng, tăng cường trí thông minh và xua tan sự cô đơn. Bóng cho chó là sự lựa chọn cần thiết và đáng tin cậy nếu chúng ta muốn chú chó của bạn vui vẻ. Đừng chần chừ nữa, đồ chơi bóng cho chó của chúng tôi sẽ là món quà tuyệt vời cho ngày sinh nhật của chó Bóng nảy cho chó: Bóng đá cho chó được làm bằng PU chất lượng, cùng chất liệu được sử dụng trong bóng đá thông thường và đáp ứng các yêu cầu tương tự như đồ chơi trẻ em để có thể đá và nảy đồng thời. Lưu ý, bóng đá cỡ trung cho chó của chúng tôi phù hợp với những chú chó lớn từ 30-90 lbs",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -140,15 +301,38 @@
   "price": 419000,
   "quantity": 6,
   "size": [
-    "Hộp 2.5kg",
-    "Hộp 5kg"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d8f540fdb4d597d7e7a"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d8f540fdb4d597d7e7b"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d8f540fdb4d597d7e7c"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a71a335d8edceac0a6c4f"
   },
   "description": "Các sản phẩm của 365 by Whole Foods Market mang đến cho bạn cảm giác như đang nhảy múa trên lối đi, lối đi ảo nữa! Phạm vi lựa chọn khổng lồ của chúng tôi với các thành phần cao cấp với mức giá bạn có thể chấp nhận khiến việc mua sắm tạp hóa trở nên thú vị hơn nhiều so với việc ném những thứ cơ bản vào giỏ hàng của bạn.",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -159,15 +343,38 @@
   "price": 310000,
   "quantity": 7,
   "size": [
-    "Bịch 1.5kg",
-    "Bịch 3kg"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458d9e540fdb4d597d7ec7"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458d9e540fdb4d597d7ec8"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458d9e540fdb4d597d7ec9"
+      }
+    }
   ],
   "status": "Old",
   "type": {
     "$oid": "673a71a335d8edceac0a6c4f"
   },
   "description": "LIVECLEAR là thức ăn cho mèo đầu tiên và duy nhất có khả năng giảm các chất gây dị ứng ở mèo một cách đơn giản và an toàn bằng cách trung hòa Fel D 1, một chất gây dị ứng phổ biến trong nước bọt của mèo, bằng cách sử dụng một loại protein chính từ trứng Được phát hiện qua hơn một thập kỷ nghiên cứu, thức ăn cho mèo Pro Plan LIVECLEAR làm giảm đáng kể chất gây dị ứng chính trong lông và gàu của mèo trung bình 47 phần trăm bắt đầu từ tuần thứ ba cho ăn Cá hồi là thành phần đầu tiên trong loại thức ăn khô giàu protein dành cho mèo này để chăm sóc da và lông",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -178,15 +385,38 @@
   "price": 10000,
   "quantity": 4,
   "size": [
-    "Gói 1 cái",
-    "Gói 2 cái"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e73540fdb4d597d8342"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e73540fdb4d597d8343"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e73540fdb4d597d8344"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d72c36cf286f41f4aad"
   },
   "description": "Giải phóng bản chất của mèo: Nhấn lò xo mèo này để mèo đuổi theo, nhảy, nghiến răng và tận hưởng niềm vui mà đồ chơi này mang lại cho chúng, để mèo không còn lười biếng và thích di chuyển nữa. Đồ chơi tương tác cho mèo: Chủ sở hữu có thể ném đồ chơi lò xo này xuống đất và nó sẽ bật lên và thu hút sự chú ý của mèo! Chúng tôi đã cắt tỉa các cạnh của đồ chơi dây cho mèo. Tôi hy vọng mèo của bạn sẽ vui vẻ Mềm mại và đàn hồi: Đồ chơi lò xo cho mèo này mềm mại và siêu đàn hồi! Nhẹ và nảy",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -197,15 +427,38 @@
   "price": 31000,
   "quantity": 5,
   "size": [
-    "Gói 1 cái",
-    "Gói 2 cái"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e82540fdb4d597d8396"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e82540fdb4d597d8397"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e82540fdb4d597d8398"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d72c36cf286f41f4aad"
   },
   "description": "Người bạn đồng hành ấm cúng: Đồ chơi đá cá bạc hà mèo của chúng tôi đều được làm từ chất liệu vải nhung mềm mại và cotton dành cho trẻ sơ sinh, mềm mại và thoải mái đủ để mèo cưng của bạn có thể âu yếm và nhai. Catnip hữu cơ: Nhồi 100% catnip nguyên chất, mạnh và hữu cơ. Catnip, loại thảo mộc tự nhiên được hầu hết mèo yêu thích, sẽ tối đa hóa khả năng khiến mèo phấn khích và khiến thời gian vui chơi tương tác trở nên không thể cưỡng lại. Giảm buồn chán: Mèo có bản năng tự nhiên là vỗ và vồ. Đồ chơi gậy đá mèo con có thể giúp mèo đuổi bắt và huấn luyện nhai và kích thích bản năng săn mồi của chúng, giúp mèo lớn lên khỏe mạnh hơn và tăng cường sự tương tác giữa bạn và mèo.",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -216,15 +469,38 @@
   "price": 4000000,
   "quantity": 5,
   "size": [
-    "Dài 20 x Rộng 20 x Cao 6",
-    "Dài 23 x Rộng 23 x Cao 8"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458db4540fdb4d597d7f15"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458db4540fdb4d597d7f16"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458db4540fdb4d597d7f17"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
   "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -235,15 +511,38 @@
   "price": 5000000,
   "quantity": 6,
   "size": [
-    "Dài 20 x Rộng 20 x Cao 6",
-    "Dài 23 x Rộng 23 x Cao 8"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458dc2540fdb4d597d7f64"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458dc2540fdb4d597d7f65"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458dc2540fdb4d597d7f66"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
   "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -254,15 +553,38 @@
   "price": 4100000,
   "quantity": 7,
   "size": [
-    "Dài 20 x Rộng 20 x Cao 6",
-    "Dài 23 x Rộng 23 x Cao 8"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458dcd540fdb4d597d7fb4"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458dcd540fdb4d597d7fb5"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458dcd540fdb4d597d7fb6"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
   "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -273,15 +595,38 @@
   "price": 1900000,
   "quantity": 6,
   "size": [
-    "Dài 20 x Rộng 20 x Cao 6",
-    "Dài 23 x Rộng 23 x Cao 8"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458dde540fdb4d597d8005"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458dde540fdb4d597d8006"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458dde540fdb4d597d8007"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
   "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -292,15 +637,38 @@
   "price": 410000,
   "quantity": 7,
   "size": [
-    "Dài 20 x Rộng 20 x Cao 6",
-    "Dài 23 x Rộng 23 x Cao 8"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458dea540fdb4d597d8057"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458dea540fdb4d597d8058"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458dea540fdb4d597d8059"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
   "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -311,16 +679,38 @@
   "price": 410000,
   "quantity": 7,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458dfc540fdb4d597d80aa"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458dfc540fdb4d597d80ab"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458dfc540fdb4d597d80ac"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
   "description": "Có 7 kích cỡ 9 màu: Quần áo cho chó trong thời tiết lạnh có 7 kích cỡ (XS, S, M, L, XL, XXL, XXXL) và 9 màu. Vui lòng đo chó của bạn và so sánh với bảng kích cỡ của chúng tôi. Mẹo: Nếu kích cỡ nằm giữa 2 kích cỡ hoặc nếu chó của bạn có thân hình mập mạp, vui lòng chọn kích cỡ lớn hơn. Phạm vi và Dịp sử dụng: Áo vest dành cho chó thời tiết lạnh phù hợp với hầu hết các giống chó nhỏ, vừa và lớn như Teddy, Chihuahua, Beagle, Poodle, Bulldog, Schnauzer, Labrador, Golden Retriever, v.v. cho mọi hoạt động trong nhà hoặc ngoài trời, chẳng hạn như đi bộ hàng ngày, chạy bộ, chạy bộ, đi bộ đường dài, huấn luyện.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -331,16 +721,38 @@
   "price": 310000,
   "quantity": 6,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e0e540fdb4d597d80fd"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e0e540fdb4d597d80fe"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e0e540fdb4d597d80ff"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
   "description": "ĐÃ NÂNG CẤP: Thiết kế lỗ tay lớn hơn các thương hiệu khác cung cấp vùng ngực rộng rãi, nhà thiết kế cũng cắt đủ cao cho chó đực TRANG PHỤC DÀY: Trang phục giữ nhiệt này được thiết kế cho điều kiện mùa đông khắc nghiệt, được làm từ 50% cotton Mỹ và 50% vải ployeater có mật độ cao CẢM GIÁC MỀM MƯỢT: Chiếc áo len này thân thiện với chó với thiết kế áo chui đầu cổ lọ có thể quấn chặt cổ, ngực và bụng của thú cưng của bạn CẤU TRÚC ỔN ĐỊNH: Bộ trang phục co giãn này có thể giặt bằng máy, độ co rút dưới 0,5% nhờ đường khâu đôi, có thể sử dụng làm đồ ngủ, không xù lông",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -351,16 +763,38 @@
   "price": 312000,
   "quantity": 7,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e1d540fdb4d597d8150"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e1d540fdb4d597d8151"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e1d540fdb4d597d8152"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
   "description": "ÁO LEN THOẢI MÁI CHO CHÓ - Áo len cho chó lớn này được làm từ sợi acrylic mềm mại và co giãn tuyệt vời, đảm bảo cho chú chó của bạn cực kỳ thoải mái trong thời tiết mùa đông lạnh giá. Áo len cho chó nhỏ không chỉ giữ ấm mà còn ngăn ngừa tĩnh điện và bảo vệ làn da nhạy cảm của chú chó của bạn. ÁO LEN DÀNH CHO CHÓ MÙA HALLOWEEN - Thiết kế ngộ nghĩnh in hình Halloween, có thể mặc để chụp ảnh hoặc dự tiệc, giúp chú chó của bạn trở nên đặc biệt và bắt mắt. Áo len cho chó cỡ vừa thực sự là món quà Giáng sinh tuyệt vời cho chú chó của bạn. THIẾT KẾ THỰC TẾ - Thiết kế gấu áo rộng và áo chui đầu giúp chó của bạn dễ dàng mặc/cởi áo len cho chó cỡ lớn này. Đảm bảo thú cưng của bạn có thể thoải mái đi tiểu mà không làm bẩn quần áo. Với áo len cho chó tay dài này, người bạn lông lá của bạn có thể giữ ấm và sành điệu trong suốt mùa thu và mùa đông.",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -371,16 +805,38 @@
   "price": 310000,
   "quantity": 7,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e59540fdb4d597d82ef"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e59540fdb4d597d82f0"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e59540fdb4d597d82f1"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
   "description": "Trang phục Giáng sinh cho mèo: Bạn sẽ nhận được 1 bộ trang phục Giáng sinh cổ điển màu xanh lá cây cho thú cưng để làm cho chú mèo của bạn dễ thương và quyến rũ hơn trong bữa tiệc Giáng sinh. Thêm không khí lễ hội cho bữa tiệc Giáng sinh và để thú cưng của bạn trở thành tâm điểm chú ý của bữa tiệc. Kích thước phù hợp: Áo choàng mèo màu xanh lá cây này có chu vi đầu là 11,8”/30cm và chiều dài lưng là 17,7”/45cm, loại áo này sẽ vừa với hầu hết các loại mèo và chó nhỏ. Kích thước hợp lý và kiểu đeo quai cho phép thú cưng của bạn mặc vào hoặc cởi ra mà không gây khó chịu.",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -391,16 +847,38 @@
   "price": 123000,
   "quantity": 7,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e53540fdb4d597d829c"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e53540fdb4d597d829d"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e53540fdb4d597d829e"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
   "description": "Chất vải: Co giãn và ấm áp, dễ mặc và cởi Thiết kế thời trang và các yếu tố áo hoodie có thể toát lên sức sống của thú cưng Thiết kế tay ngắn và áo hoodie có thể giữ ấm cho thú cưng của bạn trong những ngày lạnh Áo hoodie dễ thương này được thiết kế cho các giống chó nhỏ hoặc vừa, vui lòng ưu tiên đo kích thước vòng ngực Vui lòng kiểm tra BẢNG KÍCH THƯỚC trong Mô tả sản phẩm bên dưới trước khi đặt hàng",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -411,16 +889,38 @@
   "price": 500000,
   "quantity": 8,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e4f540fdb4d597d8249"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e4f540fdb4d597d824a"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e4f540fdb4d597d824b"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
   "description": "Trang phục chó dễ thương, Trang phục sự kiện đặc biệt, Trang phục tình cảm miền Tây hoang dã, cho ngày Halloween, ngày Giáng sinh, tiệc tùng, trang phục lễ hội, v.v. Vải và tay nghề cao. Trong trang phục này, mọi người sẽ chú ý nhiều hơn, vui vẻ và thích thú hơn. Vui lòng chú ý khi chọn kích thước.",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -431,15 +931,38 @@
   "price": 1000000,
   "quantity": 5,
   "size": [
-    "Màu đỏ",
-    "Màu xanh"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458e91540fdb4d597d83eb"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458e91540fdb4d597d83ec"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458e91540fdb4d597d83ed"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d3cc36cf286f41f4aaa"
   },
   "description": "🐱KIỂU DÁNG CON NUÔI KHÔNG GIAN - Thiết kế con nhộng không gian độc đáo và phổ biến giúp thú cưng của bạn cảm thấy an toàn hơn, thoải mái hơn và có tầm nhìn rộng hơn ra bên ngoài 🐱BALO & BALO TRƯỚC - Túi đựng thú cưng Henkelion giúp bạn rảnh tay và dễ dàng chăm sóc thú cưng khi đi bộ đường dài, du lịch, đạp xe và đi bộ, v.v., cho dù bạn đeo ở phía trước hay phía sau 🐱THOÁNG KHÍ & BỀN - Chất liệu ABS chắc chắn và vải oxford có chín lỗ và lưới thoáng khí giúp lưu thông không khí tốt hơn và chống trầy xước 🐱THIẾT KẾ THÔNG MINH - Dây đeo của ba lô có thể thấm mồ hôi và giảm áp lực từ ba lô của bạn để bạn cảm thấy thoải mái hơn",
-  "__v": 0
+  "__v": 0,
+  "animals": "cat"
 },
 {
   "_id": {
@@ -450,15 +973,38 @@
   "price": 410000,
   "quantity": 10,
   "size": [
-    "Màu đỏ",
-    "Màu xanh"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458ea2540fdb4d597d8441"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458ea2540fdb4d597d8442"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458ea2540fdb4d597d8443"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673b0d3cc36cf286f41f4aaa"
   },
   "description": "Ba lô đựng thú cưng: Ba lô đựng thú cưng có kích thước 15'' D x 12,6'' R x 16,5'' C. Hoàn hảo cho chó nặng tới 15 pound hoặc mèo nặng tới 18 pound. Đủ lớn để dễ dàng mang theo thú cưng đáng yêu đi du lịch, đi bộ đường dài, đi bộ hoặc đạp xe, tận hưởng chuyến đi tuyệt vời cùng thú cưng Túi đựng thú cưng được hãng hàng không chấp thuận: Phù hợp với kích thước dưới ghế của hầu hết các hãng hàng không, bạn có thể mang thú cưng của mình đến bất kỳ nơi nào để đi du lịch và công tác. Túi đựng mèo đi kèm với tấm thảm lông cừu mềm mại, mang đến sự nghỉ ngơi và thư giãn tốt cho thú cưng khi đi du lịch của bạn Lưới thông gió và thoải mái: Thiết kế lưới PVC ba mặt đảm bảo lưu thông không khí và khả năng hiển thị tuyệt vời, bạn có thể nhìn rõ tình trạng của thú cưng bên trong túi và thú cưng cũng có thể quan sát bên ngoài. Và ba lô đựng mèo này có cấu trúc chắc chắn, cung cấp đủ không gian cho thú cưng của bạn di chuyển xung quanh",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -469,16 +1015,38 @@
   "price": 100000,
   "quantity": 5,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458eae540fdb4d597d8498"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458eae540fdb4d597d8499"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458eae540fdb4d597d849a"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673f5b0e4162b99de206e7aa"
   },
   "description": "【DỄ SỬ DỤNG VÀ KHÓA AN TOÀN】Dây nịt cho chó có thiết kế đơn giản và khóa bấm nhanh giúp dễ dàng đeo vào và tháo ra. Tính năng khóa ở cả hai khóa bấm giúp dây an toàn hơn, đảm bảo 100% không bị tháo ra ngoài một cách vô tình. 4 bộ điều chỉnh kích thước dễ dàng ở cổ và ngực để dễ dàng điều chỉnh sao cho vừa vặn hoàn hảo với chú chó của bạn, ngay cả khi có một số chỗ để phát triển. Hoàn hảo cho việc đi bộ, chạy bộ, đi bộ đường dài, huấn luyện, săn bắn, phiêu lưu ngoài trời và nhiều hơn nữa hàng ngày! 【 ĐỘ BỀN】Được làm bằng vải nylon bền, vải oxford nylon mật độ cao được cải tiến, lớp lót lưới thoáng khí và các phụ kiện chắc chắn bao gồm khóa, bộ điều chỉnh kích thước",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 },
 {
   "_id": {
@@ -489,14 +1057,36 @@
   "price": 1000000,
   "quantity": 6,
   "size": [
-    "M",
-    "L",
-    "XL"
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "67458ebf540fdb4d597d84ef"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "67458ebf540fdb4d597d84f0"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "67458ebf540fdb4d597d84f1"
+      }
+    }
   ],
   "status": "New",
   "type": {
     "$oid": "673f5b0e4162b99de206e7aa"
   },
   "description": "【Dây nịt cho chó chịu lực nặng】 Được thiết kế đặc biệt cho những chú chó khỏe mạnh. Dây nịt chịu lực nặng được chế tạo từ nylon bền, được gia cố bằng đường khâu chắc chắn và được trang bị hai vòng tam giác chắc chắn 【Điều chỉnh bốn điểm, dễ mặc】 Có 4 bộ điều chỉnh kích thước đơn giản cho cổ và ngực, cũng có thể dễ dàng điều chỉnh để vừa vặn hoàn hảo với chú chó của bạn. Ngực được trang bị hai khóa có thể mở hoàn toàn để dễ mặc 【Hệ thống Molle】có dải Molle ở cả hai bên, cho phép chú chó của bạn mang theo những thiết bị cần thiết. Lý tưởng cho dịch vụ, thực thi pháp luật, săn bắn hoặc các hoạt động ngoài trời. Hoàn toàn tương thích với các túi Molle trên thị trường, dễ dàng nâng cấp thiết bị của bạn",
-  "__v": 0
+  "__v": 0,
+  "animals": "dog"
 }]

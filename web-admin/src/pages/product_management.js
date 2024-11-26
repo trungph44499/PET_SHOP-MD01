@@ -31,6 +31,8 @@ function Main() {
   const _description = useRef();
   const _size = useRef(); // Thêm size vào đây
   const _animals = useRef(); // Thêm animals vào đây
+  const _sizePrice = useRef(null);
+  const _sizeQuantity = useRef(null);
 
   async function getAllProduct() {
     try {
@@ -96,8 +98,19 @@ function Main() {
       window.alert(errorMessage);
       return;
     }
-    // Chuyển đổi chuỗi size thành mảng
-    const sizeArray = _size.current.value.split(',').map(size => size.trim());
+    // Chuyển đổi các giá trị size, price và quantity thành mảng đối tượng
+    // Kiểm tra nếu giá trị tồn tại trước khi xử lý
+    const sizeArray = _size.current.value && _size.current.value.trim() !== ""
+      ? _size.current.value.split(',').map((size, index) => ({
+        sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
+        price: _sizePrice.current.value && _sizePrice.current.value.split(',')[index]
+          ? parseFloat(_sizePrice.current.value.split(',')[index].trim())
+          : 0,  // Giá trị mặc định là 0 nếu không có giá trị
+        quantity: _sizeQuantity.current.value && _sizeQuantity.current.value.split(',')[index]
+          ? parseInt(_sizeQuantity.current.value.split(',')[index].trim())
+          : 0  // Số lượng mặc định là 0 nếu không có giá trị
+      }))
+      : [];
     try {
       const { status, data: { response, type } } = await axios.post(
         `${json_config[0].url_connect}/products/add`,
@@ -132,8 +145,19 @@ function Main() {
       window.alert(errorMessage);
       return;
     }
-    // Chuyển đổi chuỗi size thành mảng
-    const sizeArray = _size.current.value.split(',').map(size => size.trim());
+    // Chuyển đổi các giá trị size, price và quantity thành mảng đối tượng
+    // Kiểm tra nếu giá trị tồn tại trước khi xử lý
+    const sizeArray = _size.current.value && _size.current.value.trim() !== ""
+      ? _size.current.value.split(',').map((size, index) => ({
+        sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
+        price: _sizePrice.current.value && _sizePrice.current.value.split(',')[index]
+          ? parseFloat(_sizePrice.current.value.split(',')[index].trim())
+          : 0,  // Giá trị mặc định là 0 nếu không có giá trị
+        quantity: _sizeQuantity.current.value && _sizeQuantity.current.value.split(',')[index]
+          ? parseInt(_sizeQuantity.current.value.split(',')[index].trim())
+          : 0  // Số lượng mặc định là 0 nếu không có giá trị
+      }))
+      : [];
 
     try {
       const { status, data: { response, type } } = await axios.post(
@@ -260,14 +284,13 @@ function Main() {
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Size
+                Animals
               </span>
-              <input
-                ref={_size}
-                type="text"
-                placeholder="M,L,XL"
-                defaultValue={dataUpdate.size ? dataUpdate.size.join(', ') : ''} // Hiển thị mảng size
-              />
+              <select ref={_animals} defaultValue={dataUpdate.animals}>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+
+              </select>
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -279,14 +302,39 @@ function Main() {
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Animals
+                Size
               </span>
-              <select ref={_animals} defaultValue={dataUpdate.animals}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-             
-              </select>
+              <input
+                ref={_size}
+                type="text"
+                placeholder="Ví dụ: M,L,XL"
+                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
+              />
             </div>
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Price
+              </span>
+              <input
+                ref={_sizePrice}  // Dùng useRef ở đây
+                type="text"
+                placeholder="Ví dụ: 10000,12000,15000"
+                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
+              />
+            </div>
+
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Quantity
+              </span>
+              <input
+                ref={_sizeQuantity}  // Dùng useRef ở đây
+                type="text"
+                placeholder="Ví dụ: 10,12,15"
+                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
+              />
+            </div>
+
           </div>
 
           <div className="d-flex flex-row mb-2">
@@ -358,14 +406,13 @@ function Main() {
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Size
+                Animals
               </span>
-              <input
-                ref={_size}
-                type="text"
-                placeholder="Ví dụ: M,L,XL"
-                defaultValue={dataUpdate.size ? dataUpdate.size.join(', ') : ''} // Hiển thị mảng size
-              />
+              <select ref={_animals} defaultValue={dataUpdate.animals}>
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+
+              </select>
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -377,16 +424,39 @@ function Main() {
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Animals
+                Size
               </span>
-              <select ref={_animals} defaultValue={dataUpdate.animals}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-              
-              </select>
+              <input
+                ref={_size}
+                type="text"
+                placeholder="Ví dụ: M,L,XL"
+                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
+              />
+            </div>
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Price
+              </span>
+              <input
+                ref={_sizePrice}  // Dùng useRef ở đây
+                type="text"
+                placeholder="Ví dụ: 10000,12000,15000"
+                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
+              />
+            </div>
+
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Quantity
+              </span>
+              <input
+                ref={_sizeQuantity}  // Dùng useRef ở đây
+                type="text"
+                placeholder="Ví dụ: 10,12,15"
+                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
+              />
             </div>
           </div>
-
           <div className="d-flex flex-row mb-2">
             <button className="btn btn-primary" onClick={handleAddProduct}>
               Add
@@ -444,7 +514,10 @@ function Main() {
               <td>{item.status}</td>
               <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
-              <td>{item.size ? item.size.join(', ') : ''}</td> {/* Hiển thị mảng size như chuỗi ngăn cách bởi dấu phẩy */}
+              <td>
+                {item.size ? item.size.map(s => s.sizeName).join(', ') : ''}
+              </td>
+              {/* Hiển thị mảng size như chuỗi ngăn cách bởi dấu phẩy */}
               <td>{item.animals}</td>
               <td>
                 <button
