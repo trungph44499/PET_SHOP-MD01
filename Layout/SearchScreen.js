@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ToastAndroid, Ima
 import axios from 'axios';
 import { URL } from './HomeScreen'; // Đảm bảo URL đã được định nghĩa
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { numberUtils, upperCaseItem } from "./utils/stringUtils";
 
 const SearchScreen = ({ navigation }) => {
   const [txtSearch, setTxtSearch] = useState('');
@@ -120,12 +121,12 @@ const SearchScreen = ({ navigation }) => {
                   keyExtractor={(item) => item._id.toString()}
                   renderItem={({ item }) => (
                     <View style={styles.searchHistory}>
-                      <View style={styles.historyRow}>
+                   
                         <Image style={styles.icon} source={require('../Image/clock.png')} />
                         <Text style={styles.historyText} onPress={() => handleSetTxtSearch(item.txt)}>
                           {item.txt}
                         </Text>
-                      </View>
+               
                       <TouchableOpacity onPress={() => deleteSearch(item._id)}>
                         <Image style={styles.icon} source={require('../Image/cancel.png')} />
                       </TouchableOpacity>
@@ -151,9 +152,11 @@ const SearchScreen = ({ navigation }) => {
                         >
                           <Image source={{ uri: item.img }} style={styles.itemImage} />
                           <View style={styles.itemDetails}>
-                            <Text style={styles.productName}>{item.name}</Text>
-                            <Text style={styles.productPrice}>{item.price} đ</Text>
-                            <Text style={styles.productQuantity}>Còn {item.quantity} sp</Text>
+                            <Text style={styles.productName} numberOfLines={2} ellipsizeMode="tail">
+                              {item.name}
+                            </Text>
+                            <Text style={styles.productPrice}>{numberUtils(item.size[0].price)}</Text>
+
                           </View>
                         </TouchableOpacity>
                       )}
@@ -228,11 +231,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   searchHistory: {
+    flex: 1,
     padding: 10,
     backgroundColor: '#FFF',
     borderRadius: 8,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     margin: 8,
     shadowColor: "black",
@@ -245,9 +249,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   historyText: {
-    width: "50%",
+    flex: 1,
     fontSize: 16,
     color: '#333',
+    marginLeft: 10,
   },
   historyRow: {
     flexDirection: 'row',
@@ -267,6 +272,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   item: {
+    flex: 1,
     padding: 15,
     backgroundColor: '#FFF',
     borderRadius: 12,
@@ -287,14 +293,19 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 12,
     marginRight: 15,
+    resizeMode: "contain"
   },
   itemDetails: {
+    flex: 1,
     gap: 5,
   },
   productName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#333',
+    marginBottom: 5,
+    overflow: 'hidden',
+    width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   productPrice: {
     fontSize: 16,

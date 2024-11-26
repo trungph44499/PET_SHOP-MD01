@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ToastAndroid,
 } from "react-native";
 import CheckBoxCustom from "../components/CheckBoxCustom";
 import { numberUtils } from "../utils/stringUtils";
@@ -73,6 +74,9 @@ export default function CartItemComponent({ item }) {
                   size: item.size,
                   status: checkBox,
                 });
+              } else {
+                ToastAndroid.show("Số lượng sản phẩm không thể nhỏ hơn 1!", ToastAndroid.SHORT);
+                return;
               }
             }}
             style={styles.btn}
@@ -97,6 +101,9 @@ export default function CartItemComponent({ item }) {
                   size: item.size,
                   status: checkBox,
                 });
+              } else {
+                ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
+                return;
               }
             }}
             style={styles.btn}

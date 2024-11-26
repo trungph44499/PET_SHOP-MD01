@@ -143,7 +143,8 @@ export default ClassifyScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     gap: 16,
     backgroundColor: '#FFFFFF',
   },
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   itemImage: {
     width: "100%",
@@ -180,7 +181,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
     marginBottom: 5,
-    // Thêm các thuộc tính để kiểm soát việc cắt chữ
     overflow: 'hidden',
     width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },

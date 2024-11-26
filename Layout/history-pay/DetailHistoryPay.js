@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, Image } from "react-native";
 import UnderLine from '../../components/UnderLine';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { URL } from '../HomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,21 +12,21 @@ import { numberUtils, upperCaseItem } from "../utils/stringUtils";
 const DetailHistoryPay = ({ route }) => {
     const navigation = useNavigation();
     const { item } = route.params;
-    const [user, setuser] = useState([]);
+    // const [user, setuser] = useState([]);
     const [orderStatus, setOrderStatus] = useState(item.status); // Trạng thái đơn hàng
 
 
-    // Lấy thông tin người dùng
-    const retrieveData = async () => {
-        try {
-            const UserData = await AsyncStorage.getItem('User');
-            if (UserData != null) {
-                setuser(JSON.parse(UserData));
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // // Lấy thông tin người dùng
+    // const retrieveData = async () => {
+    //     try {
+    //         const UserData = await AsyncStorage.getItem('User');
+    //         if (UserData != null) {
+    //             setuser(JSON.parse(UserData));
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     // Lấy lịch sử thanh toán
     async function getAllHistoryPay() {
@@ -41,12 +41,12 @@ const DetailHistoryPay = ({ route }) => {
                 setDataHistory(data);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
     useEffect(() => {
-        retrieveData();
+        // retrieveData();
         getAllHistoryPay();
     }, []);
 
