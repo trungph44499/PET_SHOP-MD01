@@ -16,7 +16,8 @@ export default ClassifyScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]); // Dữ liệu sản phẩm
   const [filteredData, setFilteredData] = useState([]); // Dữ liệu sản phẩm đã lọc
   const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
-  const [showNewOnly, setShowNewOnly] = useState(false);
+  const [showNewOnly, setShowNewOnly] = useState(false); // Lọc sản phẩm mới
+  const [showPrice, setShowPrice] = useState(false); // Sắp xếp theo giá
   const { type, animals } = route.params; // type là ID danh mục
 
   // Lấy danh sách danh mục
@@ -49,20 +50,54 @@ export default ClassifyScreen = ({ navigation, route }) => {
     return category ? category.name : "Unknown Category";
   };
 
+  // Hàm lọc và sắp xếp sản phẩm
+  const filterAndSortData = () => {
+    let updatedData = [...data];
+
+    // Lọc sản phẩm mới nếu có
+    if (showNewOnly) {
+      updatedData = updatedData.filter(item => item.status === "New");
+    }
+
+    // Sắp xếp theo giá nếu có
+    if (showPrice) {
+      updatedData.sort((a, b) => {
+        const priceA = a.size[0].price;
+        const priceB = b.size[0].price;
+        return priceA - priceB; // Tăng dần
+      });
+    } else {
+      updatedData.sort((a, b) => {
+        const priceA = a.size[0].price;
+        const priceB = b.size[0].price;
+        return priceB - priceA; // Giảm dần
+      });
+    }
+
+    setFilteredData(updatedData); // Cập nhật dữ liệu đã lọc và sắp xếp
+  };
+
+  // Hiển thị tất cả sản phẩm
   const showAllProducts = () => {
     setShowNewOnly(false);
-    setFilteredData(data);
+    setFilteredData(data); // Hiển thị tất cả sản phẩm
   };
 
+  // Hiển thị sản phẩm mới
   const filterNewProducts = () => {
     setShowNewOnly(true);
-    const newProducts = data.filter(item => item.status === "New");
-    setFilteredData(newProducts);
+    setFilteredData(data.filter(item => item.status === "New")); // Lọc sản phẩm mới
   };
 
+  // Chuyển đến màn hình chi tiết sản phẩm
   function goToDetailScreen(item) {
     navigation.navigate("DetailScreen", { item: item });
   }
+
+  // Sử dụng useEffect để tự động gọi filterAndSortData khi showPrice hoặc showNewOnly thay đổi
+  useEffect(() => {
+    filterAndSortData();
+  }, [showPrice, showNewOnly, data]);
 
   return (
     <View style={styles.container}>
@@ -87,27 +122,73 @@ export default ClassifyScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection: "row", gap: 30, marginHorizontal: 20 }}>
+      <View style={styles.buttonRow}>
         <TouchableOpacity
           onPress={showAllProducts}
           style={{
+            flex: 1,
             backgroundColor: !showNewOnly ? "#73B5F7" : "transparent",
             padding: 10,
             borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
           }}
         >
-          <Text style={{ color: showNewOnly ? "#7D7B7B" : "#FFFFFF", fontWeight: "bold" }}>Tất cả</Text>
+          <Text style={{ fontSize: 15, color: showNewOnly ? "#7D7B7B" : "#FFFFFF", fontWeight: "bold" }}>Tất cả</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={filterNewProducts}
           style={{
+            flex: 1,
             backgroundColor: showNewOnly ? "#73B5F7" : "transparent",
             padding: 10,
             borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
           }}
         >
-          <Text style={{ color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Hàng mới về</Text>
+          <Text style={{ fontSize: 15, color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Hàng mới</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setShowPrice(false)} // Sắp xếp theo giá giảm
+          style={{
+            flex: 1,
+            backgroundColor: !showPrice ? "#73B5F7" : "transparent",
+            padding: 10,
+            borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
+          }}
+        >
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Text style={{ fontSize: 15, color: !showPrice ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Giá </Text>
+            <Image
+              style={{ width: 13, height: 13, tintColor: !showPrice ? "#FFFFFF" : "#7D7B7B", }}
+              source={require("../../Image/item_down.png")}
+            />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setShowPrice(true)} // Sắp xếp theo giá tăng
+          style={{
+            flex: 1,
+            backgroundColor: showPrice ? "#73B5F7" : "transparent",
+            padding: 10,
+            borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
+          }}
+        >
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Text style={{ fontSize: 15, color: showPrice ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Giá </Text>
+            <Image
+              style={{ width: 13, height: 13, tintColor: showPrice ? "#FFFFFF" : "#7D7B7B", }}
+              source={require("../../Image/item_up.png")}
+            />
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -210,4 +291,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "red",
   },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
