@@ -276,7 +276,11 @@ const DetailProduct = ({ navigation, route }) => {
       <View style={styles.rowCart}>
         <TouchableOpacity
           style={styles.addToCartButton}
-          onPress={() => navigation.navigate("ChatScreen")}
+          onPress={() =>
+            navigation.navigate("ChatScreen", {
+              product: item,
+            })
+          }
         >
           <Image
             style={styles.cartButton}

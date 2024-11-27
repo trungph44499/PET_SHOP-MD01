@@ -10,7 +10,7 @@
       "price": 1000000,
       "quantity": 5,
       "_id": {
-        "$oid": "6745aa59cac5c716a76904bd"
+        "$oid": "6746f10089b822808aec43e1"
       }
     },
     {
@@ -18,7 +18,7 @@
       "price": 2000000,
       "quantity": 10,
       "_id": {
-        "$oid": "6745aa59cac5c716a76904be"
+        "$oid": "6746f10089b822808aec43e2"
       }
     },
     {
@@ -26,11 +26,11 @@
       "price": 3000000,
       "quantity": 15,
       "_id": {
-        "$oid": "6745aa59cac5c716a76904bf"
+        "$oid": "6746f10089b822808aec43e3"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
@@ -90,7 +90,7 @@
       "price": 130000,
       "quantity": 5,
       "_id": {
-        "$oid": "6745aad8cac5c716a7690514"
+        "$oid": "6746f0f489b822808aec4387"
       }
     },
     {
@@ -98,7 +98,7 @@
       "price": 230000,
       "quantity": 10,
       "_id": {
-        "$oid": "6745aad8cac5c716a7690515"
+        "$oid": "6746f0f489b822808aec4388"
       }
     },
     {
@@ -106,11 +106,11 @@
       "price": 330000,
       "quantity": 15,
       "_id": {
-        "$oid": "6745aad8cac5c716a7690516"
+        "$oid": "6746f0f489b822808aec4389"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673a71a335d8edceac0a6c4f"
   },
@@ -250,7 +250,7 @@
       "price": 100000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d7f540fdb4d597d7e2e"
+        "$oid": "6746f12989b822808aec45fd"
       }
     },
     {
@@ -258,7 +258,7 @@
       "price": 200000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d7f540fdb4d597d7e2f"
+        "$oid": "6746f12989b822808aec45fe"
       }
     },
     {
@@ -266,11 +266,11 @@
       "price": 300000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d7f540fdb4d597d7e30"
+        "$oid": "6746f12989b822808aec45ff"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673b0d72c36cf286f41f4aad"
   },
@@ -490,7 +490,7 @@
       "price": 100000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458dc2540fdb4d597d7f64"
+        "$oid": "6746f10489b822808aec443b"
       }
     },
     {
@@ -498,7 +498,7 @@
       "price": 200000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458dc2540fdb4d597d7f65"
+        "$oid": "6746f10489b822808aec443c"
       }
     },
     {
@@ -506,11 +506,11 @@
       "price": 300000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458dc2540fdb4d597d7f66"
+        "$oid": "6746f10489b822808aec443d"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
@@ -610,7 +610,7 @@
       "price": 100000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458dea540fdb4d597d8057"
+        "$oid": "6746f10989b822808aec4495"
       }
     },
     {
@@ -618,7 +618,7 @@
       "price": 200000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458dea540fdb4d597d8058"
+        "$oid": "6746f10989b822808aec4496"
       }
     },
     {
@@ -626,11 +626,11 @@
       "price": 300000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458dea540fdb4d597d8059"
+        "$oid": "6746f10989b822808aec4497"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
@@ -690,7 +690,7 @@
       "price": 100000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458e0e540fdb4d597d80fd"
+        "$oid": "6746f11989b822808aec4549"
       }
     },
     {
@@ -698,7 +698,7 @@
       "price": 200000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458e0e540fdb4d597d80fe"
+        "$oid": "6746f11989b822808aec454a"
       }
     },
     {
@@ -706,11 +706,11 @@
       "price": 300000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458e0e540fdb4d597d80ff"
+        "$oid": "6746f11989b822808aec454b"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
@@ -810,7 +810,7 @@
       "price": 100000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458e53540fdb4d597d829c"
+        "$oid": "6746f11f89b822808aec45a3"
       }
     },
     {
@@ -818,7 +818,7 @@
       "price": 200000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458e53540fdb4d597d829d"
+        "$oid": "6746f11f89b822808aec45a4"
       }
     },
     {
@@ -826,11 +826,11 @@
       "price": 300000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458e53540fdb4d597d829e"
+        "$oid": "6746f11f89b822808aec45a5"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673b0d30c36cf286f41f4aa7"
   },
@@ -890,7 +890,7 @@
       "price": 100000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458e91540fdb4d597d83eb"
+        "$oid": "6746f13289b822808aec4657"
       }
     },
     {
@@ -898,7 +898,7 @@
       "price": 200000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458e91540fdb4d597d83ec"
+        "$oid": "6746f13289b822808aec4658"
       }
     },
     {
@@ -906,11 +906,11 @@
       "price": 300000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458e91540fdb4d597d83ed"
+        "$oid": "6746f13289b822808aec4659"
       }
     }
   ],
-  "status": "New",
+  "status": "Old",
   "type": {
     "$oid": "673b0d3cc36cf286f41f4aaa"
   },
@@ -1037,4 +1037,44 @@
   "description": "【Dây nịt cho chó chịu lực nặng】 Được thiết kế đặc biệt cho những chú chó khỏe mạnh. Dây nịt chịu lực nặng được chế tạo từ nylon bền, được gia cố bằng đường khâu chắc chắn và được trang bị hai vòng tam giác chắc chắn 【Điều chỉnh bốn điểm, dễ mặc】 Có 4 bộ điều chỉnh kích thước đơn giản cho cổ và ngực, cũng có thể dễ dàng điều chỉnh để vừa vặn hoàn hảo với chú chó của bạn. Ngực được trang bị hai khóa có thể mở hoàn toàn để dễ mặc 【Hệ thống Molle】có dải Molle ở cả hai bên, cho phép chú chó của bạn mang theo những thiết bị cần thiết. Lý tưởng cho dịch vụ, thực thi pháp luật, săn bắn hoặc các hoạt động ngoài trời. Hoàn toàn tương thích với các túi Molle trên thị trường, dễ dàng nâng cấp thiết bị của bạn",
   "__v": 0,
   "animals": "dog"
+},
+{
+  "_id": {
+    "$oid": "67460136f3a1c45ea66c840a"
+  },
+  "img": "https://m.media-amazon.com/images/I/81mvdsz4wgL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+  "name": "Giường sưởi ấm cho thú cưng trong nhà ",
+  "size": [
+    {
+      "sizeName": "M",
+      "price": 100000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "6746f10f89b822808aec44ef"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "6746f10f89b822808aec44f0"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 300000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "6746f10f89b822808aec44f1"
+      }
+    }
+  ],
+  "status": "Old",
+  "type": {
+    "$oid": "673a838f9a11c1e0ae8e2e10"
+  },
+  "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
+  "animals": "dog",
+  "__v": 0
 }]
