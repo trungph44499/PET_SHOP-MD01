@@ -16,7 +16,7 @@ const { WebSocketServer } = require("ws");
 
 
 
-var URL_DATABASE = "mongodb://localhost:27017";
+var URL_DATABASE = "mongodb+srv://hungnvvph32403:ImDAl8MEdqhIsS9f@cluster0.cavbi.mongodb.net";
 
 
 

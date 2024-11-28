@@ -14,8 +14,8 @@ export default function ChatScreenComponent() {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState({});
   const websocket = useContext(webSocketContext);
-  const route = useRoute(); 
-  const product = route?.params?.product;
+  const route = useRoute();
+  const product = route?.params?.product || null;
 
   websocket.onmessage = function (message) {
     const { data } = message;
@@ -33,6 +33,7 @@ export default function ChatScreenComponent() {
   };
 
   const numberUtils = (price) => {
+    if (!price || isNaN(price)) return "0";
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
@@ -59,28 +60,27 @@ export default function ChatScreenComponent() {
   };
 
   return (
-    <ImageBackground
-      style={styles.background}
-    >
-      {/* <View>
-        {product && (
-          <TouchableOpacity
-            style={styles.productContainer}
-          >
-            {product.img && (
-              <Image 
-                source={{ uri: product.img }} 
-                style={styles.productImage}
-                resizeMode="contain"
-              />
-            )}
-            <Text style={styles.productTitle}>{product.name}</Text>
-            <Text style={styles.productPrice}>
-              Giá: {numberUtils(product.size[0].price)} VND
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View> */}
+    <ImageBackground style={styles.background}>
+      {/* Hiển thị sản phẩm */}
+      {!product ? (
+        <Text style={styles.noProductText}>No product details available</Text>
+      ) : (
+        <View style={styles.productContainer}>
+          {product.img && (
+            <Image
+              source={{ uri: product.img }}
+              style={styles.productImage}
+              resizeMode="contain"
+            />
+          )}
+          <Text style={styles.productTitle}>{product.name}</Text>
+          <Text style={styles.productPrice}>
+            Giá: {product.size && product.size[0]?.price ? numberUtils(product.size[0].price) : "N/A"} VND
+          </Text>
+        </View>
+      )}
+
+      {/* Chat UI */}
       <GiftedChat
         placeholder="Enter your message..."
         messages={messages}
@@ -104,6 +104,38 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
+  productContainer: {
+    position: "absolute", // Hiển thị cố định
+    top: 10, // Đặt vị trí phía trên
+    left: 0,
+    right: 0,
+    alignItems: "center", // Căn giữa
+    justifyContent: "center",
+    backgroundColor: "#f8f9fa",
+    padding: 20,
+    borderRadius: 8,
+    zIndex: 1, // Đảm bảo xuất hiện trên chat
+    elevation: 5, // Bóng đổ (trên Android)
+    shadowColor: "#000", // Bóng đổ (trên iOS)
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  productImage: {
+    width: 80,
+    height: 80,
+    marginBottom: 10,
+  },
+  productTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  productPrice: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 5,
+  },
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
@@ -117,28 +149,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 20,
   },
-  productContainer: {
-    backgroundColor: "#f8f9fa",
-    padding: 30,
-    margin: 100,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    alignItems: "center",
-  },
-  productImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-  },
-  productTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  productPrice: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 5,
-  },
 });
+
