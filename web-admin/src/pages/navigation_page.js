@@ -5,13 +5,15 @@ import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { myColor } from "../styles/color";
 import {
-  faBookOpen,
   faChevronLeft,
   faChevronRight,
   faComputer,
-  faHippo,
-  faPenFancy,
   faSignOut,
+  faDog,
+  faMoneyBill,
+  faHand,
+  faProjectDiagram,
+  faStore
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';  // Import SweetAlert2
@@ -154,28 +156,35 @@ export default function NavigationPage({ child }) {
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faUser} />}
+            icon={<FontAwesomeIcon icon={faStore} />}
             onClick={() => navigator("/revenue-tatistics")}
           >
             Revenue statistics
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faHippo} />}
+            icon={<FontAwesomeIcon icon={faProjectDiagram} />}
+            onClick={() => navigator("/category")}
+          >
+            Category management
+          </MenuItem>
+          <MenuItem
+            style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faDog} />}
             onClick={() => navigator("/product")}
           >
             Product management
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faBookOpen} />}
+            icon={<FontAwesomeIcon icon={faHand} />}
             onClick={() => navigator("/confirm-product")}
           >
             Pet Care
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faPenFancy} />}
+            icon={<FontAwesomeIcon icon={faMoneyBill} />}
             onClick={() => navigator("/payment")}
           >
            Payment
@@ -199,7 +208,7 @@ export default function NavigationPage({ child }) {
               height: 0,
             }}
           >
-            User
+            Logout
           </p>
         </div>
         <Menu>

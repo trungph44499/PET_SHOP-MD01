@@ -130,7 +130,7 @@ const NoticeScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{ width: 20, height: 20 }}
-            source={require("../Image/back.png")}
+            source={require("../Image/left-back.png")}
           />
         </TouchableOpacity>
         <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>

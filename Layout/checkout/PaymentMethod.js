@@ -205,7 +205,7 @@ const PaymentMethod = ({ navigation }) => {
           >
             <Image
               style={styles.icon}
-              source={require("../../Image/back.png")}
+              source={require("../../Image/left-back.png")}
             />
           </TouchableOpacity>
           <Text style={styles.headerText}>Phương thức thanh toán</Text>
@@ -244,7 +244,7 @@ const PaymentMethod = ({ navigation }) => {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
-          <Image style={styles.icon} source={require("../../Image/back.png")} />
+          <Image style={styles.icon} source={require("../../Image/left-back.png")} />
         </TouchableOpacity>
         <Text style={styles.headerText}>Phương thức thanh toán</Text>
       </View>

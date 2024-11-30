@@ -66,7 +66,7 @@ const ProfileScreen = ({ navigation, route }) => {
             onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
-            <Image style={styles.icon} source={require("../Image/back.png")} />
+            <Image style={styles.icon} source={require("../Image/left-back.png")} />
           </TouchableOpacity>
           <Text style={styles.headerText}>PROFILE</Text>
           <TouchableOpacity style={styles.backOut} onPress={() => {

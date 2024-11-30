@@ -19,7 +19,8 @@ function Main() {
   const [dataUpdate, setDataUpdate] = useState({});
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const [selectedType, setSelectedType] = useState(""); // State để lưu giá trị lọc loại sản phẩm
+  const [selectedType, setSelectedType] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const _image = useRef();
   const _name = useRef();
@@ -29,13 +30,12 @@ function Main() {
   const _status = useRef();
   const _type = useRef();
   const _description = useRef();
+  const _weight = useRef();  // Thêm ref cho trường weight
+  const _sex = useRef();  // Thêm ref cho trường sex
 
   async function getAllProduct() {
     try {
-      const {
-        status,
-        data: { response },
-      } = await axios.get(`${json_config[0].url_connect}/products`);
+      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/products`);
       if (status === 200) {
         setData(response);
       }
@@ -44,14 +44,154 @@ function Main() {
     }
   }
 
+  async function getCategories() {
+    try {
+      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/product-categories`);
+      if (status === 200) {
+        setCategories(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getAllProduct();
+    getCategories();
   }, []);
 
-  // Lọc dữ liệu sản phẩm theo loại (type)
   const filteredData = selectedType
-    ? data.filter((item) => item.type === selectedType)
+    ? data.filter((item) => item.type._id === selectedType)
     : data;
+
+  // Hàm kiểm tra dữ liệu hợp lệ
+  const validateProductData = () => {
+    if (
+      _image.current.value === "" ||
+      _name.current.value === "" ||
+      _price.current.value === "" ||
+      _origin.current.value === "" ||
+      _quantity.current.value === "" ||
+      _status.current.value === "" ||
+      _type.current.value === "" ||
+      _description.current.value === "" ||
+      _weight.current.value === "" ||
+      _sex.current.value === ""
+    ) {
+      return "Vui lòng điền đầy đủ thông tin!";
+    }
+
+    if (parseFloat(_price.current.value) <= 0) {
+      return "Giá sản phẩm phải lớn hơn 0!";
+    }
+
+    if (parseInt(_quantity.current.value) < 0) {
+      return "Số lượng sản phẩm không thể nhỏ hơn 0!";
+    }
+
+    const validSexValues = ["Male", "Female", "Unisex"];
+    if (!validSexValues.includes(_sex.current.value)) {
+      return "Giới tính phải là Male, Female hoặc Unisex!";
+    }
+
+    return null;
+  };
+
+  // Hàm xử lý thêm sản phẩm
+  const handleAddProduct = async () => {
+    const errorMessage = validateProductData();
+    if (errorMessage) {
+      window.alert(errorMessage);
+      return;
+    }
+
+    try {
+      const { status, data: { response, type } } = await axios.post(
+        `${json_config[0].url_connect}/products/add`,
+        {
+          image: _image.current.value,
+          name: _name.current.value,
+          price: _price.current.value,
+          origin: _origin.current.value,
+          quantity: _quantity.current.value,
+          status: _status.current.value,
+          type: _type.current.value,
+          description: _description.current.value,
+          weight: _weight.current.value,
+          sex: _sex.current.value,
+        }
+      );
+
+      if (status === 200) {
+        window.alert(response);
+        if (type) {
+          await getAllProduct();
+          setIsAdd(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Hàm xử lý cập nhật sản phẩm
+  const handleUpdateProduct = async () => {
+    const errorMessage = validateProductData();
+    if (errorMessage) {
+      window.alert(errorMessage);
+      return;
+    }
+
+    try {
+      const { status, data: { response, type } } = await axios.post(
+        `${json_config[0].url_connect}/products/update`,
+        {
+          id: dataUpdate._id,
+          image: _image.current.value,
+          name: _name.current.value,
+          price: _price.current.value,
+          origin: _origin.current.value,
+          quantity: _quantity.current.value,
+          status: _status.current.value,
+          type: _type.current.value,
+          description: _description.current.value,
+          weight: _weight.current.value,
+          sex: _sex.current.value,
+        }
+      );
+
+      if (status === 200) {
+        window.alert(response);
+        if (type) {
+          await getAllProduct();
+          setIsUdpdate(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Hàm xử lý xóa sản phẩm
+  const handleDeleteProduct = async (productId) => {
+    const result = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+    if (result) {
+      try {
+        const { status, data: { response, type } } = await axios.post(
+          `${json_config[0].url_connect}/products/delete`,
+          { id: productId }
+        );
+        if (status === 200) {
+          window.alert(response);
+          if (type) {
+            await getAllProduct();
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <div>
@@ -63,9 +203,11 @@ function Main() {
           onChange={(e) => setSelectedType(e.target.value)}
         >
           <option value="">Tất cả loại</option>
-          <option value="dog">Chó</option>
-          <option value="cat">Mèo</option>
-          <option value="accessory">Phụ kiện</option>
+          {categories.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -86,6 +228,7 @@ function Main() {
               <input ref={_name} type="text" defaultValue={dataUpdate.name} />
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -95,11 +238,12 @@ function Main() {
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Origin
+                Age
               </span>
               <input ref={_origin} type="text" defaultValue={dataUpdate.origin} />
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
@@ -117,15 +261,18 @@ function Main() {
               </select>
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Type
+                Category
               </span>
-              <select ref={_type} defaultValue={dataUpdate.type}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="accessory">Accessory</option>
+              <select ref={_type} defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="input-group">
@@ -135,62 +282,35 @@ function Main() {
               <input ref={_description} type="text" defaultValue={dataUpdate.description} />
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                if (
-                  _status.current.value !== "New" &&
-                  _status.current.value !== "Old"
-                ) {
-                  window.alert("Must input Status New or Old");
-                  return;
-                }
-                if (
-                  _type.current.value !== "dog" &&
-                  _type.current.value !== "cat" &&
-                  _type.current.value !== "accessory"
-                ) {
-                  window.alert("Must input Type dog, cat, or accessory");
-                  return;
-                }
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/products/update`,
-                    {
-                      id: dataUpdate._id,
-                      image: _image.current.value,
-                      name: _name.current.value,
-                      price: _price.current.value,
-                      origin: _origin.current.value,
-                      quantity: _quantity.current.value,
-                      status: _status.current.value,
-                      type: _type.current.value,
-                      description: _description.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllProduct();
-                      setIsUdpdate(false);
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Weight
+              </span>
+              <input ref={_weight} type="text" defaultValue={dataUpdate.weight} />
+            </div>
+          </div>
+
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Sex
+              </span>
+              <select ref={_sex} defaultValue={dataUpdate.sex}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Unisex">Unisex</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="d-flex flex-row mb-2">
+            <button className="btn btn-primary" onClick={handleUpdateProduct}>
               Update
             </button>
             <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsUdpdate(false)}
-            >
+            <button className="btn btn-secondary" onClick={() => setIsUdpdate(false)}>
               Quit
             </button>
           </div>
@@ -224,7 +344,7 @@ function Main() {
             </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Origin
+                Age
               </span>
               <input ref={_origin} type="text" />
             </div>
@@ -247,15 +367,18 @@ function Main() {
               </select>
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
-                Type
+                Category
               </span>
               <select ref={_type}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="accessory">Accessory</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="input-group">
@@ -265,80 +388,42 @@ function Main() {
               <input ref={_description} type="text" />
             </div>
           </div>
+
           <div className="d-flex flex-row mb-2">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                if (
-                  _image.current.value === "" ||
-                  _name.current.value === "" ||
-                  _price.current.value === "" ||
-                  _origin.current.value === "" ||
-                  _quantity.current.value === "" ||
-                  _status.current.value === "" ||
-                  _type.current.value === "" ||
-                  _description.current.value === ""
-                ) {
-                  window.alert("Input is empty");
-                  return;
-                }
-                if (
-                  _status.current.value !== "New" &&
-                  _status.current.value !== "Old"
-                ) {
-                  window.alert("Must input Status New or Old");
-                  return;
-                }
-                if (
-                  _type.current.value !== "dog" &&
-                  _type.current.value !== "cat" &&
-                  _type.current.value !== "accessory"
-                ) {
-                  window.alert("Must input Type dog, cat, or accessory");
-                  return;
-                }
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/products/add`,
-                    {
-                      image: _image.current.value,
-                      name: _name.current.value,
-                      price: _price.current.value,
-                      origin: _origin.current.value,
-                      quantity: _quantity.current.value,
-                      status: _status.current.value,
-                      type: _type.current.value,
-                      description: _description.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllProduct();
-                      setIsAdd(false);
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Weight
+              </span>
+              <input ref={_weight} type="text" />
+            </div>
+          </div>
+
+          <div className="d-flex flex-row mb-2">
+            <div className="input-group">
+              <span className="input-group-text" style={{ width: 100 }}>
+                Sex
+              </span>
+              <select ref={_sex}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Unisex">Unisex</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="d-flex flex-row mb-2">
+            <button className="btn btn-primary" onClick={handleAddProduct}>
               Add
             </button>
             <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsAdd(false)}
-            >
+            <button className="btn btn-secondary" onClick={() => setIsAdd(false)}>
               Quit
             </button>
           </div>
         </div>
       )}
 
+      {/* Nút thêm sản phẩm */}
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
           style={{ borderRadius: 30, height: 50, width: 50 }}
@@ -350,7 +435,7 @@ function Main() {
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
-      
+
       {/* Bảng sản phẩm đã lọc */}
       <table className="table">
         <thead>
@@ -358,11 +443,13 @@ function Main() {
             <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
-            <th scope="col">Origin</th>
+            <th scope="col">Age</th>
             <th scope="col">Quantity</th>
             <th scope="col">Status</th>
-            <th scope="col">Type</th>
+            <th scope="col">Category</th>
             <th scope="col">Description</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Sex</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
@@ -371,15 +458,22 @@ function Main() {
           {filteredData.map((item) => (
             <tr key={item._id}>
               <td>
-                <img src={item.img} height={50} width={50} alt={item.name || "Hình ảnh sản phẩm"} />
+                <img
+                  src={item.img}
+                  height={50}
+                  width={50}
+                  alt={item.name || "Hình ảnh sản phẩm"}
+                />
               </td>
               <td>{item.name}</td>
               <td>{item.price}</td>
               <td>{item.origin}</td>
               <td>{item.quantity}</td>
               <td>{item.status}</td>
-              <td>{item.type}</td>
+              <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
+              <td>{item.weight}</td>
+              <td>{item.sex}</td>
               <td>
                 <button
                   onClick={async () => {
@@ -398,26 +492,7 @@ function Main() {
               <td>
                 <button
                   className="btn btn-secondary"
-                  onClick={async () => {
-                    const result = window.confirm("Sure delete " + item.name);
-                    if (result) {
-                      const {
-                        status,
-                        data: { response, type },
-                      } = await axios.post(
-                        `${json_config[0].url_connect}/products/delete`,
-                        {
-                          id: item._id,
-                        }
-                      );
-                      if (status === 200) {
-                        window.alert(response);
-                        if (type) {
-                          await getAllProduct();
-                        }
-                      }
-                    }
-                  }}
+                  onClick={() => handleDeleteProduct(item._id)}
                 >
                   Delete
                 </button>

@@ -85,7 +85,7 @@ const Payment2 = ({ route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             style={{ width: 20, height: 20 }}
-            source={require("../Image/back.png")}
+            source={require("../Image/left-back.png")}
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>THANH TOÁN</Text>
