@@ -20,17 +20,31 @@ export default function ({ item, getAllHistoryPay }) {
   function convertStatus(status) {
     let result = "";
     let statusColor = "";
-    if (status === "pending") {
-      result = "Chờ xác nhận";
-      statusColor = "gray";
-    }
-    if (status === "success") {
-      result = "Đã xác nhận";
-      statusColor = "green";
-    }
-    if (status === "reject") {
-      result = "Đã hủy";
-      statusColor = "red";
+
+    switch (status) {
+      case "pending":
+        result = "Chờ xác nhận";
+        statusColor = "gray";
+        break;
+      case "success":
+        result = "Chờ giao hàng";
+        statusColor = "green";
+        break;
+      case "reject":
+        result = "Đã hủy";
+        statusColor = "red";
+        break;
+      case "shipping":
+        result = "Đang giao";
+        statusColor = "yellow";
+        break;
+      case "shipped":
+        result = "Đã giao";
+        statusColor = "violet";
+        break;
+
+      default:
+        break;
     }
     return { result, statusColor };
   }
@@ -52,13 +66,12 @@ export default function ({ item, getAllHistoryPay }) {
               const {
                 status,
                 data: { response, type },
-              } = await axios.post(`${URL}/pay/update`,
-                {
-                  id: item._id,
-                  email: item.email,
-                  products: item.products,
-                  status: "reject",
-                });
+              } = await axios.post(`${URL}/pay/update`, {
+                id: item._id,
+                email: item.email,
+                products: item.products,
+                status: "reject",
+              });
 
               if (status === 200) {
                 ToastAndroid.show(response, ToastAndroid.SHORT);
@@ -66,7 +79,10 @@ export default function ({ item, getAllHistoryPay }) {
               }
             } catch (error) {
               console.error(error);
-              ToastAndroid.show("Đã xảy ra lỗi khi hủy đơn hàng", ToastAndroid.SHORT);
+              ToastAndroid.show(
+                "Đã xảy ra lỗi khi hủy đơn hàng",
+                ToastAndroid.SHORT
+              );
             }
           },
           style: "destructive",
@@ -96,7 +112,11 @@ export default function ({ item, getAllHistoryPay }) {
               <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                 Giá tiền: {numberUtils(e.price)}
               </Text>
-              <Text style={{fontSize: 15, fontWeight: "bold"}} numberOfLines={1} ellipsizeMode="tail">
+              <Text
+                style={{ fontSize: 15, fontWeight: "bold" }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
                 Kích thước: {e.size}
               </Text>
               <Text style={{ fontSize: 15, fontWeight: "bold" }}>
@@ -166,7 +186,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginHorizontal: 15,
-    resizeMode: "contain"
+    resizeMode: "contain",
   },
   container: {
     flex: 1,
@@ -205,7 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#000",
     fontWeight: "bold",
-    overflow: 'hidden',
-    width: '100%',
+    overflow: "hidden",
+    width: "100%",
   },
 });

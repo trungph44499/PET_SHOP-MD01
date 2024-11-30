@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import { Text, View, StyleSheet, Image, ImageBackground, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Image, ImageBackground } from "react-native";
 import {
   getAllMessage,
   getUser,
@@ -14,7 +14,7 @@ export default function ChatScreenComponent() {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState({});
   const websocket = useContext(webSocketContext);
-  const route = useRoute(); 
+  const route = useRoute();
   const product = route?.params?.product;
 
   websocket.onmessage = function (message) {
@@ -59,9 +59,7 @@ export default function ChatScreenComponent() {
   };
 
   return (
-    <ImageBackground
-      style={styles.background}
-    >
+    <ImageBackground style={styles.background}>
       {/* <View>
         {product && (
           <TouchableOpacity
@@ -86,7 +84,9 @@ export default function ChatScreenComponent() {
         messages={messages}
         renderChatEmpty={() => (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No messages yet, start chatting!</Text>
+            <Text style={styles.emptyText}>
+              No messages yet, start chatting!
+            </Text>
           </View>
         )}
         onSend={(messages) => onSend(messages)}

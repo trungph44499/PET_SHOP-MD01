@@ -6,7 +6,7 @@ const productModel = require("../models/productModel");
 // Lấy tất cả sản phẩm
 router.get("/", async (req, res) => {
   try {
-    const getProducts = await productModel.find({}).populate('type', 'name'); // Populate trường 'name' từ 'productCategory'
+    const getProducts = await productModel.find({}).populate("type", "name"); // Populate trường 'name' từ 'productCategory'
     res.status(200).send({ response: getProducts });
   } catch (error) {
     console.log(error);
@@ -14,13 +14,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 // Lấy thông tin sản phẩm theo ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const product = await productModel.findById(id).populate('type', 'name');
+    const product = await productModel.findById(id).populate("type", "name");
     if (product) {
       res.status(200).json({ response: product });
     } else {
@@ -37,10 +36,10 @@ router.post("/add", async (req, res) => {
   const { image, name, size, status, type, description, animals } = req.body;
 
   // Chuyển đổi chuỗi size thành mảng đối tượng
-  const sizeArray = size.map(item => ({
-    sizeName: item.sizeName,  // Ví dụ: "S", "M", "L"
-    price: item.price,        // Giá của kích thước đó
-    quantity: item.quantity   // Số lượng của kích thước đó
+  const sizeArray = size.map((item) => ({
+    sizeName: item.sizeName, // Ví dụ: "S", "M", "L"
+    price: item.price, // Giá của kích thước đó
+    quantity: item.quantity, // Số lượng của kích thước đó
   }));
 
   try {
@@ -60,7 +59,13 @@ router.post("/add", async (req, res) => {
     });
 
     const savedProduct = await newProduct.save();
-    res.status(200).json({ response: "Add product complete!", type: true, product: savedProduct });
+    res
+      .status(200)
+      .json({
+        response: "Add product complete!",
+        type: true,
+        product: savedProduct,
+      });
   } catch (error) {
     console.log(error);
     res.status(500).json({ response: "Error add product!" });
@@ -69,13 +74,14 @@ router.post("/add", async (req, res) => {
 
 // Cập nhật sản phẩm
 router.post("/update", async (req, res) => {
-  const { id, image, name, size, status, type, description, animals } = req.body;
+  const { id, image, name, size, status, type, description, animals } =
+    req.body;
 
   // Chuyển đổi chuỗi size thành mảng đối tượng
-  const sizeArray = size.map(item => ({
-    sizeName: item.sizeName,  // Ví dụ: "S", "M", "L"
-    price: item.price,        // Giá của kích thước đó
-    quantity: item.quantity   // Số lượng của kích thước đó
+  const sizeArray = size.map((item) => ({
+    sizeName: item.sizeName, // Ví dụ: "S", "M", "L"
+    price: item.price, // Giá của kích thước đó
+    quantity: item.quantity, // Số lượng của kích thước đó
   }));
 
   try {
@@ -84,18 +90,28 @@ router.post("/update", async (req, res) => {
       return res.status(400).json({ response: "Invalid category ID!" });
     }
 
-    const updatedProduct = await productModel.findByIdAndUpdate(id, {
-      img: image,
-      name: name,
-      size: sizeArray,
-      status: status,
-      type: type, // Cập nhật trường type
-      description: description,
-      animals: animals,
-    }, { new: true }); // Trả về bản cập nhật mới
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      id,
+      {
+        img: image,
+        name: name,
+        size: sizeArray,
+        status: status,
+        type: type, // Cập nhật trường type
+        description: description,
+        animals: animals,
+      },
+      { new: true }
+    ); // Trả về bản cập nhật mới
 
     if (updatedProduct) {
-      res.status(200).json({ response: "Update product complete!", type: true, product: updatedProduct });
+      res
+        .status(200)
+        .json({
+          response: "Update product complete!",
+          type: true,
+          product: updatedProduct,
+        });
     } else {
       res.status(400).json({ response: "Error Update product!", type: false });
     }
@@ -118,7 +134,9 @@ router.post("/delete", async (req, res) => {
 
     const deleteProduct = await productModel.deleteOne({ _id: id });
     if (deleteProduct.deletedCount > 0) {
-      res.status(200).json({ response: "Delete product complete!", type: true });
+      res
+        .status(200)
+        .json({ response: "Delete product complete!", type: true });
     } else {
       res.status(200).json({ response: "Error Delete product!", type: false });
     }

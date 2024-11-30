@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -7,101 +7,117 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
-import { URL } from "../HomeScreen";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import ItemHistory from "./components/item_history_pay";
-import { useFocusEffect } from "@react-navigation/native";
+import { getAllHistoryPay } from "./HistoryViewModel";
 
 export default function HistoryScreen() {
   const navigation = useNavigation();
   const [dataHistory, setDataHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  // Hàm lấy dữ liệu lịch sử thanh toán
-  async function getAllHistoryPay() {
-    try {
-      const email = await AsyncStorage.getItem("@UserLogin");
-      if (!email) {
-        setError("Không tìm thấy email người dùng.");
-        setLoading(false);
-        return;
-      }
-      const { status, data } = await axios.get(`${URL}/pay/filter`, {
-        params: { email: email },
-      });
-
-      if (status === 200) {
-        // Đảo ngược thứ tự mảng để dữ liệu mới nhất lên đầu
-        setDataHistory(data.reverse());
-      } else {
-        setError("Không thể lấy dữ liệu lịch sử thanh toán.");
-      }
-    } catch (error) {
-      setError("Có lỗi xảy ra khi tải dữ liệu.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // Gọi hàm khi màn hình được focus
-  useFocusEffect(
-    useCallback(() => {
-      setLoading(true);
-      setError("");
-      getAllHistoryPay();
-    }, [])
-  );
+  useEffect(() => {
+    (async function () {
+      const data = await getAllHistoryPay("pending");
+      setDataHistory(data);
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={styles.icon} source={require("../../Image/left-back.png")} />
+          <Image
+            style={styles.icon}
+            source={require("../../Image/left-back.png")}
+          />
         </TouchableOpacity>
         <Text style={styles.headerText}>Lịch sử thanh toán</Text>
       </View>
       <View style={styles.buttonItem}>
-          <TouchableOpacity style={styles.button}>
-            <Image
-              source={require("../../Image/box.png")}
-              style={{ height: 30, width: 30 }}
-            />
-            <Text>Chờ xác nhận</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Image
-              source={require("../../Image/truck.png")}
-              style={{ height: 30, width: 30 }}
-            />
-            <Text>Chờ giao hàng</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            const data = await getAllHistoryPay("pending");
+            setDataHistory(data);
+          }}
+        >
+          <Image
+            source={require("../../Image/box.png")}
+            style={{ height: 25, width: 25 }}
+          />
+          <Text>Chờ xác nhận</Text>
+        </TouchableOpacity>
 
-        </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            const data = await getAllHistoryPay("success");
+            setDataHistory(data);
+          }}
+        >
+          <Image
+            source={require("../../Image/truck.png")}
+            style={{ height: 25, width: 25 }}
+          />
+          <Text>Chờ giao hàng</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            const data = await getAllHistoryPay("shipping");
+            setDataHistory(data);
+          }}
+        >
+          <Image
+            source={require("../../Image/box.png")}
+            style={{ height: 25, width: 25 }}
+          />
+          <Text>Đang giao</Text>
+        </TouchableOpacity>
 
-      {/* Hiển thị trạng thái loading */}
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />
-      ) : error ? (
-        <Text style={styles.errorText}>{error}</Text>
-      ) : (
-        <ScrollView style={{ marginTop: 10 }}>
-          {dataHistory.length > 0 ? (
-            dataHistory.map((item) => (
-              <ItemHistory
-                key={item._id}
-                item={item}
-                getAllHistoryPay={getAllHistoryPay}
-              />
-            ))
-          ) : (
-            <Text style={styles.noDataText}>Không có lịch sử thanh toán nào.</Text>
-          )}
-        </ScrollView>
-      )}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            const data = await getAllHistoryPay("shipped");
+            setDataHistory(data);
+          }}
+        >
+          <Image
+            source={require("../../Image/truck.png")}
+            style={{ height: 25, width: 25 }}
+          />
+          <Text>Đã giao</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            const data = await getAllHistoryPay("reject");
+            setDataHistory(data);
+          }}
+        >
+          <Image
+            source={require("../../Image/truck.png")}
+            style={{ height: 25, width: 25 }}
+          />
+          <Text>Đã hủy</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView style={{ marginTop: 10 }}>
+        {dataHistory.length > 0 ? (
+          dataHistory.map((item) => (
+            <ItemHistory
+              key={item._id}
+              item={item}
+              getAllHistoryPay={getAllHistoryPay}
+            />
+          ))
+        ) : (
+          <Text style={styles.noDataText}>
+            Không có lịch sử thanh toán nào.
+          </Text>
+        )}
+      </ScrollView>
     </View>
   );
 }
@@ -142,13 +158,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#888",
   },
-  buttonItem:{
+  buttonItem: {
     marginTop: 20,
-    flexDirection: "row", 
-    justifyContent: "center"
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  button:{
-    flex: 1,
-    alignItems: "center"
-  }
+  button: {
+    alignItems: "center",
+  },
 });
