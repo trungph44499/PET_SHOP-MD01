@@ -173,33 +173,40 @@ function Main() {
   function TransactionModal({ transaction, onClose }) {
     if (!transaction) return null;
 
+    const handleClose = (e) => {
+      if (e.target.className === "modal") {
+        onClose();
+      }
+    };
+
     return (
-      <div className="modal">
+      <div className="modal" onClick={handleClose}>
         <div className="modal-content">
-          <button onClick={onClose} className="modal-close-btn">×</button>
-          <h2>Chi Tiết Giao Dịch</h2>
-          <div>
-            <p><strong>ID:</strong> {transaction._id}</p>
-            <p><strong>Fullname:</strong> {transaction.fullname}</p>
-            <p><strong>Email:</strong> {transaction.email}</p>
-            <p><strong>Location:</strong> {transaction.location}</p>
-            <p><strong>Phone:</strong> {transaction.number}</p>
-            <p><strong>Ship:</strong> {transaction.ship}</p>
-            <p><strong>Payment Method:</strong> {transaction.paymentMethod}</p>
-            <p><strong>Total Price:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
-            <p><strong>Status:</strong> {convertStatus(transaction.status)}</p>
-            <h3>Products:</h3>
-            <ul>
-              {transaction.products.map((product, index) => (
-                <li key={index}>
-                  <p><strong>Tên sản phẩm: </strong>{product.name}</p>
-                  <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
-                  <p><strong>Kích thước: </strong>{product.size}</p>
-                  <p><strong>Số lượng: </strong>{product.quantity}</p>
-                  {/* {product.name} - {Number(product.price).toLocaleString("vi-VN")} VNĐ */}
-                </li>
-              ))}
-            </ul>
+          <h2 className="texth2">Chi Tiết Giao Dịch</h2>
+          <div className="modal-body">
+            <div className="transaction-info">
+              <p><strong>ID:</strong> {transaction._id}</p>
+              <p><strong>Fullname:</strong> {transaction.fullname}</p>
+              <p><strong>Email:</strong> {transaction.email}</p>
+              <p><strong>Location:</strong> {transaction.location}</p>
+              <p><strong>Phone:</strong> {transaction.number}</p>
+              <p><strong>Ship:</strong> {transaction.ship}</p>
+              <p><strong>Payment Method:</strong> {transaction.paymentMethod}</p>
+              <p><strong>Total Price:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
+              <p><strong>Status:</strong> {convertStatus(transaction.status)}</p>
+            </div>
+            <div className="product-info">
+              <ul>
+                {transaction.products.map((product, index) => (
+                  <li key={index}>
+                    <p><strong>Tên sản phẩm: </strong>{product.name}</p>
+                    <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
+                    <p><strong>Kích thước: </strong>{product.size}</p>
+                    <p><strong>Số lượng: </strong>{product.quantity}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

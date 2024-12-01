@@ -24,10 +24,10 @@
 .stat-box {
   flex: 1;
   text-align: center;
-  background-color: #f4f4f4;
+  background-color: #87CEFF;
   padding: 15px;
   margin: 0 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -50,7 +50,10 @@
 .transactions-section th {
   background-color: #f4f4f4;
 }
-
+.texth2{
+  margin-top: 10px;
+  font-weight: bold;
+}
 .modal {
   position: fixed;
   top: 0;
@@ -60,17 +63,32 @@
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Canh nội dung bắt đầu ở trên cùng */
+  align-items: center; /* Canh nội dung bắt đầu ở trên cùng */
   z-index: 1000;
-  padding-top: 20px; /* Thêm khoảng cách từ trên xuống cho modal */
+}
+.modal-body{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 5%;
+}
+.transaction-info{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.product-info{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 
 .modal-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
-  max-height: 80%;
+  width: 50%;
+  max-height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column; /* Đảm bảo các phần tử trong modal xếp theo chiều dọc */

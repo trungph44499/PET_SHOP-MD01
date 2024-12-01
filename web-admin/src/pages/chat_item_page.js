@@ -83,7 +83,13 @@ function Main() {
 
   return (
     <div className="d-flex flex-column vh-100 container">
-      <header className="bg-primary text-white text-center py-3">Admin</header>
+      <header className="bg-primary text-white text-center py-3 d-flex justify-content-between align-items-center">
+        <button className="btn ms-2" onClick={() => window.history.back()}>
+          <img src="https://static.thenounproject.com/png/65506-200.png" alt="Back" height={30} width={30} style={{ filter: "invert(1)" }} />
+        </button>
+        <span className="mx-auto">{email}</span>
+        <div></div>
+      </header>
 
       <main
         className="flex-grow-1 overflow-auto d-flex flex-column-reverse"
@@ -105,6 +111,7 @@ function Main() {
                     width={30}
                     className="rounded-circle me-2"
                     alt="..."
+                   
                   ></img>
                 )}
                 <p className="p-2 bg-primary text-white d-inline-block rounded-3">
