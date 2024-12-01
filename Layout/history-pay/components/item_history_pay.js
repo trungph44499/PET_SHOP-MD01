@@ -36,11 +36,11 @@ export default function ({ item, getAllHistoryPay }) {
         break;
       case "shipping":
         result = "Đang giao";
-        statusColor = "yellow";
+        statusColor = "green";
         break;
       case "shipped":
         result = "Đã giao";
-        statusColor = "violet";
+        statusColor = "green";
         break;
 
       default:
@@ -193,7 +193,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
     padding: 8,
-    margin: 15,
+    marginHorizontal: 15,
+    marginVertical: 5,
     gap: 10,
     shadowColor: "black",
     shadowOffset: {
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   rejectButton: {
     backgroundColor: "red",

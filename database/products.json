@@ -42,7 +42,7 @@
   "_id": {
     "$oid": "67406144b2e2500b89f9abc6"
   },
-  "img": "https://m.media-amazon.com/images/I/81aFbYJhsQL._AC_SX679_.jpg",
+  "img": "https://headsupfortails.com/cdn/shop/files/8853301004916-4_a95c477c-d2c7-491f-b981-aff375616180.jpg?v=1718003780",
   "name": "Thức ăn khô cho mèo",
   "size": [
     {
@@ -50,7 +50,7 @@
       "price": 250000,
       "quantity": 5,
       "_id": {
-        "$oid": "6745a5cca19a42f69a041844"
+        "$oid": "674c52517d9f37cfa58edd58"
       }
     },
     {
@@ -58,7 +58,7 @@
       "price": 300000,
       "quantity": 10,
       "_id": {
-        "$oid": "6745a5cca19a42f69a041845"
+        "$oid": "674c52517d9f37cfa58edd59"
       }
     },
     {
@@ -66,7 +66,7 @@
       "price": 350000,
       "quantity": 15,
       "_id": {
-        "$oid": "6745a5cca19a42f69a041846"
+        "$oid": "674c52517d9f37cfa58edd5a"
       }
     }
   ],
@@ -82,7 +82,7 @@
   "_id": {
     "$oid": "674206beca7db672bec239cd"
   },
-  "img": "https://m.media-amazon.com/images/I/51KewME6QLL._AC_SX679_.jpg",
+  "img": "https://headsupfortails.com/cdn/shop/files/Sara_sWholesome-Puppy-100gm1_2.jpg?v=1730718898",
   "name": "Thức ăn hạt cho chó ",
   "size": [
     {
@@ -90,7 +90,7 @@
       "price": 130000,
       "quantity": 5,
       "_id": {
-        "$oid": "6746f0f489b822808aec4387"
+        "$oid": "674c51ca7d9f37cfa58edb91"
       }
     },
     {
@@ -98,7 +98,7 @@
       "price": 230000,
       "quantity": 10,
       "_id": {
-        "$oid": "6746f0f489b822808aec4388"
+        "$oid": "674c51ca7d9f37cfa58edb92"
       }
     },
     {
@@ -106,7 +106,7 @@
       "price": 330000,
       "quantity": 15,
       "_id": {
-        "$oid": "6746f0f489b822808aec4389"
+        "$oid": "674c51ca7d9f37cfa58edb93"
       }
     }
   ],
@@ -122,7 +122,7 @@
   "_id": {
     "$oid": "674206f3ca7db672bec239d1"
   },
-  "img": "https://m.media-amazon.com/images/I/71GTm5lTp0L.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+  "img": "https://headsupfortails.com/cdn/shop/files/HUFTHeartyTrioChicken_Lamb_PumpkinDelightinGravyComboForDog-_3x70gm_1.jpg?v=1725874318",
   "name": "Thức ăn hạt Royal",
   "size": [
     {
@@ -130,7 +130,7 @@
       "price": 120000,
       "quantity": 5,
       "_id": {
-        "$oid": "6745aae9cac5c716a769056b"
+        "$oid": "674c51d97d9f37cfa58edbeb"
       }
     },
     {
@@ -138,7 +138,7 @@
       "price": 220000,
       "quantity": 10,
       "_id": {
-        "$oid": "6745aae9cac5c716a769056c"
+        "$oid": "674c51d97d9f37cfa58edbec"
       }
     },
     {
@@ -146,7 +146,7 @@
       "price": 320000,
       "quantity": 15,
       "_id": {
-        "$oid": "6745aae9cac5c716a769056d"
+        "$oid": "674c51d97d9f37cfa58edbed"
       }
     }
   ],
@@ -162,7 +162,7 @@
   "_id": {
     "$oid": "67420734ca7db672bec239d5"
   },
-  "img": "https://m.media-amazon.com/images/I/71553V8FDLL._AC_UL480_FMwebp_QL65_.jpg",
+  "img": "https://headsupfortails.com/cdn/shop/files/HUFT_Sara_s_Wholesome_Food_-_Grain-Free_Chicken_And_Turkey_Dog_Food_01.jpg?v=1725348977",
   "name": "Thức ăn hạt cho chó",
   "size": [
     {
@@ -170,7 +170,7 @@
       "price": 110000,
       "quantity": 5,
       "_id": {
-        "$oid": "6745a5e1a19a42f69a04189b"
+        "$oid": "674c51e77d9f37cfa58edc45"
       }
     },
     {
@@ -178,7 +178,7 @@
       "price": 210000,
       "quantity": 10,
       "_id": {
-        "$oid": "6745a5e1a19a42f69a04189c"
+        "$oid": "674c51e77d9f37cfa58edc46"
       }
     },
     {
@@ -186,7 +186,7 @@
       "price": 310000,
       "quantity": 15,
       "_id": {
-        "$oid": "6745a5e1a19a42f69a04189d"
+        "$oid": "674c51e77d9f37cfa58edc47"
       }
     }
   ],
@@ -282,7 +282,7 @@
   "_id": {
     "$oid": "674208c8ca7db672bec239e4"
   },
-  "img": "https://m.media-amazon.com/images/I/8145aXf4ScL._AC_UL480_FMwebp_QL65_.jpg",
+  "img": "https://headsupfortails.com/cdn/shop/files/8853301003223_1.jpg?v=1711450874",
   "name": "Thức ăn ướt cho mèo Whole Paws",
   "size": [
     {
@@ -290,7 +290,7 @@
       "price": 100000,
       "quantity": 5,
       "_id": {
-        "$oid": "67458d8f540fdb4d597d7e7a"
+        "$oid": "674c525c7d9f37cfa58eddb8"
       }
     },
     {
@@ -298,7 +298,7 @@
       "price": 200000,
       "quantity": 10,
       "_id": {
-        "$oid": "67458d8f540fdb4d597d7e7b"
+        "$oid": "674c525c7d9f37cfa58eddb9"
       }
     },
     {
@@ -306,7 +306,7 @@
       "price": 300000,
       "quantity": 15,
       "_id": {
-        "$oid": "67458d8f540fdb4d597d7e7c"
+        "$oid": "674c525c7d9f37cfa58eddba"
       }
     }
   ],
@@ -322,7 +322,7 @@
   "_id": {
     "$oid": "67420963ca7db672bec239eb"
   },
-  "img": "https://m.media-amazon.com/images/I/819LJ2mwOXL._AC_SX679_.jpg",
+  "img": "https://headsupfortails.com/cdn/shop/products/RoyalCaninKittenFoodinGravy85gx12.jpg?v=1673857706",
   "name": "Thức ăn cho mèo Purina Pro Plan Allergen Reduction",
   "size": [
     {
@@ -330,7 +330,7 @@
       "price": 200000,
       "quantity": 5,
       "_id": {
-        "$oid": "6745ab08cac5c716a76905c2"
+        "$oid": "674c527f7d9f37cfa58ede18"
       }
     },
     {
@@ -338,7 +338,7 @@
       "price": 250000,
       "quantity": 10,
       "_id": {
-        "$oid": "6745ab08cac5c716a76905c3"
+        "$oid": "674c527f7d9f37cfa58ede19"
       }
     },
     {
@@ -346,7 +346,7 @@
       "price": 350000,
       "quantity": 15,
       "_id": {
-        "$oid": "6745ab08cac5c716a76905c4"
+        "$oid": "674c527f7d9f37cfa58ede1a"
       }
     }
   ],
@@ -1075,6 +1075,270 @@
     "$oid": "673a838f9a11c1e0ae8e2e10"
   },
   "description": "Làm dịu & Thoải mái: Giường cho chó làm dịu của chúng tôi mềm mại hơn 20% so với hầu hết các đối thủ cạnh tranh, làm cho nó mềm mại và thoải mái hơn. Lông giả chất lượng cao, làm dịu và ấm áp tạo ra một nơi an toàn cho thú cưng của bạn nghỉ ngơi và thư giãn. Hỗ trợ làm dịu: Chiếc giường hình tròn này lý tưởng cho thú cưng thích cuộn tròn. Vành nâng cao ôm chặt mèo hoặc chó của bạn, mang lại sự hỗ trợ tối ưu cho đầu và cổ và cảm giác an toàn. Lớp đệm siêu mềm cao cấp giúp giảm đau khớp và cơ.",
+  "animals": "dog",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674c52097d9f37cfa58edc9f"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/files/SHN24-MAXI-AD-GRAVY-PACKSHOT-POUCH-B1_Editable_Version_1083220.jpg?v=1727417067",
+  "name": "Thức ăn hạt cho chó ",
+  "size": [
+    {
+      "sizeName": "M",
+      "price": 130000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "674c52097d9f37cfa58edca0"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 230000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "674c52097d9f37cfa58edca1"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 330000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "674c52097d9f37cfa58edca2"
+      }
+    }
+  ],
+  "status": "Old",
+  "type": {
+    "$oid": "673a71a335d8edceac0a6c4f"
+  },
+  "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
+  "animals": "dog",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674c52387d9f37cfa58edcfa"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/files/Fireflypouchmockup305801_1.jpg?v=1725435615",
+  "name": "Thức ăn hạt cho chó ",
+  "size": [
+    {
+      "sizeName": "M",
+      "price": 130000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "674c52387d9f37cfa58edcfb"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 230000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "674c52387d9f37cfa58edcfc"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 330000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "674c52387d9f37cfa58edcfd"
+      }
+    }
+  ],
+  "status": "Old",
+  "type": {
+    "$oid": "673a71a335d8edceac0a6c4f"
+  },
+  "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
+  "animals": "dog",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674c52a87d9f37cfa58ede78"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/files/FarminaMatissePremiumSalmon_TunaDryCatFood.jpg?v=1683097314",
+  "name": "Thức ăn khô cho mèo",
+  "size": [
+    {
+      "sizeName": "M",
+      "price": 200000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "674c52a87d9f37cfa58ede79"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 250000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "674c52a87d9f37cfa58ede7a"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 350000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "674c52a87d9f37cfa58ede7b"
+      }
+    }
+  ],
+  "status": "Old",
+  "type": {
+    "$oid": "673a71a335d8edceac0a6c4f"
+  },
+  "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
+  "animals": "cat",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674c52d27d9f37cfa58eded9"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/products/PersianKitten-1.png?v=1674806034",
+  "name": "Thức ăn khô cho mèo Royal Canin Persian Kitten",
+  "size": [
+    {
+      "sizeName": "M",
+      "price": 200000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "674c532c7d9f37cfa58ee00d"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 250000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "674c532c7d9f37cfa58ee00e"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 350000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "674c532c7d9f37cfa58ee00f"
+      }
+    }
+  ],
+  "status": "Old",
+  "type": {
+    "$oid": "673a71a335d8edceac0a6c4f"
+  },
+  "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
+  "animals": "cat",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674c52f27d9f37cfa58edf3d"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/products/Tuna-in-jelly_eb3a8dc3-229d-437e-a401-0a29f25a3d60.jpg?v=1652700204",
+  "name": "Thức ăn khô cho mèo",
+  "size": [
+    {
+      "sizeName": "M",
+      "price": 200000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "674c52f97d9f37cfa58edfa4"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 250000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "674c52f97d9f37cfa58edfa5"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 350000,
+      "quantity": 15,
+      "_id": {
+        "$oid": "674c52f97d9f37cfa58edfa6"
+      }
+    }
+  ],
+  "status": "Old",
+  "type": {
+    "$oid": "673a71a335d8edceac0a6c4f"
+  },
+  "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
+  "animals": "cat",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674c734ea0d0f62a0491f7c7"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/products/CatShampoo_d455ff7c-11d1-4287-9df5-d5c80961fcc4.jpg?v=1679060282",
+  "name": "Dầu gội mèo Purr & Pretty",
+  "size": [
+    {
+      "sizeName": "200ml",
+      "price": 200000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "674c739ea0d0f62a0491f96d"
+      }
+    },
+    {
+      "sizeName": "1000ml",
+      "price": 500000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "674c739ea0d0f62a0491f96e"
+      }
+    }
+  ],
+  "status": "New",
+  "type": {
+    "$oid": "674c54ce7d9f37cfa58ee080"
+  },
+  "description": "Đặc trưng:  Dầu gội dưỡng ẩm cho mèo Chứa hoa cúc, bơ hạt mỡ và vitamin E Tạo bọt tốt và có mùi thơm dễ chịu Công thức cân bằng pH Không chứa sulfat, paraben, silicone và cồn Không độc ác và thân thiện với người ăn chay Phù hợp với tất cả mèo và mèo con (12 tuần tuổi trở lên) Cách sử dụng: Làm ướt lông và thoa dầu gội. Tạo bọt và xả sạch bằng nước sạch. Bảo vệ mắt và tai khỏi nước hoặc dầu gội.  Phá vỡ bong bóng:  Bạn có biết rằng khi mèo tự chải chuốt, điều đó không có nghĩa là chúng không cần chải chuốt và tắm rửa thường xuyên không. Để bảo vệ bộ lông và làn da của mèo khỏi gàu, gàu và mùi hôi, hãy tắm cho chúng một cách nhẹ nhàng, có bọt để chúng có mùi thơm tuyệt vời!",
+  "animals": "cat",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674c738ca0d0f62a0491f898"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/files/021653290280.jpg?v=1707808202",
+  "name": "Dầu gội khử mùi Bio-Groom Groom & Fresh dành cho chó và mèo ",
+  "size": [
+    {
+      "sizeName": "200ml",
+      "price": 200000,
+      "quantity": 5,
+      "_id": {
+        "$oid": "674c7395a0d0f62a0491f902"
+      }
+    },
+    {
+      "sizeName": "1000ml",
+      "price": 500000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "674c7395a0d0f62a0491f903"
+      }
+    }
+  ],
+  "status": "New",
+  "type": {
+    "$oid": "674c54ce7d9f37cfa58ee080"
+  },
+  "description": "Dầu gội cho chó Groom and Fresh là loại dầu gội khử mùi, không chứa sulfate dành cho chó được phát triển để loại bỏ mùi hôi của thú cưng và giữ cho thú cưng luôn thơm tho, sạch sẽ. Hương thơm độc đáo được chọn lọc từ các loại tinh dầu thơm tốt nhất. Loại dầu gội tạo bọt, đậm đặc này xả sạch nhanh chóng để không để lại cặn.  Công thức của chúng tôi bao gồm protein đậu nành thủy phân, giúp tăng cường lớp lông và giúp lông mềm mại và bóng mượt, và lô hội, giúp thúc đẩy quá trình chữa lành đồng thời làm dịu và dưỡng ẩm cho da. Ngoài ra, chất tẩy rửa tự nhiên của chúng tôi có nguồn gốc từ dầu dừa và dầu hạt cọ có thể tái sinh và phân hủy sinh học 100%.  Dầu gội cho chó Groom and Fresh không thử nghiệm trên động vật, không chứa xà phòng và không chứa paraben, silicon và chất làm đặc nhân tạo, khiến loại dầu gội này an toàn cho chó con, mèo con và môi trường. Dầu gội cho chó Groom and Fresh cũng an toàn khi sử dụng với các phương pháp điều trị bọ chét và ve tại chỗ. Được các nhà lai tạo hàng đầu và thợ chải lông chuyên nghiệp trên toàn thế giới khuyên dùng.",
   "animals": "dog",
   "__v": 0
 }]
