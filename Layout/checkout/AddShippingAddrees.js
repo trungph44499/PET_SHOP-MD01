@@ -9,14 +9,66 @@ import {
   Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import RNPickerSelect from "react-native-picker-select";
+import axios from 'axios';
+import { URL } from '../HomeScreen';
 
 const AddShippingAddress = ({ route, navigation }) => {
   const { emailUser, address, index } = route.params || {};
-
   const [fullName, setFullName] = useState(address?.fullName || "");
   const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || "");
   const [addressText, setAddressText] = useState(address?.address || "");
   const [city, setCity] = useState(address?.city || "");
+  const [cities, setCities] = useState([]);
+  const [user, setUser] = useState({});
+
+  // Lấy danh sách thành phố từ API khi component được tải
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const { status, data } = await axios.get(`${URL}/city`);
+        // Kiểm tra nếu response có đúng cấu trúc
+        if (status === 200) {
+          setCities(
+            data.map((city) => ({
+              label: city.name,  // Giả sử các thành phố có trường 'name'
+              value: city.name,
+            }))
+          );
+        } else {
+          console.error("Cấu trúc dữ liệu không hợp lệ:", data);
+          Alert.alert("Lỗi", "Dữ liệu từ API không hợp lệ.");
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách thành phố: ", error);
+        Alert.alert("Lỗi", "Không thể lấy danh sách thành phố");
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  const userData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem("@UserLogin");
+
+      const {
+        status,
+        data: { response },
+      } = await axios.post(`${URL}/users/getUser`, {
+        email: userData,
+      });
+      if (status == 200) {
+        setUser(...response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() =>{
+    userData();
+  },[]);
 
   const validateForm = () => {
     if (!fullName || !phoneNumber || !addressText || !city) {
@@ -101,7 +153,7 @@ const AddShippingAddress = ({ route, navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="Số điện thoại"
-        value={phoneNumber}
+        value={address? phoneNumber : user.sdt}
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
       />
@@ -111,12 +163,23 @@ const AddShippingAddress = ({ route, navigation }) => {
         value={addressText}
         onChangeText={setAddressText}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Thành phố"
-        value={city}
-        onChangeText={setCity}
-      />
+      {/* Sử dụng RNPickerSelect cho thành phố */}
+      <View style={styles.inputCity}>
+        <RNPickerSelect
+          onValueChange={(value) => setCity(value)}
+          items={cities}
+          value={city}
+          placeholder={{ label: "Chọn thành phố", value: null }}
+          style={{
+            inputAndroid: {
+              height: 60,
+            },
+            inputIOS: {
+              height: 60,
+            }
+          }}
+        />
+      </View>
 
       <TouchableOpacity style={styles.submitButton} onPress={saveAddress}>
         <Text style={styles.submitText}>Lưu</Text>
@@ -158,6 +221,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  inputCity: {
+    height: 60,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
     marginBottom: 20,
   },
   submitButton: {

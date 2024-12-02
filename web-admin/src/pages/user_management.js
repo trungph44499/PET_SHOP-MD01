@@ -221,7 +221,7 @@ function Main() {
             <th scope="col">Email</th>
             <th scope="col">Password</th>
             <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+            {/* <th scope="col">Delete</th> */}
             <th scope="col">Message</th>
           </tr>
         </thead>
@@ -254,7 +254,7 @@ function Main() {
                   Update
                 </button>
               </td>
-              <td>
+              {/* <td>
                 <button
                   className="btn btn-secondary"
                   onClick={async () => {
@@ -282,7 +282,7 @@ function Main() {
                 >
                   Delete
                 </button>
-              </td>
+              </td> */}
               <td>
                 <button
                   className="btn btn-secondary position-relative"

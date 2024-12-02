@@ -15,6 +15,7 @@ var paymentRouter = require("./routes/payment");
 var notificationRouter = require("./routes/notification");
 var productCategoryRoter = require("./routes/productCategory");
 var chatRouter = require("./routes/chat");
+var cityRouter = require("./routes/city");
 
 var app = express();
 app.use(logger("dev"));
@@ -35,5 +36,6 @@ app.use("/pay", paymentRouter);
 app.use("/notification", notificationRouter);
 app.use("/product-categories", productCategoryRoter);
 app.use("/chat", chatRouter);
+app.use("/city", cityRouter);
 
 module.exports = app;

@@ -19,7 +19,7 @@ export default function HistoryScreen() {
   useEffect(() => {
     (async function () {
       const data = await getAllHistoryPay("pending");
-      setDataHistory(data);
+      setDataHistory(data.reverse());
     })();
   }, []);
 
@@ -32,7 +32,7 @@ export default function HistoryScreen() {
             source={require("../../Image/left-back.png")}
           />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Lịch sử thanh toán</Text>
+        <Text style={styles.headerText}>Lịch sử mua hàng</Text>
       </View>
       <View >
         {/* Thanh cuộn ngang chứa các nút */}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Image,
   View,
@@ -22,6 +22,7 @@ const Petcare2 = () => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);  // Thêm trạng thái tải
+  const [user, setUser] = useState({});
   const websocket = useContext(webSocketContext);
   const navigation = useNavigation();
 
@@ -29,6 +30,28 @@ const Petcare2 = () => {
     { key: "1", value: "Dịch vụ 1" },
     { key: "2", value: "Dịch vụ 2" },
   ];
+
+  const userData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem("@UserLogin");
+
+      const {
+        status,
+        data: { response },
+      } = await axios.post(`${URL}/users/getUser`, {
+        email: userData,
+      });
+      if (status == 200) {
+        setUser(...response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() =>{
+    userData();
+  },[]);
 
   // Kiểm tra số điện thoại hợp lệ
   const validatePhone = (phone) => {
@@ -108,7 +131,7 @@ const Petcare2 = () => {
       <TextInput
         style={styles.input}
         placeholder="Số điện thoại của bạn"
-        value={phone}
+        value={user.sdt}
         onChangeText={setPhone}
         keyboardType="phone-pad"
       />

@@ -15,7 +15,6 @@ import PassReset from "../Layout/PassReset";
 import Petcare from "../Layout/Petcare";
 import Petcare2 from "../Layout/Petcare2";
 import Payment from "../Layout/checkout/Payment";
-import Payment2 from "../Layout/Payment2";
 import WebSocketContext from "../Layout/websocket/WebSocketContext";
 import HistoryPay from "../Layout/history-pay/HistoryPay";
 import AddPaymentMethod from "../Layout/checkout/AddPaymentMethod";
@@ -117,7 +116,6 @@ const MainNavigator = () => {
       <Stack.Screen name="Petcare" component={Petcare} />
       <Stack.Screen name="Petcare2" component={PetCareWebSocket} />
       <Stack.Screen name="Payment" component={Payment} />
-      <Stack.Screen name="Payment2" component={Payment2} />
       <Stack.Screen name="history-pay" component={HistoryPay} />
       <Stack.Screen name="ShippingAddrees" component={ShippingAddrees} />
       <Stack.Screen name="AddShippingAddrees" component={AddShippingAddrees} />

@@ -40,7 +40,7 @@ function Main() {
     if (!date) return 0;
 
     const filteredTransactions = transactions
-      .filter((item) => item.status === "success")
+      .filter((item) => item.status === "shipped")
       .filter((item) => {
         const transactionDate = new Date(item.createdAt);
         return (
@@ -53,7 +53,7 @@ function Main() {
 
   const calculateTotalRevenue = (transactions) => {
     const total = transactions
-      .filter((item) => item.status === "success")
+      .filter((item) => item.status === "shipped")
       .reduce((acc, item) => acc + Number(item.totalPrice), 0);
     return total;
   };
@@ -63,7 +63,7 @@ function Main() {
 
     const year = new Date().getFullYear();
     const filteredTransactions = transactions
-      .filter((item) => item.status === "success")
+      .filter((item) => item.status === "shipped")
       .filter((item) => {
         const transactionDate = new Date(item.createdAt);
         return transactionDate.getMonth() === month && transactionDate.getFullYear() === year;
@@ -74,7 +74,7 @@ function Main() {
 
   const calculateYearlyRevenue = (transactions, year) => {
     const filteredTransactions = transactions
-      .filter((item) => item.status === "success")
+      .filter((item) => item.status === "shipped")
       .filter((item) => {
         const transactionDate = new Date(item.createdAt);
         return transactionDate.getFullYear() === year;
@@ -101,6 +101,10 @@ function Main() {
         return "Đã xác nhận";
       case "pending":
         return "Chờ xác nhận";
+      case "shipping":
+        return "Đang giao";
+      case "shipped":
+        return "Đã giao";
       default:
         return "";
     }

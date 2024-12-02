@@ -102,7 +102,9 @@ const SearchScreen = ({ navigation }) => {
           placeholderTextColor="#999"
           style={styles.searchInput}
         />
-        <TouchableOpacity onPress={resetSearch}>
+        <TouchableOpacity
+          // onPress={resetSearch}
+        >
           <Image source={require('../Image/search.png')} style={styles.icon} />
         </TouchableOpacity>
       </View>
@@ -121,12 +123,12 @@ const SearchScreen = ({ navigation }) => {
                   keyExtractor={(item) => item._id.toString()}
                   renderItem={({ item }) => (
                     <View style={styles.searchHistory}>
-                   
-                        <Image style={styles.icon} source={require('../Image/clock.png')} />
-                        <Text style={styles.historyText} onPress={() => handleSetTxtSearch(item.txt)}>
-                          {item.txt}
-                        </Text>
-               
+
+                      <Image style={styles.icon} source={require('../Image/clock.png')} />
+                      <Text style={styles.historyText} onPress={() => handleSetTxtSearch(item.txt)}>
+                        {item.txt}
+                      </Text>
+
                       <TouchableOpacity onPress={() => deleteSearch(item._id)}>
                         <Image style={styles.icon} source={require('../Image/cancel.png')} />
                       </TouchableOpacity>

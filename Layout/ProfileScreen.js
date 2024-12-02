@@ -7,7 +7,6 @@ import {
   ToastAndroid,
   View,
   TouchableOpacity,
-  Animated,
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,22 +17,6 @@ import { URL } from "./HomeScreen";
 
 const ProfileScreen = ({ navigation, route }) => {
   const [user, setUser] = useState({});
-
-  const [scale] = useState(new Animated.Value(1));
-
-  // const handlePressIn = () => {
-  //   Animated.spring(scale, {
-  //     toValue: 0.8,
-  //     useNativeDriver: true,
-  //   }).start();
-  // };
-
-  // const handlePressOut = () => {
-  //   Animated.spring(scale, {
-  //     toValue: 1,
-  //     useNativeDriver: true,
-  //   }).start();
-  // };
 
   const retrieveData = async () => {
     try {
@@ -136,7 +119,7 @@ const ProfileScreen = ({ navigation, route }) => {
           <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("history-pay")}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.buttonText}>Lịch sử thanh toán</Text>
+              <Text style={styles.buttonText}>Lịch sử mua hàng</Text>
              
             </View>
             <Image source={require("../Image/left.png")}

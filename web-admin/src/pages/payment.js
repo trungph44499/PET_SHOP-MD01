@@ -86,7 +86,7 @@ function Main() {
             <th scope="col">Status</th>
             <th scope="col">Confirm</th>
             <th scope="col">Shipping</th>
-            <th scope="col">Shipped</th>
+            {/* <th scope="col">Shipped</th> */}
             <th scope="col">Reject</th>
           </tr>
         </thead>
@@ -166,7 +166,7 @@ function Main() {
                   Shipping
                 </button>
               </td>
-              <td>
+              {/* <td>
                 <button
                   disabled={
                     item.status === "reject" ||
@@ -199,10 +199,14 @@ function Main() {
                 >
                   Shipped
                 </button>
-              </td>
+              </td> */}
               <td>
                 <button
-                  disabled={item.status === "reject"}
+                  disabled={
+                    item.status === "reject" || 
+                    item.status === "shipped" ||
+                    item.status === "shipping"
+                  }
                   onClick={async () => {
                     const resultCheck = window.confirm("Reject payment?");
                     if (resultCheck) {
