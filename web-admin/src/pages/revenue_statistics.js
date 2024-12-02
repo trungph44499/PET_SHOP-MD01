@@ -295,8 +295,9 @@ function Main() {
           <p>{Number(yearlyRevenue).toLocaleString("vi-VN")} VNĐ</p>
         </div>
       </div>
+      
 
-      <div className="transactions-section">
+      {/* <div className="transactions-section">
         <h2>Danh Sách Giao Dịch</h2>
         <table className="table">
           <thead>
@@ -339,9 +340,9 @@ function Main() {
           </tbody>
 
         </table>
-      </div>
+      </div> */}
 
-      <div className="pagination">
+      {/* <div className="pagination">
         <button onClick={prevPage} disabled={currentPage === 1}>
           {"<"}
         </button>
@@ -349,7 +350,7 @@ function Main() {
         <button onClick={nextPage} disabled={currentPage === Math.ceil(data.length / itemsPerPage)}>
           {">"}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
