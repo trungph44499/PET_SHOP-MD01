@@ -52,37 +52,16 @@ const ProfileScreen = ({ navigation, route }) => {
             <Image style={styles.icon} source={require("../Image/left-back.png")} />
           </TouchableOpacity>
           <Text style={styles.headerText}>PROFILE</Text>
-          <TouchableOpacity style={styles.backOut} onPress={() => {
-            Alert.alert(
-              "Xác nhận đăng xuất",
-              "Bạn có chắc chắn muốn đăng xuất không?",
-              [
-                {
-                  text: "Hủy",
-                  onPress: () => console.log("Hủy đăng xuất"),
-                  style: "cancel",
-                },
-                {
-                  text: "Đăng xuất",
-                  onPress: async () => {
-                    // Xóa thông tin người dùng trong AsyncStorage
-                    await AsyncStorage.removeItem("@UserLogin");
-                    await AsyncStorage.removeItem("User");
-                    await AsyncStorage.removeItem("RememberMe");
-
-                    navigation.navigate("LoginScreen");
-                    ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
-                  },
-                  style: "destructive",
-                },
-              ],
-              { cancelable: false }
-            );
-          }}>
-            <Image source={require("../Image/exit.png")}
-              style={{ width: 20, height: 20 }}
+          <TouchableOpacity style={styles.chat} 
+          onPress={() =>
+            navigation.navigate("ChatScreen")
+          }
+          >
+            <Image source={require("../Image/messenger.png")}
+              style={{ width: 25, height: 25 }}
             />
           </TouchableOpacity>
+          
         </View>
 
         <View style={styles.infor}>
@@ -169,7 +148,43 @@ const ProfileScreen = ({ navigation, route }) => {
               style={{ width: 25, height: 25,  }}
             />
           </TouchableOpacity>
-
+          <TouchableOpacity style={styles.button}
+            
+            onPress={() => {
+              Alert.alert(
+                "Xác nhận đăng xuất",
+                "Bạn có chắc chắn muốn đăng xuất không?",
+                [
+                  {
+                    text: "Hủy",
+                    onPress: () => console.log("Hủy đăng xuất"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "Đăng xuất",
+                    onPress: async () => {
+                      // Xóa thông tin người dùng trong AsyncStorage
+                      await AsyncStorage.removeItem("@UserLogin");
+                      await AsyncStorage.removeItem("User");
+                      await AsyncStorage.removeItem("RememberMe");
+  
+                      navigation.navigate("LoginScreen");
+                      ToastAndroid.show("Đã đăng xuất", ToastAndroid.SHORT);
+                    },
+                    style: "destructive",
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+            >
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buttonText}>Đăng xuất</Text>
+            </View>
+            <Image source={require("../Image/left.png")}
+              style={{ width: 25, height: 25,  }}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -198,6 +213,11 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   backOut: {
+    position: "absolute",
+    right: 0,
+    zIndex: 1,
+  },
+  chat: {
     position: "absolute",
     right: 0,
     zIndex: 1,

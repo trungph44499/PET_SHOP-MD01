@@ -23,6 +23,7 @@ function Main() {
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const websocket = useContext(webSocketContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const avatar = useRef();
   const fullname = useRef();
@@ -33,7 +34,7 @@ function Main() {
     websocket.onmessage = async function (messages) {
       const { data } = messages;
       const json = JSON.parse(data);
-      if (json.type == "take care") {
+      if (json.type === "take care") {
         await getAllUser();
       }
     };
@@ -90,11 +91,21 @@ function Main() {
               defaultValue={dataUpdate.email}
             />
           </div>
-          <div className="input-group mb-2 mt-2">
+          <div className="input-group">
             <span className="input-group-text" style={{ width: 100 }}>
               Password
             </span>
-            <input ref={password} type="text" defaultValue={dataUpdate.pass} />
+            <input
+              ref={password}
+              type={showPassword ? "text" : "password"} 
+              defaultValue={dataUpdate.pass}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}  
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
           </div>
           <div className="d-flex flex-row">
             <button
@@ -156,11 +167,21 @@ function Main() {
             </span>
             <input ref={email} type="text" />
           </div>
-          <div className="input-group mb-2 mt-2">
+          <div className="input-group">
             <span className="input-group-text" style={{ width: 100 }}>
               Password
             </span>
-            <input ref={password} type="text" />
+            <input
+              ref={password}
+              type={showPassword ? "text" : "password"} 
+          
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}  
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
           </div>
           <div className="d-flex flex-row">
             <button
@@ -219,7 +240,7 @@ function Main() {
             <th scope="col">Avatar</th>
             <th scope="col">Fullname</th>
             <th scope="col">Email</th>
-            <th scope="col">Password</th>
+            {/* <th scope="col">Password</th> */}
             <th scope="col">Update</th>
             {/* <th scope="col">Delete</th> */}
             <th scope="col">Message</th>
@@ -238,7 +259,7 @@ function Main() {
               </th>
               <td>{item.fullname}</td>
               <td>{item.email}</td>
-              <td>{item.pass}</td>
+              {/* <td>{item.pass}</td> */}
               <td>
                 <button
                   onClick={() => {
@@ -293,7 +314,7 @@ function Main() {
                           "/chat/updateNumberMessage",
                         { email: item.email }
                       );
-                      if (status == 200) {
+                      if (status === 200) {
                         if (data > 0) {
                           await getAllUser();
                         }

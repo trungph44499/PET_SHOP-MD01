@@ -24,8 +24,19 @@ const Register = (props) => {
   const [showPass2, setShowPass2] = useState(true);
 
   const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    // Kiểm tra định dạng email
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|gov|edu|mil)$/;
+
+    // Kiểm tra dấu chấm liên tiếp trong tên miền
+    if (email.includes('..')) {
+      return false;
+    }
+    // Kiểm tra email theo regex
+    if (regex.test(email)) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   function validateName(name) {

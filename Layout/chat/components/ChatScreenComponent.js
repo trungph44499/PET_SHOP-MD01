@@ -31,11 +31,7 @@ export default function ChatScreenComponent() {
       );
     }
   };
-
-  const numberUtils = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
+  
   useEffect(() => {
     (async function () {
       let user = await getUser();
@@ -62,25 +58,6 @@ export default function ChatScreenComponent() {
     <ImageBackground
       style={styles.background}
     >
-      {/* <View>
-        {product && (
-          <TouchableOpacity
-            style={styles.productContainer}
-          >
-            {product.img && (
-              <Image 
-                source={{ uri: product.img }} 
-                style={styles.productImage}
-                resizeMode="contain"
-              />
-            )}
-            <Text style={styles.productTitle}>{product.name}</Text>
-            <Text style={styles.productPrice}>
-              Giá: {numberUtils(product.size[0].price)} VND
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View> */}
       <GiftedChat
         placeholder="Enter your message..."
         messages={messages}
@@ -117,28 +94,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 20,
   },
-  productContainer: {
-    backgroundColor: "#f8f9fa",
-    padding: 30,
-    margin: 100,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    alignItems: "center",
-  },
-  productImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-  },
-  productTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  productPrice: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 5,
-  },
+ 
 });

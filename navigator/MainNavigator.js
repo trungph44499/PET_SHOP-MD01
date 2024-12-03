@@ -125,7 +125,7 @@ const MainNavigator = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Customer care",
+          title: "Pets Shop",
         }}
         name="ChatScreen"
         component={ChatScreen}

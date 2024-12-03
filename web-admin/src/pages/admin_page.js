@@ -20,6 +20,7 @@ function Main() {
   const fullname = useRef();
   const username = useRef();
   const password = useRef();
+  const [showPassword, setShowPassword] = useState(false);
   const status = useRef();
   async function getAllAdmin() {
     try {
@@ -38,7 +39,7 @@ function Main() {
   }, []);
   return (
     <div>
-       <header className="header">
+      <header className="header">
         <h1>Quản lý nhân viên</h1>
       </header>
       {isUpdate && (
@@ -70,11 +71,17 @@ function Main() {
             </span>
             <input
               ref={password}
-              type="text"
+              type={showPassword ? "text" : "password"}
               defaultValue={dataUpdate.password}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
           </div>
-          <div className="input-group mb-2 mt-2">
+          {/* <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
               Status
             </span>
@@ -84,7 +91,7 @@ function Main() {
               type="text"
               defaultValue={dataUpdate.status}
             />
-          </div>
+          </div> */}
           <div className="d-flex flex-row">
             <button
               className="btn btn-primary"
@@ -146,11 +153,21 @@ function Main() {
             </span>
             <input ref={username} type="text" />
           </div>
-          <div className="input-group mb-2">
+          <div className="input-group">
             <span className="input-group-text" style={{ width: 100 }}>
               Password
             </span>
-            <input ref={password} type="text" />
+            <input
+              ref={password}
+              type={showPassword ? "text" : "password"} 
+              // defaultValue={dataUpdate.password}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}  
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
           </div>
           <div className="d-flex flex-row">
             <button
@@ -216,11 +233,11 @@ function Main() {
           <tr>
             <th scope="col">Fullname</th>
             <th scope="col">Username</th>
-            <th scope="col">Password</th>
+            {/* <th scope="col">Password</th> */}
             <th scope="col">Type</th>
             <th scope="col">Status</th>
             <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+            {/* <th scope="col">Delete</th> */}
             <th scope="col">Block</th>
           </tr>
         </thead>
@@ -229,7 +246,7 @@ function Main() {
             <tr key={item._id}>
               <td>{item.fullname}</td>
               <td>{item.username}</td>
-              <td>{item.password}</td>
+              {/* <td>{item.password}</td> */}
               <td>{item.type === "admin" ? "Admin" : "Staff"}</td>
               <td>{item.status ? "Active" : "Blocked"}</td>
               <td>
@@ -247,7 +264,7 @@ function Main() {
                   Update
                 </button>
               </td>
-              <td>
+              {/* <td>
                 <button
                   className="btn btn-secondary"
                   onClick={async () => {
@@ -275,7 +292,7 @@ function Main() {
                 >
                   Delete
                 </button>
-              </td>
+              </td> */}
               <td>
                 <button
                   className="btn btn-success"

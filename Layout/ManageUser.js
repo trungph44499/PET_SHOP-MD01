@@ -75,7 +75,7 @@ const ManageUser = ({ navigation }) => {
     }
 
     if (sdt && (!/^\d+$/.test(sdt) || sdt.length !== 10)) {
-      Alert.alert('Lỗi', 'Số điện thoại phải có đúng 10 ký tự');
+      Alert.alert('Lỗi', 'Số điện thoại không hợp lệ');
       return;
     }
 
