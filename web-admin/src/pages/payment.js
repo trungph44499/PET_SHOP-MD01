@@ -42,7 +42,7 @@ function Main() {
         `${json_config[0].url_connect}/pay`
       );
       if (status === 200) {
-        setData(data);
+        setData(data.reverse());
       }
     } catch (error) {
       console.log(error);

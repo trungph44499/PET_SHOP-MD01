@@ -14,7 +14,7 @@ import { getAllHistoryPay } from "./HistoryViewModel";
 export default function HistoryScreen() {
   const navigation = useNavigation();
   const [dataHistory, setDataHistory] = useState([]);
-  const [selectedButton, setSelectedButton] = useState(null); // State để theo dõi nút được chọn
+  const [selectedButton, setSelectedButton] = useState("pending"); // State để theo dõi nút được chọn
 
   useEffect(() => {
     (async function () {
@@ -42,7 +42,7 @@ export default function HistoryScreen() {
             style={[styles.button, selectedButton === "pending" ? { borderBottomColor: "#EC6D42" } : {}]}
             onPress={async () => {
               const data = await getAllHistoryPay("pending");
-              setDataHistory(data);
+              setDataHistory(data.reverse());
               setSelectedButton("pending"); // Đánh dấu nút "pending" được chọn
             }}
           >
@@ -59,7 +59,7 @@ export default function HistoryScreen() {
             style={[styles.button, selectedButton === "success" ? { borderBottomColor: "#EC6D42" } : {}]}
             onPress={async () => {
               const data = await getAllHistoryPay("success");
-              setDataHistory(data);
+              setDataHistory(data.reverse());
               setSelectedButton("success"); // Đánh dấu nút "success" được chọn
             }}
           >
@@ -76,7 +76,7 @@ export default function HistoryScreen() {
             style={[styles.button, selectedButton === "shipping" ? { borderBottomColor: "#EC6D42" } : {}]}
             onPress={async () => {
               const data = await getAllHistoryPay("shipping");
-              setDataHistory(data);
+              setDataHistory(data.reverse());
               setSelectedButton("shipping"); // Đánh dấu nút "shipping" được chọn
             }}
           >
@@ -93,7 +93,7 @@ export default function HistoryScreen() {
             style={[styles.button, selectedButton === "shipped" ? { borderBottomColor: "#EC6D42" } : {}]}
             onPress={async () => {
               const data = await getAllHistoryPay("shipped");
-              setDataHistory(data);
+              setDataHistory(data.reverse());
               setSelectedButton("shipped"); // Đánh dấu nút "shipped" được chọn
             }}
           >
@@ -110,7 +110,7 @@ export default function HistoryScreen() {
             style={[styles.button, selectedButton === "reject" ? { borderBottomColor: "#EC6D42" } : {}]}
             onPress={async () => {
               const data = await getAllHistoryPay("reject");
-              setDataHistory(data);
+              setDataHistory(data.reverse());
               setSelectedButton("reject"); // Đánh dấu nút "reject" được chọn
             }}
           >

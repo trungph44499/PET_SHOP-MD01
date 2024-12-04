@@ -24,7 +24,7 @@ function Main() {
         data: { response },
       } = await axios.get(`${json_config[0].url_connect}/pet-care`);
       if (status === 200) {
-        setData(response);
+        setData(response.reverse());
       }
     } catch (error) {
       console.log(error);

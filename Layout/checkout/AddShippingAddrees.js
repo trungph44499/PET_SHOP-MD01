@@ -70,7 +70,7 @@ const AddShippingAddress = ({ route, navigation }) => {
     userData();
   },[]);
 
-  const phone = String(user.sdt);
+  const phoneNumber = String(user.sdt);
 
   const validateForm = () => {
     if (!fullName || !addressText || !city) {
@@ -100,8 +100,8 @@ const AddShippingAddress = ({ route, navigation }) => {
   const saveAddress = async () => {
     if (!validateForm()) return;
 
-    const newAddress = { fullName, phone, address: addressText, city };
-
+    const newAddress = { fullName, phoneNumber, address: addressText, city };
+ 
     try {
       let storedAddresses = await AsyncStorage.getItem(
         emailUser + "_shippingAddresses"
@@ -155,7 +155,7 @@ const AddShippingAddress = ({ route, navigation }) => {
       <TextInput
         style={[styles.input, { color: 'black', fontSize: 15 }]}
         placeholder="Số điện thoại"
-        value={phone}
+        value={phoneNumber}
         editable={false}
         // onChangeText={setPhoneNumber}
         // keyboardType="phone-pad"
