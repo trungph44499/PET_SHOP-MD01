@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ToastAndroid,
 } from "react-native";
 import CheckBoxCustom from "../components/CheckBoxCustom";
 import { numberUtils } from "../utils/stringUtils";
@@ -33,6 +34,7 @@ export default function CartItemComponent({ item }) {
             image: item.img,
             price: item.price,
             quantity: count,
+            size: item.size,
             status: !checkBox,
           });
           setCheckBox(!checkBox);
@@ -40,15 +42,18 @@ export default function CartItemComponent({ item }) {
         value={checkBox}
       />
       <Image source={{ uri: item.img }} style={styles.image} />
-      <View style={{ padding: 10, justifyContent: "space-between" }}>
-        <Text style={{ marginBottom: 10, fontWeight: "bold", fontSize: 16 }}>
+      <View style={{ flex: 1, padding: 10, justifyContent: "space-between" }}>
+        <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
           {item.name}
+        </Text>
+        <Text style={{ marginBottom: 5, fontSize: 14 }}>
+          {item.size}
         </Text>
         <Text
           style={{
-            marginBottom: 10,
+            marginBottom: 5,
             fontWeight: "bold",
-            fontSize: 16,
+            fontSize: 15,
             color: "#ff4c4c",
           }}
         >
@@ -66,8 +71,12 @@ export default function CartItemComponent({ item }) {
                   price: item.price,
                   image: item.img,
                   quantity: count - 1,
+                  size: item.size,
                   status: checkBox,
                 });
+              } else {
+                ToastAndroid.show("Số lượng sản phẩm không thể nhỏ hơn 1!", ToastAndroid.SHORT);
+                return;
               }
             }}
             style={styles.btn}
@@ -89,8 +98,12 @@ export default function CartItemComponent({ item }) {
                   price: item.price,
                   image: item.img,
                   quantity: count + 1,
+                  size: item.size,
                   status: checkBox,
                 });
+              } else {
+                ToastAndroid.show("Số lượng sản phẩm không đủ!", ToastAndroid.SHORT);
+                return;
               }
             }}
             style={styles.btn}
@@ -153,7 +166,7 @@ export default function CartItemComponent({ item }) {
                 <Text
                   onPress={() => setModalVisible(false)}
                   style={{
-                    textDecorationLine: "underline",
+                    //textDecorationLine: "underline",
                     fontWeight: "bold",
                     fontSize: 16,
                   }}
@@ -170,12 +183,24 @@ export default function CartItemComponent({ item }) {
 }
 const styles = StyleSheet.create({
   item: {
-    height: 160,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    width: "100%",
+    justifyContent: "space-between",
     gap: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    backgroundColor: '#FFF',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
+    marginBottom: 15,
+    overflow: "hidden",
+    marginHorizontal: 2,
+    marginTop: 2
   },
   image: {
     width: 120,
@@ -183,6 +208,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     borderWidth: 1,
+    resizeMode: "contain"
   },
   cardCotainer: {
     height: "100%",
@@ -208,11 +234,16 @@ const styles = StyleSheet.create({
   },
   btnModal: {
     padding: 14,
-    borderRadius: 10,
-    backgroundColor: "#a97053",
+    borderRadius: 10, // Bo góc mềm mại
+    backgroundColor: "#a97053", // Màu nâu cho nút
     marginVertical: 20,
     width: "100%",
     alignItems: "center",
+    shadowColor: "#000", // Đổ bóng cho nút
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    elevation: 4,
   },
   icon: {
     width: 10,
@@ -223,5 +254,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 2,
     backgroundColor: "#E0E0E0"
+  },
+  itemName: {
+    fontSize: 15,
+    color: "#000",
+    fontWeight: "bold",
+    overflow: 'hidden',
+    width: '100%',
+    marginBottom: 5,
   },
 });

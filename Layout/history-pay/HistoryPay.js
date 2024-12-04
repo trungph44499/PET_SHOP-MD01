@@ -67,17 +67,10 @@ export default function HistoryScreen() {
       <View style={styles.buttonItem}>
           <TouchableOpacity style={styles.button}>
             <Image
-              source={require("../../Image/confirm.png")}
-              style={{ height: 30, width: 30 }}
-            />
-            <Text>Chờ xác nhận</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Image
               source={require("../../Image/box.png")}
               style={{ height: 30, width: 30 }}
             />
-            <Text>Chờ lấy hàng</Text>
+            <Text>Chờ xác nhận</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Image

@@ -16,8 +16,9 @@ export default ClassifyScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]); // Dữ liệu sản phẩm
   const [filteredData, setFilteredData] = useState([]); // Dữ liệu sản phẩm đã lọc
   const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
-  const [showNewOnly, setShowNewOnly] = useState(false);
-  const { type } = route.params; // type là ID danh mục
+  const [showNewOnly, setShowNewOnly] = useState(false); // Lọc sản phẩm mới
+  const [showPrice, setShowPrice] = useState(false); // Sắp xếp theo giá
+  const { type, animals } = route.params; // type là ID danh mục
 
   // Lấy danh sách danh mục
   async function getAllCategories() {
@@ -33,7 +34,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
 
   // Lấy dữ liệu sản phẩm
   async function getData() {
-    const result = await getListClassify(type);
+    const result = await getListClassify(type, animals);
     setData(result);
     setFilteredData(result);
   }
@@ -49,20 +50,54 @@ export default ClassifyScreen = ({ navigation, route }) => {
     return category ? category.name : "Unknown Category";
   };
 
+  // Hàm lọc và sắp xếp sản phẩm
+  const filterAndSortData = () => {
+    let updatedData = [...data];
+
+    // Lọc sản phẩm mới nếu có
+    if (showNewOnly) {
+      updatedData = updatedData.filter(item => item.status === "New");
+    }
+
+    // Sắp xếp theo giá nếu có
+    if (showPrice) {
+      updatedData.sort((a, b) => {
+        const priceA = a.size[0].price;
+        const priceB = b.size[0].price;
+        return priceA - priceB; // Tăng dần
+      });
+    } else {
+      updatedData.sort((a, b) => {
+        const priceA = a.size[0].price;
+        const priceB = b.size[0].price;
+        return priceB - priceA; // Giảm dần
+      });
+    }
+
+    setFilteredData(updatedData); // Cập nhật dữ liệu đã lọc và sắp xếp
+  };
+
+  // Hiển thị tất cả sản phẩm
   const showAllProducts = () => {
     setShowNewOnly(false);
-    setFilteredData(data);
+    setFilteredData(data); // Hiển thị tất cả sản phẩm
   };
 
+  // Hiển thị sản phẩm mới
   const filterNewProducts = () => {
     setShowNewOnly(true);
-    const newProducts = data.filter(item => item.status === "New");
-    setFilteredData(newProducts);
+    setFilteredData(data.filter(item => item.status === "New")); // Lọc sản phẩm mới
   };
 
+  // Chuyển đến màn hình chi tiết sản phẩm
   function goToDetailScreen(item) {
     navigation.navigate("DetailScreen", { item: item });
   }
+
+  // Sử dụng useEffect để tự động gọi filterAndSortData khi showPrice hoặc showNewOnly thay đổi
+  useEffect(() => {
+    filterAndSortData();
+  }, [showPrice, showNewOnly, data]);
 
   return (
     <View style={styles.container}>
@@ -74,7 +109,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           />
         </TouchableOpacity>
         <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          {upperCaseFirstItem(getCategoryName(type)) + "s"} {/* Hiển thị tên danh mục */}
+          {upperCaseFirstItem(getCategoryName(type))} {/* Hiển thị tên danh mục */}
         </Text>
         <TouchableOpacity
           style={{ width: 50 }}
@@ -87,27 +122,73 @@ export default ClassifyScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection: "row", gap: 30, marginHorizontal: 20 }}>
+      <View style={styles.buttonRow}>
         <TouchableOpacity
           onPress={showAllProducts}
           style={{
+            flex: 1,
             backgroundColor: !showNewOnly ? "#73B5F7" : "transparent",
             padding: 10,
             borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
           }}
         >
-          <Text style={{ color: showNewOnly ? "#7D7B7B" : "#FFFFFF", fontWeight: "bold" }}>Tất cả</Text>
+          <Text style={{ fontSize: 15, color: showNewOnly ? "#7D7B7B" : "#FFFFFF", fontWeight: "bold" }}>Tất cả</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={filterNewProducts}
           style={{
+            flex: 1,
             backgroundColor: showNewOnly ? "#73B5F7" : "transparent",
             padding: 10,
             borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
           }}
         >
-          <Text style={{ color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Hàng mới về</Text>
+          <Text style={{ fontSize: 15, color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Hàng mới</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setShowPrice(false)} // Sắp xếp theo giá giảm
+          style={{
+            flex: 1,
+            backgroundColor: !showPrice ? "#73B5F7" : "transparent",
+            padding: 10,
+            borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
+          }}
+        >
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Text style={{ fontSize: 15, color: !showPrice ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Giá </Text>
+            <Image
+              style={{ width: 13, height: 13, tintColor: !showPrice ? "#FFFFFF" : "#7D7B7B", }}
+              source={require("../../Image/item_down.png")}
+            />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setShowPrice(true)} // Sắp xếp theo giá tăng
+          style={{
+            flex: 1,
+            backgroundColor: showPrice ? "#73B5F7" : "transparent",
+            padding: 10,
+            borderRadius: 5,
+            alignItems: "center",
+            margin: 2,
+          }}
+        >
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Text style={{ fontSize: 15, color: showPrice ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Giá </Text>
+            <Image
+              style={{ width: 13, height: 13, tintColor: showPrice ? "#FFFFFF" : "#7D7B7B", }}
+              source={require("../../Image/item_up.png")}
+            />
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -127,12 +208,12 @@ export default ClassifyScreen = ({ navigation, route }) => {
               </Text>
             )}
             <View style={styles.itemRow}>
-              <Text style={styles.itemName}>
+              <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
                 {item.name}
               </Text>
             </View>
             <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
-            <Text style={styles.price}>{numberUtils(item.price)}</Text>
+            <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
           </TouchableOpacity>
         )}
       />
@@ -143,7 +224,8 @@ export default ClassifyScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     gap: 16,
     backgroundColor: '#FFFFFF',
   },
@@ -167,17 +249,21 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   itemImage: {
     width: "100%",
     height: 130,
     borderRadius: 12,
+    resizeMode: "contain"
   },
   itemName: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
-    marginRight: 5,
+    color: "#000",
+    marginBottom: 5,
+    overflow: 'hidden',
+    width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStatus: {
     position: "absolute",
@@ -205,4 +291,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "red",
   },
+  buttonRow: {
+    flexDirection: "row", 
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });

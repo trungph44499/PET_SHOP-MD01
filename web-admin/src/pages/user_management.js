@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import "./css/css.css";
-// import { webSocketContext } from "../context/WebSocketContext";
+import { useNavigate } from "react-router-dom";
+import { webSocketContext } from "../context/WebSocketContext";
 
 export default function UserManagement() {
   return (
@@ -16,17 +17,27 @@ export default function UserManagement() {
 }
 
 function Main() {
-
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
-
+  const navigator = useNavigate();
   const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const websocket = useContext(webSocketContext);
 
   const avatar = useRef();
   const fullname = useRef();
   const email = useRef();
   const password = useRef();
+
+  useEffect(() => {
+    websocket.onmessage = async function (messages) {
+      const { data } = messages;
+      const json = JSON.parse(data);
+      if (json.type == "take care") {
+        await getAllUser();
+      }
+    };
+  }, []);
 
   async function getAllUser() {
     try {
@@ -47,6 +58,9 @@ function Main() {
 
   return (
     <div>
+      <header className="header">
+        <h1>Quản lý tài khoản người dùng</h1>
+      </header>
       {isUpdate && (
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">
@@ -208,13 +222,19 @@ function Main() {
             <th scope="col">Password</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
+            <th scope="col">Message</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr key={item._id}>
               <th>
-                <img src={item.avatar} height={50} width={50} alt={item.fullname || "Hình ảnh user"} />
+                <img
+                  src={item.avatar}
+                  height={50}
+                  width={50}
+                  alt={item.fullname || "Hình ảnh user"}
+                />
               </th>
               <td>{item.fullname}</td>
               <td>{item.email}</td>
@@ -261,6 +281,34 @@ function Main() {
                   }}
                 >
                   Delete
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-secondary position-relative"
+                  onClick={async () => {
+                    try {
+                      const { status, data } = await axios.post(
+                        json_config[0].url_connect +
+                          "/chat/updateNumberMessage",
+                        { email: item.email }
+                      );
+                      if (status == 200) {
+                        if (data > 0) {
+                          await getAllUser();
+                        }
+                      }
+                    } catch (error) {
+                      console.log();
+                    }
+                    navigator("/chat-item/" + item.email);
+                  }}
+                >
+                  Message
+                  <span className="position-absolute top-0 mt-1 start-100 translate-middle badge rounded-pill bg-danger">
+                    {item.numberMessage}
+                    <span className="visually-hidden">unread messages</span>
+                  </span>
                 </button>
               </td>
             </tr>

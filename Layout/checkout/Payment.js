@@ -31,7 +31,8 @@ const Payment = ({ navigation, route }) => {
   const checkPaymentMethod = JSON.stringify(paymentMethods) === "{}";
 
   const totalPrice = parseInt(total);
-
+  const totalPay = totalPrice + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000)
+ 
   async function _payment() {
     try {
       let _userEmail = await AsyncStorage.getItem("@UserLogin");
@@ -75,7 +76,7 @@ const Payment = ({ navigation, route }) => {
                 number: shippingAddresses.phoneNumber,
                 ship: ship,
                 paymentMethod: checkboxSeletectPayment == 0 ? "Thanh toán khi nhận hàng" : "Thẻ VISA/MASTERCARD",
-                totalPrice: totalPrice,
+                totalPrice: parseInt(totalPay),
                 products: listItem,
               };
 
@@ -282,13 +283,13 @@ const Payment = ({ navigation, route }) => {
             listItem.map((item) => (
               <View key={item.id} style={styles.item}>
                 <Image source={{ uri: item.image }} style={styles.image} />
-                <View style={styles.itemInfo}>
-                  <Text style={styles.itemCode}>
-                    Mã sản phẩm: {upperCaseItem(item.id.slice(-5))}
-                  </Text>
-                  <Text style={styles.itemName}>Tên sản phẩm: {item.name}</Text>
+                <View style={styles.itemInfo}>               
+                  <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">Tên sản phẩm: {item.name}</Text>
                   <Text style={styles.itemPrice}>
                     Giá tiền: {numberUtils(item.price)}
+                  </Text>
+                  <Text style={styles.itemSize} numberOfLines={1} ellipsizeMode="tail">
+                    Kích thước: {item.size}
                   </Text>
                   <Text style={styles.itemQuantity}>
                     Số lượng: {item.quantity}
@@ -491,9 +492,7 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.summaryRow}>
             <Text style={styles.totalLabel}>Tổng tiền :</Text>
             <Text style={styles.totalAmount}>
-              {formatPrice(
-                totalPrice + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000)
-              )}
+              {formatPrice(totalPay)}
             </Text>
           </View>
         </View>
@@ -586,7 +585,8 @@ const styles = StyleSheet.create({
     height: 18,
   },
   footer: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -654,26 +654,36 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
+    resizeMode: "contain"
   },
   itemInfo: {
+    justifyContent: "center",
     marginLeft: 15,
     flex: 1,
   },
   itemCode: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#FF6B6B",
+
   },
   itemName: {
-    color: "#555",
     fontSize: 16,
+    color: "#000",
+    // Thêm các thuộc tính để kiểm soát việc cắt chữ
+    fontWeight: "500",  
+    overflow: 'hidden',
+    width: '100%', 
   },
   itemPrice: {
-    color: "#FF6B6B",
+    fontWeight: "400",
     fontSize: 16,
   },
   itemQuantity: {
-    color: "#555",
     fontSize: 16,
+    fontWeight: "500",  
+  },
+  itemSize: {
+    fontSize: 16,
+    fontWeight: "500",  
   },
 });

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, Image } from "react-native";
 import UnderLine from '../../components/UnderLine';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { URL } from '../HomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,21 +12,21 @@ import { numberUtils, upperCaseItem } from "../utils/stringUtils";
 const DetailHistoryPay = ({ route }) => {
     const navigation = useNavigation();
     const { item } = route.params;
-    const [user, setuser] = useState([]);
+    // const [user, setuser] = useState([]);
     const [orderStatus, setOrderStatus] = useState(item.status); // Trạng thái đơn hàng
 
 
-    // Lấy thông tin người dùng
-    const retrieveData = async () => {
-        try {
-            const UserData = await AsyncStorage.getItem('User');
-            if (UserData != null) {
-                setuser(JSON.parse(UserData));
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // // Lấy thông tin người dùng
+    // const retrieveData = async () => {
+    //     try {
+    //         const UserData = await AsyncStorage.getItem('User');
+    //         if (UserData != null) {
+    //             setuser(JSON.parse(UserData));
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     // Lấy lịch sử thanh toán
     async function getAllHistoryPay() {
@@ -41,12 +41,12 @@ const DetailHistoryPay = ({ route }) => {
                 setDataHistory(data);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
     useEffect(() => {
-        retrieveData();
+        // retrieveData();
         getAllHistoryPay();
     }, []);
 
@@ -95,7 +95,7 @@ const DetailHistoryPay = ({ route }) => {
         );
     }
 
-    const totalAmount = item.products.reduce((sum, product) => sum + product.price * product.quantity, 0);
+    // const totalAmount = item.products.reduce((sum, product) => sum + product.price * product.quantity, 0);
 
     return (
         <View style={styles.container}>
@@ -134,12 +134,14 @@ const DetailHistoryPay = ({ route }) => {
                         <View key={item.id} style={{ flexDirection: 'row' }}>
                             <Image source={{ uri: item.image }} style={styles.image} />
                             <View style={{ flex: 1, justifyContent: "center" }}>
-                                <Text style={styles.textItem}>
-                                    Mã sản phẩm: {upperCaseItem(item.id.slice(-5))}
+                                <Text style={styles.textItem} numberOfLines={1} ellipsizeMode="tail">
+                                    Tên sản phẩm: {item.name}
                                 </Text>
-                                <Text style={styles.textItem}>Tên sản phẩm: {item.name}</Text>
                                 <Text style={styles.textItem}>
                                     Giá tiền: {numberUtils(item.price)}
+                                </Text>
+                                <Text style={styles.textItem}>
+                                    Kích thước: {item.size}
                                 </Text>
                                 <Text style={styles.textItem}>
                                     Số lượng: {item.quantity}
@@ -152,7 +154,7 @@ const DetailHistoryPay = ({ route }) => {
             <View style={{ width: '90%', marginVertical: 20, marginHorizontal: '5%', gap: 20 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={styles.textPay}>Đã thanh toán</Text>
-                    <Text style={styles.textPay}>{numberUtils(totalAmount)}</Text>
+                    <Text style={styles.textPay}>{numberUtils(item.totalPrice)}</Text>
                 </View>
                 {/* Button Hủy đơn hàng */}
                 <TouchableOpacity
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
     },
     textGray: {
         fontSize: 16,
-        color: 'black', 
+        color: 'black',
     },
     textGreen: {
         fontSize: 16,
@@ -211,17 +213,20 @@ const styles = StyleSheet.create({
     },
     textItem: {
         fontSize: 16,
-        color: 'black',
-        fontWeight: "bold"
+        color: "#000",
+        fontWeight: "bold",
+        overflow: 'hidden',
+        width: '100%',
     },
     textBold: {
         fontSize: 16,
         fontWeight: 'bold'
     },
     image: {
-        width: 100,
-        height: 100,
-        marginHorizontal: 15,
+        width: 110,
+        height: 110,
+        marginRight: 15,
+        resizeMode: "contain"
     },
     section: {
         padding: 10,

@@ -49,5 +49,7 @@ có 2 cái truyền params với axios,
 
 # Link mogodb
 - mongodb+srv://trungmvph44499:3E4riGHCN1noc8fj@mydatabase.bnquf.mongodb.net
-- http://192.168.1.3
+- 192.168.1.3
+- mongodb://localhost:27017
+//192.168.1.104
 

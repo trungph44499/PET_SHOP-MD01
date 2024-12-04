@@ -38,6 +38,9 @@ function Main() {
   }, []);
   return (
     <div>
+       <header className="header">
+        <h1>Quản lý nhân viên</h1>
+      </header>
       {isUpdate && (
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">

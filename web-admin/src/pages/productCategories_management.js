@@ -60,6 +60,9 @@ function Main() {
 
   return (
     <div>
+       <header className="header">
+        <h1>Quản lý loại sản phẩm</h1>
+      </header>
       {isUpdate && (
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           {/* Form cập nhật danh mục */}

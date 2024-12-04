@@ -13,9 +13,10 @@ router.post("/addToCart", async (req, res) => {
     type,
     price,
     quantity = 1, // Mặc định là 1 nếu không có giá trị
+    size,
   } = req.body;
 
-  if (!emailUser || !idProduct || !img || !name || !type || !price) {
+  if (!emailUser || !idProduct || !img || !name || !type || !price || ! size) {
     return res.status(200).json({ response: "Thiếu thông tin cần thiết!" });
   }
 
@@ -38,6 +39,7 @@ router.post("/addToCart", async (req, res) => {
         type,
         price,
         quantity,
+        size,
       });
       return res
         .status(200)
