@@ -28,12 +28,7 @@ function Main() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [timeRangeRevenue, setTimeRangeRevenue] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [dailyRevenue, setDailyRevenue] = useState(0);
-  const [isFilterByDate, setIsFilterByDate] = useState(false);
-
-  const [monthlyRevenue, setMonthlyRevenue] = useState(0);
-  const [currentMonth, setCurrentMonth] = useState("");
+  const [isFilterByRange, setIsFilterByRange] = useState(false);
 
   function convertStatus(status) {
     switch (status) {
@@ -65,45 +60,12 @@ function Main() {
     return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
   };
 
-  const calculateMonthlyRevenue = (transactions) => {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-
-    const monthlyTransactions = transactions.filter((item) => {
-      const transactionDate = new Date(item.createdAt);
-      return (
-        transactionDate.getMonth() === currentMonth &&
-        transactionDate.getFullYear() === currentYear &&
-        item.status === "success"
-      );
-    });
-
-    return monthlyTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
-  };
-
-  const calculateDailyRevenue = (transactions, date) => {
-    if (!date) return 0;
-
-    const filteredTransactions = transactions
-      .filter((item) => item.status === "shipping")
-      .filter((item) => {
-        const transactionDate = new Date(item.createdAt);
-        return (
-          transactionDate.toDateString() === date.toDateString()
-        );
-      });
-
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
-  };
-
   const calculateTotalRevenue = (transactions) => {
     const total = transactions
       .filter((item) => item.status === "success")
       .reduce((acc, item) => acc + Number(item.totalPrice), 0);
     return total;
   };
-
 
   const openModal = (transaction) => {
     setSelectedTransaction(transaction);
@@ -125,22 +87,11 @@ function Main() {
 
         const rangeRevenue = calculateRevenueInRange(data, startDate, endDate);
         setTimeRangeRevenue(rangeRevenue);
-
-        const dailyTotal = calculateDailyRevenue(data, selectedDate);
-        setDailyRevenue(dailyTotal);
-
-        const monthlyTotal = calculateMonthlyRevenue(data);
-        setMonthlyRevenue(monthlyTotal);
-
-        const now = new Date();
-        setCurrentMonth(`${now.getMonth() + 1}/${now.getFullYear()}`);
       }
     } catch (error) {
       console.log(error);
     }
-  }, [startDate, endDate, selectedDate]);
-
-
+  }, [startDate, endDate]);
 
   useEffect(() => {
     if (websocket) {
@@ -161,10 +112,10 @@ function Main() {
     };
   }, [websocket, getAllPayment]);
 
-  const filteredData = isFilterByDate
+  const filteredData = isFilterByRange
     ? data.filter((item) => {
       const transactionDate = new Date(item.createdAt);
-      return transactionDate.toDateString() === selectedDate.toDateString();
+      return transactionDate >= startDate && transactionDate <= endDate;
     })
     : data;
 
@@ -172,9 +123,8 @@ function Main() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-
   const nextPage = () => {
-    if (currentPage < Math.ceil(data.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(filteredData.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -188,32 +138,31 @@ function Main() {
   function TransactionModal({ transaction, onClose }) {
     if (!transaction) return null;
 
-    const handleClose = (e) => {
-      if (e.target.className === "modal") {
-        onClose();
-      }
-    };
-
     return (
-      <div className="modal" onClick={handleClose}>
+      <div className="modal">
         <div className="modal-content">
-          <h2 className="texth2">Chi Tiết Giao Dịch</h2>
+          <button onClick={onClose} className="modal-close-btn">×</button>
+          <h2>Chi Tiết Giao Dịch</h2>
           <div className="modal-body">
-            <div className="transaction-info">
-              <p><strong>ID:</strong> {transaction._id}</p>
-              <p><strong>Fullname:</strong> {transaction.fullname}</p>
+            <div className="transaction-pay">
+              <p><strong>ID nhân viên:</strong> {transaction.idStaff ? transaction.idStaff : "Chưa có người xác nhận"}</p>
+              <p><strong>Người xác nhận:</strong> {transaction.nameStaff ? transaction.nameStaff : "Chưa có người xác nhận"}</p>
+              <p><strong>ID hoá đơn:</strong> {transaction._id}</p>
+              <p><strong>Họ tên:</strong> {transaction.fullname}</p>
               <p><strong>Email:</strong> {transaction.email}</p>
-              <p><strong>Location:</strong> {transaction.location}</p>
-              <p><strong>Phone:</strong> {transaction.number}</p>
-              <p><strong>Ship:</strong> {transaction.ship}</p>
-              <p><strong>Payment Method:</strong> {transaction.paymentMethod}</p>
-              <p><strong>Total Price:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
-              <p><strong>Status:</strong> {convertStatus(transaction.status)}</p>
+              <p><strong>Địa chỉ:</strong> {transaction.location}</p>
+              <p><strong>Số điện thoại:</strong> {transaction.number}</p>
+              <p><strong>Phương thức vận chuyển:</strong> {transaction.ship}</p>
+              <p><strong>Phương thức thanh toán:</strong> {transaction.paymentMethod}</p>
+              <p><strong>Tổng tiền:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
+              <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
             </div>
-            <div className="product-info">
+            <div className="product-pay">
               <ul>
                 {transaction.products.map((product, index) => (
                   <li key={index}>
+                    <p><strong>Sản phẩm: </strong></p>
+                    <img src={product.image} height={100} width={100} alt={product.name} />
                     <p><strong>Tên sản phẩm: </strong>{product.name}</p>
                     <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
                     <p><strong>Kích thước: </strong>{product.size}</p>
@@ -267,51 +216,46 @@ function Main() {
               className="date-picker"
             />
           </div>
+          <button
+            className="filter-btn"
+            onClick={() => setIsFilterByRange(!isFilterByRange)}
+          >
+            {isFilterByRange ? "Bỏ Lọc" : "Lọc"}
+          </button>
           <p>{Number(timeRangeRevenue).toLocaleString("vi-VN")} VNĐ</p>
         </div>
-
-        <div className="stat-box">
-          <h3>
-            Doanh Thu Hàng Tháng
-            <span style={{ fontSize: "0.8em", fontWeight: "normal" }}>
-              (Tháng {currentMonth})
-            </span>
-          </h3>
-          <p>{Number(monthlyRevenue).toLocaleString("vi-VN")} VNĐ</p>
-        </div>
-
       </div>
-      
 
       <div className="transactions-section">
         <h2>Danh Sách Giao Dịch</h2>
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">Email</th>
-              <th scope="col">Location</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Product</th>
-              <th scope="col">Order Date</th>
-              <th scope="col">Status</th>
-              <th scope="col">Total amount</th>
-              <th scope="col">Action</th>
+              <th scope="col">Tên người mua</th>
+              <th scope="col">Địa chỉ</th>
+              <th scope="col">Số điện thoại</th>
+              <th scope="col">Ngày đặt hàng</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Tổng tiền</th>
+              <th scope="col">Hoạt động</th>
             </tr>
           </thead>
           <tbody>
             {filteredData.length > 0 ? (
               currentItems.map((item) => (
                 <tr key={item._id}>
-                  <td>{item.email}</td>
+                  <td>{item.fullname}</td>
                   <td>{item.location}</td>
                   <td>{item.number}</td>
-                  <td>{item.products.map((e) => `${e.name}, `)}</td>
                   <td>{new Date(item.createdAt).toLocaleString("vi-VN")}</td>
                   <td>{convertStatus(item.status)}</td>
                   <td>{Number(item.totalPrice).toLocaleString("vi-VN")} VNĐ</td>
                   <td>
-                    <button onClick={() => openModal(item)} className="btn-detail">
-                      Detail
+                    <button
+                      onClick={() => openModal(item)}
+                      className="btn-detail"
+                    >
+                      Xem chi tiết
                     </button>
                   </td>
                 </tr>
@@ -324,7 +268,6 @@ function Main() {
               </tr>
             )}
           </tbody>
-
         </table>
       </div>
 
@@ -333,7 +276,10 @@ function Main() {
           {"<"}
         </button>
         <span>{currentPage}</span>
-        <button onClick={nextPage} disabled={currentPage === Math.ceil(data.length / itemsPerPage)}>
+        <button
+          onClick={nextPage}
+          disabled={currentPage === Math.ceil(filteredData.length / itemsPerPage)}
+        >
           {">"}
         </button>
       </div>

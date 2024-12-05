@@ -61,7 +61,7 @@ const LoginScreen = (props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF", }}>
       <ScrollView >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -69,7 +69,7 @@ const LoginScreen = (props) => {
           <StatusBar hidden />
           <View style={styles.container}>
             <Image
-              style={{ width: 400, height: 200 }}
+              style={{ width: 400, height: 200, marginTop: 10 }}
               source={require("../Image/logo.png")}
             />
             <View style={{ gap: 10 }}>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     textAlign: "center",
     fontSize: 35,
-    marginTop: 30,
+    // marginTop: 10,
   },
   subtitleText: {
     textAlign: "center",

@@ -41,26 +41,12 @@ function Main() {
     }
   }
 
-  async function getAdminById(id) {
-    try {
-      const response = await axios.get(`${json_config[0].url_connect}/admin/${id}`);
-      if (response.data.response) {
-        console.log("Admin found:", response.data.response);  // In ra thông tin admin
-        setUser(response.data.response)
-      } else {
-        console.log(response.data.response);  // In ra thông báo lỗi nếu không tìm thấy admin
-      }
-    } catch (error) {
-      console.error("Error fetching admin by ID:", error);  // In lỗi nếu có
-    }
-  }
-  
   useEffect(() => {
     const getAdminById = async (id) => {
       try {
         const response = await axios.get(`${json_config[0].url_connect}/admin/${id}`);
         if (response.data.response) {
-          
+
           setUser(response.data.response)
         } else {
           console.log(response.data.response);  // In ra thông báo lỗi nếu không tìm thấy admin
@@ -71,7 +57,7 @@ function Main() {
     };
     getAdminById(userId);
   }, []);
-  
+
   const openModal = (transaction) => {
     setSelectedTransaction(transaction);
     setIsModalOpen(true);
@@ -112,6 +98,7 @@ function Main() {
               <ul>
                 {transaction.products.map((product, index) => (
                   <li key={index}>
+                    <p><strong>Sản phẩm: </strong></p>
                     <img src={product.image} height={100} width={100} alt={product.name} />
                     <p><strong>Tên sản phẩm: </strong>{product.name}</p>
                     <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
@@ -339,7 +326,7 @@ function Main() {
       </div>
       <table className="table">
         <thead>
-          <tr> 
+          <tr>
             <th scope="col">Tên người mua</th>
             <th scope="col">Địa chỉ</th>
             <th scope="col">Số điện thoại</th>
