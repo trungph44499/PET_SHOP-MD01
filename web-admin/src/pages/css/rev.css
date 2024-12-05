@@ -1,104 +1,183 @@
-.container {
-  font-family: Arial, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.dropdown-section {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
 .stats-section {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .stat-box {
-  flex: 1;
+  background: linear-gradient(135deg, blue, blue);
+  color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  flex: 1 1 calc(33.33% - 1rem);
   text-align: center;
-  background-color: #f4f4f4;
-  padding: 15px;
-  margin: 0 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.transactions-section {
-  margin-top: 20px;
+.stat-box h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
 }
 
-.transactions-section table {
+.stat-box p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.calendar-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.date-picker {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.transactions-section h2 {
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 1.5rem;
 }
 
-.transactions-section th,
-.transactions-section td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.75rem 1rem;
 }
 
-.transactions-section th {
-  background-color: #f4f4f4;
+.table thead th {
+  background-color: blue;
+  color: #fff;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table td {
+  border-bottom: 1px solid #ddd;
+}
+
+.btn-detail {
+  background-color: blue;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-detail:hover {
+  background-color: darkblue;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pagination button {
+  background-color: blue;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: blue;
+}
+
+.pagination span {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start; /* Canh nội dung bắt đầu ở trên cùng */
-  z-index: 1000;
-  padding-top: 20px; /* Thêm khoảng cách từ trên xuống cho modal */
 }
 
 .modal-content {
-  background: white;
-  padding: 20px;
+  background: #fff;
   border-radius: 8px;
-  width: 400px;
-  max-height: 80%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column; /* Đảm bảo các phần tử trong modal xếp theo chiều dọc */
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
 }
 
 .modal-close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 1rem;
+  right: 1rem;
+  background: none;
   border: none;
-  background: transparent;
-  font-size: 18px;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
-.btn-detail {
-  background-color: #007BFF; 
-  color: white; 
-  border: none; 
-  padding: 10px 20px; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  font-size: 10px; 
-  transition: background-color 0.3s ease; 
+.modal h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
 }
 
-.btn-detail:hover {
-  background-color: #0056b3; 
+.modal p {
+  margin: 0.5rem 0;
+  color: #555;
 }
 
+.modal ul {
+  list-style-type: none;
+  padding: 0;
+}
 
+.modal ul li {
+  background: #f9f9f9;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}

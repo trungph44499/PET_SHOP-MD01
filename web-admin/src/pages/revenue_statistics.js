@@ -32,6 +32,9 @@ function Main() {
   const [dailyRevenue, setDailyRevenue] = useState(0);
   const [isFilterByDate, setIsFilterByDate] = useState(false);
 
+  const [monthlyRevenue, setMonthlyRevenue] = useState(0);
+  const [currentMonth, setCurrentMonth] = useState("");
+
   function convertStatus(status) {
     switch (status) {
       case "reject":
@@ -60,6 +63,23 @@ function Main() {
       });
 
     return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+  };
+
+  const calculateMonthlyRevenue = (transactions) => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const monthlyTransactions = transactions.filter((item) => {
+      const transactionDate = new Date(item.createdAt);
+      return (
+        transactionDate.getMonth() === currentMonth &&
+        transactionDate.getFullYear() === currentYear &&
+        item.status === "success"
+      );
+    });
+
+    return monthlyTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
   };
 
   const calculateDailyRevenue = (transactions, date) => {
@@ -108,11 +128,19 @@ function Main() {
 
         const dailyTotal = calculateDailyRevenue(data, selectedDate);
         setDailyRevenue(dailyTotal);
+
+        const monthlyTotal = calculateMonthlyRevenue(data);
+        setMonthlyRevenue(monthlyTotal);
+
+        const now = new Date();
+        setCurrentMonth(`${now.getMonth() + 1}/${now.getFullYear()}`);
       }
     } catch (error) {
       console.log(error);
     }
   }, [startDate, endDate, selectedDate]);
+
+
 
   useEffect(() => {
     if (websocket) {
@@ -233,6 +261,16 @@ function Main() {
             />
           </div>
           <p>{Number(timeRangeRevenue).toLocaleString("vi-VN")} VNĐ</p>
+        </div>
+
+        <div className="stat-box">
+          <h3>
+            Doanh Thu Hàng Tháng
+            <span style={{ fontSize: "0.8em", fontWeight: "normal" }}>
+              (Tháng {currentMonth})
+            </span>
+          </h3>
+          <p>{Number(monthlyRevenue).toLocaleString("vi-VN")} VNĐ</p>
         </div>
 
       </div>
