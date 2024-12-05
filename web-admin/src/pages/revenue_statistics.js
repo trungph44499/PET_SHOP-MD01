@@ -21,77 +21,19 @@ function Main() {
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
   const [totalRevenue, setTotalRevenue] = useState(0);
-  const [monthlyRevenue, setMonthlyRevenue] = useState(0);
-  const [yearlyRevenue, setYearlyRevenue] = useState(0);
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [timeRangeRevenue, setTimeRangeRevenue] = useState(0);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dailyRevenue, setDailyRevenue] = useState(0);
   const [isFilterByDate, setIsFilterByDate] = useState(false);
 
-
-
-
-  const calculateDailyRevenue = (transactions, date) => {
-    if (!date) return 0;
-
-    const filteredTransactions = transactions
-      .filter((item) => item.status === "shipped")
-      .filter((item) => {
-        const transactionDate = new Date(item.createdAt);
-        return (
-          transactionDate.toDateString() === date.toDateString()
-        );
-      });
-
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
-  };
-
-  const calculateTotalRevenue = (transactions) => {
-    const total = transactions
-      .filter((item) => item.status === "shipped")
-      .reduce((acc, item) => acc + Number(item.totalPrice), 0);
-    return total;
-  };
-
-  const calculateMonthlyRevenue = (transactions, month) => {
-    if (month === null) return 0;
-
-    const year = new Date().getFullYear();
-    const filteredTransactions = transactions
-      .filter((item) => item.status === "shipped")
-      .filter((item) => {
-        const transactionDate = new Date(item.createdAt);
-        return transactionDate.getMonth() === month && transactionDate.getFullYear() === year;
-      });
-
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
-  };
-
-  const calculateYearlyRevenue = (transactions, year) => {
-    const filteredTransactions = transactions
-      .filter((item) => item.status === "shipped")
-      .filter((item) => {
-        const transactionDate = new Date(item.createdAt);
-        return transactionDate.getFullYear() === year;
-      });
-
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
-  };
-
-  const openModal = (transaction) => {
-    setSelectedTransaction(transaction);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedTransaction(null);
-    setIsModalOpen(false);
-  };
+  const [monthlyRevenue, setMonthlyRevenue] = useState(0);
+  const [currentMonth, setCurrentMonth] = useState("");
 
   function convertStatus(status) {
     switch (status) {
@@ -110,6 +52,69 @@ function Main() {
     }
   }
 
+  const calculateRevenueInRange = (transactions, start, end) => {
+    if (!start || !end) return 0;
+
+    const filteredTransactions = transactions
+      .filter((item) => item.status === "success")
+      .filter((item) => {
+        const transactionDate = new Date(item.createdAt);
+        return transactionDate >= start && transactionDate <= end;
+      });
+
+    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+  };
+
+  const calculateMonthlyRevenue = (transactions) => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const monthlyTransactions = transactions.filter((item) => {
+      const transactionDate = new Date(item.createdAt);
+      return (
+        transactionDate.getMonth() === currentMonth &&
+        transactionDate.getFullYear() === currentYear &&
+        item.status === "success"
+      );
+    });
+
+    return monthlyTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+  };
+
+  const calculateDailyRevenue = (transactions, date) => {
+    if (!date) return 0;
+
+    const filteredTransactions = transactions
+      .filter((item) => item.status === "shipping")
+      .filter((item) => {
+        const transactionDate = new Date(item.createdAt);
+        return (
+          transactionDate.toDateString() === date.toDateString()
+        );
+      });
+
+    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+  };
+
+  const calculateTotalRevenue = (transactions) => {
+    const total = transactions
+      .filter((item) => item.status === "success")
+      .reduce((acc, item) => acc + Number(item.totalPrice), 0);
+    return total;
+  };
+
+
+  const openModal = (transaction) => {
+    setSelectedTransaction(transaction);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedTransaction(null);
+    setIsModalOpen(false);
+  };
+
   const getAllPayment = useCallback(async () => {
     try {
       const { status, data } = await axios.get(`${json_config[0].url_connect}/pay`);
@@ -117,19 +122,25 @@ function Main() {
         setData(data);
         const total = calculateTotalRevenue(data);
         setTotalRevenue(total);
-        const monthlyTotal = calculateMonthlyRevenue(data, selectedMonth);
-        setMonthlyRevenue(monthlyTotal);
 
-        const yearlyTotal = calculateYearlyRevenue(data, selectedYear);
-        setYearlyRevenue(yearlyTotal);
+        const rangeRevenue = calculateRevenueInRange(data, startDate, endDate);
+        setTimeRangeRevenue(rangeRevenue);
 
         const dailyTotal = calculateDailyRevenue(data, selectedDate);
         setDailyRevenue(dailyTotal);
+
+        const monthlyTotal = calculateMonthlyRevenue(data);
+        setMonthlyRevenue(monthlyTotal);
+
+        const now = new Date();
+        setCurrentMonth(`${now.getMonth() + 1}/${now.getFullYear()}`);
       }
     } catch (error) {
       console.log(error);
     }
-  }, [selectedMonth, selectedYear, selectedDate]);
+  }, [startDate, endDate, selectedDate]);
+
+
 
   useEffect(() => {
     if (websocket) {
@@ -239,65 +250,36 @@ function Main() {
         </div>
 
         <div className="stat-box">
-          <h3>Doanh Thu Ngày</h3>
+          <h3>Doanh Thu Trong Khoảng Thời Gian</h3>
           <div className="calendar-section">
+            <label>Bắt đầu: </label>
             <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
               dateFormat="dd/MM/yyyy"
               className="date-picker"
             />
-            <div>
-              <input
-                type="checkbox"
-                id="filterByDate"
-                checked={isFilterByDate}
-                onChange={(e) => setIsFilterByDate(e.target.checked)}
-              />
-              <label htmlFor="filterByDate"> Lọc danh sách theo ngày</label>
-            </div>
+            <label>Kết thúc: </label>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              dateFormat="dd/MM/yyyy"
+              className="date-picker"
+            />
           </div>
-          <p>{Number(dailyRevenue).toLocaleString("vi-VN")} VNĐ</p>
+          <p>{Number(timeRangeRevenue).toLocaleString("vi-VN")} VNĐ</p>
         </div>
 
-
         <div className="stat-box">
-          <h3>Doanh Thu Tháng</h3>
-          <div className="dropdown-section">
-            <label htmlFor="month">Chọn tháng: </label>
-            <select
-              id="month"
-              value={selectedMonth !== null ? selectedMonth : ""}
-              onChange={(e) => setSelectedMonth(Number(e.target.value))}
-            >
-              <option value="">Chọn tháng</option>
-              {Array.from({ length: 12 }, (_, index) => (
-                <option key={index} value={index}>
-                  Tháng {index + 1}
-                </option>
-              ))}
-            </select>
-          </div>
+          <h3>
+            Doanh Thu Hàng Tháng
+            <span style={{ fontSize: "0.8em", fontWeight: "normal" }}>
+              (Tháng {currentMonth})
+            </span>
+          </h3>
           <p>{Number(monthlyRevenue).toLocaleString("vi-VN")} VNĐ</p>
         </div>
-        <div className="stat-box">
-          <h3>Doanh Thu Năm</h3>
-          <div className="dropdown-section">
-            <label htmlFor="year">Chọn năm: </label>
-            <select
-              id="year"
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
-            >
-              {Array.from({ length: 11 }, (_, index) => (
-                <option key={index} value={new Date().getFullYear() - index}>
-                  {new Date().getFullYear() - index}
-                </option>
-              ))}
-            </select>
-          </div>
-          <p>{Number(yearlyRevenue).toLocaleString("vi-VN")} VNĐ</p>
-        </div>
+
       </div>
       
 

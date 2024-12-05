@@ -153,7 +153,7 @@ const DetailHistoryPay = ({ route }) => {
             </ScrollView>
             <View style={{ width: '90%', marginVertical: 20, marginHorizontal: '5%', gap: 10, }}>
                 <View style={styles.buttonPayMent}>
-                    <Text style={styles.textPay}>Đã thanh toán</Text>
+                    <Text style={styles.textPay}>Tổng tiền</Text>
                     <Text style={styles.textPay}>{numberUtils(item.totalPrice)}</Text>
                 </View>
                 {/* Nút Hủy đơn hàng chỉ xuất hiện khi orderStatus là "pending" */}

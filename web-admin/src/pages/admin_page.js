@@ -46,7 +46,7 @@ function Main() {
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
+              Họ tên
             </span>
             <input
               ref={fullname}
@@ -143,7 +143,7 @@ function Main() {
         <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
+              Họ tên
             </span>
             <input ref={fullname} type="text" />
           </div>
@@ -231,14 +231,14 @@ function Main() {
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">Fullname</th>
+            <th scope="col">Họ tên</th>
             <th scope="col">Username</th>
             {/* <th scope="col">Password</th> */}
-            <th scope="col">Type</th>
-            <th scope="col">Status</th>
-            <th scope="col">Update</th>
+            <th scope="col">Chức vụ</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Cập nhật</th>
             {/* <th scope="col">Delete</th> */}
-            <th scope="col">Block</th>
+            <th scope="col">Chặn</th>
           </tr>
         </thead>
         <tbody>

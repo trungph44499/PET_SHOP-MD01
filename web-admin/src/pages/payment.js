@@ -112,6 +112,7 @@ function Main() {
               <ul>
                 {transaction.products.map((product, index) => (
                   <li key={index}>
+                    <img src={product.image} height={100} width={100} alt={product.name} />
                     <p><strong>Tên sản phẩm: </strong>{product.name}</p>
                     <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
                     <p><strong>Kích thước: </strong>{product.size}</p>
@@ -339,7 +340,7 @@ function Main() {
       <table className="table">
         <thead>
           <tr> 
-            <th scope="col">Họ tên người mua</th>
+            <th scope="col">Tên người mua</th>
             <th scope="col">Địa chỉ</th>
             <th scope="col">Số điện thoại</th>
             <th scope="col">Trạng thái</th>

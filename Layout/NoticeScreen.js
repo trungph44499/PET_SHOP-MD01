@@ -67,6 +67,17 @@ const NoticeScreen = ({ navigation }) => {
       case "shipped":
         statusResult = "Giao hàng thành công";
         statusColor = "green";
+      case "rejectPet":
+        statusResult = "Dịch vụ đã được hủy";
+        statusColor = "red";
+        break;
+      case "successPet":
+        statusResult = "Đặt dịch vụ thành công";
+        statusColor = "green";
+        break;
+      case "pendingPet":
+        statusResult = "Dịch vụ đang chờ xác nhận";
+        statusColor = "black";
         break;
       default:
         break;

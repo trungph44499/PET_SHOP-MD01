@@ -66,13 +66,13 @@ function Main() {
         <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
-              Avatar
+              Ảnh đại diện
             </span>
             <input ref={avatar} type="text" defaultValue={dataUpdate.avatar} />
           </div>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
+              Họ tên
             </span>
             <input
               ref={fullname}
@@ -151,13 +151,13 @@ function Main() {
         <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
-              Avatar
+            Ảnh đại diện
             </span>
             <input ref={avatar} type="text" />
           </div>
           <div className="input-group mb-2 mt-2">
             <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
+              Họ tên
             </span>
             <input ref={fullname} type="text" />
           </div>
@@ -237,13 +237,13 @@ function Main() {
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">Avatar</th>
-            <th scope="col">Fullname</th>
+            <th scope="col">Ảnh đại diện</th>
+            <th scope="col">Họ tên</th>
             <th scope="col">Email</th>
             {/* <th scope="col">Password</th> */}
             <th scope="col">Update</th>
             {/* <th scope="col">Delete</th> */}
-            <th scope="col">Message</th>
+            <th scope="col">Tin nhắn</th>
           </tr>
         </thead>
         <tbody>
