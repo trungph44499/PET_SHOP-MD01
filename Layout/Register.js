@@ -5,7 +5,6 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  ToastAndroid,
   SafeAreaView,
   ScrollView,
 } from "react-native";

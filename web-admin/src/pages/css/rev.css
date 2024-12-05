@@ -73,13 +73,11 @@
   margin-top: 5%;
 }
 .transaction-info{
-  display: flex;
-  flex-direction: column;
+  flex: 1;
   text-align: left;
 }
 .product-info{
-  display: flex;
-  flex-direction: column;
+  flex: 1;
   text-align: left;
 }
 

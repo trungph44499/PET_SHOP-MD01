@@ -92,8 +92,8 @@ export default NewProductScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={{ width: 20, height: 20 }} source={require('../Image/left-back.png')} />
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Sản phẩm mới</Text>
-        <TouchableOpacity style={{ width: 50 }} onPress={() => navigation.navigate('CartScreen')}>
+        <Text style={{ flex : 1, textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Sản phẩm mới</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
           <Image style={{ width: 26, height: 26 }} source={require('../Image/cart.png')} />
         </TouchableOpacity>
       </View>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    padding: 10,
+    padding: 6,
     borderRadius: 5,
     alignItems: "center",
     margin: 5

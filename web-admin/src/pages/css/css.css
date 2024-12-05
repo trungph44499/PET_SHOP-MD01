@@ -34,4 +34,12 @@
     text-overflow: ellipsis;  /* Hiển thị ba dấu chấm khi văn bản quá dài */
     word-wrap: break-word;  /* Đảm bảo không có từ nào bị cắt đứt */
   }
+  .product-pay{
+    flex: 1;
+    text-align: left;
+  }
+  .transaction-pay{
+    flex: 1;
+    text-align: left;
+  }
   

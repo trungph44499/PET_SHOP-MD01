@@ -13,13 +13,15 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-  const { status, id, email, products } = req.body;
+  const { status, id, email, products, idStaff, nameStaff } = req.body;
 
   try {
     const result = await paymentModel.updateMany(
       { _id: id },
       {
         status: status,
+        idStaff: idStaff,
+        nameStaff: nameStaff
       }
     );
     if (result.matchedCount > 0) {
