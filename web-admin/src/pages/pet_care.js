@@ -150,7 +150,7 @@ function Main() {
                         }}
                         className="confirm-btn btn-primary"
                       >
-                        Confirm
+                        Xác nhận
                       </button>
                     </td>
                     <td>
@@ -182,7 +182,7 @@ function Main() {
                         }}
                         className="confirm-btn btn-secondary"
                       >
-                        Reject
+                        Hủy dịch vụ
                       </button>
                     </td>
                   </tr>
@@ -195,7 +195,7 @@ function Main() {
   }
 
   return (
-    <div>
+    <div className="confirm-container">
       <header className="confirm-header">
         <h1>Xác nhận dịch vụ</h1>
       </header>

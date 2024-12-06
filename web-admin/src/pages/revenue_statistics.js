@@ -105,7 +105,7 @@ function Main() {
 
         // Tính số đơn hàng trong khoảng thời gian
         const ordersCount = calculateOrdersInRange(data, startDate, endDate);
-        console.log("Số đơn hàng trong khoảng thời gian:", ordersCount);
+        // console.log("Số đơn hàng trong khoảng thời gian:", ordersCount);
         setOrderCount(ordersCount);
 
       }
@@ -244,7 +244,7 @@ function Main() {
               className="thongke-filter-btn"
               onClick={() => setIsFilterByRange(!isFilterByRange)}
             >
-              {isFilterByRange ? "Bỏ Lọc" : "Lọc"}
+              {isFilterByRange ? "Tắt" : "Lọc"}
             </button>
           </div>
 

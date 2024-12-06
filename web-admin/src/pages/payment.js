@@ -316,7 +316,7 @@ function Main() {
   }, [websocket, getAllPayment]); // Chạy lại nếu websocket hoặc getAllPayment thay đổi
 
   return (
-    <div>
+    <div className="confirm-container">
       <header className="confirm-header">
         <h1>Xác nhận đơn hàng</h1>
       </header>
