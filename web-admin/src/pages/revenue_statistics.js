@@ -28,6 +28,7 @@ function Main() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [timeRangeRevenue, setTimeRangeRevenue] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
   const [isFilterByRange, setIsFilterByRange] = useState(false);
 
   function convertStatus(status) {
@@ -60,6 +61,20 @@ function Main() {
     return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
   };
 
+  // Hàm đếm số đơn hàng trong khoảng thời gian
+  const calculateOrdersInRange = (transactions, start, end) => {
+    if (!start || !end) return 0;
+
+    const filteredTransactions = transactions
+      // .filter((item) => item.status === "shipped") 
+      .filter((item) => {
+        const transactionDate = new Date(item.createdAt);
+        return transactionDate >= start && transactionDate <= end; 
+      });
+
+    return filteredTransactions.length;
+  };
+
   const calculateTotalRevenue = (transactions) => {
     const total = transactions
       .filter((item) => item.status === "shipped")
@@ -87,6 +102,12 @@ function Main() {
 
         const rangeRevenue = calculateRevenueInRange(data, startDate, endDate);
         setTimeRangeRevenue(rangeRevenue);
+
+        // Tính số đơn hàng trong khoảng thời gian
+        const ordersCount = calculateOrdersInRange(data, startDate, endDate);
+        console.log("Số đơn hàng trong khoảng thời gian:", ordersCount);
+        setOrderCount(ordersCount);
+
       }
     } catch (error) {
       console.log(error);
@@ -138,13 +159,20 @@ function Main() {
   function TransactionModal({ transaction, onClose }) {
     if (!transaction) return null;
 
+    const handleClose = (e) => {
+      if (e.target.className === "thongke-modal") {
+        onClose();
+      }
+    };
+
     return (
-      <div className="modal">
-        <div className="modal-content">
-          <button onClick={onClose} className="modal-close-btn">×</button>
+      <div className="thongke-modal" onClick={handleClose}>
+
+        <div className="thongke-modal-content">
+          {/* <button onClick={onClose} className="thongke-modal-close-btn">×</button> */}
           <h2>Chi Tiết Giao Dịch</h2>
-          <div className="modal-body">
-            <div className="transaction-pay">
+          <div className="thongke-modal-body">
+            <div className="thongke-transaction-pay">
               <p><strong>ID nhân viên:</strong> {transaction.idStaff ? transaction.idStaff : "Chưa có người xác nhận"}</p>
               <p><strong>Người xác nhận:</strong> {transaction.nameStaff ? transaction.nameStaff : "Chưa có người xác nhận"}</p>
               <p><strong>ID hoá đơn:</strong> {transaction._id}</p>
@@ -157,7 +185,7 @@ function Main() {
               <p><strong>Tổng tiền:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
               <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
             </div>
-            <div className="product-pay">
+            <div className="thongke-product-pay">
               <ul>
                 {transaction.products.map((product, index) => (
                   <li key={index}>
@@ -178,9 +206,9 @@ function Main() {
   }
 
   return (
-    <div className="container">
-      <header className="header">
-        <h1>Thống Kê</h1>
+    <div className="thongke-container">
+      <header className="thongke-header">
+        <h1 style={{ fontWeight: 'bold' }}>Thống Kê Doanh Thu</h1>
       </header>
 
       <div>
@@ -192,43 +220,53 @@ function Main() {
         )}
       </div>
 
-      <div className="stats-section">
-        <div className="stat-box">
-          <h3>Tổng Doanh Thu</h3>
-          <p>{Number(totalRevenue).toLocaleString("vi-VN")} VNĐ</p>
-        </div>
+      <div className="thongke-stats-section">
 
-        <div className="stat-box">
+
+        <div className="thongke-stat-box-date">
           <h3>Doanh Thu Trong Khoảng Thời Gian</h3>
-          <div className="calendar-section">
+          <div className="thongke-calendar-section">
             <label>Bắt đầu: </label>
             <DatePicker
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               dateFormat="dd/MM/yyyy"
-              className="date-picker"
+              className="thongke-date-picker"
             />
             <label>Kết thúc: </label>
             <DatePicker
               selected={endDate}
               onChange={(date) => setEndDate(date)}
               dateFormat="dd/MM/yyyy"
-              className="date-picker"
+              className="thongke-date-picker"
             />
+            <button
+              className="thongke-filter-btn"
+              onClick={() => setIsFilterByRange(!isFilterByRange)}
+            >
+              {isFilterByRange ? "Bỏ Lọc" : "Lọc"}
+            </button>
           </div>
-          <button
-            className="filter-btn"
-            onClick={() => setIsFilterByRange(!isFilterByRange)}
-          >
-            {isFilterByRange ? "Bỏ Lọc" : "Lọc"}
-          </button>
+
+
+        </div>
+        <div className="thongke-stat-box">
+          <h3>Tổng Doanh Thu</h3>
+          <p>{Number(totalRevenue).toLocaleString("vi-VN")} VNĐ</p>
+        </div>
+        <div className="thongke-stat-box">
+          <h3>Doanh Thu</h3>
           <p>{Number(timeRangeRevenue).toLocaleString("vi-VN")} VNĐ</p>
+        </div>
+        <div className="thongke-stat-box">
+          <h3>Đơn hàng</h3>
+          <p>{Number(orderCount).toLocaleString("vi-VN")} Đơn</p>
         </div>
       </div>
 
-      <div className="transactions-section">
+      <div className="thongke-transactions-section">
         <h2>Danh Sách Giao Dịch</h2>
-        <table className="table">
+        <table className="thongke-table">
           <thead>
             <tr>
               <th scope="col">Tên người mua</th>
@@ -253,7 +291,7 @@ function Main() {
                   <td>
                     <button
                       onClick={() => openModal(item)}
-                      className="btn-detail"
+                      className="thongke-btn-detail"
                     >
                       Xem chi tiết
                     </button>
@@ -271,7 +309,7 @@ function Main() {
         </table>
       </div>
 
-      <div className="pagination">
+      <div className="thongke-pagination">
         <button onClick={prevPage} disabled={currentPage === 1}>
           {"<"}
         </button>

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
-import "./css/css.css";
+import "./css/confirm.css";
 import { webSocketContext } from "../context/WebSocketContext";
 
 export default function PetCare() {
@@ -89,17 +89,17 @@ function Main() {
     if (!transaction) return null;
 
     const handleClose = (e) => {
-      if (e.target.className === "modal") {
+      if (e.target.className === "confirm-modal") {
         onClose();
       }
     };
 
     return (
-      <div className="modal" onClick={handleClose}>
-        <div className="modal-content">
-          <h2 className="texth2">Chi Tiết Dịch Vụ</h2>
-          <div className="modal-body">
-            <div className="transaction-pay">
+      <div className="confirm-modal" onClick={handleClose}>
+        <div className="confirm-modal-content">
+          <h2 className="confirm-texth2">Chi Tiết Dịch Vụ</h2>
+          <div className="confirm-modal-body">
+            <div className="confirm-transaction-pay">
               <p><strong>ID dịch vụ:</strong> {transaction._id}</p>
               <p><strong>Dịch vụ:</strong> {transaction.service}</p>
               <p><strong>Họ tên:</strong> {transaction.name}</p>
@@ -111,7 +111,7 @@ function Main() {
           </div>
           <div>
             <p><strong>Xác nhận</strong></p>
-            <table className="table">
+            <table className="confirm-table">
               <thead>
                 <tr>
                   <th scope="col">Chờ xác nhận</th>
@@ -148,7 +148,7 @@ function Main() {
                             }
                           }
                         }}
-                        className="btn btn-primary"
+                        className="confirm-btn btn-primary"
                       >
                         Confirm
                       </button>
@@ -180,7 +180,7 @@ function Main() {
                             }
                           }
                         }}
-                        className="btn btn-secondary"
+                        className="confirm-btn btn-secondary"
                       >
                         Reject
                       </button>
@@ -196,7 +196,7 @@ function Main() {
 
   return (
     <div>
-      <header className="header">
+      <header className="confirm-header">
         <h1>Xác nhận dịch vụ</h1>
       </header>
       <div>
@@ -207,7 +207,7 @@ function Main() {
           />
         )}
       </div>
-      <table className="table">
+      <table className="confirm-table">
         <thead>
           <tr>
             <th scope="col">Tên người dùng</th>
@@ -228,7 +228,7 @@ function Main() {
               <td>{item.message}</td>
               <td>{convertStatus(item.status)}</td>
               <td>
-                <button onClick={() => openModal(item)} className="btn-detail">
+                <button onClick={() => openModal(item)} className="confirm-btn-detail">
                   Xem chi tiết
                 </button>
               </td>

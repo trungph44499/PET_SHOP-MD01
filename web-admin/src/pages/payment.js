@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
-import "./css/css.css";
+import "./css/confirm.css";
 import { webSocketContext } from "../context/WebSocketContext";
 
 export default function Payment() {
@@ -73,17 +73,17 @@ function Main() {
     if (!transaction) return null;
 
     const handleClose = (e) => {
-      if (e.target.className === "modal") {
+      if (e.target.className === "confirm-modal") {
         onClose();
       }
     };
 
     return (
-      <div className="modal" onClick={handleClose}>
-        <div className="modal-content">
-          <h2 className="texth2">Chi Tiết Đơn Hàng</h2>
-          <div className="modal-body">
-            <div className="transaction-pay">
+      <div className="confirm-modal" onClick={handleClose}>
+        <div className="confirm-modal-content">
+          <h2 className="confirm-texth2">Chi Tiết Đơn Hàng</h2>
+          <div className="confirm-modal-body">
+            <div className="confirm-transaction-pay">
               <p><strong>ID hoá đơn:</strong> {transaction._id}</p>
               <p><strong>Họ tên:</strong> {transaction.fullname}</p>
               <p><strong>Email:</strong> {transaction.email}</p>
@@ -94,7 +94,7 @@ function Main() {
               <p><strong>Tổng tiền:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
               <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
             </div>
-            <div className="product-pay">
+            <div className="confirm-product-pay">
               <ul>
                 {transaction.products.map((product, index) => (
                   <li key={index}>
@@ -111,7 +111,7 @@ function Main() {
           </div>
           <div>
             <p><strong>Xác nhận</strong></p>
-            <table className="table">
+            <table className="confirm-table">
               <thead>
                 <tr>
                   <th scope="col">Chờ xác nhận</th>
@@ -148,10 +148,11 @@ function Main() {
                           if (status === 200) {
                             window.alert(response);
                             if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
+                            closeModal();
                           }
                         }
                       }}
-                      className="btn btn-primary"
+                      className="confirm-btn btn-primary"
                     >
                       Xác nhận
                     </button>
@@ -185,10 +186,11 @@ function Main() {
                           if (status === 200) {
                             window.alert(response);
                             if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
+                            closeModal();
                           }
                         }
                       }}
-                      className="btn btn-primary"
+                      className="confirm-btn btn-primary"
                     >
                       Giao hàng
                     </button>
@@ -221,10 +223,11 @@ function Main() {
                           if (status === 200) {
                             window.alert(response);
                             if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
+                            closeModal();
                           }
                         }
                       }}
-                      className="btn btn-primary"
+                      className="confirm-btn btn-primary"
                     >
                       Đã giao
                     </button>
@@ -257,10 +260,11 @@ function Main() {
                           if (status === 200) {
                             window.alert(response);
                             if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
+                            closeModal();
                           }
                         }
                       }}
-                      className="btn btn-secondary"
+                      className="confirm-btn btn-secondary"
                     >
                       Hủy đơn
                     </button>
@@ -313,7 +317,7 @@ function Main() {
 
   return (
     <div>
-      <header className="header">
+      <header className="confirm-header">
         <h1>Xác nhận đơn hàng</h1>
       </header>
       <div>
@@ -324,7 +328,7 @@ function Main() {
           />
         )}
       </div>
-      <table className="table">
+      <table className="confirm-table">
         <thead>
           <tr>
             <th scope="col">Tên người mua</th>
@@ -342,7 +346,7 @@ function Main() {
               <td>{item.number}</td>
               <td>{convertStatus(item.status)}</td>
               <td>
-                <button onClick={() => openModal(item)} className="btn-detail">
+                <button onClick={() => openModal(item)} className="confirm-btn-detail">
                   Xem chi tiết
                 </button>
               </td>
