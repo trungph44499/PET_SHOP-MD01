@@ -27,15 +27,15 @@ function Main() {
   function convertStatus(status) {
     switch (status) {
       case "reject":
-        return "Đã từ chối";
+        return "Đơn hàng bị hủy";
       case "success":
-        return "Đã xác nhận";
+        return "Đang chuẩn bị hàng";
       case "pending":
-        return "Chờ xác nhận";
+        return "Đang chờ xác nhận";
       case "shipping":
-        return "Đang giao";
+        return "Đang giao hàng";
       case "shipped":
-        return "Đã giao";
+        return "Giao hàng thành công";
       default:
         return "";
     }
@@ -314,7 +314,7 @@ function Main() {
   return (
     <div>
       <header className="header">
-        <h1>Xác nhận thanh toán</h1>
+        <h1>Xác nhận đơn hàng</h1>
       </header>
       <div>
         {isModalOpen && (

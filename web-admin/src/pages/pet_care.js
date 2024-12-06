@@ -101,6 +101,7 @@ function Main() {
           <div className="modal-body">
             <div className="transaction-pay">
               <p><strong>ID dịch vụ:</strong> {transaction._id}</p>
+              <p><strong>Dịch vụ:</strong> {transaction.service}</p>
               <p><strong>Họ tên:</strong> {transaction.name}</p>
               <p><strong>Email:</strong> {transaction.email}</p>
               <p><strong>Địa chỉ:</strong> {transaction.message}</p>
