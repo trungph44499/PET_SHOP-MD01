@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 
 router.post("/update", async (req, res) => {
   const { status, id, email, products } = req.body;
-  
+
   try {
     const result = await paymentModel.updateMany(
       { _id: id },
@@ -48,6 +48,7 @@ router.post("/update", async (req, res) => {
 
 router.get("/filter", async (req, res) => {
   const { email } = req.query;
+
   try {
     const result = await paymentModel.find({ email: email });
     res.status(200).send(result);
@@ -56,8 +57,28 @@ router.get("/filter", async (req, res) => {
   }
 });
 
+router.get("/get-type", async (req, res) => {
+  const { email, type } = req.query;
+
+  try {
+    const result = await paymentModel.find({ email: email, status: type });
+    res.status(200).send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.post("/add", async (req, res) => {
-  const {  fullname, email, location, number, ship, paymentMethod, totalPrice, products } = req.body;
+  const {
+    fullname,
+    email,
+    location,
+    number,
+    ship,
+    paymentMethod,
+    totalPrice,
+    products,
+  } = req.body;
   try {
     const result = await paymentModel.insertMany({
       fullname: fullname,

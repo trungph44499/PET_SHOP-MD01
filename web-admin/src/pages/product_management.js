@@ -151,7 +151,7 @@ function Main() {
         {
           id: dataUpdate._id,
           image: _image.current.value,
-          name: _name.current.value,       
+          name: _name.current.value,
           status: _status.current.value,
           type: _type.current.value,
           description: _description.current.value,
@@ -240,7 +240,7 @@ function Main() {
                 Name
               </span>
               <input ref={_name} type="text" defaultValue={dataUpdate.name} />
-            </div>        
+            </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Status
@@ -250,8 +250,6 @@ function Main() {
                 <option value="Old">Old</option>
               </select>
             </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Animals
@@ -262,11 +260,20 @@ function Main() {
 
               </select>
             </div>
+          </div>
+          <div className="d-flex flex-row mb-2">
+           
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Description
               </span>
-              <input ref={_description} type="text" defaultValue={dataUpdate.description} />
+              <textarea
+                ref={_description}
+                rows={4}  
+                defaultValue={dataUpdate.description}
+              className="form-control"
+              placeholder="Enter description here..."
+  />
             </div>
           </div>
           <div className="d-flex flex-row mb-2">
@@ -348,7 +355,7 @@ function Main() {
                 Name
               </span>
               <input ref={_name} type="text" />
-            </div>        
+            </div>
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Status
@@ -358,8 +365,6 @@ function Main() {
                 <option value="Old">Old</option>
               </select>
             </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Animals
@@ -370,11 +375,19 @@ function Main() {
 
               </select>
             </div>
+          </div>
+          <div className="d-flex flex-row mb-2">
+         
             <div className="input-group">
               <span className="input-group-text" style={{ width: 100 }}>
                 Description
               </span>
-              <input ref={_description} type="text" />
+              <textarea
+                ref={_description}
+                rows={4}
+                className="form-control" 
+                placeholder="Enter description here..."
+              />
             </div>
           </div>
           <div className="d-flex flex-row mb-2">
@@ -441,7 +454,7 @@ function Main() {
         <thead>
           <tr>
             <th scope="col">Image</th>
-            <th scope="col">Name</th>           
+            <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Category</th>
             <th scope="col">Description</th>
@@ -464,7 +477,7 @@ function Main() {
                   alt={item.name || "Hình ảnh sản phẩm"}
                 />
               </td>
-              <td>{item.name}</td>            
+              <td>{item.name}</td>
               <td>{item.status}</td>
               <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>

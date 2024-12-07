@@ -9,36 +9,90 @@ import {
   Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import RNPickerSelect from "react-native-picker-select";
+import axios from 'axios';
+import { URL } from '../HomeScreen';
 
 const AddShippingAddress = ({ route, navigation }) => {
   const { emailUser, address, index } = route.params || {};
-
   const [fullName, setFullName] = useState(address?.fullName || "");
-  const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || "");
+  // const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || "");
   const [addressText, setAddressText] = useState(address?.address || "");
   const [city, setCity] = useState(address?.city || "");
+  const [cities, setCities] = useState([]);
+  const [user, setUser] = useState({});
+
+  // Lấy danh sách thành phố từ API khi component được tải
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const { status, data } = await axios.get(`${URL}/city`);
+        // Kiểm tra nếu response có đúng cấu trúc
+        if (status === 200) {
+          setCities(
+            data.map((city) => ({
+              label: city.name,  // Giả sử các thành phố có trường 'name'
+              value: city.name,
+            }))
+          );
+        } else {
+          console.error("Cấu trúc dữ liệu không hợp lệ:", data);
+          Alert.alert("Lỗi", "Dữ liệu từ API không hợp lệ.");
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách thành phố: ", error);
+        Alert.alert("Lỗi", "Không thể lấy danh sách thành phố");
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  const userData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem("@UserLogin");
+
+      const {
+        status,
+        data: { response },
+      } = await axios.post(`${URL}/users/getUser`, {
+        email: userData,
+      });
+      if (status == 200) {
+        setUser(...response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() =>{
+    userData();
+  },[]);
+
+  const phoneNumber = String(user.sdt);
 
   const validateForm = () => {
-    if (!fullName || !phoneNumber || !addressText || !city) {
+    if (!fullName || !addressText || !city) {
       Alert.alert("Lỗi", "Vui lòng nhập đầy đủ thông tin!");
       return false;
     }
 
-    const phoneRegex = /^[0-9]{10,11}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      Alert.alert("Lỗi", "Số điện thoại không hợp lệ!");
-      return false;
-    }
+    // const phoneRegex = /^[0-9]{10,11}$/;
+    // if (!phoneRegex.test(phoneNumber)) {
+    //   Alert.alert("Lỗi", "Số điện thoại không hợp lệ!");
+    //   return false;
+    // }
 
     if (addressText.length < 3) {
       Alert.alert("Lỗi", "Địa chỉ phải có ít nhất 3 ký tự.");
       return false;
     }
 
-    if (city.length < 3) {
-      Alert.alert("Lỗi", "Tên thành phố phải có ít nhất 3 ký tự.");
-      return false;
-    }
+    // if (city.length < 3) {
+    //   Alert.alert("Lỗi", "Tên thành phố phải có ít nhất 3 ký tự.");
+    //   return false;
+    // }
 
     return true;
   };
@@ -47,7 +101,7 @@ const AddShippingAddress = ({ route, navigation }) => {
     if (!validateForm()) return;
 
     const newAddress = { fullName, phoneNumber, address: addressText, city };
-
+ 
     try {
       let storedAddresses = await AsyncStorage.getItem(
         emailUser + "_shippingAddresses"
@@ -93,30 +147,42 @@ const AddShippingAddress = ({ route, navigation }) => {
       </View>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { fontSize: 15 }]}
         placeholder="Họ và tên"
         value={fullName}
         onChangeText={setFullName}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: 'black', fontSize: 15 }]}
         placeholder="Số điện thoại"
         value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        keyboardType="phone-pad"
+        editable={false}
+        // onChangeText={setPhoneNumber}
+        // keyboardType="phone-pad"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { fontSize: 15 }]}
         placeholder="Địa chỉ"
         value={addressText}
         onChangeText={setAddressText}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Thành phố"
-        value={city}
-        onChangeText={setCity}
-      />
+      {/* Sử dụng RNPickerSelect cho thành phố */}
+      <View style={styles.inputCity}>
+        <RNPickerSelect
+          onValueChange={(value) => setCity(value)}
+          items={cities}
+          value={city}
+          placeholder={{ label: "Chọn thành phố", value: null }}
+          style={{
+            inputAndroid: {
+              height: 60,
+            },
+            inputIOS: {
+              height: 60,
+            }
+          }}
+        />
+      </View>
 
       <TouchableOpacity style={styles.submitButton} onPress={saveAddress}>
         <Text style={styles.submitText}>Lưu</Text>
@@ -157,7 +223,14 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+  },
+  inputCity: {
+    height: 60,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
     marginBottom: 20,
   },
   submitButton: {

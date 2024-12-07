@@ -26,6 +26,10 @@ function Main() {
         return "Đã xác nhận";
       case "pending":
         return "Chờ xác nhận";
+      case "shipping":
+        return "Đang giao";
+      case "shipped":
+        return "Đã giao";
       default:
         return "";
     }
@@ -34,9 +38,11 @@ function Main() {
   // Lấy dữ liệu thanh toán
   const getAllPayment = useCallback(async () => {
     try {
-      const { status, data } = await axios.get(`${json_config[0].url_connect}/pay`);
+      const { status, data } = await axios.get(
+        `${json_config[0].url_connect}/pay`
+      );
       if (status === 200) {
-        setData(data);
+        setData(data.reverse());
       }
     } catch (error) {
       console.log(error);
@@ -49,7 +55,7 @@ function Main() {
       websocket.onmessage = (result) => {
         const data = JSON.parse(result.data);
         if (data.type === "payment") {
-          getAllPayment();  // Gọi lại getAllPayment khi nhận được thông báo từ WebSocket
+          getAllPayment(); // Gọi lại getAllPayment khi nhận được thông báo từ WebSocket
         }
       };
     }
@@ -63,11 +69,11 @@ function Main() {
         websocket.onmessage = null; // Hủy lắng nghe sự kiện message khi component unmount
       }
     };
-  }, [websocket, getAllPayment]);  // Chạy lại nếu websocket hoặc getAllPayment thay đổi
+  }, [websocket, getAllPayment]); // Chạy lại nếu websocket hoặc getAllPayment thay đổi
 
   return (
     <div>
-       <header className="header">
+      <header className="header">
         <h1>Xác nhận thanh toán</h1>
       </header>
       <table className="table">
@@ -79,6 +85,8 @@ function Main() {
             <th scope="col">Product</th>
             <th scope="col">Status</th>
             <th scope="col">Confirm</th>
+            <th scope="col">Shipping</th>
+            {/* <th scope="col">Shipped</th> */}
             <th scope="col">Reject</th>
           </tr>
         </thead>
@@ -93,11 +101,16 @@ function Main() {
 
               <td>
                 <button
-                  disabled={item.status === "reject" || item.status === "success"}
+                  disabled={
+                    item.status === "reject" || item.status !== "pending"
+                  }
                   onClick={async () => {
                     const resultCheck = window.confirm("Confirm payment?");
                     if (resultCheck) {
-                      const { status, data: { response, type } } = await axios.post(
+                      const {
+                        status,
+                        data: { response, type },
+                      } = await axios.post(
                         `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,
@@ -118,13 +131,89 @@ function Main() {
                   Confirm
                 </button>
               </td>
+
               <td>
                 <button
-                  disabled={item.status === "reject" || item.status === "success"}
+                  disabled={
+                    item.status === "reject" ||
+                    item.status === "pending" ||
+                    item.status !== "success"
+                  }
+                  onClick={async () => {
+                    const resultCheck = window.confirm("Confirm payment?");
+                    if (resultCheck) {
+                      const {
+                        status,
+                        data: { response, type },
+                      } = await axios.post(
+                        `${json_config[0].url_connect}/pay/update`,
+                        {
+                          id: item._id,
+                          email: item.email,
+                          products: item.products,
+                          status: "shipping",
+                        }
+                      );
+
+                      if (status === 200) {
+                        window.alert(response);
+                        if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
+                      }
+                    }
+                  }}
+                  className="btn btn-primary"
+                >
+                  Shipping
+                </button>
+              </td>
+              {/* <td>
+                <button
+                  disabled={
+                    item.status === "reject" ||
+                    item.status === "pending" ||
+                    item.status !== "shipping"
+                  }
+                  onClick={async () => {
+                    const resultCheck = window.confirm("Confirm payment?");
+                    if (resultCheck) {
+                      const {
+                        status,
+                        data: { response, type },
+                      } = await axios.post(
+                        `${json_config[0].url_connect}/pay/update`,
+                        {
+                          id: item._id,
+                          email: item.email,
+                          products: item.products,
+                          status: "shipped",
+                        }
+                      );
+
+                      if (status === 200) {
+                        window.alert(response);
+                        if (type) getAllPayment(); // Cập nhật dữ liệu khi thành công
+                      }
+                    }
+                  }}
+                  className="btn btn-primary"
+                >
+                  Shipped
+                </button>
+              </td> */}
+              <td>
+                <button
+                  disabled={
+                    item.status === "reject" || 
+                    item.status === "shipped" ||
+                    item.status === "shipping"
+                  }
                   onClick={async () => {
                     const resultCheck = window.confirm("Reject payment?");
                     if (resultCheck) {
-                      const { status, data: { response, type } } = await axios.post(
+                      const {
+                        status,
+                        data: { response, type },
+                      } = await axios.post(
                         `${json_config[0].url_connect}/pay/update`,
                         {
                           id: item._id,

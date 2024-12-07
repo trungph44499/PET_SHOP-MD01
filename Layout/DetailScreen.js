@@ -51,7 +51,7 @@ const DetailProduct = ({ navigation, route }) => {
   };
 
   const buyNow = () => {
-    console.log("size: ", selectedSize);
+    // console.log("size: ", selectedSize);
 
     if (!selectedSize) {
       ToastAndroid.show(

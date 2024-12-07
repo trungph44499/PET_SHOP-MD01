@@ -18,8 +18,6 @@ const { WebSocketServer } = require("ws");
 var URL_DATABASE = "mongodb+srv://thuyltph35992:goqUoio57kFOE1LZ@cluster0.smo2w.mongodb.net";
 
 
-
-
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);
 

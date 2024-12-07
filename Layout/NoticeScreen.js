@@ -53,12 +53,20 @@ const NoticeScreen = ({ navigation }) => {
         statusColor = "red";
         break;
       case "success":
-        statusResult = "Đơn hàng đang được giao";
+        statusResult = "Đơn hàng đang chờ được giao";
         statusColor = "green";
         break;
       case "pending":
         statusResult = "Đang chờ được xác nhận";
         statusColor = "black";
+        break;
+      case "shipping":
+        statusResult = "Đơn hàng đang được giao";
+        statusColor = "green";
+        break;
+      case "shipped":
+        statusResult = "Giao hàng thành công";
+        statusColor = "green";
         break;
       default:
         break;
