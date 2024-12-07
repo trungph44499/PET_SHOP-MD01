@@ -10,6 +10,8 @@ const paymentSchema = new mongoose.Schema(
     totalPrice: Number, // tổng tiền thanh toán
     products: [],
     status: { default: "pending", type: String }, //pending, success, reject, shipping, shipped
+    idStaff: String,
+    nameStaff: String,
   },
   { timestamps: true } // Tạo trường create
 );

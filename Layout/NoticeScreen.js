@@ -54,7 +54,7 @@ const NoticeScreen = ({ navigation }) => {
         break;
       case "success":
         statusResult = "Đơn hàng đang chờ được giao";
-        statusColor = "green";
+        statusColor = "black";
         break;
       case "pending":
         statusResult = "Đang chờ được xác nhận";
@@ -62,10 +62,22 @@ const NoticeScreen = ({ navigation }) => {
         break;
       case "shipping":
         statusResult = "Đơn hàng đang được giao";
-        statusColor = "green";
+        statusColor = "black";
         break;
       case "shipped":
         statusResult = "Giao hàng thành công";
+        statusColor = "green";
+        break;
+      // case "pendingPet":
+      //   statusResult = "Dịch vụ đang chờ xác nhận";
+      //   statusColor = "black";
+      //   break;
+      case "rejectPet":
+        statusResult = "Dịch vụ đã được hủy";
+        statusColor = "red";
+        break;
+      case "successPet":
+        statusResult = "Đặt dịch vụ thành công";
         statusColor = "green";
         break;
       default:

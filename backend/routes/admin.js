@@ -15,31 +15,46 @@ router.post("/", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
+    // Tìm admin theo username và password
     const findAdmin = await adminModel.findOne({
       username: username,
       password: password,
     });
+
     if (findAdmin != null) {
+      // Kiểm tra loại người dùng (admin hay nhân viên)
       if (findAdmin.type == "admin") {
+        // Trả về id của admin cùng với các thông tin khác
         res.status(200).json({
           isAdmin: true,
           response: "Đăng nhập admin thành công!",
           type: true,
+          id: findAdmin._id,  // Lấy id của admin
         });
         return;
       }
-      res
-        .status(200)
-        .json({ isAdmin: false, response: "Đăng nhập nhân viên thành công!", type: true });
+      res.status(200).json({
+        isAdmin: false,
+        response: "Đăng nhập nhân viên thành công!",
+        type: true,
+        id: findAdmin._id,  // Lấy id của nhân viên
+      });
       return;
     }
-    res
-      .status(200)
-      .json({ isAdmin: false, response: "Đăng nhập thất bại!", type: false });
+
+    res.status(200).json({
+      isAdmin: false,
+      response: "Đăng nhập thất bại!",
+      type: false,
+    });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      response: "Lỗi server!",
+    });
   }
 });
+
 
 router.post("/add", async function (req, res) {
   const { fullname, username, password } = req.body;
@@ -116,5 +131,20 @@ router.post("/delete", async function (req, res) {
     console.log(error);
   }
 });
+router.get("/:id", async (req, res) => {
+  const { id } = req.params; // Lấy ID từ URL params
+  try {
+    const admin = await adminModel.findById(id);
+    if (admin) {
+      res.status(200).json({ response: admin }); // Trả về thông tin admin nếu tìm thấy
+    } else {
+      res.status(404).json({ response: "Không tìm thấy admin!" }); // Nếu không tìm thấy admin
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ response: "Có lỗi xảy ra!" }); // Trả về lỗi server nếu có
+  }
+});
+
 
 module.exports = router;

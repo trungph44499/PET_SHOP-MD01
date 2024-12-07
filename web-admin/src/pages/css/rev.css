@@ -1,122 +1,195 @@
-.container {
+body {
   font-family: Arial, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fc;
+  max-height: 99vh;  /* Đặt chiều cao tối đa để tránh cuộn toàn màn hình */
+  overflow-y: auto; 
+}
+.thongke-container {
+  margin: 0px 20px;
+  padding: 0px 20px 40px 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.header {
+.thongke-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+ 
 }
 
-.dropdown-section {
-  margin-bottom: 20px;
-  text-align: center;
+.thongke-header h1 {
+  font-size: 28px;
+  color: white;
 }
 
-.stats-section {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.stat-box {
+.thongke-stat-box {
   flex: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-right: 20px;
   text-align: center;
-  background-color: hsl(0, 0%, 89%);
-  padding: 15px;
-  margin: 0 10px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-.transactions-section {
-  margin-top: 20px;
-}
-
-.transactions-section table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.transactions-section th,
-.transactions-section td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.thongke-stat-box-date {
+  flex: 4;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-right: 20px;
   text-align: center;
 }
 
-.transactions-section th {
-  background-color: #f4f4f4;
+.thongke-stat-box h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
-.texth2{
-  margin-top: 10px;
-  font-weight: bold;
+
+.thongke-stat-box p {
+  font-size: 16px;
+  color: #333;
 }
-.modal {
+
+.thongke-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center; /* Canh nội dung bắt đầu ở trên cùng */
-  z-index: 1000;
-}
-.modal-body{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin-top: 5%;
-}
-.transaction-info{
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-.product-info{
-  display: flex;
-  flex-direction: column;
-  text-align: left;
+  align-items: center;
+  z-index: 9999; /* Thêm z-index để modal nằm trên các phần tử khác */
+  
 }
 
-.modal-content {
+.thongke-modal-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
   width: 50%;
   max-height: 100%;
-  overflow-y: auto;
+  overflow-y: auto;/* Cho phép modal cuộn khi nội dung vượt quá chiều cao */
   display: flex;
   flex-direction: column; /* Đảm bảo các phần tử trong modal xếp theo chiều dọc */
 }
 
-.modal-close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.thongke-modal-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 5%;
+  padding: 20px 0;
+}
+.thongke-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}.thongke-transaction-pay{
+  flex: 1;
+  text-align: left;
+}
+.thongke-product-pay{
+  flex: 1;
+  text-align: left;
+}
+.thongke-table th,
+.thongke-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.thongke-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.thongke-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.thongke-table tr:hover {
+  background-color: #e1e1e1;
+}
+
+.thongke-btn-detail {
+  background-color: #4CAF50;
+  color: white;
+  padding: 6px 12px;
   border: none;
-  background: transparent;
-  font-size: 18px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.btn-detail {
-  background-color: #007BFF; 
-  color: white; 
-  border: none; 
-  padding: 10px 20px; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  font-size: 10px; 
-  transition: background-color 0.3s ease; 
+.thongke-btn-detail:hover {
+  background-color: #45a049;
+}
+.thongke-calendar-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.btn-detail:hover {
-  background-color: #0056b3; 
+.thongke-date-picker {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 150px;
 }
 
+.thongke-filter-btn {
+  background-color: #008CBA;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.thongke-filter-btn:hover {
+  background-color: #007B8B;
+}
+.thongke-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.thongke-pagination button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.thongke-pagination button:hover {
+  background-color: #45a049;
+}
+
+.thongke-pagination span {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+.thongke-stats-section{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
 

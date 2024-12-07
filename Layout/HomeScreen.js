@@ -257,12 +257,11 @@ const styles = StyleSheet.create({
   },
   itemDog: {
     backgroundColor: "white",
-    width: "47%",
+    flex: 1,
     borderRadius: 12,
     padding: 12,
-    marginVertical: 5,
-    marginRight: 20,
-    gap: 10,
+    marginHorizontal: 5,
+    marginVertical: 10,
     shadowColor: "black",
     shadowOffset: {
       width: 0,
@@ -270,7 +269,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 2,
+    elevation: 3,
   },
   itemImage: {
     width: "100%",
