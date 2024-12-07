@@ -33,9 +33,6 @@ function Main() {
   const [dailyRevenue, setDailyRevenue] = useState(0);
   const [isFilterByDate, setIsFilterByDate] = useState(false);
 
-
-
-
   const calculateDailyRevenue = (transactions, date) => {
     if (!date) return 0;
 
@@ -43,12 +40,13 @@ function Main() {
       .filter((item) => item.status === "success")
       .filter((item) => {
         const transactionDate = new Date(item.createdAt);
-        return (
-          transactionDate.toDateString() === date.toDateString()
-        );
+        return transactionDate.toDateString() === date.toDateString();
       });
 
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+    return filteredTransactions.reduce(
+      (acc, item) => acc + Number(item.totalPrice),
+      0
+    );
   };
 
   const calculateTotalRevenue = (transactions) => {
@@ -66,10 +64,16 @@ function Main() {
       .filter((item) => item.status === "success")
       .filter((item) => {
         const transactionDate = new Date(item.createdAt);
-        return transactionDate.getMonth() === month && transactionDate.getFullYear() === year;
+        return (
+          transactionDate.getMonth() === month &&
+          transactionDate.getFullYear() === year
+        );
       });
 
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+    return filteredTransactions.reduce(
+      (acc, item) => acc + Number(item.totalPrice),
+      0
+    );
   };
 
   const calculateYearlyRevenue = (transactions, year) => {
@@ -80,7 +84,10 @@ function Main() {
         return transactionDate.getFullYear() === year;
       });
 
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+    return filteredTransactions.reduce(
+      (acc, item) => acc + Number(item.totalPrice),
+      0
+    );
   };
 
   const openModal = (transaction) => {
@@ -108,7 +115,9 @@ function Main() {
 
   const getAllPayment = useCallback(async () => {
     try {
-      const { status, data } = await axios.get(`${json_config[0].url_connect}/pay`);
+      const { status, data } = await axios.get(
+        `${json_config[0].url_connect}/pay`
+      );
       if (status === 200) {
         setData(data);
         const total = calculateTotalRevenue(data);
@@ -148,15 +157,14 @@ function Main() {
 
   const filteredData = isFilterByDate
     ? data.filter((item) => {
-      const transactionDate = new Date(item.createdAt);
-      return transactionDate.toDateString() === selectedDate.toDateString();
-    })
+        const transactionDate = new Date(item.createdAt);
+        return transactionDate.toDateString() === selectedDate.toDateString();
+      })
     : data;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
 
   const nextPage = () => {
     if (currentPage < Math.ceil(data.length / itemsPerPage)) {
@@ -176,26 +184,59 @@ function Main() {
     return (
       <div className="modal">
         <div className="modal-content">
-          <button onClick={onClose} className="modal-close-btn">×</button>
+          <button onClick={onClose} className="modal-close-btn">
+            ×
+          </button>
           <h2>Chi Tiết Giao Dịch</h2>
           <div>
-            <p><strong>ID:</strong> {transaction._id}</p>
-            <p><strong>Fullname:</strong> {transaction.fullname}</p>
-            <p><strong>Email:</strong> {transaction.email}</p>
-            <p><strong>Location:</strong> {transaction.location}</p>
-            <p><strong>Phone:</strong> {transaction.number}</p>
-            <p><strong>Ship:</strong> {transaction.ship}</p>
-            <p><strong>Payment Method:</strong> {transaction.paymentMethod}</p>
-            <p><strong>Total Price:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
-            <p><strong>Status:</strong> {convertStatus(transaction.status)}</p>
+            <p>
+              <strong>ID:</strong> {transaction._id}
+            </p>
+            <p>
+              <strong>Fullname:</strong> {transaction.fullname}
+            </p>
+            <p>
+              <strong>Email:</strong> {transaction.email}
+            </p>
+            <p>
+              <strong>Location:</strong> {transaction.location}
+            </p>
+            <p>
+              <strong>Phone:</strong> {transaction.number}
+            </p>
+            <p>
+              <strong>Ship:</strong> {transaction.ship}
+            </p>
+            <p>
+              <strong>Payment Method:</strong> {transaction.paymentMethod}
+            </p>
+            <p>
+              <strong>Total Price:</strong>{" "}
+              {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ
+            </p>
+            <p>
+              <strong>Status:</strong> {convertStatus(transaction.status)}
+            </p>
             <h3>Products:</h3>
             <ul>
               {transaction.products.map((product, index) => (
                 <li key={index}>
-                  <p><strong>Tên sản phẩm: </strong>{product.name}</p>
-                  <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
-                  <p><strong>Kích thước: </strong>{product.size}</p>
-                  <p><strong>Số lượng: </strong>{product.quantity}</p>
+                  <p>
+                    <strong>Tên sản phẩm: </strong>
+                    {product.name}
+                  </p>
+                  <p>
+                    <strong>Giá: </strong>
+                    {Number(product.price).toLocaleString("vi-VN")} VNĐ
+                  </p>
+                  <p>
+                    <strong>Kích thước: </strong>
+                    {product.size}
+                  </p>
+                  <p>
+                    <strong>Số lượng: </strong>
+                    {product.quantity}
+                  </p>
                   {/* {product.name} - {Number(product.price).toLocaleString("vi-VN")} VNĐ */}
                 </li>
               ))}
@@ -248,7 +289,6 @@ function Main() {
           </div>
           <p>{Number(dailyRevenue).toLocaleString("vi-VN")} VNĐ</p>
         </div>
-
 
         <div className="stat-box">
           <h3>Doanh Thu Tháng</h3>
@@ -316,7 +356,10 @@ function Main() {
                   <td>{convertStatus(item.status)}</td>
                   <td>{Number(item.totalPrice).toLocaleString("vi-VN")} VNĐ</td>
                   <td>
-                    <button onClick={() => openModal(item)} className="btn-detail">
+                    <button
+                      onClick={() => openModal(item)}
+                      className="btn-detail"
+                    >
                       Detail
                     </button>
                   </td>
@@ -324,13 +367,15 @@ function Main() {
               ))
             ) : (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center", padding: "1rem" }}>
+                <td
+                  colSpan="8"
+                  style={{ textAlign: "center", padding: "1rem" }}
+                >
                   Danh sách trống
                 </td>
               </tr>
             )}
           </tbody>
-
         </table>
       </div>
 
@@ -339,7 +384,10 @@ function Main() {
           {"<"}
         </button>
         <span>{currentPage}</span>
-        <button onClick={nextPage} disabled={currentPage === Math.ceil(data.length / itemsPerPage)}>
+        <button
+          onClick={nextPage}
+          disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
+        >
           {">"}
         </button>
       </div>

@@ -5,9 +5,8 @@ var fs = require("fs");
 var multer = require("multer");
 var ip = require("../config/ipconfig.json");
 
-/* GET home page. */
 router.get("/", function (req, res, next) {
-  res.send("<h1>Hello World</h1>");
+  res.send({ status: 200 });
 });
 
 const upload = multer({
