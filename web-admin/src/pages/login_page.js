@@ -17,13 +17,13 @@ export default function LoginPage() {
         username: username.current.value,
         password: password.current.value,
       });
-  
+
       const { status, data: { isAdmin, response: message, type, id } } = response;
-  
+
       if (status === 200) {
         if (message === "Đăng nhập thất bại!") {
           Swal.fire({
-            title: message,  
+            title: message,
             icon: 'error',
             confirmButtonText: 'OK',
             position: 'top',
@@ -38,7 +38,7 @@ export default function LoginPage() {
           });
         } else {
           Swal.fire({
-            title: message,  
+            title: message,
             icon: 'success',
             confirmButtonText: 'OK',
             position: 'top',
@@ -63,25 +63,30 @@ export default function LoginPage() {
       });
     }
   }
-  
+
   return (
     <div className="login-container">
-      <div className="login-box">
-        <h2>Đăng nhập</h2>
-        <input ref={username} className="login-input" placeholder="Tên đăng nhập" />
-        <input
-          ref={password}
-          className="login-input"
-          type="password"
-          placeholder="Mật khẩu"
-        />
-        <button
-          ref={btnLogin}
-          onClick={loginForm}
-          className="login-button"
-        >
-          Đăng nhập
-        </button>
+      <div className="login-content">
+        <div className="login-image">
+          <img src={require('../Image/logo_pet.png')} height={500} width={500} alt="Logo" />
+        </div>
+        <div className="login-box">
+          <h2>Đăng nhập hệ thống</h2>
+          <input ref={username} className="login-input" placeholder="Tên đăng nhập" />
+          <input
+            ref={password}
+            className="login-input"
+            type="password"
+            placeholder="Mật khẩu"
+          />
+          <button
+            ref={btnLogin}
+            onClick={loginForm}
+            className="login-button"
+          >
+            Đăng nhập
+          </button>
+        </div>
       </div>
     </div>
   );
