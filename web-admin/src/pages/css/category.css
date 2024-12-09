@@ -1,0 +1,207 @@
+/* Cấu trúc và màu sắc cơ bản */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+  }
+  
+  header.product-header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  .product-container{
+    margin: 0px 20px;
+    padding: 0px 20px 40px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Modal cho thêm và cập nhật danh mục */
+  .product-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .product-modal-content {
+    text-align: left;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px; /* Điều chỉnh kích thước modal */
+    max-width: 90%; /* Đảm bảo modal không vượt quá kích thước màn hình */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Tránh việc nội dung tràn ra ngoài */
+  }
+  
+  .product-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .product-input-group {
+    margin-bottom: 15px;
+  }
+  
+  .product-input-group-text {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .product-modal-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .product-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .product-btn-primary {
+    background-color: #3498db;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .product-btn-primary:hover {
+    background-color: #2980b9;
+  }
+  
+  .product-btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .product-btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  .product-btn-success {
+    background-color: #E5B447;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .product-btn-success:hover {
+    background-color: #EDCD84;
+  }
+  .product-btn:focus {
+    outline: none;
+  }
+  
+  /* Nút thêm danh mục mới */
+  .fixed-btn {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .fixed-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* Bảng danh mục sản phẩm */
+  .product-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .product-table th,
+  .product-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+  }
+  
+  .product-table th {
+    background-color: #2c3e50;
+    color: white;
+  }
+  
+  .product-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .product-table img {
+    border-radius: 5px;
+  }
+  
+  /* Hover effect cho các nút trong bảng */
+  .product-btn {
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  
+  .product-btn:hover {
+    opacity: 0.8;
+  }
+  
+  .product-btn:active {
+    transform: scale(0.98);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .product-modal-content {
+      width: 90%;
+    }
+  
+    .product-table th,
+    .product-table td {
+      padding: 8px;
+    }
+  
+    .product-btn {
+      font-size: 0.9rem;
+    }
+  
+    .fixed-btn {
+      height: 50px;
+      width: 50px;
+    }
+  }
+  

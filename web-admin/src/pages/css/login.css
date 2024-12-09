@@ -1,59 +1,65 @@
+/* Container chính cho màn hình login */
 .login-container {
     display: flex;
+    justify-content: center; /* Canh giữa toàn bộ nội dung */
+    align-items: center; /* Canh giữa theo chiều dọc */
+    height: 100vh; /* Chiều cao toàn bộ màn hình */
+    background-image: url('../../Image/pet-login-03.jpg'); /* Đường dẫn đến ảnh nền */
+    background-size: cover; /* Đảm bảo ảnh nền phủ toàn bộ màn hình */
+    background-position: center center; /* Canh giữa ảnh nền */
+    background-repeat: no-repeat; /* Không lặp lại ảnh nền */
+  }
+  
+  /* Bố cục con bên trong */
+  .login-content {
+    display: flex;
+    justify-content: space-between; /* Chia đều khoảng cách giữa ảnh và form */
+    width: 60%; /* Đặt độ rộng cho phần chứa ảnh và form */
+    background-color: white; /* Màu nền trắng cho box */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Tạo bóng đổ cho box */
+    padding: 20px; /* Khoảng cách nội dung */
+    border-radius: 8px; /* Bo góc cho box */
+  }
+  
+  /* Style cho hình ảnh */
+  .login-image img {
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá giới hạn của div */
+    height: auto;
+  }
+  
+  /* Phần chứa form đăng nhập */
+  .login-box {
+    display: flex;
+    flex-direction: column; /* Sắp xếp các phần tử theo chiều dọc */
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    /* background: linear-gradient(to right, #ff7e5f, #feb47b); */
-    background-image: linear-gradient(to top, #ff7e5f 0%, #feb47b 100%);
-    /* Màu nền gradient cho container */
-}
-
-.login-box {
-    background-color: #ffffff;
-    /* Màu nền cho box */
-    padding: 50px;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.login-box h2 {
-    color: #333333;
-    /* Màu chữ cho tiêu đề */
-    margin-bottom: 20px;
-}
-
-.login-input {
-    width: 100%;
+    align-items: flex-start; /* Canh form sang bên trái */
+    width: 60%; /* Đặt độ rộng cho form */
+    padding-left: 20px; /* Khoảng cách bên trái */
+  }
+  
+  /* Các input trong form */
+  .login-input {
+    width: 100%; /* Chiều rộng của input chiếm toàn bộ chiều rộng container */
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #cccccc;
+    margin: 10px 0;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f9f9f9;
-    margin-top: 10px;
-    /* Màu nền cho input */
-}
-
-.login-input:focus {
-    border-color: #007bff;
-    /* Màu viền khi focus */
-    outline: none;
-}
-
-.login-button {
+    box-sizing: border-box; /* Đảm bảo padding và border không làm thay đổi kích thước */
+  }
+  
+  /* Style cho nút đăng nhập */
+  .login-button {
     width: 100%;
     padding: 10px;
+    background-color: #4CAF50;
+    color: white;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
-    /* Màu nền cho button */
-    color: #ffffff;
-    /* Màu chữ cho button */
     cursor: pointer;
-    margin-top: 30px;
-}
-
-.login-button:hover {
-    background-color: #0056b3;
-    /* Màu nền khi hover */
-}
+    font-size: 16px;
+  }
+  
+  .login-button:hover {
+    background-color: #45a049; /* Màu sắc khi hover */
+  }
+  

@@ -151,7 +151,7 @@ function Main() {
         {
           id: dataUpdate._id,
           image: _image.current.value,
-          name: _name.current.value,       
+          name: _name.current.value,
           status: _status.current.value,
           type: _type.current.value,
           description: _description.current.value,
@@ -192,14 +192,14 @@ function Main() {
     }
   };
   return (
-    <div>
+    <div className="item-container">
       {/* Dropdown lọc loại sản phẩm */}
-      <div className="filter">
-        <header className="header">
-          <h1>Quản lý sản phẩm</h1>
-        </header>
+      <header className="item-header">
+        <h1>Quản lý sản phẩm</h1>
+      </header>
+      <div className="item-filter">
         <select
-          className="form-select"
+          className="item-form-select"
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
         >
@@ -212,215 +212,232 @@ function Main() {
         </select>
       </div>
       {isUpdate && (
-        <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
-          {/* Form cập nhật sản phẩm */}
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Category
-              </span>
-              <select ref={_type} defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}>
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+        <div className="item-modal-update">
+          <div className="item-modal-content">
+            {/* Form cập nhật sản phẩm */}
+            <div className="item-flex-row">
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Category
+                </span>
+                <select ref={_type} defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Image
+                </span>
+                <input ref={_image} type="text" defaultValue={dataUpdate.img} />
+              </div>
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Image
-              </span>
-              <input ref={_image} type="text" defaultValue={dataUpdate.img} />
-            </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Name
-              </span>
-              <input ref={_name} type="text" defaultValue={dataUpdate.name} />
-            </div>        
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Status
-              </span>
-              <select ref={_status} defaultValue={dataUpdate.status}>
-                <option value="New">New</option>
-                <option value="Old">Old</option>
-              </select>
-            </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Animals
-              </span>
-              <select ref={_animals} defaultValue={dataUpdate.animals}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
+            <div className="item-flex-row">
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Name
+                </span>
+                <input ref={_name} type="text" defaultValue={dataUpdate.name} />
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Status
+                </span>
+                <select ref={_status} defaultValue={dataUpdate.status}>
+                  <option value="New">New</option>
+                  <option value="Old">Old</option>
+                </select>
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Animals
+                </span>
+                <select ref={_animals} defaultValue={dataUpdate.animals}>
+                  <option value="dog">Dog</option>
+                  <option value="cat">Cat</option>
 
-              </select>
+                </select>
+              </div>
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Description
-              </span>
-              <input ref={_description} type="text" defaultValue={dataUpdate.description} />
+            <div className="item-flex-row">
+
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Description
+                </span>
+                <textarea
+                  ref={_description}
+                  rows={4}
+                  defaultValue={dataUpdate.description}
+                  className="item-form-control"
+                  placeholder="Nhập thông tin sản phẩm ở đây..."
+                />
+              </div>
             </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Size
-              </span>
-              <input
-                ref={_size}
-                type="text"
-                placeholder="Ví dụ: M,L,XL"
-                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
-              />
-            </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Price
-              </span>
-              <input
-                ref={_sizePrice}  // Dùng useRef ở đây
-                type="text"
-                placeholder="Ví dụ: 10000,12000,15000"
-                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
-              />
+            <div className="item-flex-row">
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Size
+                </span>
+                <input
+                  ref={_size}
+                  type="text"
+                  placeholder="Ví dụ: M,L,XL"
+                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
+                />
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Price
+                </span>
+                <input
+                  ref={_sizePrice}  // Dùng useRef ở đây
+                  type="text"
+                  placeholder="Ví dụ: 10000,12000,15000"
+                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
+                />
+              </div>
+
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Quantity
+                </span>
+                <input
+                  ref={_sizeQuantity}  // Dùng useRef ở đây
+                  type="text"
+                  placeholder="Ví dụ: 10,12,15"
+                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
+                />
+              </div>
+
             </div>
 
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Quantity
-              </span>
-              <input
-                ref={_sizeQuantity}  // Dùng useRef ở đây
-                type="text"
-                placeholder="Ví dụ: 10,12,15"
-                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
-              />
+            <div className="item-flex-row-btn">
+              <button className="btn btn-primary" onClick={handleUpdateProduct}>
+                Update
+              </button>
+              <div style={{ width: 5 }} />
+              <button className="item-btn-secondary" onClick={() => setIsUdpdate(false)}>
+                Quit
+              </button>
             </div>
-
-          </div>
-
-          <div className="d-flex flex-row mb-2">
-            <button className="btn btn-primary" onClick={handleUpdateProduct}>
-              Update
-            </button>
-            <div style={{ width: 5 }} />
-            <button className="btn btn-secondary" onClick={() => setIsUdpdate(false)}>
-              Quit
-            </button>
           </div>
         </div>
       )}
       {isAdd && (
-        <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
-          {/* Form thêm mới sản phẩm */}
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Category
-              </span>
-              <select ref={_type}>
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Image
-              </span>
-              <input ref={_image} type="text" />
-            </div>
+        <div className="item-modal-add">
+          <div className="item-modal-content">
+            {/* Form thêm mới sản phẩm */}
+            <div className="item-flex-row">
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Category
+                </span>
+                <select ref={_type}>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Image
+                </span>
+                <input ref={_image} type="text" />
+              </div>
 
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Name
-              </span>
-              <input ref={_name} type="text" />
-            </div>        
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Status
-              </span>
-              <select ref={_status}>
-                <option value="New">New</option>
-                <option value="Old">Old</option>
-              </select>
             </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Animals
-              </span>
-              <select ref={_animals} defaultValue={dataUpdate.animals}>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
+            <div className="item-flex-row">
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Name
+                </span>
+                <input ref={_name} type="text" />
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Status
+                </span>
+                <select ref={_status}>
+                  <option value="New">New</option>
+                  <option value="Old">Old</option>
+                </select>
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Animals
+                </span>
+                <select ref={_animals} defaultValue={dataUpdate.animals}>
+                  <option value="dog">Dog</option>
+                  <option value="cat">Cat</option>
 
-              </select>
+                </select>
+              </div>
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Description
-              </span>
-              <input ref={_description} type="text" />
-            </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Size
-              </span>
-              <input
-                ref={_size}
-                type="text"
-                placeholder="Ví dụ: M,L,XL"
-                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
-              />
-            </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Price
-              </span>
-              <input
-                ref={_sizePrice}  // Dùng useRef ở đây
-                type="text"
-                placeholder="Ví dụ: 10000,12000,15000"
-                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
-              />
-            </div>
+            <div className="item-flex-row">
 
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Quantity
-              </span>
-              <input
-                ref={_sizeQuantity}  // Dùng useRef ở đây
-                type="text"
-                placeholder="Ví dụ: 10,12,15"
-                defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
-              />
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Description
+                </span>
+                <textarea
+                  ref={_description}
+                  rows={4}
+                  className="item-form-control"
+                  placeholder="Nhập thông tin sản phẩm ở đây..."
+                />
+              </div>
             </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <button className="btn btn-primary" onClick={handleAddProduct}>
-              Add
-            </button>
-            <div style={{ width: 5 }} />
-            <button className="btn btn-secondary" onClick={() => setIsAdd(false)}>
-              Quit
-            </button>
+            <div className="item-flex-row">
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Size
+                </span>
+                <input
+                  ref={_size}
+                  type="text"
+                  placeholder="Ví dụ: M,L,XL"
+                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
+                />
+              </div>
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Price
+                </span>
+                <input
+                  ref={_sizePrice}  // Dùng useRef ở đây
+                  type="text"
+                  placeholder="Ví dụ: 10000,12000,15000"
+                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
+                />
+              </div>
+
+              <div className="item-input-group">
+                <span className="item-input-group-text" style={{ width: 100 }}>
+                  Quantity
+                </span>
+                <input
+                  ref={_sizeQuantity}  // Dùng useRef ở đây
+                  type="text"
+                  placeholder="Ví dụ: 10,12,15"
+                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
+                />
+              </div>
+            </div>
+            <div className="item-flex-row-btn">
+              <button className="item-btn-primary" onClick={handleAddProduct}>
+                Add
+              </button>
+              <div style={{ width: 5 }} />
+              <button className="item-btn-secondary" onClick={() => setIsAdd(false)}>
+                Quit
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -437,11 +454,11 @@ function Main() {
         </button>
       </div>
       {/* Bảng sản phẩm đã lọc */}
-      <table className="table">
+      <table className="item-table">
         <thead>
           <tr>
             <th scope="col">Image</th>
-            <th scope="col">Name</th>           
+            <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Category</th>
             <th scope="col">Description</th>
@@ -464,7 +481,7 @@ function Main() {
                   alt={item.name || "Hình ảnh sản phẩm"}
                 />
               </td>
-              <td>{item.name}</td>            
+              <td>{item.name}</td>
               <td>{item.status}</td>
               <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
@@ -489,14 +506,14 @@ function Main() {
                       setIsUdpdate(true);
                     }, 500);
                   }}
-                  className="btn btn-primary"
+                  className="item-btn-primary"
                 >
                   Update
                 </button>
               </td>
               <td>
                 <button
-                  className="btn btn-secondary"
+                  className="item-btn-secondary"
                   onClick={() => handleDeleteProduct(item._id)}
                 >
                   Delete

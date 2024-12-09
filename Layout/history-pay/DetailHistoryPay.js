@@ -151,24 +151,26 @@ const DetailHistoryPay = ({ route }) => {
                     ))}
                 </View>
             </ScrollView>
-            <View style={{ width: '90%', marginVertical: 20, marginHorizontal: '5%', gap: 20 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={styles.textPay}>Đã thanh toán</Text>
+            <View style={{ width: '90%', marginVertical: 20, marginHorizontal: '5%', gap: 10, }}>
+                <View style={styles.buttonPayMent}>
+                    <Text style={styles.textPay}>Tổng tiền</Text>
                     <Text style={styles.textPay}>{numberUtils(item.totalPrice)}</Text>
                 </View>
-                {/* Button Hủy đơn hàng */}
-                <TouchableOpacity
-                    onPress={rejectBuyProduct}
-                    style={{
-                        borderRadius: 9,
-                        padding: 12,
-                        alignItems: 'center',
-                        backgroundColor: orderStatus === "reject" ? '#d3d3d3' : '#a97053', // Thay đổi màu nút nếu đơn hàng đã bị hủy
-                    }}>
-                    <Text style={{ fontSize: 16, color: 'white', fontWeight: "bold" }}>
-                        {orderStatus === "reject" ? 'Đơn hàng đã bị hủy' : 'Hủy đơn hàng'}
-                    </Text>
-                </TouchableOpacity>
+                {/* Nút Hủy đơn hàng chỉ xuất hiện khi orderStatus là "pending" */}
+                {orderStatus === "pending" && (
+                    <TouchableOpacity
+                        onPress={rejectBuyProduct}
+                        style={{
+                            borderRadius: 9,
+                            padding: 12,
+                            alignItems: 'center',
+                            backgroundColor: orderStatus === "reject" ? '#d3d3d3' : '#a97053', // Thay đổi màu nút nếu đơn hàng đã bị hủy
+                        }}>
+                        <Text style={{ fontSize: 16, color: 'white', fontWeight: "bold" }}>
+                            {orderStatus === "reject" ? 'Đơn hàng đã bị hủy' : 'Hủy đơn hàng'}
+                        </Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
@@ -179,9 +181,9 @@ export default DetailHistoryPay;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingHorizontal: 20,
         paddingTop: 20,
+        backgroundColor: "#FFFFFF"
     },
     header: {
         flexDirection: "row",
@@ -240,4 +242,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         width: "100%",
     },
+    buttonPayMent: {
+        flexDirection: 'row', justifyContent: 'space-between', borderColor: "#EC6D42",
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 10
+    }
 });

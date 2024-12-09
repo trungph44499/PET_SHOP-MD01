@@ -5,6 +5,8 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { webSocketContext } from "../context/WebSocketContext";
 import NavigationPage from "./navigation_page";
+import { format } from "date-fns"; // Import date-fns để định dạng ngày tháng
+import "./css/chat.css";
 
 export default function ChatItemPage() {
   return (
@@ -13,6 +15,7 @@ export default function ChatItemPage() {
     </div>
   );
 }
+
 function Main() {
   const { email } = useParams();
   const [inputData, setInputData] = useState("");
@@ -83,7 +86,19 @@ function Main() {
 
   return (
     <div className="d-flex flex-column vh-100 container">
-      <header className="bg-primary text-white text-center py-3">Admin</header>
+      <header className="bg-primary text-white text-center py-3 d-flex justify-content-between align-items-center">
+        <button className="btn ms-2" onClick={() => window.history.back()}>
+          <img
+            src="https://static.thenounproject.com/png/65506-200.png"
+            alt="Back"
+            height={30}
+            width={30}
+            style={{ filter: "invert(1)" }}
+          />
+        </button>
+        <span className="mx-auto">{email}</span>
+        <div></div>
+      </header>
 
       <main
         className="flex-grow-1 overflow-auto d-flex flex-column-reverse"
@@ -93,23 +108,29 @@ function Main() {
           {data.map((item) => (
             <div
               key={item._id}
-              className={`${
-                item.user._id === "admin" ? "text-end" : "text-start"
-              }`}
+              className={`${item.user._id === "admin" ? "text-end" : "text-start"
+                }`}
             >
               <div>
                 {item.user._id !== "admin" && (
                   <img
                     src={item.user.avatar}
-                    height={30}
-                    width={30}
+                    height={40}
+                    width={40}
                     className="rounded-circle me-2"
-                    alt="..."
-                  ></img>
+                    alt="User Avatar"
+                    style={{ border: "2px solid #ddd" }}
+                  />
+
                 )}
                 <p className="p-2 bg-primary text-white d-inline-block rounded-3">
                   {item.text}
                 </p>
+                {/* Hiển thị thời gian */}
+                <small className="d-block text-muted mt-1" style={{ fontSize: "0.8rem" }}>
+                  {format(new Date(item.createdAt), "HH:mm dd/MM/yyyy")}
+                </small>
+
               </div>
             </div>
           ))}
@@ -126,6 +147,7 @@ function Main() {
             placeholder="Enter messages..."
             aria-label="Recipient's username"
             aria-describedby="button-addon2"
+            style={{ borderRadius: "20px", padding: "10px" }}
           />
           <button
             onClick={sendMessage}
@@ -133,6 +155,7 @@ function Main() {
             className="btn btn-outline-secondary"
             type="button"
             id="button-addon2"
+            style={{ borderRadius: "20px" }}
           >
             Send
           </button>

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons/faUserTie";
-import { faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { myColor } from "../styles/color";
 import {
   faChevronLeft,
@@ -143,7 +143,7 @@ export default function NavigationPage({ child }) {
               icon={<FontAwesomeIcon icon={faComputer} />}
               onClick={() => navigator("/admin")}
             >
-              Staff management
+              Quản lý nhân viên
             </MenuItem>
           )}
           <MenuItem
@@ -151,42 +151,44 @@ export default function NavigationPage({ child }) {
             icon={<FontAwesomeIcon icon={faUser} />}
             onClick={() => navigator("/user")}
           >
-            User management
+            Quản lý tài khoản người dùng
           </MenuItem>
-          <MenuItem
-            style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faStore} />}
-            onClick={() => navigator("/revenue-tatistics")}
-          >
-            Revenue statistics
-          </MenuItem>
+          {isAdmin === "true" && (
+            <MenuItem
+              style={{ textAlign: "start" }}
+              icon={<FontAwesomeIcon icon={faStore} />}
+              onClick={() => navigator("/revenue-tatistics")}
+            >
+              Thống kê doanh thu
+            </MenuItem>
+          )}
           <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faProjectDiagram} />}
             onClick={() => navigator("/category")}
           >
-            Category management
+            Quản lý loại sản phẩm
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faDog} />}
             onClick={() => navigator("/product")}
           >
-            Product management
+            Quản lý sản phẩm
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faHand} />}
             onClick={() => navigator("/confirm-product")}
           >
-            Pet Care
+            Dịch vụ đã đặt
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faMoneyBill} />}
             onClick={() => navigator("/payment")}
           >
-            Payment
+            Đơn hàng đã đặt
           </MenuItem>
         </Menu>
         <div

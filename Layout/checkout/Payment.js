@@ -23,16 +23,11 @@ const Payment = ({ navigation, route }) => {
   const { total, listItem } = route.params;
   const day = new Date().getDay();
   const month = new Date().getMonth();
-
   const [ship, setShip] = useState("Giao hàng nhanh - 15.000đ");
   const [shippingAddresses, setShippingAddresses] = useState({});
   const [checkboxSeletectPayment, setCheckboxSelectPayment] = useState(-1);
-  const [paymentMethods, setPaymentMethods] = useState({});
   const [appState, setAppState] = useState(AppState.currentState);
-
   const checkShippingAddresses = JSON.stringify(shippingAddresses) === "{}";
-  const checkPaymentMethod = JSON.stringify(paymentMethods) === "{}";
-
   const totalPrice = parseInt(total);
   const totalPay =
     totalPrice + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000);
@@ -57,10 +52,7 @@ const Payment = ({ navigation, route }) => {
       if (status === 200) {
         Toast(response);
         if (type) {
-          const {
-            status: _status,
-            data: { type: _type },
-          } = await axios.post(`${URL}/carts/removeAllFromCart`, {
+          await axios.post(`${URL}/carts/removeAllFromCart`, {
             list: listItem,
             emailUser: email,
           });
@@ -71,6 +63,19 @@ const Payment = ({ navigation, route }) => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    (async function () {
+      const userEmail = await AsyncStorage.getItem("@UserLogin");
+      try {
+        await axios.post(`${URL}/reset`, {
+          email: userEmail,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   async function _payment() {
     try {
@@ -95,21 +100,29 @@ const Payment = ({ navigation, route }) => {
         [
           {
             text: "Hủy",
-            onPress: () => console.log("Thanh toán bị hủy"),
+            onPress: () => {},
             style: "cancel",
           },
           {
             text: "Đồng ý",
             onPress: async () => {
               if (checkboxSeletectPayment == 1) {
-                const _paymentData = {
+                let _paymentObject = {
+                  fullname: shippingAddresses.fullName,
                   email: _userEmail,
+                  location: `${shippingAddresses.address}, ${shippingAddresses.city}`,
+                  number: shippingAddresses.phoneNumber,
+                  ship: ship,
+                  paymentMethod:
+                    checkboxSeletectPayment == 0
+                      ? "Thanh toán khi nhận hàng"
+                      : "ZaloPay",
+                  totalPrice: totalPay,
                   products: listItem,
-                  totalPrice,
                 };
                 const response = await axios.post(
-                  `${URL}/pay/order`,
-                  _paymentData
+                  `${URL}/order`,
+                  _paymentObject
                 );
                 if (response.data.return_code == 1) {
                   await Linking.openURL(response.data.order_url);
@@ -142,7 +155,7 @@ const Payment = ({ navigation, route }) => {
         const userEmail = await AsyncStorage.getItem("@UserLogin");
         try {
           const { status, data } = await axios.post(
-            `${URL}/pay/check-status-order`,
+            `${URL}/check-status-order`,
             { email: userEmail }
           );
           if (status == 200) {
@@ -174,22 +187,6 @@ const Payment = ({ navigation, route }) => {
       try {
         const userEmail = await AsyncStorage.getItem("@UserLogin");
 
-        const storedPaymentMethods = await AsyncStorage.getItem(
-          userEmail + "_paymentMethods"
-        );
-
-        let paymentSavedIndex = await AsyncStorage.getItem(
-          userEmail + "PaymentSaved"
-        );
-
-        if (storedPaymentMethods && paymentSavedIndex) {
-          setPaymentMethods(
-            JSON.parse(storedPaymentMethods)[paymentSavedIndex]
-          );
-        } else {
-          setPaymentMethods({});
-        }
-
         const storedShippingAddresses = await AsyncStorage.getItem(
           userEmail + "_shippingAddresses"
         );
@@ -210,19 +207,6 @@ const Payment = ({ navigation, route }) => {
     });
     return unsubscribe;
   }, [navigation]);
-
-  useEffect(() => {
-    (async function () {
-      const userEmail = await AsyncStorage.getItem("@UserLogin");
-      try {
-        await axios.post(`${URL}/pay/reset`, {
-          email: userEmail,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -476,84 +460,34 @@ const Payment = ({ navigation, route }) => {
                 setCheckboxSelectPayment(1);
               }}
             />
-            {checkPaymentMethod ? (
+            <View
+              style={{
+                flex: 1,
+                height: 60,
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 10,
+                marginHorizontal: 5,
+                borderRadius: 5,
+                backgroundColor: "#fff",
+                elevation: 5,
+              }}
+            >
               <View
                 style={{
-                  flex: 1,
-                  height: 60,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 10,
-                  marginHorizontal: 5,
-                  borderRadius: 5,
-                  backgroundColor: "#fff",
-                  elevation: 5,
+                  flexDirection: "row",
+                  padding: 10,
                 }}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    padding: 10,
-                  }}
-                >
-                  <Text style={{ flex: 1, fontSize: 16 }}>
-                    Thanh toán bằng Zalo Pay
-                  </Text>
-                  <Image
-                    style={styles.leftIcon}
-                    source={require("../../Image/left.png")}
-                  />
-                </View>
+                <Text style={{ flex: 1, fontSize: 16 }}>
+                  Thanh toán bằng Zalo Pay
+                </Text>
+                <Image
+                  style={styles.leftIcon}
+                  source={require("../../Image/left.png")}
+                />
               </View>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("PaymentMethod");
-                }}
-                style={{
-                  flex: 1,
-                  height: 60,
-                  marginBottom: 10,
-                  marginHorizontal: 5,
-                  borderRadius: 5,
-                  backgroundColor: "#fff",
-                  elevation: 5,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      flex: 1,
-                    }}
-                  >
-                    <Image
-                      style={[styles.iconCard]}
-                      source={require("../../Image/card.png")}
-                    />
-                    <Image
-                      style={[styles.iconCard, { tintColor: "blue" }]}
-                      source={require("../../Image/visa.png")}
-                    />
-                    <Text style={styles.textCard}>
-                      **** **** **** {paymentMethods.cardNumber.slice(-4)}
-                    </Text>
-                  </View>
-                  <Image
-                    style={styles.leftIcon}
-                    source={require("../../Image/left.png")}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
+            </View>
           </View>
         </View>
       </ScrollView>

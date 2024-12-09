@@ -111,8 +111,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
         <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
           {upperCaseFirstItem(getCategoryName(type))} {/* Hiển thị tên danh mục */}
         </Text>
-        <TouchableOpacity
-          style={{ width: 50 }}
+        <TouchableOpacity   
           onPress={() => navigation.navigate("CartScreen")}
         >
           <Image
@@ -128,7 +127,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: !showNewOnly ? "#73B5F7" : "transparent",
-            padding: 10,
+            padding: 6,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,
@@ -142,13 +141,13 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: showNewOnly ? "#73B5F7" : "transparent",
-            padding: 10,
+            padding: 6,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,
           }}
         >
-          <Text style={{ fontSize: 15, color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Hàng mới</Text>
+          <Text style={{ fontSize: 15, color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Mới nhất</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -156,7 +155,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: !showPrice ? "#73B5F7" : "transparent",
-            padding: 10,
+            padding: 6,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,
@@ -176,7 +175,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: showPrice ? "#73B5F7" : "transparent",
-            padding: 10,
+            padding: 6,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,

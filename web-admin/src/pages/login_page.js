@@ -13,71 +13,80 @@ export default function LoginPage() {
 
   async function loginForm() {
     try {
-      const {
-        status,
-        data: { isAdmin, response, type },
-      } = await axios.post(url_config[0].url_connect + "/admin/login", {
+      const response = await axios.post(url_config[0].url_connect + "/admin/login", {
         username: username.current.value,
         password: password.current.value,
       });
 
+      const { status, data: { isAdmin, response: message, type, id } } = response;
+
       if (status === 200) {
-        if(response === "Đăng nhập thất bại!"){
-          Swal.fire({       
-            title: response,  // Hiển thị thông báo trả về từ server      
-            icon: 'error',  // Biểu tượng lỗi
-            confirmButtonText: 'OK',  // Nút xác nhận
-            position: 'top',  // Chỉnh vị trí xuất hiện của hộp thoại
+        if (message === "Đăng nhập thất bại!") {
+          Swal.fire({
+            title: message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            position: 'top',
           }).then(() => {
             if (type) {
+              if (id) {
+                window.localStorage.setItem("@adminId", id);
+              }
               window.localStorage.setItem("@isAdmin", isAdmin);
-              navigation("/user", { replace: true }); // Chuyển hướng sau khi đăng nhập
+              navigation("/user", { replace: true });
             }
           });
-        }else{
-          Swal.fire({       
-            title: response,  // Hiển thị thông báo trả về từ server      
-            icon: 'success', // Biểu tượng thành công
-            confirmButtonText: 'OK',  // Nút xác nhận
-            position: 'top',  // Chỉnh vị trí xuất hiện của hộp thoại
+        } else {
+          Swal.fire({
+            title: message,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            position: 'top',
           }).then(() => {
             if (type) {
+              if (id) {
+                window.localStorage.setItem("@adminId", id);
+              }
               window.localStorage.setItem("@isAdmin", isAdmin);
-              navigation("/user", { replace: true }); // Chuyển hướng sau khi đăng nhập
+              navigation("/user", { replace: true });
             }
           });
         }
-        }
+      }
     } catch (error) {
-      // Thông báo lỗi
       Swal.fire({
         title: 'Đăng nhập thất bại!',
         text: 'Vui lòng kiểm tra lại thông tin đăng nhập.',
-        icon: 'error',  // Biểu tượng lỗi
+        icon: 'error',
         confirmButtonText: 'Thử lại',
-        position: 'top',  // Chỉnh vị trí xuất hiện của hộp thoại
+        position: 'top',
       });
     }
   }
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <h2>Đăng nhập</h2>
-        <input ref={username} className="login-input" placeholder="Tên đăng nhập" />
-        <input
-          ref={password}
-          className="login-input"
-          type="password"
-          placeholder="Mật khẩu"
-        />
-        <button
-          ref={btnLogin}
-          onClick={loginForm}
-          className="login-button"
-        >
-          Đăng nhập
-        </button>
+      <div className="login-content">
+        <div className="login-image">
+          <img src={require('../Image/logo_pet.png')} height={500} width={500} alt="Logo" />
+        </div>
+        <div className="login-box">
+          <h2>Đăng nhập hệ thống</h2>
+          <input ref={username} className="login-input" placeholder="Tên đăng nhập" />
+          <input
+            ref={password}
+            className="login-input"
+            type="password"
+            placeholder="Mật khẩu"
+          />
+          <button
+            ref={btnLogin}
+            onClick={loginForm}
+            className="login-button"
+          >
+            Đăng nhập
+          </button>
+        </div>
       </div>
     </div>
   );

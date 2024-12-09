@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Image,
   View,
@@ -19,9 +19,10 @@ import { URL } from "./HomeScreen";
 const Petcare2 = () => {
   const [service, setService] = useState("");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  // const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);  // Thêm trạng thái tải
+  const [user, setUser] = useState({});
   const websocket = useContext(webSocketContext);
   const navigation = useNavigation();
 
@@ -29,6 +30,30 @@ const Petcare2 = () => {
     { key: "1", value: "Dịch vụ 1" },
     { key: "2", value: "Dịch vụ 2" },
   ];
+
+  const userData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem("@UserLogin");
+
+      const {
+        status,
+        data: { response },
+      } = await axios.post(`${URL}/users/getUser`, {
+        email: userData,
+      });
+      if (status == 200) {
+        setUser(...response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    userData();
+  }, []);
+
+  const phone = String(user.sdt);
 
   // Kiểm tra số điện thoại hợp lệ
   const validatePhone = (phone) => {
@@ -78,7 +103,7 @@ const Petcare2 = () => {
 
       // Xóa form sau khi gửi thành công
       setName("");
-      setPhone("");
+      // setPhone("");
       setMessage("");
       setService("");
     } else {
@@ -106,11 +131,12 @@ const Petcare2 = () => {
       />
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: 'black' }]}
         placeholder="Số điện thoại của bạn"
         value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
+        editable={false}
+      // onChangeText={setPhone}
+      // keyboardType="phone-pad"
       />
 
       <TextInput
@@ -121,7 +147,7 @@ const Petcare2 = () => {
         multiline={true}
         numberOfLines={4}
       />
-      
+
       <SelectList
         setSelected={(val) => setService(val)}
         data={services}

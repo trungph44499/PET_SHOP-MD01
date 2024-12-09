@@ -3,7 +3,7 @@ import axios from "axios";
 import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
-import "./css/css.css"; // Đảm bảo có file CSS cho giao diện
+import "./css/category.css"; // Đảm bảo có file CSS cho giao diện
 import NavigationPage from "./navigation_page";
 
 export default function ProductCategoriesManagement() {
@@ -17,9 +17,8 @@ export default function ProductCategoriesManagement() {
 function Main() {
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
-  const [isUpdate, setIsUpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  
+  const [isUpdate, setIsUpdate] = useState(false);
   const _image = useRef();
   const _name = useRef();
 
@@ -39,14 +38,13 @@ function Main() {
     getAllCategories();
   }, []);
 
-  // Thay đổi trạng thái Block
   const toggleStatus = async (item) => {
     const confirm = window.confirm(`Are you sure you want to ${item.status ? "block" : "unblock"} this category?`);
     if (confirm) {
       try {
         const { status, data } = await axios.post(`${json_config[0].url_connect}/product-categories/update-status`, {
           id: item._id,
-          status: !item.status,
+          status: !item.status,  // Thay đổi trạng thái
         });
         if (status === 200) {
           window.alert(data.response);
@@ -57,118 +55,78 @@ function Main() {
       }
     }
   };
+  
+
+  // Cập nhật danh mục sản phẩm
+  const handleSubmit = async () => {
+    if (_image.current.value === "" || _name.current.value === "") {
+      window.alert("Vui lòng nhập đầy đủ dữ liệu");
+      return;
+    }
+
+    const url = isUpdate
+      ? `${json_config[0].url_connect}/product-categories/update`
+      : `${json_config[0].url_connect}/product-categories/add`;
+
+    const payload = {
+      id: isUpdate ? dataUpdate._id : undefined,
+      image: _image.current.value,
+      name: _name.current.value,
+    };
+
+    try {
+      const { status, data: { response } } = await axios.post(url, payload);
+      if (status === 200) {
+        window.alert(response);
+        await getAllCategories();
+        setIsAdd(false);
+        setIsUpdate(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Cập nhật form khi nhấn nút Update
+  const openUpdateModal = (item) => {
+    setDataUpdate(item);
+    setIsUpdate(true);
+    setIsAdd(false);
+  };
+
+  // Thêm mới danh mục
+  const openAddModal = () => {
+    setIsAdd(true);
+    setIsUpdate(false);
+  };
 
   return (
-    <div>
-       <header className="header">
+    <div className="product-container">
+      <header className="product-header">
         <h1>Quản lý loại sản phẩm</h1>
       </header>
-      {isUpdate && (
-        <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
-          {/* Form cập nhật danh mục */}
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Image
-              </span>
-              <input ref={_image} type="text" defaultValue={dataUpdate.img} />
+      {/* Modal Thêm/Cập nhật danh mục */}
+      {(isAdd || isUpdate) && (
+        <div className="product-modal">
+          <div className="product-modal-content">
+            <span className="product-close" onClick={() => { setIsAdd(false); setIsUpdate(false); }}>&times;</span>
+            <h2>{isUpdate ? "Cập nhật" : "Thêm mới"} danh mục</h2>
+            <div className="product-input-group">
+              <span className="product-input-group-text" style={{ width: 100 }}>Image</span>
+              <input ref={_image} type="text" defaultValue={isUpdate ? dataUpdate.img : ""} />
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Name
-              </span>
-              <input ref={_name} type="text" defaultValue={dataUpdate.name} />
+            <div className="product-input-group">
+              <span className="product-input-group-text" style={{ width: 100 }}>Name</span>
+              <input ref={_name} type="text" defaultValue={isUpdate ? dataUpdate.name : ""} />
             </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                try {
-                  const { status, data: { response } } = await axios.post(
-                    `${json_config[0].url_connect}/product-categories/update`,
-                    {
-                      id: dataUpdate._id,
-                      image: _image.current.value,
-                      name: _name.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    await getAllCategories();
-                    setIsUpdate(false);
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Update
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsUpdate(false)}
-            >
-              Quit
-            </button>
-          </div>
-        </div>
-      )}
-
-      {isAdd && (
-        <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
-          {/* Form thêm mới danh mục */}
-          <div className="d-flex flex-row mb-2">
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Image
-              </span>
-              <input ref={_image} type="text" />
+            <div className="product-modal-footer">
+              <button className="product-btn-primary" onClick={handleSubmit}>
+                {isUpdate ? "Cập nhật" : "Thêm mới"}
+              </button>
+              <button className="product-btn-secondary" onClick={() => { setIsAdd(false); setIsUpdate(false); }}>
+                Hủy 
+              </button>
             </div>
-            <div className="input-group">
-              <span className="input-group-text" style={{ width: 100 }}>
-                Name
-              </span>
-              <input ref={_name} type="text" />
-            </div>
-          </div>
-          <div className="d-flex flex-row mb-2">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                if (
-                  _image.current.value === "" ||
-                  _name.current.value === ""
-                ) {
-                  window.alert("Input is empty");
-                  return;
-                }
-                try {
-                  const { status, data: { response } } = await axios.post(
-                    `${json_config[0].url_connect}/product-categories/add`,
-                    {
-                      image: _image.current.value,
-                      name: _name.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    await getAllCategories();
-                    setIsAdd(false);
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Add
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsAdd(false)}
-            >
-              Quit
-            </button>
           </div>
         </div>
       )}
@@ -177,17 +135,14 @@ function Main() {
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
           style={{ borderRadius: 30, height: 50, width: 50 }}
-          onClick={() => {
-            setIsUpdate(false);
-            setIsAdd(true);
-          }}
+          onClick={openAddModal}
         >
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
 
       {/* Bảng danh mục sản phẩm */}
-      <table className="table">
+      <table className="product-table">
         <thead>
           <tr>
             <th scope="col">Image</th>
@@ -206,21 +161,15 @@ function Main() {
               <td>{item.name}</td>
               <td>
                 <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setIsAdd(false);
-                    setTimeout(() => {
-                      setDataUpdate(item);
-                      setIsUpdate(true);
-                    }, 500);
-                  }}
+                  className="product-btn-primary"
+                  onClick={() => openUpdateModal(item)}
                 >
                   Update
                 </button>
               </td>
               <td>
                 <button
-                  className="btn btn-secondary"
+                  className="product-btn-secondary"
                   onClick={async () => {
                     const result = window.confirm(`Bạn có chắc chắn muốn xóa danh mục ${item.name}?`);
                     if (result) {
@@ -244,7 +193,7 @@ function Main() {
               </td>
               <td>
                 <button
-                  className="btn btn-success"
+                  className="product-btn-success"
                   onClick={() => toggleStatus(item)}
                 >
                   {item.status ? "Block" : "Unblock"}

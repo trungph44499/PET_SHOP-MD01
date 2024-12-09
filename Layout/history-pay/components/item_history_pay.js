@@ -36,11 +36,11 @@ export default function ({ item, getAllHistoryPay }) {
         break;
       case "shipping":
         result = "Đang giao";
-        statusColor = "yellow";
+        statusColor = "green";
         break;
       case "shipped":
         result = "Đã giao";
-        statusColor = "violet";
+        statusColor = "green";
         break;
 
       default:
@@ -49,48 +49,45 @@ export default function ({ item, getAllHistoryPay }) {
     return { result, statusColor };
   }
 
-  // Xác nhận hủy đơn hàng
-  function rejectBuyProduct() {
+  // Xác nhận đơn hàng
+  function confirmProduct() {
     Alert.alert(
-      "Xác nhận hủy đơn hàng",
-      "Bạn có chắc chắn muốn hủy đơn hàng không?",
-      [
-        {
-          text: "Hủy",
-          style: "cancel",
-        },
-        {
-          text: "Xác nhận",
-          onPress: async () => {
-            try {
-              const {
-                status,
-                data: { response, type },
-              } = await axios.post(`${URL}/pay/update`, {
-                id: item._id,
-                email: item.email,
-                products: item.products,
-                status: "reject",
-              });
+        "Xác nhận đã nhận đơn hàng",
+        "Bạn có chắc chắn là đã nhận đơn hàng không?",
+        [
+            {
+                text: "Hủy",
+                style: "cancel",
+            },
+            {
+                text: "Xác nhận",
+                onPress: async () => {
+                    try {
+                        const {
+                            status,
+                            data: { response, type },
+                        } = await axios.post(`${URL}/pay/update`, {
+                            id: item._id,
+                            email: item.email,
+                            products: item.products,
+                            status: "shipped",
+                        });
 
-              if (status === 200) {
-                ToastAndroid.show(response, ToastAndroid.SHORT);
-                if (type) getAllHistoryPay();
-              }
-            } catch (error) {
-              console.error(error);
-              ToastAndroid.show(
-                "Đã xảy ra lỗi khi hủy đơn hàng",
-                ToastAndroid.SHORT
-              );
-            }
-          },
-          style: "destructive",
-        },
-      ],
-      { cancelable: false }
+                        if (status === 200) {
+                      
+                            if (type) await getAllHistoryPay();
+                            Alert.alert("Nhận hàng thành công!");
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                },
+                style: "destructive",
+            },
+        ],
+        { cancelable: false }
     );
-  }
+}
 
   return (
     <View style={styles.container}>
@@ -150,23 +147,25 @@ export default function ({ item, getAllHistoryPay }) {
         </View>
 
         {/* Button Hủy đơn hàng */}
-        {/* <TouchableOpacity
-          disabled={item.status !== "pending"}
-          onPress={rejectBuyProduct}
-          style={[
-            styles.rejectButton,
-            item.status !== "pending" && styles.disabledButton,
-          ]}
-        >
-          <Text
-            style={[
-              styles.rejectButtonText,
-              item.status !== "pending" && styles.disabledButtonText,
-            ]}
-          >
-            Hủy đơn hàng
-          </Text>
-        </TouchableOpacity> */}
+        {item.status === "shipping" && (
+                  <TouchableOpacity
+                  // disabled={item.status !== "shipping"}
+                  onPress={confirmProduct}
+                  style={[
+                    styles.rejectButton,
+                    // item.status !== "shipping" && styles.disabledButton,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.rejectButtonText,
+                      // item.status !== "shipping" && styles.disabledButtonText,
+                    ]}
+                  >
+                    Đã nhận hàng
+                  </Text>
+                </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -193,7 +192,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
     padding: 8,
-    margin: 15,
+    marginHorizontal: 15,
+    marginVertical: 5,
     gap: 10,
     shadowColor: "black",
     shadowOffset: {
@@ -202,10 +202,10 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.35,
-    elevation: 10,
+    elevation: 5,
   },
   rejectButton: {
-    backgroundColor: "red",
+    backgroundColor: "#a97053",
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,

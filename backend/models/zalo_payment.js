@@ -8,7 +8,7 @@ const zaloPaySchema = new mongoose.Schema({
   discountamount: String,
   status: String,
   checksum: String,
-  email: String,
+  email: String, 
 });
 
 const zaloPayModel = mongoose.model("zalo_payments", zaloPaySchema);
