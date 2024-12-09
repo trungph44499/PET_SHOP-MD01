@@ -22,6 +22,10 @@ const productSchema = new mongoose.Schema({
     enum: ["dog", "cat"], // Chỉ có thể là "dog" hoặc "cat"
     required: true,
   }, // Phân loại sản phẩm cho chó hoặc mèo
+  sold: {
+    type: Number,
+    default: 0,
+  }
 });
 
 const productModel = mongoose.model("products", productSchema);

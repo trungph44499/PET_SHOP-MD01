@@ -36,11 +36,11 @@ function Main() {
       case "reject":
         return "Đơn hàng bị hủy";
       case "success":
-        return "Đang chuẩn bị hàng";
+        return "Đang chờ lấy hàng";
       case "pending":
         return "Đang chờ xác nhận";
       case "shipping":
-        return "Đang giao hàng";
+        return "Đang chờ giao hàng";
       case "shipped":
         return "Giao hàng thành công";
       default:

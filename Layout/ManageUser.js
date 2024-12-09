@@ -127,7 +127,9 @@ const ManageUser = ({ navigation }) => {
             );
             if (data.type) {
               Toast("Cập nhật thông tin thành công");
+              navigation.goBack();
               return;
+              
             }
             Toast("Không thể cập nhật thông tin người dùng.");
           } catch (error) {

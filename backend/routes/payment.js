@@ -17,25 +17,32 @@ router.post("/update", async (req, res) => {
   const { status, id, email, products, idStaff, nameStaff } = req.body;
 
   try {
-    for (let index = 0; index < products.length; index++) {
-      const product = products[index];
-      const queryProduct = await productModel.findById(product.id);
-      const sizeToUpdate = queryProduct.size.find(
-        (item) => item.sizeName === product.size
-      );
-      if (sizeToUpdate) {
-        sizeToUpdate.quantity -= product.quantity;
-      }
-      const updateProduct = await productModel.updateMany(
-        { _id: product.id },
-        {
-          size: queryProduct.size,
+    // Kiểm tra nếu status là success
+    if (status === "success") {
+      for (let index = 0; index < products.length; index++) {
+        const product = products[index];
+        const queryProduct = await productModel.findById(product.id);
+        const sizeToUpdate = queryProduct.size.find(
+          (item) => item.sizeName === product.size
+        );
+
+        if (sizeToUpdate) {
+          sizeToUpdate.quantity -= product.quantity;
+          //số lượng đã bán
+          queryProduct.sold += product.quantity;
         }
-      );
-      if (updateProduct.matchedCount <= 0) {
-        res
-          .status(400)
-          .json({ response: "Cập nhật thông tin thất bại!", type: true });
+
+        const updateProduct = await productModel.updateMany(
+          { _id: product.id },
+          {
+            size: queryProduct.size,
+            sold: queryProduct.sold,
+          }
+        );
+
+        if (updateProduct.matchedCount <= 0) {
+          return res.status(400).json({ response: "Cập nhật thông tin thất bại!", type: true });
+        }
       }
     }
 

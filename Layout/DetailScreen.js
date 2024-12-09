@@ -145,13 +145,15 @@ const DetailProduct = ({ navigation, route }) => {
 
         <View style={styles.detailsContainer}>
           <Text style={styles.title}>{item.name}</Text>
-
-          <View style={styles.itemPrice}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={styles.buttonPrice}>
               <Text style={styles.priceText}>{numberUtils(selectedPrice)}</Text>
             </View>
-            <Text style={styles.title}> </Text>
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
+            </View>
           </View>
+
 
           <View style={styles.itemPrice}>
             <View style={{ flexDirection: "row", flex: 1 }}>
@@ -222,7 +224,7 @@ const DetailProduct = ({ navigation, route }) => {
               </View>
             </View>
           </View>
-          <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 5 }}>
+          <Text style={{ fontSize: 16, fontWeight: "600", marginTop: 5 }}>
             Kích thước
           </Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
@@ -324,13 +326,13 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     marginTop: 5,
   },
   productImage: {
     width: "100%",
-    height: 330,
+    height: 300,
     resizeMode: "contain",
   },
   detailsContainer: {
@@ -350,13 +352,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   priceText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     color: "black",
     letterSpacing: 1,
   },
+  daBan: {
+    fontSize: 14,
+    padding: 10,
+  },
   textDescription: {
-    fontSize: 18,
+    fontSize: 16,
     color: "black",
     fontWeight: "600",
   },
@@ -416,12 +422,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   textItem: {
-    fontSize: 14,
+    fontSize: 13,
     color: "gray",
     fontWeight: "600",
   },
   textItemItem: {
-    fontSize: 14,
+    fontSize: 13,
     color: "black",
     fontWeight: "bold",
   },

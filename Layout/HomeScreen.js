@@ -145,7 +145,10 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.itemStyle}>
           Mã SP: {upperCaseItem(item._id.slice(-5))}
         </Text>
-        <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: "center"}}>
+          <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+          <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -208,7 +211,7 @@ const HomeScreen = ({ navigation }) => {
             onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id, "cat")}
             style={styles.textXemthem}
           >
-            <Text style={styles.textXemthemContent}>Xem thêm</Text> 
+            <Text style={styles.textXemthemContent}>Xem thêm</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -289,20 +292,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   itemName: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 5,
-    // Thêm các thuộc tính để kiểm soát việc cắt chữ
     overflow: 'hidden',
     width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStyle: {
-    fontSize: 14,
+    fontSize: 10,
     color: "#777",
+    marginBottom: 5,
+  },
+  daBan: {
+    fontSize: 10,
   },
   price: {
-    fontSize: 18,
+    flex: 1,  
+    fontSize: 14,
     color: "#FF6347",
     fontWeight: "bold",
   },

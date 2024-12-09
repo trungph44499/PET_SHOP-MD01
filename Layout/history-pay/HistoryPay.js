@@ -68,7 +68,7 @@ export default function HistoryScreen() {
               style={[styles.iconButton, selectedButton === "success" ? { tintColor: '#EC6D42' } : {}]}
             />
             <Text style={[styles.textButton, selectedButton === "success" ? { color: '#EC6D42' } : {}]}>
-              Chờ giao hàng
+              Chờ Lấy Hàng
             </Text>
           </TouchableOpacity>
 
@@ -85,7 +85,7 @@ export default function HistoryScreen() {
               style={[styles.iconButton, selectedButton === "shipping" ? { tintColor: '#EC6D42' } : {}]}
             />
             <Text style={[styles.textButton, selectedButton === "shipping" ? { color: '#EC6D42' } : {}]}>
-              Đang giao
+              Chờ giao hàng
             </Text>
           </TouchableOpacity>
 

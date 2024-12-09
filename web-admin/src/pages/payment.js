@@ -29,11 +29,11 @@ function Main() {
       case "reject":
         return "Đơn hàng bị hủy";
       case "success":
-        return "Đang chuẩn bị hàng";
+        return "Đang chờ lấy hàng";
       case "pending":
         return "Đang chờ xác nhận";
       case "shipping":
-        return "Đang giao hàng";
+        return "Đang chờ giao hàng";
       case "shipped":
         return "Giao hàng thành công";
       default:
@@ -155,9 +155,9 @@ function Main() {
             <table className="confirm-table">
               <thead>
                 <tr>
-                  <th scope="col">Xác nhận đơn hàng</th>
-                  <th scope="col">Đang giao</th>
-                  <th scope="col">Đã giao</th>
+                  <th scope="col">Chờ xác nhận</th>
+                  <th scope="col">Chờ lấy hàng</th>
+                  <th scope="col">Chờ giao hàng</th>
                   <th scope="col">Hủy đơn hàng</th>
                 </tr>
               </thead>
@@ -271,7 +271,7 @@ function Main() {
                       }}
                       className="confirm-btn btn-primary"
                     >
-                      Đã giao
+                      Giao thành công
                     </button>
                   </td>
                   <td>
@@ -279,7 +279,8 @@ function Main() {
                       disabled={
                         transaction.status === "reject" ||
                         transaction.status === "shipped" ||
-                        transaction.status === "shipping"
+                        transaction.status === "shipping" || 
+                        transaction.status === "success"
                       }
                       onClick={async () => {
                         const resultCheck = window.confirm("Reject payment?");
