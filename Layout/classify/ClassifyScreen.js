@@ -112,7 +112,6 @@ export default ClassifyScreen = ({ navigation, route }) => {
           {upperCaseFirstItem(getCategoryName(type))} {/* Hiển thị tên danh mục */}
         </Text>
         <TouchableOpacity
-          style={{ width: 50 }}
           onPress={() => navigation.navigate("CartScreen")}
         >
           <Image
@@ -148,7 +147,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
             margin: 2,
           }}
         >
-          <Text style={{ fontSize: 15, color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Hàng mới</Text>
+          <Text style={{ fontSize: 15, color: showNewOnly ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Mới nhất</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -162,7 +161,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
             margin: 2,
           }}
         >
-          <View style={{flexDirection: "row", alignItems: "center"}}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ fontSize: 15, color: !showPrice ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Giá </Text>
             <Image
               style={{ width: 13, height: 13, tintColor: !showPrice ? "#FFFFFF" : "#7D7B7B", }}
@@ -182,7 +181,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
             margin: 2,
           }}
         >
-          <View style={{flexDirection: "row", alignItems: "center"}}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ fontSize: 15, color: showPrice ? "#FFFFFF" : "#7D7B7B", fontWeight: "bold" }}>Giá </Text>
             <Image
               style={{ width: 13, height: 13, tintColor: showPrice ? "#FFFFFF" : "#7D7B7B", }}
@@ -208,12 +207,15 @@ export default ClassifyScreen = ({ navigation, route }) => {
               </Text>
             )}
             <View style={styles.itemRow}>
-              <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">
+              <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">
                 {item.name}
               </Text>
             </View>
             <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
-            <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }}>
+              <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+              <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -237,11 +239,10 @@ const styles = StyleSheet.create({
   },
   itemDog: {
     backgroundColor: "white",
-    width: "45%",
-    borderRadius: 12,
-    padding: 12,
-    margin: 10,
-    gap: 10,
+    flex: 1,
+    borderRadius: 10,
+    padding: 10,
+    margin: 6,
     shadowColor: "black",
     shadowOffset: {
       width: 0,
@@ -258,18 +259,18 @@ const styles = StyleSheet.create({
     resizeMode: "contain"
   },
   itemName: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: "bold",
     color: "#000",
-    marginBottom: 5,
+    marginBottom: 10,
     overflow: 'hidden',
     width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStatus: {
     position: "absolute",
-    top: '48%',
+    top: '58%',
     right: '8%',
-    fontSize: 18,
+    fontSize: 14,
     fontStyle: "italic",
     color: "#FFFFFF",
     fontWeight: "bold", // Làm cho chữ đậm hơn
@@ -283,16 +284,21 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   itemType: {
-    fontSize: 15,
+    fontSize: 10,
     fontWeight: "300",
+    marginBottom: 5,
   },
   price: {
-    fontSize: 16,
+    flex: 1,
+    fontSize: 13,
     fontWeight: "600",
     color: "red",
   },
+  daBan: {
+    fontSize: 10,
+  },
   buttonRow: {
-    flexDirection: "row", 
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   }

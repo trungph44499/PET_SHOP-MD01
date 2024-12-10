@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const paymentModel = require("../models/paymentModel");
 const notificationModel = require("../models/notification");
+const productModel = require("../models/productModel");
 
 router.get("/", async (req, res) => {
   try {
@@ -13,13 +14,44 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-  const { status, id, email, products } = req.body;
+  const { status, id, email, products, idStaff, nameStaff } = req.body;
 
   try {
+    // Kiểm tra nếu status là success
+    if (status === "success") {
+      for (let index = 0; index < products.length; index++) {
+        const product = products[index];
+        const queryProduct = await productModel.findById(product.id);
+        const sizeToUpdate = queryProduct.size.find(
+          (item) => item.sizeName === product.size
+        );
+
+        if (sizeToUpdate) {
+          sizeToUpdate.quantity -= product.quantity;
+          //số lượng đã bán
+          queryProduct.sold += product.quantity;
+        }
+
+        const updateProduct = await productModel.updateMany(
+          { _id: product.id },
+          {
+            size: queryProduct.size,
+            sold: queryProduct.sold,
+          }
+        );
+
+        if (updateProduct.matchedCount <= 0) {
+          return res.status(400).json({ response: "Cập nhật thông tin thất bại!", type: true });
+        }
+      }
+    }
+
     const result = await paymentModel.updateMany(
       { _id: id },
       {
         status: status,
+        idStaff: idStaff,
+        nameStaff: nameStaff,
       }
     );
     if (result.matchedCount > 0) {

@@ -1,183 +1,195 @@
-.stats-section {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fc;
+  max-height: 99vh;  /* Đặt chiều cao tối đa để tránh cuộn toàn màn hình */
+  overflow-y: auto; 
+}
+.thongke-container {
+  margin: 0px 20px;
+  padding: 0px 20px 40px 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.stat-box {
-  background: linear-gradient(135deg, blue, blue);
-  color: #fff;
+.thongke-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+ 
+}
+
+.thongke-header h1 {
+  font-size: 28px;
+  color: white;
+}
+
+.thongke-stat-box {
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
   border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  flex: 1 1 calc(33.33% - 1rem);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-right: 20px;
+  text-align: center;
+}
+.thongke-stat-box-date {
+  flex: 4;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-right: 20px;
   text-align: center;
 }
 
-.stat-box h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
+.thongke-stat-box h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
-.stat-box p {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-.calendar-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.date-picker {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
-.transactions-section h2 {
-  margin-bottom: 1rem;
+.thongke-stat-box p {
+  font-size: 16px;
   color: #333;
-  font-size: 1.5rem;
-  font-weight: bold;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1.5rem;
-}
-
-.table th,
-.table td {
-  text-align: left;
-  padding: 0.75rem 1rem;
-}
-
-.table thead th {
-  background-color: blue;
-  color: #fff;
-  font-size: 1rem;
-  text-transform: uppercase;
-}
-
-.table tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
-}
-
-.table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-.table td {
-  border-bottom: 1px solid #ddd;
-}
-
-.btn-detail {
-  background-color: blue;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-}
-
-.btn-detail:hover {
-  background-color: darkblue;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-.pagination button {
-  background-color: blue;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.pagination button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.pagination button:hover:not(:disabled) {
-  background-color: blue;
-}
-
-.pagination span {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.modal {
+.thongke-modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Thêm z-index để modal nằm trên các phần tử khác */
+  
 }
 
-.modal-content {
-  background: #fff;
+.thongke-modal-content {
+  background: white;
+  padding: 20px;
   border-radius: 8px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  position: relative;
+  width: 50%;
+  max-height: 100%;
+  overflow-y: auto;/* Cho phép modal cuộn khi nội dung vượt quá chiều cao */
+  display: flex;
+  flex-direction: column; /* Đảm bảo các phần tử trong modal xếp theo chiều dọc */
 }
 
-.modal-close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
+.thongke-modal-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 5%;
+  padding: 20px 0;
+}
+.thongke-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}.thongke-transaction-pay{
+  flex: 1;
+  text-align: left;
+}
+.thongke-product-pay{
+  flex: 1;
+  text-align: left;
+}
+.thongke-table th,
+.thongke-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.thongke-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.thongke-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.thongke-table tr:hover {
+  background-color: #e1e1e1;
+}
+
+.thongke-btn-detail {
+  background-color: #4CAF50;
+  color: white;
+  padding: 6px 12px;
   border: none;
-  font-size: 1.5rem;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.modal h2 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
+.thongke-btn-detail:hover {
+  background-color: #45a049;
+}
+.thongke-calendar-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.thongke-date-picker {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 150px;
+}
+
+.thongke-filter-btn {
+  background-color: #008CBA;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.thongke-filter-btn:hover {
+  background-color: #007B8B;
+}
+.thongke-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.thongke-pagination button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.thongke-pagination button:hover {
+  background-color: #45a049;
+}
+
+.thongke-pagination span {
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
   color: #333;
 }
-
-.modal p {
-  margin: 0.5rem 0;
-  color: #555;
+.thongke-stats-section{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
 }
 
-.modal ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.modal ul li {
-  background: #f9f9f9;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 4px;
-}

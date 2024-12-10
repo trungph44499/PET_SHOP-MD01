@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import NavigationPage from "./navigation_page";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
 import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
-import "./css/css.css";
-import { useNavigate } from "react-router-dom";
 import { webSocketContext } from "../context/WebSocketContext";
+import NavigationPage from "./navigation_page";
+import { useNavigate } from "react-router-dom";
+import "./css/user.css";
 
 export default function UserManagement() {
   return (
@@ -18,28 +18,29 @@ export default function UserManagement() {
 
 function Main() {
   const [data, setData] = useState([]);
-  const [dataUpdate, setDataUpdate] = useState({});
-  const navigator = useNavigate();
-  const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
-  const websocket = useContext(webSocketContext);
-
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const avatar = useRef();
   const fullname = useRef();
   const email = useRef();
   const password = useRef();
+  const navigator = useNavigate();
+  const websocket = useContext(webSocketContext);
 
+  // WebSocket for updating user list
   useEffect(() => {
-    websocket.onmessage = async function (messages) {
+    websocket.onmessage = async (messages) => {
       const { data } = messages;
       const json = JSON.parse(data);
-      if (json.type == "take care") {
+      if (json.type === "take care") {
         await getAllUser();
       }
     };
-  }, []);
+  }, [websocket]);
 
-  async function getAllUser() {
+  const getAllUser = async () => {
     try {
       const { status, data } = await axios.post(
         `${json_config[0].url_connect}/users/getAllUser`
@@ -48,252 +49,165 @@ function Main() {
         setData(data);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     getAllUser();
   }, []);
 
+  const handleSubmit = async () => {
+    const userData = {
+      avatar: avatar.current.value,
+      fullname: fullname.current.value,
+      email: email.current.value,
+      password: password.current.value,
+    };
+
+    try {
+      const url = isUpdate
+        ? `${json_config[0].url_connect}/users/update`
+        : `${json_config[0].url_connect}/users/register`;
+
+      const { status, data } = await axios.post(url, userData);
+
+      if (status === 200) {
+        window.alert(data.response);
+        if (data.type) {
+          await getAllUser();
+        }
+        closeModal();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const closeModal = () => {
+    setIsAdd(false);
+    setIsUpdate(false);
+  };
+
+  const openUpdateModal = (user) => {
+    setDataUpdate(user);
+    setIsUpdate(true);
+    setIsAdd(false);
+  };
+
+  const openAddModal = () => {
+    setIsAdd(true);
+    setIsUpdate(false);
+  };
+
   return (
-    <div>
-      <header className="header">
+    <div className="user-container">
+      <header className="user-header">
         <h1>Quản lý tài khoản người dùng</h1>
       </header>
-      {isUpdate && (
-        <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Avatar
-            </span>
-            <input ref={avatar} type="text" defaultValue={dataUpdate.avatar} />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
-            </span>
-            <input
-              ref={fullname}
-              type="text"
-              defaultValue={dataUpdate.fullname}
-            />
-          </div>
-          <div className="input-group">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Email
-            </span>
-            <input
-              ref={email}
-              disabled
-              type="text"
-              defaultValue={dataUpdate.email}
-            />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Password
-            </span>
-            <input ref={password} type="text" defaultValue={dataUpdate.pass} />
-          </div>
-          <div className="d-flex flex-row">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/users/update`,
-                    {
-                      avatar: avatar.current.value,
-                      fullname: fullname.current.value,
-                      email: email.current.value,
-                      password: password.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllUser();
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Update
-            </button>
-            <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsUdpdate(false)}
-            >
-              Quit
-            </button>
+      {/* Modal for Add or Update */}
+      {(isAdd || isUpdate) && (
+        <div className="user-modal">
+          <div className="user-modal-content">
+            {/* <span className="user-modal-close" onClick={closeModal}>&times;</span> */}
+            <h2>{isUpdate ? "Cập nhật" : "Thêm mới"} người dùng</h2>
+            <div className="user-input-group">
+              <span className="user-input-group-text">Ảnh đại diện</span>
+              <input
+                ref={avatar}
+                type="text"
+                defaultValue={isUpdate ? dataUpdate.avatar : ""}
+              />
+            </div>
+            <div className="user-input-group">
+              <span className="user-input-group-text">Họ tên</span>
+              <input
+                ref={fullname}
+                type="text"
+                defaultValue={isUpdate ? dataUpdate.fullname : ""}
+              />
+            </div>
+            <div className="user-input-group">
+              <span className="user-input-group-text">Email</span>
+              <input
+                ref={email}
+                type="text"
+                defaultValue={isUpdate ? dataUpdate.email : ""}
+                disabled={isUpdate}
+              />
+            </div>
+            <div className="user-input-group">
+              <span className="user-input-group-text">Password</span>
+              <input
+                ref={password}
+                type={showPassword ? "text" : "password"}
+                defaultValue={isUpdate ? dataUpdate.pass : ""}
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <div className="user-modal-footer">
+              <button className="user-btn-primary" onClick={handleSubmit}>
+                {isUpdate ? "Cập nhật" : "Thêm mới"}
+              </button>
+              <button className="user-btn-secondary" onClick={closeModal}>
+                Hủy
+              </button>
+            </div>
           </div>
         </div>
       )}
-      {isAdd && (
-        <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Avatar
-            </span>
-            <input ref={avatar} type="text" />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
-            </span>
-            <input ref={fullname} type="text" />
-          </div>
-          <div className="input-group">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Email
-            </span>
-            <input ref={email} type="text" />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Password
-            </span>
-            <input ref={password} type="text" />
-          </div>
-          <div className="d-flex flex-row">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/users/register`,
-                    {
-                      name: fullname.current.value,
-                      email: email.current.value,
-                      pass: password.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      setIsAdd(false);
-                      await getAllUser();
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Add
-            </button>
-            <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsAdd(false)}
-            >
-              Quit
-            </button>
-          </div>
-        </div>
-      )}
+
+      {/* Floating Add Button */}
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
           style={{ borderRadius: 30, height: 50, width: 50 }}
-          onClick={() => {
-            setIsUdpdate(false);
-            setIsAdd(true);
-          }}
-        >
+          onClick={openAddModal}>
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
-      <table className="table">
+
+      {/* User List Table */}
+      <table className="user-table">
         <thead>
           <tr>
-            <th scope="col">Avatar</th>
-            <th scope="col">Fullname</th>
-            <th scope="col">Email</th>
-            <th scope="col">Password</th>
-            <th scope="col">Update</th>
-            {/* <th scope="col">Delete</th> */}
-            <th scope="col">Message</th>
+            <th>Ảnh đại diện</th>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>Cập nhật</th>
+            <th>Tin nhắn</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <tr key={item._id}>
-              <th>
+          {data.map((user) => (
+            <tr key={user._id}>
+              <td>
                 <img
-                  src={item.avatar}
+                  src={user.avatar}
                   height={50}
                   width={50}
-                  alt={item.fullname || "Hình ảnh user"}
+                  alt={user.fullname || "Hình ảnh user"}
                 />
-              </th>
-              <td>{item.fullname}</td>
-              <td>{item.email}</td>
-              <td>{item.pass}</td>
+              </td>
+              <td>{user.fullname}</td>
+              <td>{user.email}</td>
               <td>
-                <button
-                  onClick={() => {
-                    setIsUdpdate(false);
-                    setTimeout(() => {
-                      setDataUpdate(item);
-                      setIsAdd(false);
-                      setIsUdpdate(true);
-                    }, 500);
-                  }}
-                  className="btn btn-primary"
-                >
-                  Update
+                <button className="user-btn-primary" onClick={() => openUpdateModal(user)}>
+                  Cập nhật
                 </button>
               </td>
-              {/* <td>
-                <button
-                  className="btn btn-secondary"
-                  onClick={async () => {
-                    const result = window.confirm(
-                      "Sure delete " + item.fullname
-                    );
-                    if (result) {
-                      const {
-                        status,
-                        data: { response, type },
-                      } = await axios.post(
-                        `${json_config[0].url_connect}/users/delete`,
-                        {
-                          email: item.email,
-                        }
-                      );
-                      if (status === 200) {
-                        window.alert(response);
-                        if (type) {
-                          await getAllUser();
-                        }
-                      }
-                    }
-                  }}
-                >
-                  Delete
-                </button>
-              </td> */}
               <td>
                 <button
-                  className="btn btn-secondary position-relative"
+                  className="user-btn-message"
                   onClick={async () => {
                     try {
                       const { status, data } = await axios.post(
                         json_config[0].url_connect +
-                          "/chat/updateNumberMessage",
-                        { email: item.email }
+                        "/chat/updateNumberMessage",
+                        { email: user.email }
                       );
-                      if (status == 200) {
+                      if (status === 200) {
                         if (data > 0) {
                           await getAllUser();
                         }
@@ -301,13 +215,13 @@ function Main() {
                     } catch (error) {
                       console.log();
                     }
-                    navigator("/chat-item/" + item.email);
+                    navigator("/chat-item/" + user.email);
                   }}
                 >
                   Message
-                  <span className="position-absolute top-0 mt-1 start-100 translate-middle badge rounded-pill bg-danger">
-                    {item.numberMessage}
-                    <span className="visually-hidden">unread messages</span>
+                  <span className="user-numberMessage">
+                    {user.numberMessage}
+                    <span className="user-visually-hidden">unread messages</span>
                   </span>
                 </button>
               </td>

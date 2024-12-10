@@ -49,7 +49,8 @@ const WelcomeScreen = () => {
       <Animated.View style={{ opacity: fadeAnim }}>
         <Image style={styles.img} source={require('../Image/logo.png')} />
       </Animated.View>
-      <Text style={styles.welcomeText}>Chào mừng đến với Pet Shop Accessories!</Text>
+      <Text style={styles.welcomeText}>Chào mừng đến với</Text>
+      <Text style={styles.welcomeTextPet}>Pets Shop!</Text>
       <ActivityIndicator color={'#A05E56'} size="large" />
     </View>
   );
@@ -71,15 +72,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeText: {
-    fontSize: 22,            
+    fontSize: 22,
     color: '#A05E56',
-    fontWeight: 'bold',      
+    fontWeight: 'bold',
+    textAlign: 'center',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    paddingHorizontal: 20,
+    lineHeight: 30,
+  },
+  welcomeTextPet: {
+    fontSize: 22,
+    color: '#A05E56',
+    fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 30,
-    letterSpacing: 1.2,      
-    textTransform: 'uppercase', 
-    paddingHorizontal: 20,   
-    lineHeight: 30,         
-},
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    paddingHorizontal: 20,
+    lineHeight: 30,
+  },
 
 });

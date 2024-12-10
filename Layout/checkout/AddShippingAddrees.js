@@ -16,7 +16,7 @@ import { URL } from '../HomeScreen';
 const AddShippingAddress = ({ route, navigation }) => {
   const { emailUser, address, index } = route.params || {};
   const [fullName, setFullName] = useState(address?.fullName || "");
-  const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || "");
+  // const [phoneNumber, setPhoneNumber] = useState(address?.phoneNumber || "");
   const [addressText, setAddressText] = useState(address?.address || "");
   const [city, setCity] = useState(address?.city || "");
   const [cities, setCities] = useState([]);
@@ -70,27 +70,29 @@ const AddShippingAddress = ({ route, navigation }) => {
     userData();
   },[]);
 
+  const phoneNumber = String(user.sdt);
+
   const validateForm = () => {
-    if (!fullName || !phoneNumber || !addressText || !city) {
+    if (!fullName || !addressText || !city) {
       Alert.alert("Lỗi", "Vui lòng nhập đầy đủ thông tin!");
       return false;
     }
 
-    const phoneRegex = /^[0-9]{10,11}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      Alert.alert("Lỗi", "Số điện thoại không hợp lệ!");
-      return false;
-    }
+    // const phoneRegex = /^[0-9]{10,11}$/;
+    // if (!phoneRegex.test(phoneNumber)) {
+    //   Alert.alert("Lỗi", "Số điện thoại không hợp lệ!");
+    //   return false;
+    // }
 
     if (addressText.length < 3) {
       Alert.alert("Lỗi", "Địa chỉ phải có ít nhất 3 ký tự.");
       return false;
     }
 
-    if (city.length < 3) {
-      Alert.alert("Lỗi", "Tên thành phố phải có ít nhất 3 ký tự.");
-      return false;
-    }
+    // if (city.length < 3) {
+    //   Alert.alert("Lỗi", "Tên thành phố phải có ít nhất 3 ký tự.");
+    //   return false;
+    // }
 
     return true;
   };
@@ -99,7 +101,7 @@ const AddShippingAddress = ({ route, navigation }) => {
     if (!validateForm()) return;
 
     const newAddress = { fullName, phoneNumber, address: addressText, city };
-
+ 
     try {
       let storedAddresses = await AsyncStorage.getItem(
         emailUser + "_shippingAddresses"
@@ -145,20 +147,21 @@ const AddShippingAddress = ({ route, navigation }) => {
       </View>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { fontSize: 15 }]}
         placeholder="Họ và tên"
         value={fullName}
         onChangeText={setFullName}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: 'black', fontSize: 15 }]}
         placeholder="Số điện thoại"
-        value={address? phoneNumber : user.sdt}
-        onChangeText={setPhoneNumber}
-        keyboardType="phone-pad"
+        value={phoneNumber}
+        editable={false}
+        // onChangeText={setPhoneNumber}
+        // keyboardType="phone-pad"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { fontSize: 15 }]}
         placeholder="Địa chỉ"
         value={addressText}
         onChangeText={setAddressText}
@@ -220,7 +223,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     marginBottom: 20,
   },
   inputCity: {

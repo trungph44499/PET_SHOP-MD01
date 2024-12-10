@@ -37,46 +37,64 @@ const PassReset = ({ navigation }) => {
   };
 
   const handleSave = async () => {
-    const { email, oldPass, newPass, confirmNewPass } = userInfo;
+    
+    Alert.alert(
+      "Xác nhận thay đổi mật khẩu",
+      "Bạn có chắc chắn muốn đổi mật khẩu không?",
+      [
+        {
+          text: "Hủy",
+          onPress: () => console.log("Hủy đổi mật khẩu"),
+          style: "cancel",
+        },
+        {
+          text: "Đồng ý",
+          onPress: async () => {
+            const { email, oldPass, newPass, confirmNewPass } = userInfo;
 
-    if (!oldPass || !newPass || !confirmNewPass) {
-      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
-      return;
-    }
+            if (!oldPass || !newPass || !confirmNewPass) {
+              Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
+              return;
+            }
 
-    if (newPass !== confirmNewPass) {
-      Alert.alert('Lỗi', 'Mật khẩu mới không khớp');
-      return;
-    }
+            if (newPass !== confirmNewPass) {
+              Alert.alert('Lỗi', 'Mật khẩu mới không khớp');
+              return;
+            }
 
-    try {
-      // Kiểm tra mật khẩu cũ
-      const checkOldPassResponse = await axios.post(`${URL}/users/login`, {
-        email,
-        pass: oldPass,
-      });
+            try {
+              // Kiểm tra mật khẩu cũ
+              const checkOldPassResponse = await axios.post(`${URL}/users/login`, {
+                email,
+                pass: oldPass,
+              });
 
-      if (checkOldPassResponse.status !== 200 || !checkOldPassResponse.data.type) {
-        Alert.alert('Lỗi', 'Mật khẩu cũ không đúng');
-        return;
-      }
+              if (checkOldPassResponse.status !== 200 || !checkOldPassResponse.data.type) {
+                Alert.alert('Lỗi', 'Mật khẩu cũ không đúng');
+                return;
+              }
 
-      // Đổi mật khẩu mới
-      const response = await axios.post(`${URL}/users/update`, {
-        email,
-        password: newPass,
-      });
+              // Đổi mật khẩu mới
+              const response = await axios.post(`${URL}/users/update`, {
+                email,
+                password: newPass,
+              });
 
-      if (response.status === 200 && response.data.type) {
-        Alert.alert('Thành công', 'Đổi mật khẩu thành công');
-        navigation.goBack();
-      } else {
-        Alert.alert('Lỗi', 'Đổi mật khẩu thất bại');
-      }
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Lỗi', 'Đã xảy ra lỗi');
-    }
+              if (response.status === 200 && response.data.type) {
+                Alert.alert('Thành công', 'Đổi mật khẩu thành công');
+                navigation.goBack();
+              } else {
+                Alert.alert('Lỗi', 'Đổi mật khẩu thất bại');
+              }
+            } catch (error) {
+              console.log(error);
+              Alert.alert('Lỗi', 'Đã xảy ra lỗi');
+            }
+          },
+        },
+      ],
+      { cancelable: false }  // Makes the alert non-dismissible by tapping outside
+    );
   };
 
 

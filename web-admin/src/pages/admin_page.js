@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import NavigationPage from "./navigation_page";
 import axios from "axios";
 import json_config from "../config.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
-import "./css/css.css";
+import "./css/category.css";  
+import NavigationPage from "./navigation_page";
+
 export default function AdminManagement() {
   return (
     <div>
@@ -12,17 +13,21 @@ export default function AdminManagement() {
     </div>
   );
 }
+
 function Main() {
   const [data, setData] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
-  const [isUpdate, setIsUdpdate] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const fullname = useRef();
   const username = useRef();
   const password = useRef();
-  const status = useRef();
-  async function getAllAdmin() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Lấy danh sách tất cả nhân viên
+  async function getAllAdmins() {
     try {
+      // const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/admin`);
       const { status, data } = await axios.post(
         `${json_config[0].url_connect}/admin`
       );
@@ -33,195 +38,113 @@ function Main() {
       console.log(error);
     }
   }
+
   useEffect(() => {
-    getAllAdmin();
+    getAllAdmins();
   }, []);
+
+  // Cập nhật hoặc thêm nhân viên
+  const handleSubmit = async () => {
+    if (fullname.current.value === "" || username.current.value === "" || password.current.value === "") {
+      window.alert("Vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+
+    const url = isUpdate
+      ? `${json_config[0].url_connect}/admin/update`
+      : `${json_config[0].url_connect}/admin/add`;
+
+    const payload = {
+      id: isUpdate ? dataUpdate._id : undefined,
+      fullname: fullname.current.value,
+      username: username.current.value,
+      password: password.current.value,
+    };
+
+    try {
+      const { status, data: { response } } = await axios.post(url, payload);
+      if (status === 200) {
+        window.alert(response);
+        await getAllAdmins();
+        setIsAdd(false);
+        setIsUpdate(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Mở modal để sửa nhân viên
+  const openUpdateModal = (item) => {
+    setDataUpdate(item);
+    setIsUpdate(true);
+    setIsAdd(false);
+  };
+
+  // Mở modal để thêm nhân viên mới
+  const openAddModal = () => {
+    setIsAdd(true);
+    setIsUpdate(false);
+  };
+
   return (
-    <div>
-       <header className="header">
+    <div className="product-container">
+      <header className="product-header">
         <h1>Quản lý nhân viên</h1>
       </header>
-      {isUpdate && (
-        <div className={`m-2 ${isUpdate ? "slide-in" : "slide-out"}`}>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
-            </span>
-            <input
-              ref={fullname}
-              type="text"
-              defaultValue={dataUpdate.fullname}
-            />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Username
-            </span>
-            <input
-              ref={username}
-              disabled
-              type="text"
-              defaultValue={dataUpdate.username}
-            />
-          </div>
-          <div className="input-group">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Password
-            </span>
-            <input
-              ref={password}
-              type="text"
-              defaultValue={dataUpdate.password}
-            />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Status
-            </span>
-            <input
-              ref={status}
-              disabled
-              type="text"
-              defaultValue={dataUpdate.status}
-            />
-          </div>
-          <div className="d-flex flex-row">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                if (
-                  fullname.current.value === "" ||
-                  username.current.value === "" ||
-                  password === ""
-                ) {
-                  window.alert("Inpur empty!");
-                  return;
-                }
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/admin/update`,
-                    {
-                      fullname: fullname.current.value,
-                      username: username.current.value,
-                      password: password.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      await getAllAdmin();
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Update
-            </button>
-            <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsUdpdate(false)}
-            >
-              Quit
-            </button>
+      {/* Modal Thêm hoặc Cập nhật nhân viên */}
+      {(isAdd || isUpdate) && (
+        <div className="product-modal">
+          <div className="product-modal-content">
+            <span className="product-close" onClick={() => { setIsAdd(false); setIsUpdate(false); }}>&times;</span>
+            <h2>{isUpdate ? "Cập nhật" : "Thêm mới"} nhân viên</h2>
+            <div className="product-input-group">
+              <span className="product-input-group-text" style={{ width: 100 }}>Họ tên</span>
+              <input ref={fullname} type="text" defaultValue={isUpdate ? dataUpdate.fullname : ""} />
+            </div>
+            <div className="product-input-group">
+              <span className="product-input-group-text" style={{ width: 100 }}>Username</span>
+              <input ref={username} type="text" defaultValue={isUpdate ? dataUpdate.username : ""} disabled={isUpdate} />
+            </div>
+            <div className="product-input-group">
+              <span className="product-input-group-text" style={{ width: 100 }}>Password</span>
+              <input ref={password} type={showPassword ? "text" : "password"} defaultValue={isUpdate ? dataUpdate.password : ""} />
+              <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <div className="product-modal-footer">
+              <button className="product-btn-primary" onClick={handleSubmit}>
+                {isUpdate ? "Cập nhật" : "Thêm mới"}
+              </button>
+              <button className="product-btn btn-secondary" onClick={() => { setIsAdd(false); setIsUpdate(false); }}>
+                Hủy
+              </button>
+            </div>
           </div>
         </div>
       )}
-      {isAdd && (
-        <div className={`m-2 ${isAdd ? "slide-in" : "slide-out"}`}>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Fullname
-            </span>
-            <input ref={fullname} type="text" />
-          </div>
-          <div className="input-group mb-2 mt-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Username
-            </span>
-            <input ref={username} type="text" />
-          </div>
-          <div className="input-group mb-2">
-            <span className="input-group-text" style={{ width: 100 }}>
-              Password
-            </span>
-            <input ref={password} type="text" />
-          </div>
-          <div className="d-flex flex-row">
-            <button
-              className="btn btn-primary"
-              onClick={async () => {
-                if (
-                  fullname.current.value === "" ||
-                  username.current.value === "" ||
-                  password === ""
-                ) {
-                  window.alert("Inpur empty!");
-                  return;
-                }
-                try {
-                  const {
-                    status,
-                    data: { response, type },
-                  } = await axios.post(
-                    `${json_config[0].url_connect}/admin/add`,
-                    {
-                      fullname: fullname.current.value,
-                      username: username.current.value,
-                      password: password.current.value,
-                    }
-                  );
-                  if (status === 200) {
-                    window.alert(response);
-                    if (type) {
-                      setIsAdd(false);
-                      await getAllAdmin();
-                    }
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
-            >
-              Add
-            </button>
-            <div style={{ width: 5 }} />
-            <button
-              className="btn btn-secondary"
-              onClick={() => setIsAdd(false)}
-            >
-              Quit
-            </button>
-          </div>
-        </div>
-      )}
+
+      {/* Nút thêm nhân viên mới */}
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
           style={{ borderRadius: 30, height: 50, width: 50 }}
-          onClick={() => {
-            setIsUdpdate(false);
-            setIsAdd(true);
-          }}
+          onClick={openAddModal}
         >
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
-      <table className="table">
+
+      {/* Bảng danh sách nhân viên */}
+      <table className="product-table">
         <thead>
           <tr>
-            <th scope="col">Fullname</th>
+            <th scope="col">Họ tên</th>
             <th scope="col">Username</th>
-            <th scope="col">Password</th>
-            <th scope="col">Type</th>
-            <th scope="col">Status</th>
-            <th scope="col">Update</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Block</th>
+            <th scope="col">Chức vụ</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Cập nhật</th>
+            <th scope="col">Chặn</th>
           </tr>
         </thead>
         <tbody>
@@ -229,56 +152,19 @@ function Main() {
             <tr key={item._id}>
               <td>{item.fullname}</td>
               <td>{item.username}</td>
-              <td>{item.password}</td>
               <td>{item.type === "admin" ? "Admin" : "Staff"}</td>
               <td>{item.status ? "Active" : "Blocked"}</td>
               <td>
                 <button
-                  onClick={() => {
-                    setIsUdpdate(false);
-                    setTimeout(() => {
-                      setDataUpdate(item);
-                      setIsAdd(false);
-                      setIsUdpdate(true);
-                    }, 500);
-                  }}
-                  className="btn btn-primary"
+                  className="product-btn-primary"
+                  onClick={() => openUpdateModal(item)}
                 >
                   Update
                 </button>
               </td>
               <td>
                 <button
-                  className="btn btn-secondary"
-                  onClick={async () => {
-                    const result = window.confirm(
-                      "Sure delete " + item.fullname
-                    );
-                    if (result) {
-                      const {
-                        status,
-                        data: { response, type },
-                      } = await axios.post(
-                        `${json_config[0].url_connect}/admin/delete`,
-                        {
-                          username: item.username,
-                        }
-                      );
-                      if (status === 200) {
-                        window.alert(response);
-                        if (type) {
-                          await getAllAdmin();
-                        }
-                      }
-                    }
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-              <td>
-                <button
-                  className="btn btn-success"
+                  className="product-btn-success"
                   onClick={async () => {
                     const confirm = window.confirm(
                       `Sure ${item.status ? "lock" : "open"} ${item.fullname}`
@@ -298,7 +184,7 @@ function Main() {
                         if (status === 200) {
                           window.alert(response);
                           if (type) {
-                            await getAllAdmin();
+                            await getAllAdmins();
                           }
                         }
                       } catch (error) {
