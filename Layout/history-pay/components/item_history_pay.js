@@ -27,19 +27,19 @@ export default function ({ item, getAllHistoryPay }) {
         statusColor = "gray";
         break;
       case "success":
-        result = "Chờ giao hàng";
+        result = "Chờ lấy hàng";
         statusColor = "green";
         break;
       case "reject":
-        result = "Đã hủy";
+        result = "Đơn hàng đã bị hủy";
         statusColor = "red";
         break;
       case "shipping":
-        result = "Đang giao";
+        result = "Đơn hàng được giao";
         statusColor = "green";
         break;
       case "shipped":
-        result = "Đã giao";
+        result = "Giao hàng thành công";
         statusColor = "green";
         break;
 

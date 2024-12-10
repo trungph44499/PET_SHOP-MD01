@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    padding: 6,
+    padding: 10,
     borderRadius: 5,
     alignItems: "center",
     margin: 5
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   itemType: {
-    fontSize: 9,
+    fontSize: 10,
     fontWeight: '300',
     marginBottom: 5
   },
@@ -228,6 +228,6 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   daBan: {
-    fontSize: 9,
+    fontSize: 10,
   },
 });

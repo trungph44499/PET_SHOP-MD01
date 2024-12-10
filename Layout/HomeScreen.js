@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     padding: 12,
-    marginHorizontal: 5,
-    marginVertical: 10,
+    marginHorizontal: 8,
+    marginVertical: 8,
     shadowColor: "black",
     shadowOffset: {
       width: 0,
@@ -300,12 +300,12 @@ const styles = StyleSheet.create({
     width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStyle: {
-    fontSize: 10,
+    fontSize: 11,
     color: "#777",
     marginBottom: 5,
   },
   daBan: {
-    fontSize: 10,
+    fontSize: 11,
   },
   price: {
     flex: 1,  

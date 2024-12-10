@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { URL } from "./HomeScreen";
+import { Alert } from "react-native"; 
 
 const Petcare2 = () => {
   const [service, setService] = useState("");
@@ -62,54 +63,73 @@ const Petcare2 = () => {
   };
 
   const handleSubmit = async () => {
-    const email = await AsyncStorage.getItem("@UserLogin");
-    if (
-      service !== "" &&
-      name !== "" &&
-      email !== null &&
-      phone !== "" &&
-      message !== "" &&
-      validatePhone(phone)  // Kiểm tra số điện thoại
-    ) {
-      setIsLoading(true);  // Hiển thị biểu tượng tải
-      try {
-        const { status, data: { response, type } } = await axios.post(URL + "/pet-care/add", {
-          service,
-          name,
-          email,
-          phone,
-          message,
-        });
-
-        setIsLoading(false);  // Ẩn biểu tượng tải
-
-        if (status === 200) {
-          ToastAndroid.show(response, ToastAndroid.SHORT);
-          if (type) {
-            websocket.send(
-              JSON.stringify({
-                email,
-                type: "pet-care",
-              })
-            );
-          }
-          navigation.goBack();
-        }
-      } catch (error) {
-        setIsLoading(false);  // Ẩn biểu tượng tải
-        console.error(error);
-        ToastAndroid.show("Đã có lỗi xảy ra, vui lòng thử lại!", ToastAndroid.SHORT);  // Thông báo lỗi
-      }
-
-      // Xóa form sau khi gửi thành công
-      setName("");
-      // setPhone("");
-      setMessage("");
-      setService("");
-    } else {
-      ToastAndroid.show("Vui lòng điền đủ thông tin và kiểm tra lại số điện thoại!", ToastAndroid.SHORT);
-    }
+    // Show confirmation alert before proceeding
+    Alert.alert(
+      "Xác nhận đăng ký",
+      "Bạn có chắc chắn muốn đăng ký dịch vụ này không?",
+      [
+        {
+          text: "Hủy",
+          onPress: () => console.log("Hủy đăng ký"),
+          style: "cancel",
+        },
+        {
+          text: "Đồng ý",
+          onPress: async () => {
+            const email = await AsyncStorage.getItem("@UserLogin");
+  
+            if (
+              service !== "" &&
+              name !== "" &&
+              email !== null &&
+              phone !== "" &&
+              message !== "" &&
+              validatePhone(phone) // Kiểm tra số điện thoại
+            ) {
+              setIsLoading(true);  // Hiển thị biểu tượng tải
+              try {
+                const { status, data: { response, type } } = await axios.post(URL + "/pet-care/add", {
+                  service,
+                  name,
+                  email,
+                  phone,
+                  message,
+                });
+  
+                setIsLoading(false);  // Ẩn biểu tượng tải
+  
+                if (status === 200) {
+                  ToastAndroid.show(response, ToastAndroid.SHORT);
+                  if (type) {
+                    websocket.send(
+                      JSON.stringify({
+                        email,
+                        type: "pet-care",
+                      })
+                    );
+                  }
+                  navigation.goBack();
+                }
+              } catch (error) {
+                setIsLoading(false);  // Ẩn biểu tượng tải
+                console.error(error);
+                ToastAndroid.show("Đã có lỗi xảy ra, vui lòng thử lại!", ToastAndroid.SHORT);  // Thông báo lỗi
+              }
+  
+              // Xóa form sau khi gửi thành công
+              setName("");
+              setMessage("");
+              setService("");
+            } else {
+              ToastAndroid.show("Vui lòng điền đủ thông tin!", ToastAndroid.SHORT);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
+  
 
   return (
     <View style={styles.container}>
@@ -154,6 +174,7 @@ const Petcare2 = () => {
         save="value"
         search={false}
         placeholder="Chọn dịch vụ"
+        style={{ height: 50 }} // Đặt chiều cao cố định cho SelectList
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -206,9 +227,12 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   button: {
-    marginTop: 20,
+    position: "absolute",
+    bottom: 5,
+    width: "100%",
     backgroundColor: "#0066cc",
-    paddingVertical: 15,
+    margin: 20,
+    padding: 15,
     borderRadius: 8,
     alignItems: "center",
     shadowColor: "#000",

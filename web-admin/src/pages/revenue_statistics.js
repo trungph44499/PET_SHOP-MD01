@@ -40,7 +40,7 @@ function Main() {
       case "pending":
         return "Đang chờ xác nhận";
       case "shipping":
-        return "Đang chờ giao hàng";
+        return "Đang giao hàng";
       case "shipped":
         return "Giao hàng thành công";
       default:

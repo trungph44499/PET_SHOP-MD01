@@ -33,7 +33,7 @@ function Main() {
       case "pending":
         return "Đang chờ xác nhận";
       case "shipping":
-        return "Đang chờ giao hàng";
+        return "Đang giao hàng";
       case "shipped":
         return "Giao hàng thành công";
       default:
@@ -157,7 +157,7 @@ function Main() {
                 <tr>
                   <th scope="col">Chờ xác nhận</th>
                   <th scope="col">Chờ lấy hàng</th>
-                  <th scope="col">Chờ giao hàng</th>
+                  <th scope="col">Đang giao hàng</th>
                   <th scope="col">Hủy đơn hàng</th>
                 </tr>
               </thead>

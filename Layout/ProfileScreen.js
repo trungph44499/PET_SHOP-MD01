@@ -51,14 +51,14 @@ const ProfileScreen = ({ navigation, route }) => {
           >
             <Image style={styles.icon} source={require("../Image/left-back.png")} />
           </TouchableOpacity>
-          <Text style={styles.headerText}>PROFILE</Text>
-          <TouchableOpacity style={styles.chat} 
+          <Text style={styles.headerText}>HỒ SƠ CÁ NHÂN</Text>
+          <TouchableOpacity style={styles.chat}   
           onPress={() =>
             navigation.navigate("ChatScreen")
           }
           >
             <Image source={require("../Image/messenger.png")}
-              style={{ width: 25, height: 25 }}
+              style={styles.icon}
             />
           </TouchableOpacity>
           

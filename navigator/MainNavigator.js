@@ -31,13 +31,19 @@ function Home() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: "#D17842",
+        tabBarActiveTintColor: "#e56537",
+        tabBarInactiveTintColor: "black", // Màu khi tab không được chọn
         tabBarInactiveBackgroundColor: "white",
         tabBarActiveBackgroundColor: "white",
+        tabBarLabelStyle: {
+          // fontSize: 12, // Chỉnh kích thước của label (tiêu đề tab)
+          // fontWeight: "bold", // Chỉnh độ đậm của label
+          marginBottom: 5
+        },
       }}
     >
       <Tab.Screen
-        name=" "
+        name="Home"
         component={HomeScreen}
         options={{
           headerShown: false,
@@ -52,7 +58,7 @@ function Home() {
       />
 
       <Tab.Screen
-        name="  "
+        name="Tìm kiếm"
         component={SearchScreen}
         options={{
           headerShown: false,
@@ -67,7 +73,7 @@ function Home() {
       />
 
       <Tab.Screen
-        name="   "
+        name="Thông báo"
         component={NoticeScreen}
         options={{
           headerShown: false,
@@ -82,7 +88,7 @@ function Home() {
       />
 
       <Tab.Screen
-        name="    "
+        name="Tôi"
         component={ProfileScreen}
         options={{
           headerShown: false,
@@ -106,7 +112,8 @@ function PetCareWebSocket() {
 const MainNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="HomeStack" component={Home} />
+
       <Stack.Screen name="DetailScreen" component={DetailScreen} />
       <Stack.Screen name="ClassifyScreen" component={ClassifyScreen} />
       <Stack.Screen name="CartScreen" component={CartScreen} />

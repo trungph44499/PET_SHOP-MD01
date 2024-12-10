@@ -145,6 +145,7 @@ function Main() {
                             if (status === 200) {
                               window.alert(response);
                               if (type) getAllPetCare();
+                              closeModal();
                             }
                           }
                         }}
@@ -177,6 +178,7 @@ function Main() {
                             if (status === 200) {
                               window.alert(response);
                               if (type) getAllPetCare();
+                              closeModal();
                             }
                           }
                         }}

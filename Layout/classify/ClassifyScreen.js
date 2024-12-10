@@ -127,7 +127,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: !showNewOnly ? "#73B5F7" : "transparent",
-            padding: 6,
+            padding: 10,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,
@@ -141,7 +141,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: showNewOnly ? "#73B5F7" : "transparent",
-            padding: 6,
+            padding: 10,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,
@@ -155,7 +155,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: !showPrice ? "#73B5F7" : "transparent",
-            padding: 6,
+            padding: 10,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,
@@ -175,7 +175,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
           style={{
             flex: 1,
             backgroundColor: showPrice ? "#73B5F7" : "transparent",
-            padding: 6,
+            padding: 10,
             borderRadius: 5,
             alignItems: "center",
             margin: 2,
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   itemType: {
-    fontSize: 9,
+    fontSize: 10,
     fontWeight: "300",
     marginBottom: 5,
   },
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     color: "red",
   },
   daBan: {
-    fontSize: 9,
+    fontSize: 10,
   },
   buttonRow: {
     flexDirection: "row",

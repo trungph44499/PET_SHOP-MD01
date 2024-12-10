@@ -96,10 +96,10 @@ const Register = (props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       <ScrollView contentContainerStyle={styles.container}>
         <Image
-          style={{ width: 210, height: 100, marginBottom: 10, marginTop: 20 }}
+          style={{ width: 300, height: 150, marginBottom: 10, marginTop: 20 }}
           source={require("../Image/logo.png")}
         />
         <View style={styles.formContainer}>
