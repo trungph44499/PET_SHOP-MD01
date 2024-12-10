@@ -192,4 +192,8 @@ body {
   display: flex;
   flex-direction: row;
 }
+.thongke-h2 {
+  text-align: start;
+  margin-top: 10px;
+}
 

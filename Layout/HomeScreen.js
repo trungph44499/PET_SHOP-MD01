@@ -96,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate("DetailScreen", { item: item });
   }, [navigation]);
 
-  const ItemCategory = ({ category }) => {
+  const ItemCategory = React.memo(({ category }) => {
     const isSelected = selectedCategory && selectedCategory._id === category._id;
 
     return (
@@ -127,9 +127,9 @@ const HomeScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     );
-  };
+  });
 
-  const ItemList = ({ item }) => {
+  const ItemList = React.memo(({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => goToDetailScreen(item)}
@@ -151,7 +151,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </TouchableOpacity>
     );
-  };
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -260,11 +260,11 @@ const styles = StyleSheet.create({
   },
   itemDog: {
     backgroundColor: "white",
-    flex: 1,
+    width: '47%',
     borderRadius: 12,
     padding: 12,
-    marginHorizontal: 8,
-    marginVertical: 8,
+    marginHorizontal: 6,
+    marginVertical: 6,
     shadowColor: "black",
     shadowOffset: {
       width: 0,

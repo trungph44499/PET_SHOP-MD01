@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View, Image, Dimensions } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 
-
 const { width } = Dimensions.get("window");
+
 const listBanner = [
   require("../../Image/banner_pet01.png"),
   require("../../Image/banner_pet02.png"),
@@ -11,7 +11,17 @@ const listBanner = [
   require("../../Image/banner_pet03.png"),
 ];
 
-export default function () {
+export default function BannerCarousel() {
+  // Hàm renderItem với useCallback để tối ưu hóa việc render lại
+  const renderItem = useCallback(
+    ({ item }) => (
+      <View style={styles.slide}>
+        <Image style={styles.img} source={item} />
+      </View>
+    ),
+    []
+  );
+
   return (
     <Carousel
       height={180}
@@ -21,20 +31,21 @@ export default function () {
       autoPlay={true}
       data={listBanner}
       scrollAnimationDuration={1000}
-      renderItem={({ _, item }) => (
-        <View>
-          <Image style={styles.img} source={item} />
-        </View>
-      )}
+      renderItem={renderItem}
     />
   );
 }
+
 const styles = StyleSheet.create({
+  slide: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   img: {
-    resizeMode: 'cover',
+    resizeMode: "cover",
     height: 180,
     width: width,
     margin: 10,
-    borderRadius: 20, 
+    borderRadius: 20,
   },
 });

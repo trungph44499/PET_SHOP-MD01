@@ -345,7 +345,7 @@ function Main() {
 
 
       <div className="thongke-transactions-section">
-        <h2>Danh Sách Giao Dịch</h2>
+        <h2 className="thongke-h2">Danh Sách Giao Dịch</h2>
         <table className="thongke-table">
           <thead>
             <tr>
@@ -406,14 +406,14 @@ function Main() {
       </div>
 
       <div className="thongke-top-products-section">
-        <h2>Top 10 Sản Phẩm Bán Chạy</h2>
+        <h2 className="thongke-h2">Top 10 sản phẩm bán nhiều nhất</h2>
         <table className="thongke-table">
           <thead>
             <tr>
               <th scope="col">Hình ảnh</th>
               <th scope="col">Tên sản phẩm</th>
               <th scope="col">Giá</th>
-              <th scope="col">Số lượng bán</th>
+              <th scope="col">Đã bán</th>
             </tr>
           </thead>
           <tbody>

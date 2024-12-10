@@ -289,7 +289,7 @@ const DetailProduct = ({ navigation, route }) => {
             source={require("../Image/messenger.png")}
           />
         </TouchableOpacity>
-        <Text style={{ fontSize: 35, fontWeight: 100, color: "gray" }}>|</Text>
+        <Text style={{ fontSize: 35, fontWeight: "100", color: "gray" }}>|</Text>
         <TouchableOpacity onPress={addToCart} style={styles.addToCartButton}>
           <Image
             style={styles.cartButton}

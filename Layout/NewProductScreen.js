@@ -86,6 +86,27 @@ export default NewProductScreen = ({ navigation }) => {
     navigation.navigate("DetailScreen", { item: item });
   };
 
+
+  const ProductItem = React.memo(({ item, onPress }) => {
+    return (
+      <TouchableOpacity onPress={() => onPress(item)} style={styles.itemProduct}>
+        <Image source={{ uri: item.img }} style={styles.itemImage} />
+        {item.status === "New" && <Text style={styles.itemStatus}>{item.status}</Text>}
+        <View style={styles.itemRow}>
+          <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">
+            {item.name}
+          </Text>
+        </View>
+        <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
+        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+          <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  });
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -129,18 +150,7 @@ export default NewProductScreen = ({ navigation }) => {
         data={filteredData}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => goToDetailScreen(item)} style={styles.itemProduct}>
-            <Image source={{ uri: item.img }} style={styles.itemImage} />
-            {item.status === "New" && <Text style={styles.itemStatus}>{item.status}</Text>}
-            <View style={styles.itemRow}>
-              <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
-            </View>
-            <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }}>
-              <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
-              <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
-            </View>
-          </TouchableOpacity>
+          <ProductItem item={item} onPress={goToDetailScreen} />
         )}
       />
     </View>
@@ -175,7 +185,7 @@ const styles = StyleSheet.create({
   },
   itemProduct: {
     backgroundColor: 'white',
-    flex: 1,
+    width: '48%',
     borderRadius: 10,
     padding: 10,
     margin: 6,
