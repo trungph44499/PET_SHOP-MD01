@@ -5,6 +5,7 @@ const petCareSchema = new mongoose.Schema({
   name: String,
   email: String,
   phone: String,
+  namePet: String, // tên thú cưngcưng
   message: String,
   status: {
     default: "pendingPet",

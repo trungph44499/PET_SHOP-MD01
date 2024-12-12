@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -16,13 +16,20 @@ export default function HistoryScreen() {
   const [dataHistory, setDataHistory] = useState([]);
   const [selectedButton, setSelectedButton] = useState("pending"); // State để theo dõi nút được chọn
 
-  useEffect(() => {
-    (async function () {
-      const data = await getAllHistoryPay("pending");
-      setDataHistory(data.reverse());
-    })();
-  }, []);
-
+  // useEffect(() => {
+  //   (async function () {
+  //     const data = await getAllHistoryPay("pending");
+  //     setDataHistory(data.reverse());
+  //   })();
+  // }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      (async function () {
+        const data = await getAllHistoryPay("pending");
+        setDataHistory(data.reverse());
+      })();
+    }, [])
+  );
   return (
     <View style={styles.container}>
       <View style={styles.header}>

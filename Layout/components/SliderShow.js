@@ -12,14 +12,14 @@ const listBanner = [
 ];
 
 export default function BannerCarousel() {
-  // Hàm renderItem với useCallback để tối ưu hóa việc render lại
+  // Hàm renderItem tối ưu hóa với useCallback
   const renderItem = useCallback(
     ({ item }) => (
       <View style={styles.slide}>
         <Image style={styles.img} source={item} />
       </View>
     ),
-    []
+    [] // Không có phụ thuộc bên ngoài cần theo dõi
   );
 
   return (
@@ -29,8 +29,9 @@ export default function BannerCarousel() {
       loop
       mode="default"
       autoPlay={true}
+      autoPlayInterval={5000} // Thời gian giữa mỗi lần autoplay (mặc định là 5s)
       data={listBanner}
-      scrollAnimationDuration={1000}
+      scrollAnimationDuration={600} // Thời gian chuyển tiếp mượt mà hơn
       renderItem={renderItem}
     />
   );
@@ -40,12 +41,14 @@ const styles = StyleSheet.create({
   slide: {
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 20,
+    overflow: "hidden", // Đảm bảo góc của hình ảnh không bị tràn ra ngoài
   },
   img: {
     resizeMode: "cover",
     height: 180,
-    width: width,
-    margin: 10,
+    width: width - 20, // Giảm chiều rộng để có khoảng cách giữa các banner
+    marginHorizontal: 10, // Tạo khoảng cách giữa các slide
     borderRadius: 20,
   },
 });

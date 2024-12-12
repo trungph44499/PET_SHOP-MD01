@@ -106,6 +106,7 @@ function Main() {
               <p><strong>Email:</strong> {transaction.email}</p>
               <p><strong>Địa chỉ:</strong> {transaction.message}</p>
               <p><strong>Số điện thoại:</strong> {transaction.phone}</p>
+              <p><strong>Tên thú cưng:</strong> {transaction.namePet}</p>
               <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
             </div>     
           </div>

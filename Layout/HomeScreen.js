@@ -67,25 +67,13 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (selectedCategory) {
-      const filteredC = ListCats.filter((product) => {
-        return product.type._id === selectedCategory._id;
-      });
-      setFilteredCats(filteredC);
+      setFilteredCats(ListCats.filter((product) => product.type._id === selectedCategory._id));
+      setFilteredDogs(ListDogs.filter((product) => product.type._id === selectedCategory._id));
     } else {
       setFilteredCats(ListCats);
-    }
-  }, [selectedCategory, ListCats]);
-
-  useEffect(() => {
-    if (selectedCategory) {
-      const filteredD = ListDogs.filter((product) => {
-        return product.type._id === selectedCategory._id;
-      });
-      setFilteredDogs(filteredD);
-    } else {
       setFilteredDogs(ListDogs);
     }
-  }, [selectedCategory, ListDogs]);
+  }, [selectedCategory, ListCats, ListDogs]);
 
   // Hàm điều hướng đến màn hình ClassifyScreen
   const goToClassifyScreen = useCallback((type, animals) => {
@@ -157,7 +145,7 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar hidden />
-        <View style={{ width: screenWidth, height: 280 }}>
+        <View style={{ width: screenWidth, height: 290 }}>
           <Text style={styles.welcomeText}>Welcome,</Text>
           <Text style={styles.petShopText}>Pet Shop</Text>
           <SliderShow />
@@ -242,6 +230,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     fontSize: 24,
     fontWeight: "600",
+    marginBottom: 10, 
   },
   flatListContainer: {
     marginBottom: 5,

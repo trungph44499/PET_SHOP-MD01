@@ -152,6 +152,7 @@ export default NewProductScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <ProductItem item={item} onPress={goToDetailScreen} />
         )}
+        showsVerticalScrollIndicator={false}  // Tắt thanh cuộn dọc bên phải
       />
     </View>
   );
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
   },
   itemProduct: {
     backgroundColor: 'white',
-    width: '48%',
+    width: '47%',
     borderRadius: 10,
     padding: 10,
     margin: 6,

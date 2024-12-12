@@ -8,7 +8,7 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import { numberUtils, upperCaseFirstItem } from "../../utils/stringUtils";
+import { numberUtils } from "../../utils/stringUtils";
 import axios from "axios";
 import { URL } from "../../HomeScreen";
 import { useNavigation } from "@react-navigation/native";
@@ -35,7 +35,7 @@ export default function ({ item, getAllHistoryPay }) {
         statusColor = "red";
         break;
       case "shipping":
-        result = "Đơn hàng được giao";
+        result = "Chờ giao hàng";
         statusColor = "green";
         break;
       case "shipped":
@@ -52,42 +52,42 @@ export default function ({ item, getAllHistoryPay }) {
   // Xác nhận đơn hàng
   function confirmProduct() {
     Alert.alert(
-        "Xác nhận đã nhận đơn hàng",
-        "Bạn có chắc chắn là đã nhận đơn hàng không?",
-        [
-            {
-                text: "Hủy",
-                style: "cancel",
-            },
-            {
-                text: "Xác nhận",
-                onPress: async () => {
-                    try {
-                        const {
-                            status,
-                            data: { response, type },
-                        } = await axios.post(`${URL}/pay/update`, {
-                            id: item._id,
-                            email: item.email,
-                            products: item.products,
-                            status: "shipped",
-                        });
+      "Xác nhận đã nhận đơn hàng",
+      "Bạn có chắc chắn là đã nhận đơn hàng không?",
+      [
+        {
+          text: "Hủy",
+          style: "cancel",
+        },
+        {
+          text: "Xác nhận",
+          onPress: async () => {
+            try {
+              const {
+                status,
+                data: { response, type },
+              } = await axios.post(`${URL}/pay/update`, {
+                id: item._id,
+                email: item.email,
+                products: item.products,
+                status: "shipped",
+              });
 
-                        if (status === 200) {
-                      
-                            if (type) await getAllHistoryPay();
-                            Alert.alert("Nhận hàng thành công!");
-                        }
-                    } catch (error) {
-                        console.log(error);
-                    }
-                },
-                style: "destructive",
-            },
-        ],
-        { cancelable: false }
+              if (status === 200) {
+
+                if (type) await getAllHistoryPay();
+                Alert.alert("Nhận hàng thành công!");
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          style: "destructive",
+        },
+      ],
+      { cancelable: false }
     );
-}
+  }
 
   return (
     <View style={styles.container}>
@@ -138,7 +138,7 @@ export default function ({ item, getAllHistoryPay }) {
               fontSize: 15,
               fontWeight: "bold",
               color: convertStatus(item.status).statusColor,
-              textTransform: "uppercase",
+              // textTransform: "uppercase",
               marginLeft: 5,
             }}
           >
@@ -148,23 +148,23 @@ export default function ({ item, getAllHistoryPay }) {
 
         {/* Button Hủy đơn hàng */}
         {item.status === "shipping" && (
-                  <TouchableOpacity
-                  // disabled={item.status !== "shipping"}
-                  onPress={confirmProduct}
-                  style={[
-                    styles.rejectButton,
-                    // item.status !== "shipping" && styles.disabledButton,
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.rejectButtonText,
-                      // item.status !== "shipping" && styles.disabledButtonText,
-                    ]}
-                  >
-                    Đã nhận hàng
-                  </Text>
-                </TouchableOpacity>
+          <TouchableOpacity
+            // disabled={item.status !== "shipping"}
+            onPress={confirmProduct}
+            style={[
+              styles.rejectButton,
+              // item.status !== "shipping" && styles.disabledButton,
+            ]}
+          >
+            <Text
+              style={[
+                styles.rejectButtonText,
+                // item.status !== "shipping" && styles.disabledButtonText,
+              ]}
+            >
+              Đã nhận hàng
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </View>

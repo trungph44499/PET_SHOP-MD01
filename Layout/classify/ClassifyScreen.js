@@ -190,8 +190,13 @@ export default ClassifyScreen = ({ navigation, route }) => {
               selectedButton === "priceDesc" ? { borderBottomColor: "#EC6D42" } : {},
             ]}
           >
-            <Text style={[styles.filterButtonText, selectedButton === 'priceDesc' ? { color: "#EC6D42" } : {}]}>
-              Giá giảm</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={[styles.filterButtonText, selectedButton === 'priceDesc' ? { color: "#EC6D42" } : {}]}>
+                Giá
+              </Text>
+              <Image style={{ marginLeft: 5, width: 13, height: 13, tintColor: selectedButton === 'priceDesc' ? "#EC6D42" : "black", }}
+                source={require("../../Image/item_down.png")} />
+            </View>
           </TouchableOpacity>
           <Text style={styles.textButton}>|</Text>
           <TouchableOpacity
@@ -201,8 +206,13 @@ export default ClassifyScreen = ({ navigation, route }) => {
               selectedButton === "priceAsc" ? { borderBottomColor: "#EC6D42" } : {},
             ]}
           >
-            <Text style={[styles.filterButtonText, selectedButton === 'priceAsc' ? { color: "#EC6D42" } : {}]}>
-              Giá tăng</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={[styles.filterButtonText, selectedButton === 'priceAsc' ? { color: "#EC6D42" } : {}]}>
+                Giá
+              </Text>
+              <Image style={{ marginLeft: 5, width: 13, height: 13, tintColor: selectedButton === 'priceAsc' ? "#EC6D42" : "black", }}
+                source={require("../../Image/item_up.png")} />
+            </View>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -213,6 +223,7 @@ export default ClassifyScreen = ({ navigation, route }) => {
         renderItem={({ item }) => (
           <ProductItem item={item} onPress={goToDetailScreen} />
         )}
+        showsVerticalScrollIndicator={false}  // Tắt thanh cuộn dọc bên phải
       />
     </View>
   );
