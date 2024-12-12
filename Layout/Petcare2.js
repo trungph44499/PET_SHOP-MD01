@@ -21,10 +21,11 @@ const Petcare2 = () => {
   const [service, setService] = useState("");
   const [namePet, setNamePet] = useState("");
   const [isLoading, setIsLoading] = useState(false);  // Thêm trạng thái tải
+  const [shippingAddresses, setShippingAddresses] = useState({});
   const websocket = useContext(webSocketContext);
   const navigation = useNavigation();
   const checkShippingAddresses = JSON.stringify(shippingAddresses) === "{}";
-  const [shippingAddresses, setShippingAddresses] = useState({});
+
 
   const services = [
     { key: "1", value: "Dịch vụ 1" },
@@ -73,7 +74,7 @@ const Petcare2 = () => {
           onPress: async () => {
             const email = await AsyncStorage.getItem("@UserLogin");
 
-            if (service !== "" && namePet !== "") {
+            if (service !== "" && namePet !== ""  && shippingAddresses !== "") {
               setIsLoading(true);  // Hiển thị biểu tượng tải
               try {
                 const { status, data: { response, type } } = await axios.post(URL + "/pet-care/add", {
