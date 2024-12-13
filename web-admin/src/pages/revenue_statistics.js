@@ -20,8 +20,8 @@ function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
-  const [totalRevenue, setTotalRevenue] = useState(0);
-  const [topProducts, setTopProducts] = useState([]); 
+  // const [totalRevenue, setTotalRevenue] = useState(0);
+  const [topProducts, setTopProducts] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -30,6 +30,7 @@ function Main() {
   const [endDate, setEndDate] = useState(new Date());
   const [timeRangeRevenue, setTimeRangeRevenue] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
+  const [ordersSuccess, setOrderSuccess] = useState(0);
   const [isFilterByRange, setIsFilterByRange] = useState(false);
 
   function convertStatus(status) {
@@ -77,12 +78,25 @@ function Main() {
     return filteredTransactions.length;
   };
 
-  const calculateTotalRevenue = (transactions) => {
-    const total = transactions
+  const calculateOrdersSuccess = (transactions, start, end) => {
+    if (!start || !end) return 0;
+
+    const filteredTransactions = transactions
       .filter((item) => item.status === "shipped")
-      .reduce((acc, item) => acc + Number(item.totalPrice), 0);
-    return total;
+      .filter((item) => {
+        const transactionDate = new Date(item.createdAt);
+        return transactionDate >= start && transactionDate <= end;
+      });
+
+    return filteredTransactions.length;
   };
+
+  // const calculateTotalRevenue = (transactions) => {
+  //   const total = transactions
+  //     .filter((item) => item.status === "shipped")
+  //     .reduce((acc, item) => acc + Number(item.totalPrice), 0);
+  //   return total;
+  // };
 
   const calculateTopProducts = (transactions) => {
     const productCounts = {};
@@ -90,7 +104,7 @@ function Main() {
     transactions.forEach((transaction) => {
       if (transaction.status === "shipped") {
         transaction.products.forEach((product) => {
-          const productKey = product.name;
+          const productKey = product.image;
           if (!productCounts[productKey]) {
             productCounts[productKey] = {
               name: product.name,
@@ -131,15 +145,19 @@ function Main() {
         `${json_config[0].url_connect}/pay`
       );
       if (status === 200) {
-        setData(data);
-        const total = calculateTotalRevenue(data);
-        setTotalRevenue(total);
+        setData(data.reverse());
+        // const total = calculateTotalRevenue(data);
+        // setTotalRevenue(total);
 
         const rangeRevenue = calculateRevenueInRange(data, startDate, endDate);
         setTimeRangeRevenue(rangeRevenue);
 
         const ordersCount = calculateOrdersInRange(data, startDate, endDate);
         setOrderCount(ordersCount);
+
+        
+        const ordersSuccess = calculateOrdersSuccess(data, startDate, endDate);
+        setOrderSuccess(ordersSuccess);
 
         const topProducts = calculateTopProducts(data);
         setTopProducts(topProducts);
@@ -328,10 +346,10 @@ function Main() {
             </button>
           </div>
         </div>
-        <div className="thongke-stat-box">
+        {/* <div className="thongke-stat-box">
           <h3>Tổng Doanh Thu</h3>
           <p>{Number(totalRevenue).toLocaleString("vi-VN")} VNĐ</p>
-        </div>
+        </div> */}
         <div className="thongke-stat-box">
           <h3>Doanh Thu</h3>
           <p>{Number(timeRangeRevenue).toLocaleString("vi-VN")} VNĐ</p>
@@ -339,6 +357,10 @@ function Main() {
         <div className="thongke-stat-box">
           <h3>Đơn hàng</h3>
           <p>{Number(orderCount).toLocaleString("vi-VN")} Đơn</p>
+        </div>
+        <div className="thongke-stat-box">
+          <h3>Đơn thành công</h3>
+          <p>{Number(ordersSuccess).toLocaleString("vi-VN")} Đơn</p>
         </div>
       </div>
 

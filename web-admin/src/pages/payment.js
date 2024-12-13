@@ -360,7 +360,7 @@ function Main() {
   return (
     <div className="confirm-container">
       <header className="confirm-header">
-        <h1>Đơn hàng đã đặt</h1>
+        <h1 style={{ fontWeight: "bold" }}>Đơn hàng đã đặt</h1>
       </header>
       <div>
         {isModalOpen && (

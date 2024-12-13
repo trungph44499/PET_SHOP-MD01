@@ -103,7 +103,7 @@ function Main() {
   return (
     <div className="user-container">
       <header className="user-header">
-        <h1>Quản lý tài khoản người dùng</h1>
+        <h1 style={{ fontWeight: "bold" }}>Quản lý tài khoản người dùng</h1>
       </header>
       {/* Modal for Add or Update */}
       {(isAdd || isUpdate) && (

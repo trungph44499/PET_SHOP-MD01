@@ -90,7 +90,7 @@ function Main() {
   return (
     <div className="product-container">
       <header className="product-header">
-        <h1>Quản lý nhân viên</h1>
+        <h1 style={{ fontWeight: "bold" }}>Quản lý nhân viên</h1>
       </header>
       {/* Modal Thêm hoặc Cập nhật nhân viên */}
       {(isAdd || isUpdate) && (

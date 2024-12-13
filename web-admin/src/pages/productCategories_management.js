@@ -103,7 +103,7 @@ function Main() {
   return (
     <div className="product-container">
       <header className="product-header">
-        <h1>Quản lý loại sản phẩm</h1>
+        <h1 style={{ fontWeight: "bold" }}>Quản lý loại sản phẩm</h1>
       </header>
       {/* Modal Thêm/Cập nhật danh mục */}
       {(isAdd || isUpdate) && (
@@ -148,7 +148,7 @@ function Main() {
             <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+            {/* <th scope="col">Delete</th> */}
             <th scope="col">Block</th>
           </tr>
         </thead>
@@ -167,7 +167,7 @@ function Main() {
                   Update
                 </button>
               </td>
-              <td>
+              {/* <td>
                 <button
                   className="product-btn-secondary"
                   onClick={async () => {
@@ -190,7 +190,7 @@ function Main() {
                 >
                   Delete
                 </button>
-              </td>
+              </td> */}
               <td>
                 <button
                   className="product-btn-success"

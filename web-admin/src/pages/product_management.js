@@ -195,7 +195,7 @@ function Main() {
     <div className="item-container">
       {/* Dropdown lọc loại sản phẩm */}
       <header className="item-header">
-        <h1>Quản lý sản phẩm</h1>
+        <h1 style={{ fontWeight: "bold" }}>Quản lý sản phẩm</h1>
       </header>
       <div className="item-filter">
         <select

@@ -26,7 +26,6 @@ const Petcare2 = () => {
   const navigation = useNavigation();
   const checkShippingAddresses = JSON.stringify(shippingAddresses) === "{}";
 
-
   const services = [
     { key: "1", value: "Dịch vụ 1" },
     { key: "2", value: "Dịch vụ 2" },
@@ -74,7 +73,7 @@ const Petcare2 = () => {
           onPress: async () => {
             const email = await AsyncStorage.getItem("@UserLogin");
 
-            if (service !== "" && namePet !== ""  && shippingAddresses !== "") {
+            if (service !== "" && namePet !== "" && shippingAddresses !== "") {
               setIsLoading(true);  // Hiển thị biểu tượng tải
               try {
                 const { status, data: { response, type } } = await axios.post(URL + "/pet-care/add", {
@@ -133,17 +132,8 @@ const Petcare2 = () => {
       </View>
       {checkShippingAddresses ? (
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ShippingAddrees");
-          }}
-          style={{
-            marginBottom: 10,
-            marginHorizontal: 5,
-            borderRadius: 5,
-            backgroundColor: "#fff",
-            elevation: 5,
-            padding: 10,
-          }}
+          onPress={() => { navigation.navigate("ShippingAddrees"); }}
+          style={styles.input}
         >
           <View
             style={{
@@ -161,77 +151,21 @@ const Petcare2 = () => {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ShippingAddrees");
-          }}
-          style={{
-            marginBottom: 10,
-            marginHorizontal: 5,
-            borderRadius: 5,
-            backgroundColor: "#fff",
-            elevation: 5,
-          }}
+          onPress={() => navigation.navigate("ShippingAddrees")}
+          style={styles.containerAddress}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: 10,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-              }}
-            >
-              <Image
-                style={styles.deleteIcon}
-                source={require("../Image/location.png")}
-              />
+          <View style={styles.contentAddress}>
+            <View style={styles.infoContainerAddress}>
+              <Image style={styles.iconAddress} source={require("../Image/location.png")} />
+              <Text style={styles.nameAddress}>{shippingAddresses.fullName}</Text>
+              <Text style={styles.phoneAddress}>{shippingAddresses.phoneNumber}</Text>
               <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "bold",
-                      marginHorizontal: 5,
-                    }}
-                  >
-                    {shippingAddresses.fullName}
-                  </Text>
-                  <Text
-                    style={{
-                      fontWeight: "300",
-                      fontSize: 18,
-                    }}
-                  >
-                    {shippingAddresses.phoneNumber}
-                  </Text>
-                </View>
-                <View style={{ height: 5 }} />
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={styles.bold}>
-                    Địa chỉ: {shippingAddresses.address},{" "}
-                    {shippingAddresses.city}
-                  </Text>
-                </View>
+                <Text style={styles.addressAddress}>
+                  Địa chỉ: {shippingAddresses.address}, {shippingAddresses.city}
+                </Text>
               </View>
             </View>
-            <Image
-              style={styles.deleteIcon}
-              source={require("../Image/left.png")}
-            />
+            <Image style={styles.iconAddress} source={require("../Image/left.png")} />
           </View>
         </TouchableOpacity>
       )}
@@ -322,14 +256,53 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   deleteIcon: {
     width: 20,
     height: 20,
     marginTop: 2,
   },
+  containerAddress: {
+    marginHorizontal: 5,
+    marginBottom: 15,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+    elevation: 5,
+  },
+  contentAddress: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 15,
+    flexWrap: 'wrap',
+  },
+  infoContainerAddress: {
+    flexDirection: "row",
+    flexWrap: 'wrap', // Bọc lại nếu văn bản quá dài
+    flex: 1,          // Đảm bảo không gian còn lại cho văn bản
+    paddingRight: 10
+  },
+  iconAddress: {
+    width: 20,
+    height: 20,
+  },
+  nameAddress: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginHorizontal: 5,
+  },
+  phoneAddress: {
+    fontWeight: "300",
+    fontSize: 18,
+  },
+  addressAddress: {
+    fontSize: 16,
+    color: "#808080",
+    fontWeight: "regular",
+  },
 });
+
 
 export default Petcare2;

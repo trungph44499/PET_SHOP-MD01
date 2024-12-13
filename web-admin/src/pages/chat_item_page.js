@@ -10,7 +10,7 @@ import "./css/chat.css";
 
 export default function ChatItemPage() {
   return (
-    <div>
+    <div className="chat-page">
       <NavigationPage child={<Main />} />
     </div>
   );
@@ -85,79 +85,63 @@ function Main() {
   }
 
   return (
-    <div className="d-flex flex-column vh-100 container">
-      <header className="bg-primary text-white text-center py-3 d-flex justify-content-between align-items-center">
-        <button className="btn ms-2" onClick={() => window.history.back()}>
+    <div className="chat-container">
+      <header className="chat-header">
+        <button className="chat-btn-back" onClick={() => window.history.back()}>
           <img
             src="https://static.thenounproject.com/png/65506-200.png"
             alt="Back"
             height={30}
             width={30}
-            style={{ filter: "invert(1)" }}
+            className="back-icon"
           />
         </button>
-        <span className="mx-auto">{email}</span>
+        <span className="chat-email">{email}</span>
         <div></div>
       </header>
 
-      <main
-        className="flex-grow-1 overflow-auto d-flex flex-column-reverse"
-        id="chat-container"
-      >
-        <div className="py-3">
+      <main className="chat-content">
+        <div className="chat-messages">
           {data.map((item) => (
             <div
               key={item._id}
-              className={`${item.user._id === "admin" ? "text-end" : "text-start"
-                }`}
+              className={`chat-message ${item.user._id === "admin" ? "admin" : "user"}`}
             >
-              <div>
+              <div className="message-container">
                 {item.user._id !== "admin" && (
                   <img
                     src={item.user.avatar}
-                    height={40}
-                    width={40}
-                    className="rounded-circle me-2"
                     alt="User Avatar"
-                    style={{ border: "2px solid #ddd" }}
+                    className="user-avatar"
                   />
-
                 )}
-                <p className="p-2 bg-primary text-white d-inline-block rounded-3">
-                  {item.text}
-                </p>
-                {/* Hiển thị thời gian */}
-                <small className="d-block text-muted mt-1" style={{ fontSize: "0.8rem" }}>
-                  {format(new Date(item.createdAt), "HH:mm dd/MM/yyyy")}
-                </small>
-
+                <div className="message-text">
+                  <p>{item.text}</p>
+                  <small className="chat-time">
+                    {format(new Date(item.createdAt), "HH:mm dd/MM/yyyy")}
+                  </small>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </main>
 
-      <footer>
-        <div className="input-group mb-3">
+      <footer className="chat-footer">
+        <div className="chat-input-group">
           <input
             onChange={(value) => setInputData(value.target.value)}
             type="text"
             value={inputData}
-            className="form-control"
-            placeholder="Enter messages..."
-            aria-label="Recipient's username"
-            aria-describedby="button-addon2"
-            style={{ borderRadius: "20px", padding: "10px" }}
+            className="chat-input"
+            placeholder="Nhập tin nhắn..."
           />
           <button
             onClick={sendMessage}
             disabled={inputData.length === 0}
-            className="btn btn-outline-secondary"
-            type="button"
-            id="button-addon2"
-            style={{ borderRadius: "20px" }}
+            className="chat-send-btn"
           >
-            Send
+            Gửi
           </button>
         </div>
       </footer>
