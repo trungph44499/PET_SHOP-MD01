@@ -11,6 +11,8 @@ const petCareSchema = new mongoose.Schema({
     default: "pendingPet",
     type: String,
   },
+  idStaff: String,
+  nameStaff: String,
 });
 
 const petCareModel = mongoose.model("pet_cares", petCareSchema);

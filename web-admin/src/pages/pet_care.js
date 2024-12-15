@@ -15,6 +15,7 @@ export default function PetCare() {
 
 function Main() {
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
   const [totalConfirmed, setTotalConfirmed] = useState(0);
   const [totalPending, setTotalPending] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +24,8 @@ function Main() {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const userId = window.localStorage.getItem("@adminId");
+  
   const convertStatus = (status) => {
     let statusResult = "";
     switch (status) {
@@ -58,6 +61,24 @@ function Main() {
     } catch (error) {
       console.log(error);
     }
+  }, []);
+
+  useEffect(() => {
+    const getAdminById = async (id) => {
+      try {
+        const response = await axios.get(
+          `${json_config[0].url_connect}/admin/${id}`
+        );
+        if (response.data.response) {
+          setUser(response.data.response);
+        } else {
+          console.log(response.data.response); // In ra thông báo lỗi nếu không tìm thấy admin
+        }
+      } catch (error) {
+        console.error("Error fetching admin by ID:", error); // In lỗi nếu có
+      }
+    };
+    getAdminById(userId);
   }, []);
 
   useEffect(() => {
@@ -113,6 +134,18 @@ function Main() {
               <p><strong>Số điện thoại:</strong> {transaction.phone}</p>
               <p><strong>Tên thú cưng:</strong> {transaction.namePet}</p>
               <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
+              <p>
+                <strong>ID nhân viên:</strong>{" "}
+                {transaction.idStaff
+                  ? transaction.idStaff
+                  : "Chưa có người xác nhận"}
+              </p>
+              <p>
+                <strong>Người xác nhận:</strong>{" "}
+                {transaction.nameStaff
+                  ? transaction.nameStaff
+                  : "Chưa có người xác nhận"}
+              </p>
             </div>
           </div>
           <div>
@@ -144,6 +177,8 @@ function Main() {
                               email: transaction.email,
                               service: transaction.service,
                               status: "successPet",
+                              idStaff: userId,
+                              nameStaff: user.fullname,
                             }
                           );
 
@@ -177,6 +212,8 @@ function Main() {
                               email: transaction.email,
                               service: transaction.service,
                               status: "rejectPet",
+                              idStaff: userId,
+                              nameStaff: user.fullname,
                             }
                           );
 

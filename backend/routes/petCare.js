@@ -40,12 +40,14 @@ router.post("/add", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-  const { service, id, email, status } = req.body;
+  const { service, id, email, status, idStaff, nameStaff } = req.body;
   try {
     const result = await petCareModel.updateMany(
       { _id: id },
       {
         status: status,
+        idStaff: idStaff,
+        nameStaff: nameStaff,
       }
     );
     if (result.matchedCount > 0) {
