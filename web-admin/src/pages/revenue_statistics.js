@@ -155,7 +155,7 @@ function Main() {
         const ordersCount = calculateOrdersInRange(data, startDate, endDate);
         setOrderCount(ordersCount);
 
-        
+
         const ordersSuccess = calculateOrdersSuccess(data, startDate, endDate);
         setOrderSuccess(ordersSuccess);
 
@@ -225,7 +225,7 @@ function Main() {
           <div className="thongke-modal-body">
             <div className="thongke-transaction-pay">
               <p>
-                <strong>ID nhân viên:</strong>{" "}
+                <strong>ID người xác nhận:</strong>{" "}
                 {transaction.idStaff
                   ? transaction.idStaff
                   : "Chưa có người xác nhận"}
@@ -248,6 +248,7 @@ function Main() {
               <p>
                 <strong>Địa chỉ:</strong> {transaction.location}
               </p>
+              <p><strong>Thời Gian Đặt:</strong> {new Date(transaction.createdAt).toLocaleString("vi-VN")}</p>
               <p>
                 <strong>Số điện thoại:</strong> {transaction.number}
               </p>

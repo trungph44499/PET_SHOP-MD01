@@ -17,6 +17,7 @@ export default function PetCare() {
 
 function Main() {
   const [data, setData] = useState([]);
+  const [user, setUser] = useState({});
   const [filteredData, setFilteredData] = useState([]);
   const [totalConfirmed, setTotalConfirmed] = useState(0);
   const [totalPending, setTotalPending] = useState(0);
@@ -27,6 +28,8 @@ function Main() {
   const websocket = useContext(webSocketContext);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const userId = window.localStorage.getItem("@adminId");
 
   const convertStatus = (status) => {
     let statusResult = "";
@@ -53,11 +56,11 @@ function Main() {
         data: { response },
       } = await axios.get(`${json_config[0].url_connect}/pet-care`);
       if (status === 200) {
-        const confirmed = response.filter((item) => item.status === "successPet").length;
-        const pending = response.filter((item) => item.status === "pendingPet").length;
+        // const confirmed = response.filter((item) => item.status === "successPet").length;
+        // const pending = response.filter((item) => item.status === "pendingPet").length;
 
-        setTotalConfirmed(confirmed);
-        setTotalPending(pending);
+        // setTotalConfirmed(confirmed);
+        // setTotalPending(pending);
         setData(response.reverse());
         setFilteredData(response.reverse());
       }
@@ -65,6 +68,24 @@ function Main() {
       console.log(error);
     }
   }, []);
+
+  useEffect(() => {
+    const getAdminById = async (id) => {
+      try {
+        const response = await axios.get(
+          `${json_config[0].url_connect}/admin/${id}`
+        );
+        if (response.data.response) {
+          setUser(response.data.response);
+        } else {
+          console.log(response.data.response); // In ra thông báo lỗi nếu không tìm thấy admin
+        }
+      } catch (error) {
+        console.error("Error fetching admin by ID:", error); // In lỗi nếu có
+      }
+    };
+    getAdminById(userId);
+  }, [userId]);
 
   useEffect(() => {
     if (websocket) {
@@ -116,10 +137,22 @@ function Main() {
               <p><strong>Họ tên:</strong> {transaction.name}</p>
               <p><strong>Email:</strong> {transaction.email}</p>
               <p><strong>Địa chỉ:</strong> {transaction.message}</p>
-              <p><strong>Thời Gian Đặt:</strong> {transaction.createdAt}</p>
+              <p><strong>Thời Gian Đặt:</strong> {new Date(transaction.createdAt).toLocaleString("vi-VN")}</p>
               <p><strong>Số điện thoại:</strong> {transaction.phone}</p>
               <p><strong>Tên thú cưng:</strong> {transaction.namePet}</p>
               <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
+              <p>
+                <strong>ID người xác nhận:</strong>{" "}
+                {transaction.idStaff
+                  ? transaction.idStaff
+                  : "Chưa có người xác nhận"}
+              </p>
+              <p>
+                <strong>Người xác nhận:</strong>{" "}
+                {transaction.nameStaff
+                  ? transaction.nameStaff
+                  : "Chưa có người xác nhận"}
+              </p>
             </div>
           </div>
           <div>
@@ -151,6 +184,8 @@ function Main() {
                               email: transaction.email,
                               service: transaction.service,
                               status: "successPet",
+                              idStaff: userId,
+                              nameStaff: user.fullname,
                             }
                           );
 
@@ -184,6 +219,8 @@ function Main() {
                               email: transaction.email,
                               service: transaction.service,
                               status: "rejectPet",
+                              idStaff: userId,
+                              nameStaff: user.fullname,
                             }
                           );
 
@@ -208,6 +245,23 @@ function Main() {
     );
   }
 
+  const filterByDateAndStatus = (startDate, endDate, status) => {
+    if (!startDate || !endDate) {
+      return [];
+    }
+
+    // Lọc theo ngày
+    const filteredByDate = data.filter((item) => {
+      const transactionDate = new Date(item.createdAt); // Chuyển đổi createdAt thành đối tượng Date
+      return transactionDate >= startDate && transactionDate <= endDate;
+    });
+
+    // Lọc theo trạng thái
+    const filteredByStatus = filteredByDate.filter((item) => item.status === status);
+
+    return filteredByStatus;
+  };
+
   const filterByDate = () => {
     if (!startDate || !endDate) {
       return;
@@ -218,11 +272,20 @@ function Main() {
       return transactionDate >= startDate && transactionDate <= endDate;
     });
 
+    const filteredConfirmed = filterByDateAndStatus(startDate, endDate, "successPet");
+    const filteredPending = filterByDateAndStatus(startDate, endDate, "pendingPet");
+
+    setTotalConfirmed(filteredConfirmed.length);
+    setTotalPending(filteredPending.length);
+    setFilteredData([...filteredConfirmed, ...filteredPending]); // Hiển thị tất cả dịch vụ đã xác nhận và đang chờ
+
     setFilteredData(filtered);
     setCurrentPage(1);
   };
 
   const refreshFilters = () => {
+    setTotalConfirmed(0);
+    setTotalPending(0);
     setStartDate(null);
     setEndDate(null);
     setFilteredData(data);
@@ -244,31 +307,36 @@ function Main() {
   return (
     <div className="confirm-container">
       <header className="confirm-header">
-        <h1 style={{ fontWeight: "bold" }}>Xác nhận dịch vụ</h1>
+        <h1 style={{ fontWeight: "bold" }}>Dịch vụ đã đặt</h1>
       </header>
 
       <div className="confirm-summary" style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-        <div className="confirm-summary-box" style={{ flex: 1, padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
-          <p><strong>Tổng số dịch vụ đã xác nhận:</strong> {totalConfirmed}</p>
+        <div className="confirm-filter-container">
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            placeholderText="Ngày bắt đầu"
+            dateFormat="dd/MM/yyyy"
+            className="confirm-date-picker"
+          />
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            placeholderText="Ngày kết thúc"
+            dateFormat="dd/MM/yyyy"
+            className="confirm-date-picker"
+          />
+          <button onClick={filterByDate} className="confirm-btn btn-primary">Lọc</button>
+          <button onClick={refreshFilters} className="confirm-btn btn-secondary">Làm mới</button>
         </div>
-        <div className="confirm-summary-box" style={{ flex: 1, padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
-          <p><strong>Tổng số dịch vụ đang chờ xác nhận:</strong> {totalPending}</p>
+        <div className="confirm-summary-box">
+          <p><strong>Số dịch vụ đã xác nhận:</strong></p>
+          <p><strong>{totalConfirmed}</strong></p>
         </div>
-      </div>
-
-      <div className="filter-container" style={{ marginBottom: "20px", display: "flex", gap: "10px", alignItems: "center" }}>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          placeholderText="Ngày bắt đầu"
-        />
-        <DatePicker
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          placeholderText="Ngày kết thúc"
-        />
-        <button onClick={filterByDate} className="confirm-btn btn-primary">Lọc</button>
-        <button onClick={refreshFilters} className="confirm-btn btn-secondary">Làm mới</button>
+        <div className="confirm-summary-box">
+          <p><strong>Số dịch vụ đang chờ xác nhận:</strong></p>
+          <p><strong>{totalPending}</strong></p>
+        </div>
       </div>
 
       <div>
@@ -286,6 +354,7 @@ function Main() {
             <th scope="col">Tên người dùng</th>
             <th scope="col">Số điện thoại</th>
             <th scope="col">Địa chỉ</th>
+            <th scope="col">Ngày đặt</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Dịch vụ</th>
           </tr>
@@ -296,6 +365,7 @@ function Main() {
               <td>{item.name}</td>
               <td>{item.phone}</td>
               <td>{item.message}</td>
+              <td>{new Date(item.createdAt).toLocaleString("vi-VN")}</td>
               <td>{convertStatus(item.status)}</td>
               <td>
                 <button onClick={() => openModal(item)} className="confirm-btn-detail">

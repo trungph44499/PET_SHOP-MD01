@@ -57,7 +57,7 @@ function Main() {
       }
     };
     getAdminById(userId);
-  }, []);
+  }, [userId]);
 
   const openModal = (transaction) => {
     setSelectedTransaction(transaction);
@@ -96,6 +96,7 @@ function Main() {
               <p>
                 <strong>Địa chỉ:</strong> {transaction.location}
               </p>
+              <p><strong>Thời Gian Đặt:</strong> {new Date(transaction.createdAt).toLocaleString("vi-VN")}</p>
               <p>
                 <strong>Số điện thoại:</strong> {transaction.number}
               </p>
@@ -375,6 +376,7 @@ function Main() {
           <tr>
             <th scope="col">Tên người mua</th>
             <th scope="col">Địa chỉ</th>
+            <th scope="col">Ngày đặt</th>
             <th scope="col">Số điện thoại</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Sản phẩm</th>
@@ -385,6 +387,7 @@ function Main() {
             <tr key={item._id}>
               <td>{item.fullname}</td>
               <td>{item.location}</td>
+              <td>{new Date(item.createdAt).toLocaleString("vi-VN")}</td>
               <td>{item.number}</td>
               <td>{convertStatus(item.status)}</td>
               <td>

@@ -12,6 +12,7 @@ import { numberUtils } from "../../utils/stringUtils";
 import axios from "axios";
 import { URL } from "../../HomeScreen";
 import { useNavigation } from "@react-navigation/native";
+import { Toast } from "../../utils/toastUtil";
 
 export default function ({ item, getAllHistoryPay }) {
   const navigation = useNavigation();
@@ -74,9 +75,8 @@ export default function ({ item, getAllHistoryPay }) {
               });
 
               if (status === 200) {
-
                 if (type) await getAllHistoryPay();
-                Alert.alert("Nhận hàng thành công!");
+                Toast("Nhận hàng thành công");
               }
             } catch (error) {
               console.log(error);
