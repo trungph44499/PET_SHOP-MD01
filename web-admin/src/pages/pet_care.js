@@ -4,6 +4,8 @@ import axios from "axios";
 import json_config from "../config.json";
 import "./css/confirm.css";
 import { webSocketContext } from "../context/WebSocketContext";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function PetCare() {
   return (
@@ -15,17 +17,17 @@ export default function PetCare() {
 
 function Main() {
   const [data, setData] = useState([]);
-  const [user, setUser] = useState({});
+  const [filteredData, setFilteredData] = useState([]);
   const [totalConfirmed, setTotalConfirmed] = useState(0);
   const [totalPending, setTotalPending] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const itemsPerPage = 10;
   const websocket = useContext(webSocketContext);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const userId = window.localStorage.getItem("@adminId");
-  
   const convertStatus = (status) => {
     let statusResult = "";
     switch (status) {
@@ -57,28 +59,11 @@ function Main() {
         setTotalConfirmed(confirmed);
         setTotalPending(pending);
         setData(response.reverse());
+        setFilteredData(response.reverse());
       }
     } catch (error) {
       console.log(error);
     }
-  }, []);
-
-  useEffect(() => {
-    const getAdminById = async (id) => {
-      try {
-        const response = await axios.get(
-          `${json_config[0].url_connect}/admin/${id}`
-        );
-        if (response.data.response) {
-          setUser(response.data.response);
-        } else {
-          console.log(response.data.response); // In ra thông báo lỗi nếu không tìm thấy admin
-        }
-      } catch (error) {
-        console.error("Error fetching admin by ID:", error); // In lỗi nếu có
-      }
-    };
-    getAdminById(userId);
   }, []);
 
   useEffect(() => {
@@ -131,21 +116,10 @@ function Main() {
               <p><strong>Họ tên:</strong> {transaction.name}</p>
               <p><strong>Email:</strong> {transaction.email}</p>
               <p><strong>Địa chỉ:</strong> {transaction.message}</p>
+              <p><strong>Thời Gian Đặt:</strong> {transaction.createdAt}</p>
               <p><strong>Số điện thoại:</strong> {transaction.phone}</p>
               <p><strong>Tên thú cưng:</strong> {transaction.namePet}</p>
               <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
-              <p>
-                <strong>ID nhân viên:</strong>{" "}
-                {transaction.idStaff
-                  ? transaction.idStaff
-                  : "Chưa có người xác nhận"}
-              </p>
-              <p>
-                <strong>Người xác nhận:</strong>{" "}
-                {transaction.nameStaff
-                  ? transaction.nameStaff
-                  : "Chưa có người xác nhận"}
-              </p>
             </div>
           </div>
           <div>
@@ -177,8 +151,6 @@ function Main() {
                               email: transaction.email,
                               service: transaction.service,
                               status: "successPet",
-                              idStaff: userId,
-                              nameStaff: user.fullname,
                             }
                           );
 
@@ -212,8 +184,6 @@ function Main() {
                               email: transaction.email,
                               service: transaction.service,
                               status: "rejectPet",
-                              idStaff: userId,
-                              nameStaff: user.fullname,
                             }
                           );
 
@@ -238,7 +208,27 @@ function Main() {
     );
   }
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const filterByDate = () => {
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    const filtered = data.filter((item) => {
+      const transactionDate = new Date(item.createdAt);
+      return transactionDate >= startDate && transactionDate <= endDate;
+    });
+
+    setFilteredData(filtered);
+    setCurrentPage(1);
+  };
+
+  const refreshFilters = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setFilteredData(data);
+  };
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -246,7 +236,7 @@ function Main() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  const paginatedData = data.slice(
+  const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -264,6 +254,21 @@ function Main() {
         <div className="confirm-summary-box" style={{ flex: 1, padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
           <p><strong>Tổng số dịch vụ đang chờ xác nhận:</strong> {totalPending}</p>
         </div>
+      </div>
+
+      <div className="filter-container" style={{ marginBottom: "20px", display: "flex", gap: "10px", alignItems: "center" }}>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          placeholderText="Ngày bắt đầu"
+        />
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+          placeholderText="Ngày kết thúc"
+        />
+        <button onClick={filterByDate} className="confirm-btn btn-primary">Lọc</button>
+        <button onClick={refreshFilters} className="confirm-btn btn-secondary">Làm mới</button>
       </div>
 
       <div>
@@ -306,7 +311,7 @@ function Main() {
         <button onClick={handlePrevPage} disabled={currentPage === 1} className="pagination-btn">
           &lt;
         </button>
-        <span style={{ margin: "0 10px" }}>{currentPage} / {totalPages}</span>
+        <span style={{ margin: "0 10px" }}>Trang {currentPage} / {totalPages}</span>
         <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-btn">
           &gt;
         </button>
