@@ -15,6 +15,10 @@ export default function PetCare() {
 
 function Main() {
   const [data, setData] = useState([]);
+  const [totalConfirmed, setTotalConfirmed] = useState(0);
+  const [totalPending, setTotalPending] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const websocket = useContext(webSocketContext);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +48,11 @@ function Main() {
         data: { response },
       } = await axios.get(`${json_config[0].url_connect}/pet-care`);
       if (status === 200) {
+        const confirmed = response.filter((item) => item.status === "successPet").length;
+        const pending = response.filter((item) => item.status === "pendingPet").length;
+
+        setTotalConfirmed(confirmed);
+        setTotalPending(pending);
         setData(response.reverse());
       }
     } catch (error) {
@@ -52,9 +61,7 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    // Kiểm tra xem WebSocket đã được khởi tạo chưa
     if (websocket) {
-      // Lắng nghe sự kiện message từ WebSocket
       websocket.onmessage = function (result) {
         const data = JSON.parse(result.data);
 
@@ -64,16 +71,14 @@ function Main() {
       };
     }
 
-    // Gọi hàm lấy dữ liệu khi component mount
     getAllPetCare();
 
-    // Clean up WebSocket khi component unmount
     return () => {
       if (websocket) {
-        websocket.onmessage = null; // Hủy lắng nghe sự kiện message khi component unmount
+        websocket.onmessage = null;
       }
     };
-  }, [websocket, getAllPetCare]); // Chạy khi websocket hoặc getAllPetCare thay đổi
+  }, [websocket, getAllPetCare]);
 
   const openModal = (transaction) => {
     setSelectedTransaction(transaction);
@@ -108,7 +113,7 @@ function Main() {
               <p><strong>Số điện thoại:</strong> {transaction.phone}</p>
               <p><strong>Tên thú cưng:</strong> {transaction.namePet}</p>
               <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
-            </div>     
+            </div>
           </div>
           <div>
             <p><strong>Xác nhận</strong></p>
@@ -120,75 +125,74 @@ function Main() {
                 </tr>
               </thead>
               <tbody>
-             
-                  <tr key={transaction._id}>
-                    <td>
-                      <button
-                        disabled={
-                          transaction.status === "rejectPet" || transaction.status === "successPet"
-                        }
-                        onClick={async function () {
-                          const resultCheck = window.confirm("Confirm payment?");
-                          if (resultCheck) {
-                            const {
-                              status,
-                              data: { response, type },
-                            } = await axios.post(
-                              `${json_config[0].url_connect}/pet-care/update`,
-                              {
-                                id: transaction._id,
-                                email: transaction.email,
-                                service: transaction.service,
-                                status: "successPet",
-                              }
-                            );
-
-                            if (status === 200) {
-                              window.alert(response);
-                              if (type) getAllPetCare();
-                              closeModal();
+                <tr key={transaction._id}>
+                  <td>
+                    <button
+                      disabled={
+                        transaction.status === "rejectPet" || transaction.status === "successPet"
+                      }
+                      onClick={async function () {
+                        const resultCheck = window.confirm("Confirm payment?");
+                        if (resultCheck) {
+                          const {
+                            status,
+                            data: { response, type },
+                          } = await axios.post(
+                            `${json_config[0].url_connect}/pet-care/update`,
+                            {
+                              id: transaction._id,
+                              email: transaction.email,
+                              service: transaction.service,
+                              status: "successPet",
                             }
-                          }
-                        }}
-                        className="confirm-btn btn-primary"
-                      >
-                        Xác nhận
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        disabled={
-                          transaction.status === "rejectPet" || transaction.status === "successPet"
-                        }
-                        onClick={async function () {
-                          const resultCheck = window.confirm("Reject payment?");
-                          if (resultCheck) {
-                            const {
-                              status,
-                              data: { response, type },
-                            } = await axios.post(
-                              `${json_config[0].url_connect}/pet-care/update`,
-                              {
-                                id: transaction._id,
-                                email: transaction.email,
-                                service: transaction.service,
-                                status: "rejectPet",
-                              }
-                            );
+                          );
 
-                            if (status === 200) {
-                              window.alert(response);
-                              if (type) getAllPetCare();
-                              closeModal();
-                            }
+                          if (status === 200) {
+                            window.alert(response);
+                            if (type) getAllPetCare();
+                            closeModal();
                           }
-                        }}
-                        className="confirm-btn btn-secondary"
-                      >
-                        Hủy dịch vụ
-                      </button>
-                    </td>
-                  </tr>
+                        }
+                      }}
+                      className="confirm-btn btn-primary"
+                    >
+                      Xác nhận
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      disabled={
+                        transaction.status === "rejectPet" || transaction.status === "successPet"
+                      }
+                      onClick={async function () {
+                        const resultCheck = window.confirm("Reject payment?");
+                        if (resultCheck) {
+                          const {
+                            status,
+                            data: { response, type },
+                          } = await axios.post(
+                            `${json_config[0].url_connect}/pet-care/update`,
+                            {
+                              id: transaction._id,
+                              email: transaction.email,
+                              service: transaction.service,
+                              status: "rejectPet",
+                            }
+                          );
+
+                          if (status === 200) {
+                            window.alert(response);
+                            if (type) getAllPetCare();
+                            closeModal();
+                          }
+                        }
+                      }}
+                      className="confirm-btn btn-secondary"
+                    >
+                      Hủy dịch vụ
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -197,11 +201,34 @@ function Main() {
     );
   }
 
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const paginatedData = data.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="confirm-container">
       <header className="confirm-header">
         <h1 style={{ fontWeight: "bold" }}>Xác nhận dịch vụ</h1>
       </header>
+
+      <div className="confirm-summary" style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
+        <div className="confirm-summary-box" style={{ flex: 1, padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
+          <p><strong>Tổng số dịch vụ đã xác nhận:</strong> {totalConfirmed}</p>
+        </div>
+        <div className="confirm-summary-box" style={{ flex: 1, padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
+          <p><strong>Tổng số dịch vụ đang chờ xác nhận:</strong> {totalPending}</p>
+        </div>
+      </div>
+
       <div>
         {isModalOpen && (
           <TransactionModal
@@ -210,21 +237,19 @@ function Main() {
           />
         )}
       </div>
+
       <table className="confirm-table">
         <thead>
           <tr>
             <th scope="col">Tên người dùng</th>
-
             <th scope="col">Số điện thoại</th>
             <th scope="col">Địa chỉ</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Dịch vụ</th>
-            {/* <th scope="col">Chờ xác nhận</th>
-            <th scope="col">Đã hủy</th> */}
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {paginatedData.map((item) => (
             <tr key={item._id}>
               <td>{item.name}</td>
               <td>{item.phone}</td>
@@ -239,6 +264,16 @@ function Main() {
           ))}
         </tbody>
       </table>
+
+      <div className="pagination" style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+        <button onClick={handlePrevPage} disabled={currentPage === 1} className="pagination-btn">
+          &lt;
+        </button>
+        <span style={{ margin: "0 10px" }}>{currentPage} / {totalPages}</span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-btn">
+          &gt;
+        </button>
+      </div>
     </div>
   );
 }
