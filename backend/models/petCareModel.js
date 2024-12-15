@@ -13,7 +13,9 @@ const petCareSchema = new mongoose.Schema({
   },
   idStaff: String,
   nameStaff: String,
-});
+},
+{ timestamps: true } // Tạo trường create
+);
 
 const petCareModel = mongoose.model("pet_cares", petCareSchema);
 module.exports = petCareModel;
