@@ -17,7 +17,7 @@ export default function ChatItemPage() {
 }
 
 function Main() {
-  const { email } = useParams();
+  const { email, name } = useParams();
   const [inputData, setInputData] = useState("");
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
@@ -25,7 +25,6 @@ function Main() {
   websocket.onmessage = function (messages) {
     const json = JSON.parse(messages.data);
     const { message, type } = json;
-    console.log(message);
 
     if (type === "take care") {
       setData((previousMessages) => [...previousMessages, message]);
@@ -96,7 +95,9 @@ function Main() {
             className="back-icon"
           />
         </button>
-        <span className="chat-email">{email}</span>
+        <span className="chat-email">
+          {name} - {email}
+        </span>
         <div></div>
       </header>
 
@@ -105,7 +106,9 @@ function Main() {
           {data.map((item) => (
             <div
               key={item._id}
-              className={`chat-message ${item.user._id === "admin" ? "admin" : "user"}`}
+              className={`chat-message ${
+                item.user._id === "admin" ? "admin" : "user"
+              }`}
             >
               <div className="message-container">
                 {item.user._id !== "admin" && (

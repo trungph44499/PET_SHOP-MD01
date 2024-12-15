@@ -29,7 +29,10 @@ function App() {
                 element={<RevenueStatistics />}
               />
               <Route path="/category" element={<ProductCategories />} />
-              <Route path="/chat-item/:email" element={<ChatItemPage />} />
+              <Route
+                path="/chat-item/:email/:name"
+                element={<ChatItemPage />}
+              />
             </Routes>
           </BrowserRouter>
         }
