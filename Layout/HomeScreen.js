@@ -9,6 +9,7 @@ import {
   View,
   Dimensions,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import axios from "axios";
 import React, { useEffect, useState, useCallback } from "react";
@@ -23,6 +24,7 @@ const { width: screenWidth } = Dimensions.get("window");
 const HomeScreen = ({ navigation }) => {
   const [categories, setCategories] = useState([]); // Lưu các loại sản phẩm (ProductCategory)
   const [selectedCategory, setSelectedCategory] = useState(null); // Lưu danh mục sản phẩm đã chọn
+  const [refreshing, setRefreshing] = useState(false);
   const [ListDogs, setListDogs] = useState([]);
   const [ListCats, setListCats] = useState([]);
   const [filteredDogs, setFilteredDogs] = useState([]);
@@ -53,6 +55,13 @@ const HomeScreen = ({ navigation }) => {
       console.log("Error fetching products:", error);
     }
   }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true); // Bắt đầu quá trình làm mới
+    await getAllCategories(); // Lấy lại danh mục sản phẩm
+    await getListProduct(); // Lấy lại sản phẩm
+    setRefreshing(false); // Kết thúc quá trình làm mới
+  }, [getAllCategories, getListProduct]);
 
   useEffect(() => {
     getAllCategories();
@@ -133,7 +142,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.itemStyle}>
           Mã SP: {upperCaseItem(item._id.slice(-5))}
         </Text>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: "center"}}>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: "center" }}>
           <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
           <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
         </View>
@@ -143,7 +152,15 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing} // Gắn trạng thái refreshing
+            onRefresh={onRefresh} // Hàm khi kéo để làm mới
+          />
+        }
+      >
         <StatusBar hidden />
         <View style={{ width: screenWidth, height: 290 }}>
           <Text style={styles.welcomeText}>Welcome,</Text>
@@ -230,7 +247,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     fontSize: 24,
     fontWeight: "600",
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   flatListContainer: {
     marginBottom: 5,
@@ -297,7 +314,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   price: {
-    flex: 1,  
+    flex: 1,
     fontSize: 14,
     color: "#FF6347",
     fontWeight: "bold",

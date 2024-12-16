@@ -62,7 +62,7 @@ function Main() {
         // setTotalConfirmed(confirmed);
         // setTotalPending(pending);
         setData(response.reverse());
-        setFilteredData(response.reverse());
+        setFilteredData(response);
       }
     } catch (error) {
       console.log(error);
@@ -307,7 +307,7 @@ function Main() {
   return (
     <div className="confirm-container">
       <header className="confirm-header">
-        <h1 style={{ fontWeight: "bold" }}>Dịch vụ đã đặt</h1>
+        <h1 style={{ fontWeight: "bold" }}>Xác nhận dịch vụ</h1>
       </header>
 
       <div className="confirm-summary" style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>

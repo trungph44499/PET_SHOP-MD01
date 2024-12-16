@@ -65,6 +65,7 @@ function Main() {
 
   // Hàm kiểm tra dữ liệu hợp lệ
   const validateProductData = () => {
+    // Kiểm tra các trường không được để trống
     if (
       _image.current.value === "" ||
       _name.current.value === "" ||
@@ -76,9 +77,33 @@ function Main() {
     ) {
       return "Vui lòng điền đầy đủ thông tin!";
     }
-
+  
+    const sizeNames = _size.current.value.split(',').map(size => size.trim());
+    if (sizeNames.some(size => size === "")) {
+      return "Kích cỡ không được bỏ trống!";
+    }
+    
+    // Kiểm tra giá cho từng size
+    const sizePrices = _sizePrice.current.value.split(',').map(price => price.trim());
+    for (let i = 0; i < sizePrices.length; i++) {
+      const price = parseFloat(sizePrices[i]);
+      if (isNaN(price) || price <= 0) {
+        return `Giá của size ${i + 1} phải là một số dương!`;
+      }
+    }
+  
+    // Kiểm tra số lượng cho từng size
+    const sizeQuantities = _sizeQuantity.current.value.split(',').map(quantity => quantity.trim());
+    for (let i = 0; i < sizeQuantities.length; i++) {
+      const quantity = parseInt(sizeQuantities[i], 10);
+      if (isNaN(quantity) || quantity <= 0) {
+        return `Số lượng của size ${i + 1} phải là một số dương!`;
+      }
+    }
+  
     return null;
   };
+  
   // Hàm xử lý thêm sản phẩm
   const handleAddProduct = async () => {
     const errorMessage = validateProductData();
@@ -89,16 +114,27 @@ function Main() {
     // Chuyển đổi các giá trị size, price và quantity thành mảng đối tượng
     // Kiểm tra nếu giá trị tồn tại trước khi xử lý
     const sizeArray = _size.current.value && _size.current.value.trim() !== ""
-      ? _size.current.value.split(',').map((size, index) => ({
-        sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
-        price: _sizePrice.current.value && _sizePrice.current.value.split(',')[index]
-          ? parseFloat(_sizePrice.current.value.split(',')[index].trim())
-          : 0,  // Giá trị mặc định là 0 nếu không có giá trị
-        quantity: _sizeQuantity.current.value && _sizeQuantity.current.value.split(',')[index]
-          ? parseInt(_sizeQuantity.current.value.split(',')[index].trim())
-          : 0  // Số lượng mặc định là 0 nếu không có giá trị
-      }))
-      : [];
+    ? _size.current.value.split(',').map((size, index) => {
+        const sizeName = size.trim();
+        const sizePriceInput = _sizePrice.current.value.split(',')[index]?.trim();
+        const sizeQuantityInput = _sizeQuantity.current.value.split(',')[index]?.trim();
+  
+        const price = sizePriceInput && !isNaN(sizePriceInput) && parseFloat(sizePriceInput) > 0
+          ? parseFloat(sizePriceInput) 
+          : 0; // Giá mặc định là 0 nếu không hợp lệ
+  
+        const quantity = sizeQuantityInput && !isNaN(sizeQuantityInput) && parseInt(sizeQuantityInput, 10) > 0
+          ? parseInt(sizeQuantityInput, 10)
+          : 0; // Số lượng mặc định là 0 nếu không hợp lệ
+  
+        return {
+          sizeName,   // Tên size
+          price,      // Giá size
+          quantity    // Số lượng size
+        };
+      })
+    : [];
+  
     try {
       const { status, data: { response, type } } = await axios.post(
         `${json_config[0].url_connect}/products/add`,
@@ -134,16 +170,26 @@ function Main() {
     // Chuyển đổi các giá trị size, price và quantity thành mảng đối tượng
     // Kiểm tra nếu giá trị tồn tại trước khi xử lý
     const sizeArray = _size.current.value && _size.current.value.trim() !== ""
-      ? _size.current.value.split(',').map((size, index) => ({
-        sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
-        price: _sizePrice.current.value && _sizePrice.current.value.split(',')[index]
-          ? parseFloat(_sizePrice.current.value.split(',')[index].trim())
-          : 0,  // Giá trị mặc định là 0 nếu không có giá trị
-        quantity: _sizeQuantity.current.value && _sizeQuantity.current.value.split(',')[index]
-          ? parseInt(_sizeQuantity.current.value.split(',')[index].trim())
-          : 0  // Số lượng mặc định là 0 nếu không có giá trị
-      }))
-      : [];
+    ? _size.current.value.split(',').map((size, index) => {
+        const sizeName = size.trim();
+        const sizePriceInput = _sizePrice.current.value.split(',')[index]?.trim();
+        const sizeQuantityInput = _sizeQuantity.current.value.split(',')[index]?.trim();
+  
+        const price = sizePriceInput && !isNaN(sizePriceInput) && parseFloat(sizePriceInput) > 0
+          ? parseFloat(sizePriceInput) 
+          : 0; // Giá mặc định là 0 nếu không hợp lệ
+  
+        const quantity = sizeQuantityInput && !isNaN(sizeQuantityInput) && parseInt(sizeQuantityInput, 10) > 0
+          ? parseInt(sizeQuantityInput, 10)
+          : 0; // Số lượng mặc định là 0 nếu không hợp lệ
+  
+        return {
+          sizeName,   // Tên size
+          price,      // Giá size
+          quantity    // Số lượng size
+        };
+      })
+    : [];
 
     try {
       const { status, data: { response, type } } = await axios.post(
@@ -372,7 +418,7 @@ function Main() {
                 <span className="item-input-group-text" style={{ width: 100 }}>
                   Animals
                 </span>
-                <select ref={_animals} defaultValue={dataUpdate.animals}>
+                <select ref={_animals}>
                   <option value="dog">Dog</option>
                   <option value="cat">Cat</option>
 
@@ -402,7 +448,7 @@ function Main() {
                   ref={_size}
                   type="text"
                   placeholder="Ví dụ: M,L,XL"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
+                 
                 />
               </div>
               <div className="item-input-group">
@@ -413,7 +459,7 @@ function Main() {
                   ref={_sizePrice}  // Dùng useRef ở đây
                   type="text"
                   placeholder="Ví dụ: 10000,12000,15000"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
+                 
                 />
               </div>
 
@@ -425,7 +471,7 @@ function Main() {
                   ref={_sizeQuantity}  // Dùng useRef ở đây
                   type="text"
                   placeholder="Ví dụ: 10,12,15"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
+                  
                 />
               </div>
             </div>
