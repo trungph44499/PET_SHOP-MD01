@@ -9,6 +9,8 @@ const CryptoJS = require("crypto-js");
 const moment = require("moment");
 const ipconfig = require("../config/ipconfig.json");
 const zaloPayModel = require("../models/zalo_payment");
+const paymentModel = require("../models/paymentModel");
+const notificationModel = require("../models/notification");
 
 router.get("/", function (req, res, next) {
   res.send({ status: 200 });
@@ -55,14 +57,20 @@ const config = {
 };
 
 router.post("/order", async function (req, res) {
-  const products = req.body.products;
-  const totalPrice = req.body.totalPrice;
-  const email = req.body.email;
+  const {
+    fullname,
+    email,
+    location,
+    number,
+    ship,
+    paymentMethod,
+    totalPrice,
+    products,
+  } = req.body;
 
   const embed_data = {
     redirecturl: "http://" + ipconfig.ip + "/callback",
   };
-  const items = products;
   const transID = Math.floor(Math.random() * 1000000) + "_" + email;
 
   const order = {
@@ -70,7 +78,7 @@ router.post("/order", async function (req, res) {
     app_trans_id: `${moment().format("YYMMDD")}_${transID}`,
     app_user: email,
     app_time: Date.now(),
-    item: JSON.stringify(items),
+    item: JSON.stringify(products),
     embed_data: JSON.stringify(embed_data),
     amount: totalPrice,
     callback_url: "http://" + ipconfig.ip,
@@ -95,7 +103,29 @@ router.post("/order", async function (req, res) {
 
   try {
     const result = await axios.post(config.endpoint, null, { params: order });
-    return res.status(200).json(result.data);
+    const resultInsertPaymentModel = await zaloPayModel.insertMany({
+      fullname: fullname,
+      email: email,
+      location: location,
+      number: number,
+      ship: ship,
+      paymentMethod: paymentMethod,
+      totalPrice: totalPrice,
+      products: products,
+    });
+    if (resultInsertPaymentModel.length > 0) {
+      return res.status(200).json(result.data);
+    }
+    return res.status(200).json({
+      return_code: 0,
+      return_message: "Giao dịch không thành công",
+      sub_return_code: 0,
+      sub_return_message: "Lỗi thanh toán",
+      zp_trans_token: "",
+      order_url: `http://${ipconfig.ip}`,
+      order_token: "",
+      qr_code: "",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -109,24 +139,54 @@ router.get("/callback", async (req, res) => {
 
   if (result.status == 1) {
     try {
-      const insertPayment = await zaloPayModel.insertMany(result);
-      if (insertPayment.length > 0) {
-        status = "Thanh toán thành công";
+      const getInfoPayment = await zaloPayModel.findOne({ email: email });
+      if (getInfoPayment) {
+        const result = await paymentModel.insertMany({
+          fullname: getInfoPayment.fullname,
+          email: getInfoPayment.email,
+          location: getInfoPayment.location,
+          number: getInfoPayment.number,
+          ship: getInfoPayment.ship,
+          paymentMethod: getInfoPayment.paymentMethod,
+          totalPrice: getInfoPayment.totalPrice,
+          products: getInfoPayment.products,
+        });
+        if (result.length > 0) {
+          const resultNotification = await notificationModel.insertMany({
+            fullname: getInfoPayment.fullname,
+            email: getInfoPayment.email,
+            image: getInfoPayment.products[0].image,
+            service: getInfoPayment.products[0].name,
+            type: `${getInfoPayment.products.length} sản phẩm`,
+          });
+          if (resultNotification.length > 0) {
+            const deleteTempZalo = await zaloPayModel.deleteOne({
+              email: email,
+            });
+            if (deleteTempZalo.deletedCount > 0) {
+              status = "Thanh toán thành công";
+            }
+          }
+        }
       }
+      res.render('payment', {
+        title: status, 
+      });
     } catch (error) {
       console.log(error);
     }
   }
-
-  res.status(200).send(`<script>window.close()</script>`);
 });
 
 router.post("/check-status-order", async (req, res) => {
   const { email } = req.body;
 
   try {
-    const resultFindZaloPayment = await zaloPayModel.find({ email: email });
-    res.status(200).json(resultFindZaloPayment[0]);
+    const resultFindZaloPayment = await zaloPayModel.findOne({ email: email });
+    if (!resultFindZaloPayment) {
+      return res.status(200).json({ status: 1 });
+    }
+    return res.status(200).json({ status: 0 });
   } catch (error) {
     console.log(error);
   }

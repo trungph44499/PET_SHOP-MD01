@@ -64,19 +64,6 @@ const Payment = ({ navigation, route }) => {
     }
   }
 
-  useEffect(() => {
-    (async function () {
-      const userEmail = await AsyncStorage.getItem("@UserLogin");
-      try {
-        await axios.post(`${URL}/reset`, {
-          email: userEmail,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-
   async function _payment() {
     try {
       let _userEmail = await AsyncStorage.getItem("@UserLogin");
@@ -120,10 +107,12 @@ const Payment = ({ navigation, route }) => {
                   totalPrice: totalPay,
                   products: listItem,
                 };
+
                 const response = await axios.post(
                   `${URL}/order`,
                   _paymentObject
                 );
+
                 if (response.data.return_code == 1) {
                   await Linking.openURL(response.data.order_url);
                   return;
@@ -161,7 +150,7 @@ const Payment = ({ navigation, route }) => {
           if (status == 200) {
             if (data.status == 1) {
               Toast("Thanh toán thành công");
-              _savePayments(userEmail);
+              navigation.popToTop();
               return;
             }
           }
