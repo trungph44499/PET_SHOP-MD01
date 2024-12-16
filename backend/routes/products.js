@@ -59,13 +59,11 @@ router.post("/add", async (req, res) => {
     });
 
     const savedProduct = await newProduct.save();
-    res
-      .status(200)
-      .json({
-        response: "Add product complete!",
-        type: true,
-        product: savedProduct,
-      });
+    res.status(200).json({
+      response: "Add product complete!",
+      type: true,
+      product: savedProduct,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ response: "Error add product!" });
@@ -105,13 +103,11 @@ router.post("/update", async (req, res) => {
     ); // Trả về bản cập nhật mới
 
     if (updatedProduct) {
-      res
-        .status(200)
-        .json({
-          response: "Update product complete!",
-          type: true,
-          product: updatedProduct,
-        });
+      res.status(200).json({
+        response: "Update product complete!",
+        type: true,
+        product: updatedProduct,
+      });
     } else {
       res.status(400).json({ response: "Error Update product!", type: false });
     }

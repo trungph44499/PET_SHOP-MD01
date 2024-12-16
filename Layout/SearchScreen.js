@@ -115,7 +115,7 @@ const SearchScreen = ({ navigation }) => {
         ) : (
           <>
             {txtSearch === "" ? (
-              <View style={{ gap: 10 }}>
+              <View style={{}}>
                 <Text style={styles.recentSearchTitle}>Tìm kiếm gần đây</Text>
                 <FlatList
                   scrollEnabled={false}
@@ -179,21 +179,20 @@ export default SearchScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     backgroundColor: '#FFFFFF',
-    gap: 16,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 5,
+    marginBottom: 10,
   },
   title: {
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   search: {
     width: '100%',
@@ -219,11 +218,12 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 20,
+    height: 20,
     tintColor: '#A05E56',
   },
   listSearch: {
+    marginTop: 15,
     flexGrow: 1,
   },
   recentSearchTitle: {

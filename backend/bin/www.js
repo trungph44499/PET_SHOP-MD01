@@ -13,10 +13,14 @@ const { WebSocketServer } = require("ws");
 /**
  * Get port from environment and store in Express.
  */
+<<<<<<< HEAD
 
 
 var URL_DATABASE = "mongodb+srv://thuyltph35992:goqUoio57kFOE1LZ@cluster0.smo2w.mongodb.net";
 
+=======
+var URL_DATABASE = "mongodb://localhost:27017";
+>>>>>>> 9c3314381d1bc6b4e6ebcfbb5e4392e10a2023de
 
 var port = normalizePort(process.env.PORT || "80");
 app.set("port", port);

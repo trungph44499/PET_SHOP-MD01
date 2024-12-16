@@ -4,13 +4,14 @@ const notificationModel = require("../models/notification");
 const router = express.Router();
 
 router.post("/add", async (req, res) => {
-  const { service, name, email, phone, message } = req.body;
+  const { service, name, email, phone, namePet, message } = req.body;
   try {
     const result = await petCareModel.insertMany({
       service: service,
       name: name,
       email: email,
       phone: phone,
+      namePet: namePet,
       message: message,
     });
     if (result.length > 0) {
@@ -39,12 +40,14 @@ router.post("/add", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-  const { service, id, email, status } = req.body;
+  const { service, id, email, status, idStaff, nameStaff } = req.body;
   try {
     const result = await petCareModel.updateMany(
       { _id: id },
       {
         status: status,
+        idStaff: idStaff,
+        nameStaff: nameStaff,
       }
     );
     if (result.matchedCount > 0) {

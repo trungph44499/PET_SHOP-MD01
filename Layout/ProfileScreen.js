@@ -51,14 +51,14 @@ const ProfileScreen = ({ navigation, route }) => {
           >
             <Image style={styles.icon} source={require("../Image/left-back.png")} />
           </TouchableOpacity>
-          <Text style={styles.headerText}>PROFILE</Text>
-          <TouchableOpacity style={styles.chat} 
+          <Text style={styles.headerText}>HỒ SƠ CÁ NHÂN</Text>
+          <TouchableOpacity style={styles.chat}   
           onPress={() =>
             navigation.navigate("ChatScreen")
           }
           >
             <Image source={require("../Image/messenger.png")}
-              style={{ width: 25, height: 25 }}
+              style={styles.icon}
             />
           </TouchableOpacity>
           
@@ -117,7 +117,7 @@ const ProfileScreen = ({ navigation, route }) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}
+          {/* <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("PaymentMethod")}>
             <View style={{ flex: 1 }}>
               <Text style={styles.buttonText}>Phương thức thanh toán</Text>
@@ -126,7 +126,7 @@ const ProfileScreen = ({ navigation, route }) => {
             <Image source={require("../Image/left.png")}
               style={{ width: 25, height: 25 }}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate("ManageUser")}>

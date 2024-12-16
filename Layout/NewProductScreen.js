@@ -86,13 +86,34 @@ export default NewProductScreen = ({ navigation }) => {
     navigation.navigate("DetailScreen", { item: item });
   };
 
+
+  const ProductItem = React.memo(({ item, onPress }) => {
+    return (
+      <TouchableOpacity onPress={() => onPress(item)} style={styles.itemProduct}>
+        <Image source={{ uri: item.img }} style={styles.itemImage} />
+        {item.status === "New" && <Text style={styles.itemStatus}>{item.status}</Text>}
+        <View style={styles.itemRow}>
+          <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">
+            {item.name}
+          </Text>
+        </View>
+        <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
+        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+          <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  });
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={{ width: 20, height: 20 }} source={require('../Image/left-back.png')} />
         </TouchableOpacity>
-        <Text style={{ flex : 1, textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Sản phẩm mới</Text>
+        <Text style={{ flex: 1, textAlign: 'center', fontSize: 18, fontWeight: 'bold' }}>Sản phẩm mới</Text>
         <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
           <Image style={{ width: 26, height: 26 }} source={require('../Image/cart.png')} />
         </TouchableOpacity>
@@ -116,9 +137,9 @@ export default NewProductScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={showPriceUp} style={[styles.button, { backgroundColor: showPrice ? "#73B5F7" : "transparent" }]}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontSize: 15, color: !showPrice ? "#7D7B7B" : "#FFFFFF", fontWeight: "bold" }}>Giá </Text>
-          <Image style={{ width: 13, height: 13, tintColor: !showPrice ? "#7D7B7B" : "#FFFFFF", }}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 15, color: !showPrice ? "#7D7B7B" : "#FFFFFF", fontWeight: "bold" }}>Giá </Text>
+            <Image style={{ width: 13, height: 13, tintColor: !showPrice ? "#7D7B7B" : "#FFFFFF", }}
               source={require("../Image/item_up.png")} />
           </View>
         </TouchableOpacity>
@@ -129,16 +150,9 @@ export default NewProductScreen = ({ navigation }) => {
         data={filteredData}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => goToDetailScreen(item)} style={styles.itemProduct}>
-            <Image source={{ uri: item.img }} style={styles.itemImage} />
-            {item.status === "New" && <Text style={styles.itemStatus}>{item.status}</Text>}
-            <View style={styles.itemRow}>
-              <Text style={styles.itemName} numberOfLines={2} ellipsizeMode="tail">{item.name}</Text>
-            </View>
-            <Text style={styles.itemType}>Mã SP: {upperCaseItem(item._id.slice(-5))}</Text>
-            <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
-          </TouchableOpacity>
+          <ProductItem item={item} onPress={goToDetailScreen} />
         )}
+        showsVerticalScrollIndicator={false}  // Tắt thanh cuộn dọc bên phải
       />
     </View>
   );
@@ -165,18 +179,17 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    padding: 6,
+    padding: 10,
     borderRadius: 5,
     alignItems: "center",
     margin: 5
   },
   itemProduct: {
     backgroundColor: 'white',
-    width: '45%',
-    borderRadius: 12,
-    padding: 12,
-    margin: 10,
-    gap: 10,
+    width: '47%',
+    borderRadius: 10,
+    padding: 10,
+    margin: 6,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 6 },
     shadowRadius: 5,
@@ -190,18 +203,18 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   itemName: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: "bold",
     color: "#000",
-    marginBottom: 5,
     overflow: 'hidden',
     width: '100%',
+    marginBottom: 10
   },
   itemStatus: {
     position: "absolute",
-    top: '48%',
+    top: '58%',
     right: '8%',
-    fontSize: 18,
+    fontSize: 14,
     fontStyle: "italic",
     color: "#FFFFFF",
     fontWeight: "bold",
@@ -215,12 +228,17 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   itemType: {
-    fontSize: 15,
+    fontSize: 10,
     fontWeight: '300',
+    marginBottom: 5
   },
   price: {
-    fontSize: 16,
+    flex: 1,
+    fontSize: 13,
     fontWeight: '600',
     color: 'red',
+  },
+  daBan: {
+    fontSize: 10,
   },
 });

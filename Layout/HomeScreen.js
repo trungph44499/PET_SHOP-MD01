@@ -67,25 +67,13 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (selectedCategory) {
-      const filteredC = ListCats.filter((product) => {
-        return product.type._id === selectedCategory._id;
-      });
-      setFilteredCats(filteredC);
+      setFilteredCats(ListCats.filter((product) => product.type._id === selectedCategory._id));
+      setFilteredDogs(ListDogs.filter((product) => product.type._id === selectedCategory._id));
     } else {
       setFilteredCats(ListCats);
-    }
-  }, [selectedCategory, ListCats]);
-
-  useEffect(() => {
-    if (selectedCategory) {
-      const filteredD = ListDogs.filter((product) => {
-        return product.type._id === selectedCategory._id;
-      });
-      setFilteredDogs(filteredD);
-    } else {
       setFilteredDogs(ListDogs);
     }
-  }, [selectedCategory, ListDogs]);
+  }, [selectedCategory, ListCats, ListDogs]);
 
   // Hàm điều hướng đến màn hình ClassifyScreen
   const goToClassifyScreen = useCallback((type, animals) => {
@@ -96,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate("DetailScreen", { item: item });
   }, [navigation]);
 
-  const ItemCategory = ({ category }) => {
+  const ItemCategory = React.memo(({ category }) => {
     const isSelected = selectedCategory && selectedCategory._id === category._id;
 
     return (
@@ -127,9 +115,9 @@ const HomeScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     );
-  };
+  });
 
-  const ItemList = ({ item }) => {
+  const ItemList = React.memo(({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => goToDetailScreen(item)}
@@ -145,16 +133,19 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.itemStyle}>
           Mã SP: {upperCaseItem(item._id.slice(-5))}
         </Text>
-        <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: "center"}}>
+          <Text style={styles.price}>{numberUtils(item.size[0].price)}</Text>
+          <Text style={styles.daBan}>Đã bán: {item.sold}</Text>
+        </View>
       </TouchableOpacity>
     );
-  };
+  });
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar hidden />
-        <View style={{ width: screenWidth, height: 280 }}>
+        <View style={{ width: screenWidth, height: 290 }}>
           <Text style={styles.welcomeText}>Welcome,</Text>
           <Text style={styles.petShopText}>Pet Shop</Text>
           <SliderShow />
@@ -208,7 +199,7 @@ const HomeScreen = ({ navigation }) => {
             onPress={() => goToClassifyScreen(selectedCategory ? selectedCategory._id : categories[0]._id, "cat")}
             style={styles.textXemthem}
           >
-            <Text style={styles.textXemthemContent}>Xem thêm</Text> 
+            <Text style={styles.textXemthemContent}>Xem thêm</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -239,6 +230,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     fontSize: 24,
     fontWeight: "600",
+    marginBottom: 10, 
   },
   flatListContainer: {
     marginBottom: 5,
@@ -257,11 +249,11 @@ const styles = StyleSheet.create({
   },
   itemDog: {
     backgroundColor: "white",
-    flex: 1,
+    width: '47%',
     borderRadius: 12,
     padding: 12,
-    marginHorizontal: 5,
-    marginVertical: 10,
+    marginHorizontal: 6,
+    marginVertical: 6,
     shadowColor: "black",
     shadowOffset: {
       width: 0,
@@ -289,20 +281,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   itemName: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 5,
-    // Thêm các thuộc tính để kiểm soát việc cắt chữ
     overflow: 'hidden',
     width: '100%',  // Đảm bảo chiếm toàn bộ chiều rộng của cha
   },
   itemStyle: {
-    fontSize: 14,
+    fontSize: 11,
     color: "#777",
+    marginBottom: 5,
+  },
+  daBan: {
+    fontSize: 11,
   },
   price: {
-    fontSize: 18,
+    flex: 1,  
+    fontSize: 14,
     color: "#FF6347",
     fontWeight: "bold",
   },

@@ -15,7 +15,7 @@ export default function ChatScreenComponent() {
   const [user, setUser] = useState({});
   const websocket = useContext(webSocketContext);
   const route = useRoute(); 
-  const product = route?.params?.product;
+  // const product = route?.params?.product;
 
   websocket.onmessage = function (message) {
     const { data } = message;
@@ -59,11 +59,11 @@ export default function ChatScreenComponent() {
       style={styles.background}
     >
       <GiftedChat
-        placeholder="Enter your message..."
+        placeholder="Nhập tin nhắn..."
         messages={messages}
         renderChatEmpty={() => (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No messages yet, start chatting!</Text>
+            <Text style={styles.emptyText}>Chưa có tin nhắn nào, hãy bắt đầu trò chuyện!</Text>
           </View>
         )}
         onSend={(messages) => onSend(messages)}

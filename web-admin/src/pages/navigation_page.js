@@ -181,14 +181,14 @@ export default function NavigationPage({ child }) {
             icon={<FontAwesomeIcon icon={faHand} />}
             onClick={() => navigator("/confirm-product")}
           >
-            Xác nhận dịch vụ
+            Dịch vụ đã đặt
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faMoneyBill} />}
             onClick={() => navigator("/payment")}
           >
-            Xác nhận đơn hàng
+            Đơn hàng đã đặt
           </MenuItem>
         </Menu>
         <div

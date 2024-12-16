@@ -1,62 +1,19 @@
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, Image } from "react-native";
 import UnderLine from '../../components/UnderLine';
-// import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { URL } from '../HomeScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { numberUtils, upperCaseItem } from "../utils/stringUtils";
+import { numberUtils } from "../utils/stringUtils";
 
 const DetailHistoryPay = ({ route }) => {
     const navigation = useNavigation();
     const { item } = route.params;
-    // const [user, setuser] = useState([]);
     const [orderStatus, setOrderStatus] = useState(item.status); // Trạng thái đơn hàng
-
-
-    // // Lấy thông tin người dùng
-    // const retrieveData = async () => {
-    //     try {
-    //         const UserData = await AsyncStorage.getItem('User');
-    //         if (UserData != null) {
-    //             setuser(JSON.parse(UserData));
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-    // Lấy lịch sử thanh toán
-    async function getAllHistoryPay() {
-        try {
-            const email = await AsyncStorage.getItem("@UserLogin");
-            const { status, data } = await axios.get(`${URL}/pay/filter`, {
-                params: {
-                    email: email,
-                },
-            });
-            if (status == 200) {
-                setDataHistory(data);
-            }
-        } catch (error) {
-            // console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        // retrieveData();
-        getAllHistoryPay();
-    }, []);
 
     // Hàm hủy đơn hàng
     function rejectBuyProduct() {
-        if (orderStatus === 'reject') {
-            Alert.alert("Đơn hàng đã bị hủy", "Bạn không thể hủy đơn hàng này nữa.");
-            return;
-        }
-
         Alert.alert(
             "Xác nhận hủy đơn hàng",
             "Bạn có chắc chắn muốn hủy đơn hàng không?",
@@ -81,8 +38,9 @@ const DetailHistoryPay = ({ route }) => {
 
                             if (status === 200) {
                                 setOrderStatus("reject"); // Cập nhật trạng thái tại frontend
-                                if (type) await getAllHistoryPay();
+                                if (type)                               
                                 Alert.alert("Hủy đơn hàng thành công!");
+                                navigation.goBack();
                             }
                         } catch (error) {
                             console.log(error);
@@ -94,8 +52,6 @@ const DetailHistoryPay = ({ route }) => {
             { cancelable: false }
         );
     }
-
-    // const totalAmount = item.products.reduce((sum, product) => sum + product.price * product.quantity, 0);
 
     return (
         <View style={styles.container}>

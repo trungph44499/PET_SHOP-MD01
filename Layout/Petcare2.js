@@ -15,101 +15,109 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { URL } from "./HomeScreen";
+import { Alert } from "react-native";
 
 const Petcare2 = () => {
   const [service, setService] = useState("");
-  const [name, setName] = useState("");
-  // const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
+  const [namePet, setNamePet] = useState("");
   const [isLoading, setIsLoading] = useState(false);  // Thêm trạng thái tải
-  const [user, setUser] = useState({});
+  const [shippingAddresses, setShippingAddresses] = useState({});
   const websocket = useContext(webSocketContext);
   const navigation = useNavigation();
+  const checkShippingAddresses = JSON.stringify(shippingAddresses) === "{}";
 
   const services = [
     { key: "1", value: "Dịch vụ 1" },
     { key: "2", value: "Dịch vụ 2" },
   ];
 
-  const userData = async () => {
-    try {
-      const userData = await AsyncStorage.getItem("@UserLogin");
-
-      const {
-        status,
-        data: { response },
-      } = await axios.post(`${URL}/users/getUser`, {
-        email: userData,
-      });
-      if (status == 200) {
-        setUser(...response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    userData();
-  }, []);
-
-  const phone = String(user.sdt);
-
-  // Kiểm tra số điện thoại hợp lệ
-  const validatePhone = (phone) => {
-    const phoneRegex = /^[0-9]{10,11}$/; // Kiểm tra số điện thoại
-    return phoneRegex.test(phone);
-  };
-
-  const handleSubmit = async () => {
-    const email = await AsyncStorage.getItem("@UserLogin");
-    if (
-      service !== "" &&
-      name !== "" &&
-      email !== null &&
-      phone !== "" &&
-      message !== "" &&
-      validatePhone(phone)  // Kiểm tra số điện thoại
-    ) {
-      setIsLoading(true);  // Hiển thị biểu tượng tải
+    const unsubscribe = navigation.addListener("focus", async () => {
       try {
-        const { status, data: { response, type } } = await axios.post(URL + "/pet-care/add", {
-          service,
-          name,
-          email,
-          phone,
-          message,
-        });
+        const userEmail = await AsyncStorage.getItem("@UserLogin");
 
-        setIsLoading(false);  // Ẩn biểu tượng tải
+        const storedShippingAddresses = await AsyncStorage.getItem(
+          userEmail + "_shippingAddresses"
+        );
+        let shippingSavedIndex = await AsyncStorage.getItem(
+          userEmail + "ShippingSaved"
+        );
 
-        if (status === 200) {
-          ToastAndroid.show(response, ToastAndroid.SHORT);
-          if (type) {
-            websocket.send(
-              JSON.stringify({
-                email,
-                type: "pet-care",
-              })
-            );
-          }
-          navigation.goBack();
+        if (storedShippingAddresses && shippingSavedIndex) {
+          setShippingAddresses(
+            JSON.parse(storedShippingAddresses)[shippingSavedIndex]
+          );
+        } else {
+          setShippingAddresses({});
         }
       } catch (error) {
-        setIsLoading(false);  // Ẩn biểu tượng tải
-        console.error(error);
-        ToastAndroid.show("Đã có lỗi xảy ra, vui lòng thử lại!", ToastAndroid.SHORT);  // Thông báo lỗi
+        console.error("Lỗi khi lấy địa chỉ giao hàng:", error);
       }
+    });
+    return unsubscribe;
+  }, [navigation]);
 
-      // Xóa form sau khi gửi thành công
-      setName("");
-      // setPhone("");
-      setMessage("");
-      setService("");
-    } else {
-      ToastAndroid.show("Vui lòng điền đủ thông tin và kiểm tra lại số điện thoại!", ToastAndroid.SHORT);
-    }
+  const handleSubmit = async () => {
+
+    Alert.alert(
+      "Xác nhận đăng ký",
+      "Bạn có chắc chắn muốn đăng ký dịch vụ này không?",
+      [
+        {
+          text: "Hủy",
+          onPress: () => console.log("Hủy đăng ký"),
+          style: "cancel",
+        },
+        {
+          text: "Đồng ý",
+          onPress: async () => {
+            const email = await AsyncStorage.getItem("@UserLogin");
+
+            if (service !== "" && namePet !== "" && shippingAddresses !== "") {
+              setIsLoading(true);  // Hiển thị biểu tượng tải
+              try {
+                const { status, data: { response, type } } = await axios.post(URL + "/pet-care/add", {
+                  service,
+                  name: shippingAddresses.fullName,
+                  email,
+                  phone: shippingAddresses.phoneNumber,
+                  namePet: namePet,
+                  message: `${shippingAddresses.address}, ${shippingAddresses.city}`,
+                });
+
+                setIsLoading(false);  // Ẩn biểu tượng tải
+
+                if (status === 200) {
+                  ToastAndroid.show(response, ToastAndroid.SHORT);
+                  if (type) {
+                    websocket.send(
+                      JSON.stringify({
+                        email,
+                        type: "pet-care",
+                      })
+                    );
+                  }
+                  navigation.goBack();
+                }
+              } catch (error) {
+                setIsLoading(false);  // Ẩn biểu tượng tải
+                console.error(error);
+                ToastAndroid.show("Đã có lỗi xảy ra, vui lòng thử lại!", ToastAndroid.SHORT);  // Thông báo lỗi
+              }
+
+              // Xóa form sau khi gửi thành công
+              setNamePet("");
+              setService("");
+            } else {
+              ToastAndroid.show("Vui lòng điền đủ thông tin!", ToastAndroid.SHORT);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
+
 
   return (
     <View style={styles.container}>
@@ -122,40 +130,65 @@ const Petcare2 = () => {
         </TouchableOpacity>
         <Text style={styles.title}>Liên hệ với chúng tôi</Text>
       </View>
+      {checkShippingAddresses ? (
+        <TouchableOpacity
+          onPress={() => { navigation.navigate("ShippingAddrees"); }}
+          style={styles.input}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.bold}>Thêm địa chỉ nhận hàng</Text>
+            <Image
+              style={styles.deleteIcon}
+              source={require("../Image/left.png")}
+            />
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ShippingAddrees")}
+          style={styles.containerAddress}
+        >
+          <View style={styles.contentAddress}>
+            <View style={styles.infoContainerAddress}>
+              <Image style={styles.iconAddress} source={require("../Image/location.png")} />
+              <Text style={styles.nameAddress}>{shippingAddresses.fullName}</Text>
+              <Text style={styles.phoneAddress}>{shippingAddresses.phoneNumber}</Text>
+              <View>
+                <Text style={styles.addressAddress}>
+                  Địa chỉ: {shippingAddresses.address}, {shippingAddresses.city}
+                </Text>
+              </View>
+            </View>
+            <Image style={styles.iconAddress} source={require("../Image/left.png")} />
+          </View>
+        </TouchableOpacity>
+      )}
 
       <TextInput
         style={styles.input}
-        placeholder="Tên của bạn"
-        value={name}
-        onChangeText={setName}
+        placeholder="Tên thú cưng"
+        value={namePet}
+        onChangeText={setNamePet}
       />
 
-      <TextInput
-        style={[styles.input, { color: 'black' }]}
-        placeholder="Số điện thoại của bạn"
-        value={phone}
-        editable={false}
-      // onChangeText={setPhone}
-      // keyboardType="phone-pad"
-      />
-
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        placeholder="Nội dung địa chỉ"
-        value={message}
-        onChangeText={setMessage}
-        multiline={true}
-        numberOfLines={4}
-      />
-
-      <SelectList
-        setSelected={(val) => setService(val)}
-        data={services}
-        save="value"
-        search={false}
-        placeholder="Chọn dịch vụ"
-      />
-
+      <View style={{
+        marginHorizontal: 5,
+      }}>
+        <SelectList
+          setSelected={(val) => setService(val)}
+          data={services}
+          save="value"
+          search={false}
+          placeholder="Chọn dịch vụ"
+          style={{ height: 50 }} // Đặt chiều cao cố định cho SelectList
+        />
+      </View>
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         {isLoading ? (
           <ActivityIndicator size="small" color="#fff" />  // Hiển thị biểu tượng tải
@@ -192,6 +225,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 15,
+    marginHorizontal: 5,
     marginBottom: 15,
     borderRadius: 8,
     backgroundColor: "#fff",
@@ -206,9 +240,12 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   button: {
-    marginTop: 20,
+    position: "absolute",
+    bottom: 5,
+    width: "100%",
     backgroundColor: "#0066cc",
-    paddingVertical: 15,
+    margin: 20,
+    padding: 15,
     borderRadius: 8,
     alignItems: "center",
     shadowColor: "#000",
@@ -219,9 +256,53 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  deleteIcon: {
+    width: 20,
+    height: 20,
+    marginTop: 2,
+  },
+  containerAddress: {
+    marginHorizontal: 5,
+    marginBottom: 15,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+    elevation: 5,
+  },
+  contentAddress: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 15,
+    flexWrap: 'wrap',
+  },
+  infoContainerAddress: {
+    flexDirection: "row",
+    flexWrap: 'wrap', // Bọc lại nếu văn bản quá dài
+    flex: 1,          // Đảm bảo không gian còn lại cho văn bản
+    paddingRight: 10
+  },
+  iconAddress: {
+    width: 20,
+    height: 20,
+  },
+  nameAddress: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginHorizontal: 5,
+  },
+  phoneAddress: {
+    fontWeight: "300",
+    fontSize: 18,
+  },
+  addressAddress: {
     fontSize: 16,
-    fontWeight: "600",
+    color: "#808080",
+    fontWeight: "regular",
   },
 });
+
 
 export default Petcare2;

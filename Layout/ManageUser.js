@@ -16,6 +16,7 @@ import axios from "axios";
 import { URL } from "./HomeScreen";
 import * as ImagePicker from "expo-image-picker";
 import { validateSDT } from "./utils/stringUtils";
+import { Toast } from "./utils/toastUtil";
 
 const ManageUser = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
@@ -41,6 +42,7 @@ const ManageUser = ({ navigation }) => {
               email: user.email,
               sdt: user.sdt || "",
             };
+
             setUserInfo(userData);
           }
         }
@@ -70,12 +72,6 @@ const ManageUser = ({ navigation }) => {
 
   const handleSave = async () => {
     const { fullname, email, sdt } = userInfo;
-
-    if (!selectedImage) {
-      alert("Vui lòng chọn một ảnh!");
-      return;
-    }
-
     if (!fullname) {
       Alert.alert("Lỗi", "Tên không được để trống");
       return;
@@ -95,9 +91,6 @@ const ManageUser = ({ navigation }) => {
       Alert.alert("Lỗi", "Số điện thoại không đúng định dạng");
       return;
     }
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("avatar", selectedImage);
 
     Alert.alert("Xác nhận", "Bạn có chắc chắn muốn thay đổi thông tin?", [
       {
@@ -108,33 +101,40 @@ const ManageUser = ({ navigation }) => {
         text: "Đồng ý",
         onPress: async () => {
           try {
-            const urlAvatar = await axios.post(`${URL}/upload`, formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            });
+            var urlAvatar = "";
+            if (selectedImage) {
+              let formData = new FormData();
+              formData.append("email", email);
+              formData.append("avatar", selectedImage);
 
-            const response = await axios.post(`${URL}/users/update`, {
-              avatar: urlAvatar.data.filePath,
-              fullname,
-              email,
-              sdt,
-            });
-            if (response.status === 200 && response.data.type) {
-              Alert.alert(
-                "Thành công",
-                "Thông tin người dùng đã được cập nhật."
-              );
-              navigation.goBack();
-            } else {
-              Alert.alert("Lỗi", "Không thể cập nhật thông tin người dùng.");
+              const { data } = await axios.post(`${URL}/upload`, formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              });
+              urlAvatar = data.filePath;
             }
+
+            const { data } = await axios.post(
+              `${URL}/users/update`,
+              {
+                avatar: urlAvatar === "" ? userInfo.avatar : urlAvatar,
+                fullname,
+                email,
+                sdt,
+              },
+              { timeout: 5000 }
+            );
+            if (data.type) {
+              Toast("Cập nhật thông tin thành công");
+              navigation.goBack();
+              return;
+              
+            }
+            Toast("Không thể cập nhật thông tin người dùng.");
           } catch (error) {
             console.log(error);
-            Alert.alert(
-              "Lỗi",
-              "Có lỗi xảy ra khi cập nhật thông tin người dùng."
-            );
+            Toast("Mạng không ổn định, vui lòng thử lại");
           }
         },
       },

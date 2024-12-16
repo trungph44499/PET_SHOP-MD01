@@ -29,7 +29,7 @@ function Main() {
       case "reject":
         return "Đơn hàng bị hủy";
       case "success":
-        return "Đang chuẩn bị hàng";
+        return "Đang chờ lấy hàng";
       case "pending":
         return "Đang chờ xác nhận";
       case "shipping":
@@ -44,19 +44,20 @@ function Main() {
   useEffect(() => {
     const getAdminById = async (id) => {
       try {
-        const response = await axios.get(`${json_config[0].url_connect}/admin/${id}`);
+        const response = await axios.get(
+          `${json_config[0].url_connect}/admin/${id}`
+        );
         if (response.data.response) {
-
-          setUser(response.data.response)
+          setUser(response.data.response);
         } else {
-          console.log(response.data.response);  // In ra thông báo lỗi nếu không tìm thấy admin
+          console.log(response.data.response); // In ra thông báo lỗi nếu không tìm thấy admin
         }
       } catch (error) {
-        console.error("Error fetching admin by ID:", error);  // In lỗi nếu có
+        console.error("Error fetching admin by ID:", error); // In lỗi nếu có
       }
     };
     getAdminById(userId);
-  }, []);
+  }, [userId]);
 
   const openModal = (transaction) => {
     setSelectedTransaction(transaction);
@@ -67,7 +68,6 @@ function Main() {
     setSelectedTransaction(null);
     setIsModalOpen(false);
   };
-
 
   function TransactionModal({ transaction, onClose }) {
     if (!transaction) return null;
@@ -84,40 +84,82 @@ function Main() {
           <h2 className="confirm-texth2">Chi Tiết Đơn Hàng</h2>
           <div className="confirm-modal-body">
             <div className="confirm-transaction-pay">
-              <p><strong>ID hoá đơn:</strong> {transaction._id}</p>
-              <p><strong>Họ tên:</strong> {transaction.fullname}</p>
-              <p><strong>Email:</strong> {transaction.email}</p>
-              <p><strong>Địa chỉ:</strong> {transaction.location}</p>
-              <p><strong>Số điện thoại:</strong> {transaction.number}</p>
-              <p><strong>Phương thức vận chuyển:</strong> {transaction.ship}</p>
-              <p><strong>Phương thức thanh toán:</strong> {transaction.paymentMethod}</p>
-              <p><strong>Tổng tiền:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
-              <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
+              <p>
+                <strong>ID hoá đơn:</strong> {transaction._id}
+              </p>
+              <p>
+                <strong>Họ tên:</strong> {transaction.fullname}
+              </p>
+              <p>
+                <strong>Email:</strong> {transaction.email}
+              </p>
+              <p>
+                <strong>Địa chỉ:</strong> {transaction.location}
+              </p>
+              <p><strong>Thời Gian Đặt:</strong> {new Date(transaction.createdAt).toLocaleString("vi-VN")}</p>
+              <p>
+                <strong>Số điện thoại:</strong> {transaction.number}
+              </p>
+              <p>
+                <strong>Phương thức vận chuyển:</strong> {transaction.ship}
+              </p>
+              <p>
+                <strong>Phương thức thanh toán:</strong>{" "}
+                {transaction.paymentMethod}
+              </p>
+              <p>
+                <strong>Tổng tiền:</strong>{" "}
+                {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ
+              </p>
+              <p>
+                <strong>Trạng thái:</strong> {convertStatus(transaction.status)}
+              </p>
             </div>
             <div className="confirm-product-pay">
               <ul>
                 {transaction.products.map((product, index) => (
                   <li key={index}>
-                    <p><strong>Sản phẩm: </strong></p>
-                    <img src={product.image} height={100} width={100} alt={product.name} />
-                    <p><strong>Tên sản phẩm: </strong>{product.name}</p>
-                    <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
-                    <p><strong>Kích thước: </strong>{product.size}</p>
-                    <p><strong>Số lượng: </strong>{product.quantity}</p>
+                    <p>
+                      <strong>Sản phẩm: </strong>
+                    </p>
+                    <img
+                      src={product.image}
+                      height={100}
+                      width={100}
+                      alt={product.name}
+                    />
+                    <p>
+                      <strong>Tên sản phẩm: </strong>
+                      {product.name}
+                    </p>
+                    <p>
+                      <strong>Giá: </strong>
+                      {Number(product.price).toLocaleString("vi-VN")} VNĐ
+                    </p>
+                    <p>
+                      <strong>Kích thước: </strong>
+                      {product.size}
+                    </p>
+                    <p>
+                      <strong>Số lượng: </strong>
+                      {product.quantity}
+                    </p>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
           <div>
-            <p><strong>Xác nhận</strong></p>
+            <p>
+              <strong>Xác nhận</strong>
+            </p>
             <table className="confirm-table">
               <thead>
                 <tr>
                   <th scope="col">Chờ xác nhận</th>
-                  <th scope="col">Chờ giao hàng</th>
-                  <th scope="col">Đang giao</th>
-                  <th scope="col">Đã hủy</th>
+                  <th scope="col">Chờ lấy hàng</th>
+                  <th scope="col">Đang giao hàng</th>
+                  <th scope="col">Hủy đơn hàng</th>
                 </tr>
               </thead>
               <tbody>
@@ -125,7 +167,8 @@ function Main() {
                   <td>
                     <button
                       disabled={
-                        transaction.status === "reject" || transaction.status !== "pending"
+                        transaction.status === "reject" ||
+                        transaction.status !== "pending"
                       }
                       onClick={async () => {
                         const resultCheck = window.confirm("Confirm payment?");
@@ -141,7 +184,7 @@ function Main() {
                               products: transaction.products,
                               status: "success",
                               idStaff: userId,
-                              nameStaff: user.fullname
+                              nameStaff: user.fullname,
                             }
                           );
 
@@ -179,7 +222,7 @@ function Main() {
                               products: transaction.products,
                               status: "shipping",
                               idStaff: userId,
-                              nameStaff: user.fullname
+                              nameStaff: user.fullname,
                             }
                           );
 
@@ -216,7 +259,7 @@ function Main() {
                               products: transaction.products,
                               status: "shipped",
                               idStaff: userId,
-                              nameStaff: user.fullname
+                              nameStaff: user.fullname,
                             }
                           );
 
@@ -229,7 +272,7 @@ function Main() {
                       }}
                       className="confirm-btn btn-primary"
                     >
-                      Đã giao
+                      Giao thành công
                     </button>
                   </td>
                   <td>
@@ -237,7 +280,8 @@ function Main() {
                       disabled={
                         transaction.status === "reject" ||
                         transaction.status === "shipped" ||
-                        transaction.status === "shipping"
+                        transaction.status === "shipping" || 
+                        transaction.status === "success"
                       }
                       onClick={async () => {
                         const resultCheck = window.confirm("Reject payment?");
@@ -253,7 +297,7 @@ function Main() {
                               products: transaction.products,
                               status: "reject",
                               idStaff: userId,
-                              nameStaff: user.fullname
+                              nameStaff: user.fullname,
                             }
                           );
 
@@ -270,7 +314,6 @@ function Main() {
                     </button>
                   </td>
                 </tr>
-
               </tbody>
             </table>
           </div>
@@ -318,7 +361,7 @@ function Main() {
   return (
     <div className="confirm-container">
       <header className="confirm-header">
-        <h1>Xác nhận đơn hàng</h1>
+        <h1 style={{ fontWeight: "bold" }}>Đơn hàng đã đặt</h1>
       </header>
       <div>
         {isModalOpen && (
@@ -333,6 +376,7 @@ function Main() {
           <tr>
             <th scope="col">Tên người mua</th>
             <th scope="col">Địa chỉ</th>
+            <th scope="col">Ngày đặt</th>
             <th scope="col">Số điện thoại</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Sản phẩm</th>
@@ -343,10 +387,14 @@ function Main() {
             <tr key={item._id}>
               <td>{item.fullname}</td>
               <td>{item.location}</td>
+              <td>{new Date(item.createdAt).toLocaleString("vi-VN")}</td>
               <td>{item.number}</td>
               <td>{convertStatus(item.status)}</td>
               <td>
-                <button onClick={() => openModal(item)} className="confirm-btn-detail">
+                <button
+                  onClick={() => openModal(item)}
+                  className="confirm-btn-detail"
+                >
                   Xem chi tiết
                 </button>
               </td>
@@ -354,7 +402,6 @@ function Main() {
           ))}
         </tbody>
       </table>
-
     </div>
   );
 }

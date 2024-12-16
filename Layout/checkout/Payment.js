@@ -1,5 +1,7 @@
 import {
+  AppState,
   Image,
+  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -12,27 +14,69 @@ import UnderLine from "../../components/UnderLine";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { URL } from "../HomeScreen";
 import axios from "axios";
-import { numberUtils, upperCaseItem } from "../utils/stringUtils";
+import { numberUtils } from "../utils/stringUtils";
 import CheckBoxCustom from "../components/CheckBoxCustom";
 import { Toast } from "../utils/toastUtil";
-import { Alert } from "react-native";  // Import Alert
+import { Alert } from "react-native"; // Import Alert
 
 const Payment = ({ navigation, route }) => {
   const { total, listItem } = route.params;
   const day = new Date().getDay();
   const month = new Date().getMonth();
-
   const [ship, setShip] = useState("Giao hàng nhanh - 15.000đ");
   const [shippingAddresses, setShippingAddresses] = useState({});
   const [checkboxSeletectPayment, setCheckboxSelectPayment] = useState(-1);
-  const [paymentMethods, setPaymentMethods] = useState({});
-
+  const [appState, setAppState] = useState(AppState.currentState);
   const checkShippingAddresses = JSON.stringify(shippingAddresses) === "{}";
-  const checkPaymentMethod = JSON.stringify(paymentMethods) === "{}";
-
   const totalPrice = parseInt(total);
-  const totalPay = totalPrice + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000)
- 
+  const totalPay =
+    totalPrice + (ship === "Giao hàng nhanh - 15.000đ" ? 15000 : 20000);
+
+  async function _savePayments(email) {
+    try {
+      let _paymentObject = {
+        fullname: shippingAddresses.fullName,
+        email: email,
+        location: `${shippingAddresses.address}, ${shippingAddresses.city}`,
+        number: shippingAddresses.phoneNumber,
+        ship: ship,
+        paymentMethod:
+          checkboxSeletectPayment == 0 ? "Thanh toán khi nhận hàng" : "ZaloPay",
+        totalPrice: parseInt(totalPay),
+        products: listItem,
+      };
+      const {
+        status,
+        data: { response, type },
+      } = await axios.post(`${URL}/pay/add`, _paymentObject);
+      if (status === 200) {
+        Toast(response);
+        if (type) {
+          await axios.post(`${URL}/carts/removeAllFromCart`, {
+            list: listItem,
+            emailUser: email,
+          });
+          navigation.popToTop();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    (async function () {
+      const userEmail = await AsyncStorage.getItem("@UserLogin");
+      try {
+        await axios.post(`${URL}/reset`, {
+          email: userEmail,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   async function _payment() {
     try {
       let _userEmail = await AsyncStorage.getItem("@UserLogin");
@@ -50,52 +94,43 @@ const Payment = ({ navigation, route }) => {
         return;
       }
 
-      if (checkboxSeletectPayment === 1 && checkPaymentMethod) {
-        Toast("Chưa chọn thẻ VISA");
-        return;
-      }
-
-      // Hiển thị thông báo xác nhận
       Alert.alert(
         "Xác nhận thanh toán",
         "Bạn có chắc chắn muốn thanh toán không?",
         [
           {
             text: "Hủy",
-            onPress: () => console.log("Thanh toán bị hủy"),
+            onPress: () => {},
             style: "cancel",
           },
           {
             text: "Đồng ý",
             onPress: async () => {
-              // Thực hiện thanh toán nếu người dùng nhấn "Đồng ý"
-              let _paymentObject = {
-                fullname: shippingAddresses.fullName,
-                email: _userEmail,
-                location: `${shippingAddresses.address}, ${shippingAddresses.city}`,
-                number: shippingAddresses.phoneNumber,
-                ship: ship,
-                paymentMethod: checkboxSeletectPayment == 0 ? "Thanh toán khi nhận hàng" : "Thẻ VISA/MASTERCARD",
-                totalPrice: parseInt(totalPay),
-                products: listItem,
-              };
-
-              const {
-                status,
-                data: { response, type },
-              } = await axios.post(`${URL}/pay/add`, _paymentObject);
-              if (status === 200) {
-                Toast(response);
-                if (type) {
-                  const {
-                    status: _status,
-                    data: { type: _type },
-                  } = await axios.post(`${URL}/carts/removeAllFromCart`, {
-                    list: listItem,
-                    emailUser: _userEmail,
-                  });
-                  navigation.popToTop();
+              if (checkboxSeletectPayment == 1) {
+                let _paymentObject = {
+                  fullname: shippingAddresses.fullName,
+                  email: _userEmail,
+                  location: `${shippingAddresses.address}, ${shippingAddresses.city}`,
+                  number: shippingAddresses.phoneNumber,
+                  ship: ship,
+                  paymentMethod:
+                    checkboxSeletectPayment == 0
+                      ? "Thanh toán khi nhận hàng"
+                      : "ZaloPay",
+                  totalPrice: totalPay,
+                  products: listItem,
+                };
+                const response = await axios.post(
+                  `${URL}/order`,
+                  _paymentObject
+                );
+                if (response.data.return_code == 1) {
+                  await Linking.openURL(response.data.order_url);
+                  return;
                 }
+                Toast(response.data.sub_return_message);
+              } else {
+                await _savePayments(_userEmail);
               }
             },
           },
@@ -115,25 +150,42 @@ const Payment = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    const handleAppStateChange = async (nextAppState) => {
+      if (appState.match(/inactive|background/) && nextAppState === "active") {
+        const userEmail = await AsyncStorage.getItem("@UserLogin");
+        try {
+          const { status, data } = await axios.post(
+            `${URL}/check-status-order`,
+            { email: userEmail }
+          );
+          if (status == 200) {
+            if (data.status == 1) {
+              Toast("Thanh toán thành công");
+              _savePayments(userEmail);
+              return;
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      setAppState(nextAppState);
+    };
+
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState]);
+
+  useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
       try {
         const userEmail = await AsyncStorage.getItem("@UserLogin");
-
-        const storedPaymentMethods = await AsyncStorage.getItem(
-          userEmail + "_paymentMethods"
-        );
-
-        let paymentSavedIndex = await AsyncStorage.getItem(
-          userEmail + "PaymentSaved"
-        );
-
-        if (storedPaymentMethods && paymentSavedIndex) {
-          setPaymentMethods(
-            JSON.parse(storedPaymentMethods)[paymentSavedIndex]
-          );
-        } else {
-          setPaymentMethods({});
-        }
 
         const storedShippingAddresses = await AsyncStorage.getItem(
           userEmail + "_shippingAddresses"
@@ -264,7 +316,8 @@ const Payment = ({ navigation, route }) => {
                       }}
                     >
                       <Text style={styles.bold}>
-                        Địa chỉ: {shippingAddresses.address}, {shippingAddresses.city}
+                        Địa chỉ: {shippingAddresses.address},{" "}
+                        {shippingAddresses.city}
                       </Text>
                     </View>
                   </View>
@@ -283,12 +336,22 @@ const Payment = ({ navigation, route }) => {
             listItem.map((item) => (
               <View key={item.id} style={styles.item}>
                 <Image source={{ uri: item.image }} style={styles.image} />
-                <View style={styles.itemInfo}>               
-                  <Text style={styles.itemName} numberOfLines={1} ellipsizeMode="tail">Tên sản phẩm: {item.name}</Text>
+                <View style={styles.itemInfo}>
+                  <Text
+                    style={styles.itemName}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    Tên sản phẩm: {item.name}
+                  </Text>
                   <Text style={styles.itemPrice}>
                     Giá tiền: {numberUtils(item.price)}
                   </Text>
-                  <Text style={styles.itemSize} numberOfLines={1} ellipsizeMode="tail">
+                  <Text
+                    style={styles.itemSize}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
                     Kích thước: {item.size}
                   </Text>
                   <Text style={styles.itemQuantity}>
@@ -374,7 +437,9 @@ const Payment = ({ navigation, route }) => {
                   padding: 10,
                 }}
               >
-                <Text style={{ flex: 1, fontSize: 16 }}>Thanh toán khi nhận hàng</Text>
+                <Text style={{ flex: 1, fontSize: 16 }}>
+                  Thanh toán khi nhận hàng
+                </Text>
                 <Image
                   style={styles.leftIcon}
                   source={require("../../Image/left.png")}
@@ -395,84 +460,34 @@ const Payment = ({ navigation, route }) => {
                 setCheckboxSelectPayment(1);
               }}
             />
-            {checkPaymentMethod ? (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("PaymentMethod");
-                }}
+            <View
+              style={{
+                flex: 1,
+                height: 60,
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 10,
+                marginHorizontal: 5,
+                borderRadius: 5,
+                backgroundColor: "#fff",
+                elevation: 5,
+              }}
+            >
+              <View
                 style={{
-                  flex: 1,
-                  height: 60,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 10,
-                  marginHorizontal: 5,
-                  borderRadius: 5,
-                  backgroundColor: "#fff",
-                  elevation: 5,
+                  flexDirection: "row",
+                  padding: 10,
                 }}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    padding: 10
-                  }}
-                >
-                  <Text style={{ flex: 1, fontSize: 16 }}>Thêm thẻ thanh toán</Text>
-                  <Image
-                    style={styles.leftIcon}
-                    source={require("../../Image/left.png")}
-                  />
-                </View>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("PaymentMethod");
-                }}
-                style={{
-                  flex: 1,
-                  height: 60,
-                  marginBottom: 10,
-                  marginHorizontal: 5,
-                  borderRadius: 5,
-                  backgroundColor: "#fff",
-                  elevation: 5,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: 'center',
-                      flex: 1
-                    }}
-                  >
-                    <Image
-                      style={[styles.iconCard,]}
-                      source={require("../../Image/card.png")}
-                    />
-                    <Image
-                      style={[styles.iconCard, { tintColor: "blue" }]}
-                      source={require("../../Image/visa.png")}
-                    />
-                    <Text style={styles.textCard}>**** **** **** {paymentMethods.cardNumber.slice(-4)}
-                    </Text>
-                  </View>
-                  <Image
-                    style={styles.leftIcon}
-                    source={require("../../Image/left.png")}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
+                <Text style={{ flex: 1, fontSize: 16 }}>
+                  Thanh toán bằng Zalo Pay
+                </Text>
+                <Image
+                  style={styles.leftIcon}
+                  source={require("../../Image/left.png")}
+                />
+              </View>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -491,9 +506,7 @@ const Payment = ({ navigation, route }) => {
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.totalLabel}>Tổng tiền :</Text>
-            <Text style={styles.totalAmount}>
-              {formatPrice(totalPay)}
-            </Text>
+            <Text style={styles.totalAmount}>{formatPrice(totalPay)}</Text>
           </View>
         </View>
 
@@ -642,7 +655,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#808080",
     fontWeight: "regular",
-    marginLeft: 10
+    marginLeft: 10,
   },
   bold: {
     fontSize: 16,
@@ -654,7 +667,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
-    resizeMode: "contain"
+    resizeMode: "contain",
   },
   itemInfo: {
     justifyContent: "center",
@@ -664,15 +677,14 @@ const styles = StyleSheet.create({
   itemCode: {
     fontSize: 16,
     fontWeight: "bold",
-
   },
   itemName: {
     fontSize: 16,
     color: "#000",
     // Thêm các thuộc tính để kiểm soát việc cắt chữ
-    fontWeight: "500",  
-    overflow: 'hidden',
-    width: '100%', 
+    fontWeight: "500",
+    overflow: "hidden",
+    width: "100%",
   },
   itemPrice: {
     fontWeight: "400",
@@ -680,10 +692,10 @@ const styles = StyleSheet.create({
   },
   itemQuantity: {
     fontSize: 16,
-    fontWeight: "500",  
+    fontWeight: "500",
   },
   itemSize: {
     fontSize: 16,
-    fontWeight: "500",  
+    fontWeight: "500",
   },
 });

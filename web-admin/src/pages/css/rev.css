@@ -19,14 +19,15 @@ body {
   color: white;
   padding: 20px;
   text-align: center;
-  margin-bottom: 30px;
+  font-size: 24px;
+  margin-bottom: 20px;
  
 }
 
-.thongke-header h1 {
+/* .thongke-header h1 {
   font-size: 28px;
   color: white;
-}
+} */
 
 .thongke-stat-box {
   flex: 1;
@@ -191,5 +192,9 @@ body {
   flex: 1;
   display: flex;
   flex-direction: row;
+}
+.thongke-h2 {
+  text-align: start;
+  margin-top: 10px;
 }
 

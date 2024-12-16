@@ -84,12 +84,12 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: '50%',
-        height: 50,
-        borderRadius: 20,
-        backgroundColor: "#a97053",
-        padding: 15,
-        alignItems: "center",
-        marginTop: 20,
+    height: 50,
+    borderRadius: 20,
+    backgroundColor: "#a97053",
+    padding: 15,
+    alignItems: "center",
+    marginTop: 20,
   },
   btnLogin: {
     width: '50%',
@@ -100,5 +100,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "green",
     textDecorationLine: 'underline'
-},
+  },
 });

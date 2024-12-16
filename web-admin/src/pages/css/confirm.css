@@ -4,9 +4,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f7fc;
-    max-height: 99vh;  /* Đặt chiều cao tối đa để tránh cuộn toàn màn hình */
-    overflow-y: auto; 
+    max-height: 99vh;
+    /* Đặt chiều cao tối đa để tránh cuộn toàn màn hình */
+    overflow-y: auto;
 }
+
 .confirm-container {
     margin: 0px 20px;
     padding: 0px 20px 40px 20px;
@@ -160,4 +162,32 @@ body {
 .confirm-btn:disabled:hover {
     background-color: #bdc3c7;
     /* Không thay đổi màu khi hover trên nút disabled */
+}
+.confirm-filter-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+.confirm-date-picker {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.confirm-summary-box {
+    flex: 1;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-right: 10px;
+    text-align: center;
 }

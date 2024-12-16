@@ -103,7 +103,7 @@ function Main() {
   return (
     <div className="user-container">
       <header className="user-header">
-        <h1>Quản lý tài khoản người dùng</h1>
+        <h1 style={{ fontWeight: "bold" }}>Quản lý tài khoản người dùng</h1>
       </header>
       {/* Modal for Add or Update */}
       {(isAdd || isUpdate) && (
@@ -143,7 +143,10 @@ function Main() {
                 type={showPassword ? "text" : "password"}
                 defaultValue={isUpdate ? dataUpdate.pass : ""}
               />
-              <button type="button" onClick={() => setShowPassword(!showPassword)}>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
@@ -163,7 +166,8 @@ function Main() {
       <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
           style={{ borderRadius: 30, height: 50, width: 50 }}
-          onClick={openAddModal}>
+          onClick={openAddModal}
+        >
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
       </div>
@@ -193,7 +197,10 @@ function Main() {
               <td>{user.fullname}</td>
               <td>{user.email}</td>
               <td>
-                <button className="user-btn-primary" onClick={() => openUpdateModal(user)}>
+                <button
+                  className="user-btn-primary"
+                  onClick={() => openUpdateModal(user)}
+                >
                   Cập nhật
                 </button>
               </td>
@@ -204,7 +211,7 @@ function Main() {
                     try {
                       const { status, data } = await axios.post(
                         json_config[0].url_connect +
-                        "/chat/updateNumberMessage",
+                          "/chat/updateNumberMessage",
                         { email: user.email }
                       );
                       if (status === 200) {
@@ -215,13 +222,15 @@ function Main() {
                     } catch (error) {
                       console.log();
                     }
-                    navigator("/chat-item/" + user.email);
+                    navigator("/chat-item/" + user.email + "/" + user.fullname);
                   }}
                 >
                   Message
                   <span className="user-numberMessage">
                     {user.numberMessage}
-                    <span className="user-visually-hidden">unread messages</span>
+                    <span className="user-visually-hidden">
+                      unread messages
+                    </span>
                   </span>
                 </button>
               </td>

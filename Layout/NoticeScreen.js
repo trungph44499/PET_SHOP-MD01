@@ -53,7 +53,7 @@ const NoticeScreen = ({ navigation }) => {
         statusColor = "red";
         break;
       case "success":
-        statusResult = "Đơn hàng đang chờ được giao";
+        statusResult = "Đơn hàng đang chờ lấy hàng";
         statusColor = "black";
         break;
       case "pending":
@@ -148,7 +148,7 @@ const NoticeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: 10 }} />
+  
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
@@ -190,13 +190,15 @@ export default NoticeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
-    gap: 16,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    backgroundColor: '#FFFFFF',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   image: {
     width: 80,

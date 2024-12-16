@@ -20,7 +20,8 @@ function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
   const websocket = useContext(webSocketContext);
-  const [totalRevenue, setTotalRevenue] = useState(0);
+  // const [totalRevenue, setTotalRevenue] = useState(0);
+  const [topProducts, setTopProducts] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -29,6 +30,7 @@ function Main() {
   const [endDate, setEndDate] = useState(new Date());
   const [timeRangeRevenue, setTimeRangeRevenue] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
+  const [ordersSuccess, setOrderSuccess] = useState(0);
   const [isFilterByRange, setIsFilterByRange] = useState(false);
 
   function convertStatus(status) {
@@ -36,7 +38,7 @@ function Main() {
       case "reject":
         return "Đơn hàng bị hủy";
       case "success":
-        return "Đang chuẩn bị hàng";
+        return "Đang chờ lấy hàng";
       case "pending":
         return "Đang chờ xác nhận";
       case "shipping":
@@ -58,29 +60,74 @@ function Main() {
         return transactionDate >= start && transactionDate <= end;
       });
 
-    return filteredTransactions.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+    return filteredTransactions.reduce(
+      (acc, item) => acc + Number(item.totalPrice),
+      0
+    );
   };
 
-  // Hàm đếm số đơn hàng trong khoảng thời gian
   const calculateOrdersInRange = (transactions, start, end) => {
     if (!start || !end) return 0;
 
     const filteredTransactions = transactions
-      // .filter((item) => item.status === "shipped") 
       .filter((item) => {
         const transactionDate = new Date(item.createdAt);
-        return transactionDate >= start && transactionDate <= end; 
+        return transactionDate >= start && transactionDate <= end;
       });
 
     return filteredTransactions.length;
   };
 
-  const calculateTotalRevenue = (transactions) => {
-    const total = transactions
+  const calculateOrdersSuccess = (transactions, start, end) => {
+    if (!start || !end) return 0;
+
+    const filteredTransactions = transactions
       .filter((item) => item.status === "shipped")
-      .reduce((acc, item) => acc + Number(item.totalPrice), 0);
-    return total;
+      .filter((item) => {
+        const transactionDate = new Date(item.createdAt);
+        return transactionDate >= start && transactionDate <= end;
+      });
+
+    return filteredTransactions.length;
   };
+
+  // const calculateTotalRevenue = (transactions) => {
+  //   const total = transactions
+  //     .filter((item) => item.status === "shipped")
+  //     .reduce((acc, item) => acc + Number(item.totalPrice), 0);
+  //   return total;
+  // };
+
+  const calculateTopProducts = (transactions) => {
+    const productCounts = {};
+
+    transactions.forEach((transaction) => {
+      if (transaction.status === "shipped") {
+        transaction.products.forEach((product) => {
+          const productKey = product.image;
+          if (!productCounts[productKey]) {
+            productCounts[productKey] = {
+              name: product.name,
+              image: product.image,
+              category: product.category || "Chưa xác định",
+              price: product.price,
+              totalQuantity: 0,
+            };
+          }
+          productCounts[productKey].totalQuantity += product.quantity;
+        });
+      }
+    });
+
+    const sortedProducts = Object.values(productCounts).sort(
+      (a, b) => b.totalQuantity - a.totalQuantity
+    );
+
+    return sortedProducts.slice(0, 10);
+  };
+
+
+
 
   const openModal = (transaction) => {
     setSelectedTransaction(transaction);
@@ -94,20 +141,26 @@ function Main() {
 
   const getAllPayment = useCallback(async () => {
     try {
-      const { status, data } = await axios.get(`${json_config[0].url_connect}/pay`);
+      const { status, data } = await axios.get(
+        `${json_config[0].url_connect}/pay`
+      );
       if (status === 200) {
-        setData(data);
-        const total = calculateTotalRevenue(data);
-        setTotalRevenue(total);
+        setData(data.reverse());
+        // const total = calculateTotalRevenue(data);
+        // setTotalRevenue(total);
 
         const rangeRevenue = calculateRevenueInRange(data, startDate, endDate);
         setTimeRangeRevenue(rangeRevenue);
 
-        // Tính số đơn hàng trong khoảng thời gian
         const ordersCount = calculateOrdersInRange(data, startDate, endDate);
-        // console.log("Số đơn hàng trong khoảng thời gian:", ordersCount);
         setOrderCount(ordersCount);
 
+
+        const ordersSuccess = calculateOrdersSuccess(data, startDate, endDate);
+        setOrderSuccess(ordersSuccess);
+
+        const topProducts = calculateTopProducts(data);
+        setTopProducts(topProducts);
       }
     } catch (error) {
       console.log(error);
@@ -167,34 +220,82 @@ function Main() {
 
     return (
       <div className="thongke-modal" onClick={handleClose}>
-
         <div className="thongke-modal-content">
-          {/* <button onClick={onClose} className="thongke-modal-close-btn">×</button> */}
           <h2>Chi Tiết Giao Dịch</h2>
           <div className="thongke-modal-body">
             <div className="thongke-transaction-pay">
-              <p><strong>ID nhân viên:</strong> {transaction.idStaff ? transaction.idStaff : "Chưa có người xác nhận"}</p>
-              <p><strong>Người xác nhận:</strong> {transaction.nameStaff ? transaction.nameStaff : "Chưa có người xác nhận"}</p>
-              <p><strong>ID hoá đơn:</strong> {transaction._id}</p>
-              <p><strong>Họ tên:</strong> {transaction.fullname}</p>
-              <p><strong>Email:</strong> {transaction.email}</p>
-              <p><strong>Địa chỉ:</strong> {transaction.location}</p>
-              <p><strong>Số điện thoại:</strong> {transaction.number}</p>
-              <p><strong>Phương thức vận chuyển:</strong> {transaction.ship}</p>
-              <p><strong>Phương thức thanh toán:</strong> {transaction.paymentMethod}</p>
-              <p><strong>Tổng tiền:</strong> {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ</p>
-              <p><strong>Trạng thái:</strong> {convertStatus(transaction.status)}</p>
+              <p>
+                <strong>ID người xác nhận:</strong>{" "}
+                {transaction.idStaff
+                  ? transaction.idStaff
+                  : "Chưa có người xác nhận"}
+              </p>
+              <p>
+                <strong>Người xác nhận:</strong>{" "}
+                {transaction.nameStaff
+                  ? transaction.nameStaff
+                  : "Chưa có người xác nhận"}
+              </p>
+              <p>
+                <strong>ID hoá đơn:</strong> {transaction._id}
+              </p>
+              <p>
+                <strong>Họ tên:</strong> {transaction.fullname}
+              </p>
+              <p>
+                <strong>Email:</strong> {transaction.email}
+              </p>
+              <p>
+                <strong>Địa chỉ:</strong> {transaction.location}
+              </p>
+              <p><strong>Thời Gian Đặt:</strong> {new Date(transaction.createdAt).toLocaleString("vi-VN")}</p>
+              <p>
+                <strong>Số điện thoại:</strong> {transaction.number}
+              </p>
+              <p>
+                <strong>Phương thức vận chuyển:</strong> {transaction.ship}
+              </p>
+              <p>
+                <strong>Phương thức thanh toán:</strong>{" "}
+                {transaction.paymentMethod}
+              </p>
+              <p>
+                <strong>Tổng tiền:</strong>{" "}
+                {Number(transaction.totalPrice).toLocaleString("vi-VN")} VNĐ
+              </p>
+              <p>
+                <strong>Trạng thái:</strong> {convertStatus(transaction.status)}
+              </p>
             </div>
             <div className="thongke-product-pay">
               <ul>
                 {transaction.products.map((product, index) => (
                   <li key={index}>
-                    <p><strong>Sản phẩm: </strong></p>
-                    <img src={product.image} height={100} width={100} alt={product.name} />
-                    <p><strong>Tên sản phẩm: </strong>{product.name}</p>
-                    <p><strong>Giá: </strong>{Number(product.price).toLocaleString("vi-VN")} VNĐ</p>
-                    <p><strong>Kích thước: </strong>{product.size}</p>
-                    <p><strong>Số lượng: </strong>{product.quantity}</p>
+                    <p>
+                      <strong>Sản phẩm: </strong>
+                    </p>
+                    <img
+                      src={product.image}
+                      height={100}
+                      width={100}
+                      alt={product.name}
+                    />
+                    <p>
+                      <strong>Tên sản phẩm: </strong>
+                      {product.name}
+                    </p>
+                    <p>
+                      <strong>Giá: </strong>
+                      {Number(product.price).toLocaleString("vi-VN")} VNĐ
+                    </p>
+                    <p>
+                      <strong>Kích thước: </strong>
+                      {product.size}
+                    </p>
+                    <p>
+                      <strong>Số lượng: </strong>
+                      {product.quantity}
+                    </p>
                   </li>
                 ))}
               </ul>
@@ -208,7 +309,7 @@ function Main() {
   return (
     <div className="thongke-container">
       <header className="thongke-header">
-        <h1 style={{ fontWeight: 'bold' }}>Thống Kê Doanh Thu</h1>
+        <h1 style={{ fontWeight: "bold" }}>Thống Kê Doanh Thu</h1>
       </header>
 
       <div>
@@ -221,8 +322,6 @@ function Main() {
       </div>
 
       <div className="thongke-stats-section">
-
-
         <div className="thongke-stat-box-date">
           <h3>Doanh Thu Trong Khoảng Thời Gian</h3>
           <div className="thongke-calendar-section">
@@ -247,13 +346,11 @@ function Main() {
               {isFilterByRange ? "Tắt" : "Lọc"}
             </button>
           </div>
-
-
         </div>
-        <div className="thongke-stat-box">
+        {/* <div className="thongke-stat-box">
           <h3>Tổng Doanh Thu</h3>
           <p>{Number(totalRevenue).toLocaleString("vi-VN")} VNĐ</p>
-        </div>
+        </div> */}
         <div className="thongke-stat-box">
           <h3>Doanh Thu</h3>
           <p>{Number(timeRangeRevenue).toLocaleString("vi-VN")} VNĐ</p>
@@ -262,10 +359,16 @@ function Main() {
           <h3>Đơn hàng</h3>
           <p>{Number(orderCount).toLocaleString("vi-VN")} Đơn</p>
         </div>
+        <div className="thongke-stat-box">
+          <h3>Đơn thành công</h3>
+          <p>{Number(ordersSuccess).toLocaleString("vi-VN")} Đơn</p>
+        </div>
       </div>
 
+
+
       <div className="thongke-transactions-section">
-        <h2>Danh Sách Giao Dịch</h2>
+        <h2 className="thongke-h2">Danh Sách Giao Dịch</h2>
         <table className="thongke-table">
           <thead>
             <tr>
@@ -300,7 +403,10 @@ function Main() {
               ))
             ) : (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center", padding: "1rem" }}>
+                <td
+                  colSpan="8"
+                  style={{ textAlign: "center", padding: "1rem" }}
+                >
                   Danh sách trống
                 </td>
               </tr>
@@ -321,6 +427,47 @@ function Main() {
           {">"}
         </button>
       </div>
+
+      <div className="thongke-top-products-section">
+        <h2 className="thongke-h2">Top 10 sản phẩm bán nhiều nhất</h2>
+        <table className="thongke-table">
+          <thead>
+            <tr>
+              <th scope="col">Hình ảnh</th>
+              <th scope="col">Tên sản phẩm</th>
+              <th scope="col">Giá</th>
+              <th scope="col">Đã bán</th>
+            </tr>
+          </thead>
+          <tbody>
+            {topProducts.length > 0 ? (
+              topProducts.map((product) => (
+                <tr key={`${product._id}-${product.size}`}>
+                  <td>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      height={50}
+                      width={50}
+                    />
+                  </td>
+                  <td>{product.name}</td>
+                  <td>{Number(product.price).toLocaleString("vi-VN")} VNĐ</td>
+                  <td>{product.totalQuantity}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center", padding: "1rem" }}>
+                  Không có dữ liệu
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+
     </div>
   );
 }

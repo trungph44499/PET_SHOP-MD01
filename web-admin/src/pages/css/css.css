@@ -26,11 +26,11 @@ body {
   margin-bottom: 20px;
 }
 
-.item-header h1 {
+/* .item-header h1 {
   font-size: 24px;
   font-weight: bold;
   color: white;
-}
+} */
 
 /* Phần Dropdown lọc */
 .item-filter {
