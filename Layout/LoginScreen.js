@@ -69,7 +69,7 @@ const LoginScreen = (props) => {
           <StatusBar hidden />
           <View style={styles.container}>
             <Image
-              style={{ width: 400, height: 200, marginTop: 40 }}
+              style={{ width: 400, height: 200, marginTop: 50 }}
               source={require("../Image/logo.png")}
             />
             <View style={{ gap: 10 }}>
