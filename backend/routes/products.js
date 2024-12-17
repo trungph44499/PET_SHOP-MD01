@@ -45,7 +45,7 @@ router.post("/add", async (req, res) => {
   try {
     // Kiểm tra type có phải là ObjectId hợp lệ không
     if (!mongoose.Types.ObjectId.isValid(type)) {
-      return res.status(400).json({ response: "Invalid category ID!" });
+      return res.status(400).json({ response: "ID danh mục không hợp lệ!" });
     }
 
     const newProduct = new productModel({
@@ -60,13 +60,13 @@ router.post("/add", async (req, res) => {
 
     const savedProduct = await newProduct.save();
     res.status(200).json({
-      response: "Add product complete!",
+      response: "Thêm sản phẩm thành công!",
       type: true,
       product: savedProduct,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ response: "Error add product!" });
+    res.status(500).json({ response: "Lỗi thêm sản phẩm!" });
   }
 });
 
@@ -85,7 +85,7 @@ router.post("/update", async (req, res) => {
   try {
     // Kiểm tra type có phải là ObjectId hợp lệ không
     if (type && !mongoose.Types.ObjectId.isValid(type)) {
-      return res.status(400).json({ response: "Invalid category ID!" });
+      return res.status(400).json({ response: "ID danh mục không hợp lệ!" });
     }
 
     const updatedProduct = await productModel.findByIdAndUpdate(
@@ -104,12 +104,12 @@ router.post("/update", async (req, res) => {
 
     if (updatedProduct) {
       res.status(200).json({
-        response: "Update product complete!",
+        response: "Cập nhật sản phẩm thành công!",
         type: true,
         product: updatedProduct,
       });
     } else {
-      res.status(400).json({ response: "Error Update product!", type: false });
+      res.status(400).json({ response: "Lỗi cập nhật sản phẩm!", type: false });
     }
   } catch (error) {
     console.log(error);
@@ -132,9 +132,9 @@ router.post("/delete", async (req, res) => {
     if (deleteProduct.deletedCount > 0) {
       res
         .status(200)
-        .json({ response: "Delete product complete!", type: true });
+        .json({ response: "Xóa sản phẩm thành công!", type: true });
     } else {
-      res.status(200).json({ response: "Error Delete product!", type: false });
+      res.status(200).json({ response: "Lỗi xóa sản phẩm!", type: false });
     }
   } catch (error) {
     console.log(error);

@@ -56,7 +56,7 @@ export default function LoginPage() {
     } catch (error) {
       Swal.fire({
         title: 'Đăng nhập thất bại!',
-        text: 'Vui lòng kiểm tra lại thông tin đăng nhập.',
+        text: 'Tài khoản của bạn đã bị khóa, không thể đăng nhập!',
         icon: 'error',
         confirmButtonText: 'Thử lại',
         position: 'top',

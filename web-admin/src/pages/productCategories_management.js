@@ -39,7 +39,7 @@ function Main() {
   }, []);
 
   const toggleStatus = async (item) => {
-    const confirm = window.confirm(`Are you sure you want to ${item.status ? "block" : "unblock"} this category?`);
+    const confirm = window.confirm(`Bạn có muốn ${item.status ? "chặn" : "bỏ chặn"} loại sản phẩm này không?`);
     if (confirm) {
       try {
         const { status, data } = await axios.post(`${json_config[0].url_connect}/product-categories/update-status`, {
@@ -110,7 +110,7 @@ function Main() {
         <div className="product-modal">
           <div className="product-modal-content">
             <span className="product-close" onClick={() => { setIsAdd(false); setIsUpdate(false); }}>&times;</span>
-            <h2>{isUpdate ? "Cập nhật" : "Thêm mới"} danh mục</h2>
+            <h2>{isUpdate ? "Cập nhật" : "Thêm mới"} loại sản phẩm</h2>
             <div className="product-input-group">
               <span className="product-input-group-text" style={{ width: 100 }}>Image</span>
               <input ref={_image} type="text" defaultValue={isUpdate ? dataUpdate.img : ""} />
