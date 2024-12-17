@@ -34,7 +34,10 @@ function Main() {
 
   async function getAllProduct() {
     try {
-      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/products`);
+      const {
+        status,
+        data: { response },
+      } = await axios.get(`${json_config[0].url_connect}/products`);
       if (status === 200) {
         setData(response);
       }
@@ -45,7 +48,10 @@ function Main() {
 
   async function getCategories() {
     try {
-      const { status, data: { response } } = await axios.get(`${json_config[0].url_connect}/product-categories`);
+      const {
+        status,
+        data: { response },
+      } = await axios.get(`${json_config[0].url_connect}/product-categories`);
       if (status === 200) {
         setCategories(response);
       }
@@ -88,41 +94,49 @@ function Main() {
     }
     // Chuyển đổi các giá trị size, price và quantity thành mảng đối tượng
     // Kiểm tra nếu giá trị tồn tại trước khi xử lý
-    const sizeArray = _size.current.value && _size.current.value.trim() !== ""
-      ? _size.current.value.split(',').map((size, index) => ({
-        sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
-        price: _sizePrice.current.value && _sizePrice.current.value.split(',')[index]
-          ? parseFloat(_sizePrice.current.value.split(',')[index].trim())
-          : 0,  // Giá trị mặc định là 0 nếu không có giá trị
-        quantity: _sizeQuantity.current.value && _sizeQuantity.current.value.split(',')[index]
-          ? parseInt(_sizeQuantity.current.value.split(',')[index].trim())
-          : 0  // Số lượng mặc định là 0 nếu không có giá trị
-      }))
-      : [];
-    try {
-      const { status, data: { response, type } } = await axios.post(
-        `${json_config[0].url_connect}/products/add`,
-        {
-          image: _image.current.value,
-          name: _name.current.value,
-          status: _status.current.value,
-          type: _type.current.value,
-          description: _description.current.value,
-          size: sizeArray, // Cập nhật mảng size
-          animals: _animals.current.value, // Thêm animals
-        }
-      );
+    console.log(_size.current.value);
 
-      if (status === 200) {
-        window.alert(response);
-        if (type) {
-          await getAllProduct();
-          setIsAdd(false);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    const sizeArray =
+      _size.current.value && _size.current.value.trim() !== ""
+        ? _size.current.value.split(",").map((size, index) => ({
+            sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
+            price:
+              _sizePrice.current.value &&
+              _sizePrice.current.value.split(",")[index]
+                ? parseFloat(_sizePrice.current.value.split(",")[index].trim())
+                : 0, // Giá trị mặc định là 0 nếu không có giá trị
+            quantity:
+              _sizeQuantity.current.value &&
+              _sizeQuantity.current.value.split(",")[index]
+                ? parseInt(_sizeQuantity.current.value.split(",")[index].trim())
+                : 0, // Số lượng mặc định là 0 nếu không có giá trị
+          }))
+        : [];
+
+    // try {
+    //   const { status, data: { response, type } } = await axios.post(
+    //     `${json_config[0].url_connect}/products/add`,
+    //     {
+    //       image: _image.current.value,
+    //       name: _name.current.value,
+    //       status: _status.current.value,
+    //       type: _type.current.value,
+    //       description: _description.current.value,
+    //       size: sizeArray, // Cập nhật mảng size
+    //       animals: _animals.current.value, // Thêm animals
+    //     }
+    //   );
+
+    //   if (status === 200) {
+    //     window.alert(response);
+    //     if (type) {
+    //       await getAllProduct();
+    //       setIsAdd(false);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   // Hàm xử lý cập nhật sản phẩm
   const handleUpdateProduct = async () => {
@@ -133,32 +147,39 @@ function Main() {
     }
     // Chuyển đổi các giá trị size, price và quantity thành mảng đối tượng
     // Kiểm tra nếu giá trị tồn tại trước khi xử lý
-    const sizeArray = _size.current.value && _size.current.value.trim() !== ""
-      ? _size.current.value.split(',').map((size, index) => ({
-        sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
-        price: _sizePrice.current.value && _sizePrice.current.value.split(',')[index]
-          ? parseFloat(_sizePrice.current.value.split(',')[index].trim())
-          : 0,  // Giá trị mặc định là 0 nếu không có giá trị
-        quantity: _sizeQuantity.current.value && _sizeQuantity.current.value.split(',')[index]
-          ? parseInt(_sizeQuantity.current.value.split(',')[index].trim())
-          : 0  // Số lượng mặc định là 0 nếu không có giá trị
-      }))
-      : [];
+    const sizeArray =
+      _size.current.value && _size.current.value.trim() !== ""
+        ? _size.current.value.split(",").map((size, index) => ({
+            sizeName: size.trim(), // Tránh trường hợp size là null hoặc undefined
+
+            price:
+              _sizePrice.current.value &&
+              _sizePrice.current.value.split(",")[index]
+                ? parseFloat(_sizePrice.current.value.split(",")[index].trim())
+                : 0, // Giá trị mặc định là 0 nếu không có giá trị
+
+            quantity:
+              _sizeQuantity.current.value &&
+              _sizeQuantity.current.value.split(",")[index]
+                ? parseInt(_sizeQuantity.current.value.split(",")[index].trim())
+                : 0, // Số lượng mặc định là 0 nếu không có giá trị
+          }))
+        : [];
 
     try {
-      const { status, data: { response, type } } = await axios.post(
-        `${json_config[0].url_connect}/products/update`,
-        {
-          id: dataUpdate._id,
-          image: _image.current.value,
-          name: _name.current.value,
-          status: _status.current.value,
-          type: _type.current.value,
-          description: _description.current.value,
-          size: sizeArray, // Gửi mảng size
-          animals: _animals.current.value, // Thêm animals
-        }
-      );
+      const {
+        status,
+        data: { response, type },
+      } = await axios.post(`${json_config[0].url_connect}/products/update`, {
+        id: dataUpdate._id,
+        image: _image.current.value,
+        name: _name.current.value,
+        status: _status.current.value,
+        type: _type.current.value,
+        description: _description.current.value,
+        size: sizeArray, // Gửi mảng size
+        animals: _animals.current.value, // Thêm animals
+      });
 
       if (status === 200) {
         window.alert(response);
@@ -176,10 +197,12 @@ function Main() {
     const result = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
     if (result) {
       try {
-        const { status, data: { response, type } } = await axios.post(
-          `${json_config[0].url_connect}/products/delete`,
-          { id: productId }
-        );
+        const {
+          status,
+          data: { response, type },
+        } = await axios.post(`${json_config[0].url_connect}/products/delete`, {
+          id: productId,
+        });
         if (status === 200) {
           window.alert(response);
           if (type) {
@@ -220,7 +243,10 @@ function Main() {
                 <span className="item-input-group-text" style={{ width: 100 }}>
                   Category
                 </span>
-                <select ref={_type} defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}>
+                <select
+                  ref={_type}
+                  defaultValue={dataUpdate.type ? dataUpdate.type._id : ""}
+                >
                   {categories.map((category) => (
                     <option key={category._id} value={category._id}>
                       {category.name}
@@ -258,12 +284,10 @@ function Main() {
                 <select ref={_animals} defaultValue={dataUpdate.animals}>
                   <option value="dog">Dog</option>
                   <option value="cat">Cat</option>
-
                 </select>
               </div>
             </div>
             <div className="item-flex-row">
-
               <div className="item-input-group">
                 <span className="item-input-group-text" style={{ width: 100 }}>
                   Description
@@ -286,7 +310,11 @@ function Main() {
                   ref={_size}
                   type="text"
                   placeholder="Ví dụ: M,L,XL"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
+                  defaultValue={
+                    dataUpdate.size
+                      ? dataUpdate.size.map((item) => item.sizeName).join(", ")
+                      : ""
+                  }
                 />
               </div>
               <div className="item-input-group">
@@ -294,10 +322,14 @@ function Main() {
                   Price
                 </span>
                 <input
-                  ref={_sizePrice}  // Dùng useRef ở đây
+                  ref={_sizePrice} // Dùng useRef ở đây
                   type="text"
                   placeholder="Ví dụ: 10000,12000,15000"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
+                  defaultValue={
+                    dataUpdate.size
+                      ? dataUpdate.size.map((item) => item.price).join(", ")
+                      : ""
+                  }
                 />
               </div>
 
@@ -306,13 +338,16 @@ function Main() {
                   Quantity
                 </span>
                 <input
-                  ref={_sizeQuantity}  // Dùng useRef ở đây
+                  ref={_sizeQuantity} // Dùng useRef ở đây
                   type="text"
                   placeholder="Ví dụ: 10,12,15"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
+                  defaultValue={
+                    dataUpdate.size
+                      ? dataUpdate.size.map((item) => item.quantity).join(", ")
+                      : ""
+                  }
                 />
               </div>
-
             </div>
 
             <div className="item-flex-row-btn">
@@ -320,7 +355,10 @@ function Main() {
                 Update
               </button>
               <div style={{ width: 5 }} />
-              <button className="item-btn-secondary" onClick={() => setIsUdpdate(false)}>
+              <button
+                className="item-btn-secondary"
+                onClick={() => setIsUdpdate(false)}
+              >
                 Quit
               </button>
             </div>
@@ -350,7 +388,6 @@ function Main() {
                 </span>
                 <input ref={_image} type="text" />
               </div>
-
             </div>
             <div className="item-flex-row">
               <div className="item-input-group">
@@ -375,12 +412,10 @@ function Main() {
                 <select ref={_animals} defaultValue={dataUpdate.animals}>
                   <option value="dog">Dog</option>
                   <option value="cat">Cat</option>
-
                 </select>
               </div>
             </div>
             <div className="item-flex-row">
-
               <div className="item-input-group">
                 <span className="item-input-group-text" style={{ width: 100 }}>
                   Description
@@ -402,7 +437,11 @@ function Main() {
                   ref={_size}
                   type="text"
                   placeholder="Ví dụ: M,L,XL"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.sizeName).join(', ') : ''}
+                  defaultValue={
+                    dataUpdate.size
+                      ? dataUpdate.size.map((item) => item.sizeName).join(", ")
+                      : ""
+                  }
                 />
               </div>
               <div className="item-input-group">
@@ -410,10 +449,14 @@ function Main() {
                   Price
                 </span>
                 <input
-                  ref={_sizePrice}  // Dùng useRef ở đây
+                  ref={_sizePrice} // Dùng useRef ở đây
                   type="text"
                   placeholder="Ví dụ: 10000,12000,15000"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.price).join(', ') : ''}
+                  defaultValue={
+                    dataUpdate.size
+                      ? dataUpdate.size.map((item) => item.price).join(", ")
+                      : ""
+                  }
                 />
               </div>
 
@@ -422,10 +465,14 @@ function Main() {
                   Quantity
                 </span>
                 <input
-                  ref={_sizeQuantity}  // Dùng useRef ở đây
+                  ref={_sizeQuantity} // Dùng useRef ở đây
                   type="text"
                   placeholder="Ví dụ: 10,12,15"
-                  defaultValue={dataUpdate.size ? dataUpdate.size.map(item => item.quantity).join(', ') : ''}
+                  defaultValue={
+                    dataUpdate.size
+                      ? dataUpdate.size.map((item) => item.quantity).join(", ")
+                      : ""
+                  }
                 />
               </div>
             </div>
@@ -434,7 +481,10 @@ function Main() {
                 Add
               </button>
               <div style={{ width: 5 }} />
-              <button className="item-btn-secondary" onClick={() => setIsAdd(false)}>
+              <button
+                className="item-btn-secondary"
+                onClick={() => setIsAdd(false)}
+              >
                 Quit
               </button>
             </div>
@@ -486,13 +536,13 @@ function Main() {
               <td>{item.type ? item.type.name : "Unknown"}</td>
               <td>{item.description}</td>
               <td>
-                {item.size ? item.size.map(s => s.sizeName).join(', ') : ''}
+                {item.size ? item.size.map((s) => s.sizeName).join(", ") : ""}
               </td>
               <td>
-                {item.size ? item.size.map(s => s.price).join(', ') : ''}
+                {item.size ? item.size.map((s) => s.price).join(", ") : ""}
               </td>
               <td>
-                {item.size ? item.size.map(s => s.quantity).join(', ') : ''}
+                {item.size ? item.size.map((s) => s.quantity).join(", ") : ""}
               </td>
               {/* Hiển thị mảng size như chuỗi ngăn cách bởi dấu phẩy */}
               <td>{item.animals}</td>

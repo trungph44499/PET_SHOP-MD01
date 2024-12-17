@@ -103,17 +103,26 @@ router.post("/order", async function (req, res) {
 
   try {
     const result = await axios.post(config.endpoint, null, { params: order });
-    const resultInsertPaymentModel = await zaloPayModel.insertMany({
-      fullname: fullname,
-      email: email,
-      location: location,
-      number: number,
-      ship: ship,
-      paymentMethod: paymentMethod,
-      totalPrice: totalPrice,
-      products: products,
-    });
-    if (resultInsertPaymentModel.length > 0) {
+    const resultInsertPaymentModel = await zaloPayModel.updateMany(
+      {
+        email: email,
+      },
+      {
+        $set: {
+          email: email,
+          fullname: fullname,
+          email: email,
+          location: location,
+          number: number,
+          ship: ship,
+          paymentMethod: paymentMethod,
+          totalPrice: totalPrice,
+          products: products,
+        },
+      },
+      { upsert: true }
+    );
+    if (resultInsertPaymentModel.matchedCount > 0) {
       return res.status(200).json(result.data);
     }
     return res.status(200).json({
@@ -169,8 +178,8 @@ router.get("/callback", async (req, res) => {
           }
         }
       }
-      res.render('payment', {
-        title: status, 
+      res.render("payment", {
+        title: status,
       });
     } catch (error) {
       console.log(error);
