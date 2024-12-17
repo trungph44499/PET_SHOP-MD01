@@ -42,9 +42,9 @@ router.post("/add", async (req, res) => {
 
         });
         if (addProduct.length > 0) {
-            res.status(200).json({ response: "Add productCategory complete!", type: true });
+            res.status(200).json({ response: "Thêm loại sản phẩm thành công!", type: true });
         } else {
-            res.status(200).json({ response: "Error add productCategory!", type: false });
+            res.status(200).json({ response: "Lỗi thêm loại sản phẩm!", type: false });
         }
     } catch (error) {
         console.log(error);
@@ -63,9 +63,9 @@ router.post("/update", async (req, res) => {
         if (updateProduct != null) {
             res
                 .status(200)
-                .json({ response: "Update productCategory complete!", type: true });
+                .json({ response: "Cập nhật loại sản phẩm thành công!", type: true });
         } else {
-            res.status(200).json({ response: "Error Update productCategory!", type: false });
+            res.status(200).json({ response: "Lỗi cập nhật loại sản phẩm!", type: false });
         }
     } catch (error) {
         console.log(error);
@@ -78,9 +78,9 @@ router.post("/delete", async (req, res) => {
         if (deleteProduct.deletedCount > 0) {
             res
                 .status(200)
-                .json({ response: "Delete productCategory complete!", type: true });
+                .json({ response: "Xóa loại sản phẩm thành công!", type: true });
         } else {
-            res.status(200).json({ response: "Error Delete productCategory!", type: false });
+            res.status(200).json({ response: "Lỗi xóa loại sản phẩm!", type: false });
         }
     } catch (error) {
         console.log(error);
@@ -99,9 +99,9 @@ router.post("/update-status", async (req, res) => {
         );
 
         if (updatedProductCategory) {
-            res.status(200).json({ response: "Update status complete!", type: true });
+            res.status(200).json({ response: "Cập nhật trạng thái loại sản phẩm thành công!", type: true });
         } else {
-            res.status(200).json({ response: "Error updating status!", type: false });
+            res.status(200).json({ response: "Lỗi cập nhật trạng thái loại sản phẩm!", type: false });
         }
     } catch (error) {
         console.log(error);

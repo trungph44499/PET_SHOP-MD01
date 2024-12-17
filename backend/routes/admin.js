@@ -83,11 +83,11 @@ router.post("/add", async function (req, res) {
     });
 
     if (addAdmin.length > 0) {
-      res.status(200).json({ response: "Add staff complete!", type: true });
+      res.status(200).json({ response: "Thêm nhân viên thành công", type: true });
       return;
     }
 
-    res.status(200).json({ response: "Error add staff!", type: false });
+    res.status(200).json({ response: "Lỗi thêm nhân viên!", type: false });
   } catch (error) {
     console.log(error);
   }
@@ -115,11 +115,11 @@ router.post("/update", async function (req, res) {
     );
 
     if (updateAdmin.matchedCount > 0) {
-      res.status(200).json({ response: "Update staff complete!", type: true });
+      res.status(200).json({ response: "Cập nhật nhân viên thành công!", type: true });
       return;
     }
 
-    res.status(200).json({ response: "Error update staff!", type: false });
+    res.status(200).json({ response: "Lỗi cập nhật nhân viên!", type: false });
   } catch (error) {
     console.log(error);
   }
@@ -131,11 +131,11 @@ router.post("/delete", async function (req, res) {
     const checkAdminExist = await adminModel.deleteOne({ username: username });
 
     if (checkAdminExist.deletedCount > 0) {
-      res.status(200).json({ response: "Delete complete!", type: true });
+      res.status(200).json({ response: "Xóa nhân viên thành công!", type: true });
       return;
     }
 
-    res.status(200).json({ response: "Error remove staff!", type: false });
+    res.status(200).json({ response: "Lỗi xóa nhân viên !", type: false });
   } catch (error) {
     console.log(error);
   }

@@ -22,6 +22,7 @@ function Main() {
   const [isUpdate, setIsUpdate] = useState(false);
   const [dataUpdate, setDataUpdate] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const avatar = useRef();
   const fullname = useRef();
   const email = useRef();
@@ -39,6 +40,11 @@ function Main() {
       }
     };
   }, [websocket]);
+
+  useEffect(() => {
+    const admin = window.localStorage.getItem("@isAdmin");
+    setIsAdmin(admin);
+  }, []);
 
   const getAllUser = async () => {
     try {
@@ -163,14 +169,14 @@ function Main() {
       )}
 
       {/* Floating Add Button */}
-      <div style={{ position: "fixed", bottom: 50, right: 50 }}>
+      {/* <div style={{ position: "fixed", bottom: 50, right: 50 }}>
         <button
-          style={{ borderRadius: 30, height: 50, width: 50 }}
+          style={{ borderRadius: 30, height: 200, width: 50 }}
           onClick={openAddModal}
         >
           <FontAwesomeIcon icon={faAdd} size="xl" />
         </button>
-      </div>
+      </div> */}
 
       {/* User List Table */}
       <table className="user-table">
@@ -179,7 +185,8 @@ function Main() {
             <th>Ảnh đại diện</th>
             <th>Họ tên</th>
             <th>Email</th>
-            <th>Cập nhật</th>
+            {isAdmin === "true" && (<th>Cập nhật</th>)}
+            {/* <th>Cập nhật</th> */}
             <th>Tin nhắn</th>
           </tr>
         </thead>
@@ -196,14 +203,23 @@ function Main() {
               </td>
               <td>{user.fullname}</td>
               <td>{user.email}</td>
-              <td>
+              {isAdmin === "true" && (
+                <td>
+                  <button
+                    className="user-btn-primary"
+                    onClick={() => openUpdateModal(user)}
+                  >
+                    Cập nhật
+                  </button>
+                </td>)}
+              {/* <td>
                 <button
                   className="user-btn-primary"
                   onClick={() => openUpdateModal(user)}
                 >
                   Cập nhật
                 </button>
-              </td>
+              </td> */}
               <td>
                 <button
                   className="user-btn-message"
@@ -211,7 +227,7 @@ function Main() {
                     try {
                       const { status, data } = await axios.post(
                         json_config[0].url_connect +
-                          "/chat/updateNumberMessage",
+                        "/chat/updateNumberMessage",
                         { email: user.email }
                       );
                       if (status === 200) {
