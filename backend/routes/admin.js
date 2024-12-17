@@ -22,6 +22,14 @@ router.post("/login", async (req, res) => {
     });
 
     if (findAdmin != null) {
+      // Kiểm tra trạng thái của admin, nếu status là false thì không cho phép đăng nhập
+      if (findAdmin.status === false) {
+        return res.status(403).json({
+          response: "Tài khoản của bạn đã bị khóa, không thể đăng nhập!",
+          type: false,
+        });
+      }
+
       // Kiểm tra loại người dùng (admin hay nhân viên)
       if (findAdmin.type == "admin") {
         // Trả về id của admin cùng với các thông tin khác
@@ -54,6 +62,7 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
 
 
 router.post("/add", async function (req, res) {
