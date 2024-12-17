@@ -122,7 +122,7 @@ router.post("/order", async function (req, res) {
       },
       { upsert: true }
     );
-    if (resultInsertPaymentModel.matchedCount > 0) {
+    if (resultInsertPaymentModel.matchedCount >= 0) {
       return res.status(200).json(result.data);
     }
     return res.status(200).json({

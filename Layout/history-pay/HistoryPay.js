@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import ItemHistory from "./components/item_history_pay";
 import { getAllHistoryPay } from "./HistoryViewModel";
@@ -15,10 +16,13 @@ export default function HistoryScreen() {
   const navigation = useNavigation();
   const [dataHistory, setDataHistory] = useState([]);
   const [selectedButton, setSelectedButton] = useState("pending"); // State để theo dõi nút được chọn
-  
+  const [refreshing, setRefreshing] = useState(false);
+
   async function getData(status) {
+    setRefreshing(true); // Set refreshing to true when data fetch begins
     const data = await getAllHistoryPay(status);
     setDataHistory(data.reverse());
+    setRefreshing(false); // Set refreshing to false when data is fetched
   }
   useEffect(() => {
     getData("pending");
@@ -190,7 +194,14 @@ export default function HistoryScreen() {
         </ScrollView>
       </View>
 
-      <ScrollView style={{ marginTop: 10 }}>
+      <ScrollView
+        style={{ marginTop: 10 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => getData(selectedButton)} // Refresh data based on selected button
+          />
+        }>
         {dataHistory.length > 0 ? (
           dataHistory.map((item) => (
             <ItemHistory

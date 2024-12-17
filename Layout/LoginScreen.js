@@ -69,7 +69,7 @@ const LoginScreen = (props) => {
           <StatusBar hidden />
           <View style={styles.container}>
             <Image
-              style={{ width: 400, height: 200, marginTop: 10 }}
+              style={{ width: 400, height: 200, marginTop: 40 }}
               source={require("../Image/logo.png")}
             />
             <View style={{ gap: 10 }}>
@@ -138,7 +138,7 @@ const LoginScreen = (props) => {
                   Đăng nhập
                 </Text>
               </TouchableOpacity>
-              <Text style={{ textAlign: "center", color: "green" }}>
+              {/* <Text style={{ textAlign: "center", color: "green" }}>
                 ______________Hoặc________________
               </Text>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -154,7 +154,7 @@ const LoginScreen = (props) => {
                     source={require("../Image/facebook.png")}
                   />
                 </TouchableOpacity>
-              </View>
+              </View> */}
               <View style={styles.text}>
                 <Text>Bạn không có tài khoản?</Text>
                 <TouchableOpacity
@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
   text: {
     flexDirection: "row",
     justifyContent: "center",
+    marginTop: 10,
   },
   titleText: {
     fontWeight: "900",

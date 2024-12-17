@@ -24,3 +24,8 @@ export const validateSDT = (sdt) => {
   const regex2 = /^(?:\+84|0)([0-9]{9})$/;
   return regex2.test(sdt);
 };
+
+export const validateName = (fullname) => {
+  const regex = /[^a-zA-Zàáạảãâấầậẩẫăắằặẳẵéèẹẻẽêếềệểễíìịỉĩóòọỏõôốồộổỗơớờợởỡúùụủũôốồộổỗơớờợởỡúùụủũýỳỵỷỹđ\s]/g;
+  return regex.test(fullname);
+};

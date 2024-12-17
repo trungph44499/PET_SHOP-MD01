@@ -15,7 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { URL } from "./HomeScreen";
 import * as ImagePicker from "expo-image-picker";
-import { validateSDT } from "./utils/stringUtils";
+import { validateSDT, validateName } from "./utils/stringUtils";
 import { Toast } from "./utils/toastUtil";
 
 const ManageUser = ({ navigation }) => {
@@ -84,6 +84,11 @@ const ManageUser = ({ navigation }) => {
 
     if (!email) {
       Alert.alert("Lỗi", "Email không được để trống");
+      return;
+    }
+
+    if (validateName(fullname)) {
+      Alert.alert("Lỗi", "Họ tên chưa đúng định dạng");
       return;
     }
 

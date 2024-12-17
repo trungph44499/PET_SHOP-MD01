@@ -39,7 +39,7 @@ const Register = (props) => {
   };
 
   function validateName(name) {
-    const regex = /[^a-zA-Z\s]/g;
+    const regex = /[^a-zA-Zàáạảãâấầậẩẫăắằặẳẵéèẹẻẽêếềệểễíìịỉĩóòọỏõôốồộổỗơớờợởỡúùụủũôốồộổỗơớờợởỡúùụủũýỳỵỷỹđ\s]/g;
     return regex.test(name);
   }
 
@@ -70,7 +70,7 @@ const Register = (props) => {
     }
 
     if (!validateSDT(sdt)) {
-      Toast("Không đúng định dạng số điện thoại");
+      Toast("Số điện thoại không đúng định dạng");
       return;
     }
 
@@ -158,7 +158,7 @@ const Register = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={{ textAlign: "center", marginBottom: 5, marginTop: 5 }}>
+          {/* <Text style={{ textAlign: "center", marginBottom: 5, marginTop: 5 }}>
             Để đăng ký tài khoản, bạn đồng ý
             <Text
               style={{
@@ -172,11 +172,11 @@ const Register = (props) => {
             <Text style={{ textDecorationLine: "underline", color: "green" }}>
               Privacy Policy
             </Text>
-          </Text>
+          </Text> */}
           <TouchableOpacity onPress={addUser} style={styles.btn}>
             <Text style={styles.btnText}>Đăng ký</Text>
           </TouchableOpacity>
-          <Text style={styles.dividerText}>
+          {/* <Text style={styles.dividerText}>
             ________________Hoặc________________
           </Text>
           <View style={styles.socialIcons}>
@@ -192,7 +192,7 @@ const Register = (props) => {
                 source={require("../Image/facebook.png")}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={styles.text}>
             <Text>Tôi đã có tài khoản.</Text>
             <TouchableOpacity
@@ -287,6 +287,7 @@ const styles = StyleSheet.create({
   text: {
     flexDirection: "row",
     justifyContent: "center",
+    marginTop: 10,
   },
   loginText: {
     color: "green",

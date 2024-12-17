@@ -3,22 +3,22 @@
     "$oid": "67406144b2e2500b89f9abc6"
   },
   "img": "https://headsupfortails.com/cdn/shop/files/8853301004916-4_a95c477c-d2c7-491f-b981-aff375616180.jpg?v=1718003780",
-  "name": "Thức ăn khô cho mèo",
+  "name": "Thức ăn ướt Whiskas Tasty Mix làm từ cá thật với thịt gà dành cho mèo trưởng thành",
   "size": [
     {
       "sizeName": "Hộp 2kg",
       "price": 350000,
-      "quantity": 5,
+      "quantity": 10,
       "_id": {
-        "$oid": "674f26f529999f07457c4ed2"
+        "$oid": "676056f05cc279789e0e9703"
       }
     },
     {
       "sizeName": "Hộp 5 kg",
       "price": 600000,
-      "quantity": 10,
+      "quantity": 11,
       "_id": {
-        "$oid": "674f26f529999f07457c4ed3"
+        "$oid": "676056f05cc279789e0e9704"
       }
     }
   ],
@@ -28,29 +28,30 @@
   },
   "description": "Thịt gà, lúa mì nguyên cám, bột ngô gluten, mỡ gà, bã củ cải đường khô, dầu đậu nành, lúa mạch ngọc trai nứt, bột đậu nành, hương gan gà, canxi sulfat, axit lactic, dầu cá, kali clorua, dicalcium phosphate, choline clorua, muối iốt, vitamin (thực phẩm bổ sung vitamin E, L-ascorbyl-2-polyphosphate (nguồn vitamin C), thực phẩm bổ sung niacin, thiamine mononitrate, thực phẩm bổ sung vitamin A, canxi pantothenate, thực phẩm bổ sung vitamin B12, pyridoxine hydrochloride, thực phẩm bổ sung riboflavin, biotin, axit folic, thực phẩm bổ sung vitamin D3), taurine, khoáng chất (sắt sulfat, kẽm oxit, đồng sulfat, mangan oxit, canxi iodat, natri selenit), tocopherol hỗn hợp để tạo độ tươi, hương vị tự nhiên, beta-carotene.",
   "__v": 0,
-  "animals": "cat"
+  "animals": "cat",
+  "sold": 7
 },
 {
   "_id": {
     "$oid": "674206beca7db672bec239cd"
   },
   "img": "https://headsupfortails.com/cdn/shop/files/Sara_sWholesome-Puppy-100gm1_2.jpg?v=1730718898",
-  "name": "Thức ăn hạt cho chó ",
+  "name": "Thức ăn cho chó con HUFT Sara's",
   "size": [
     {
       "sizeName": "Hộp 1.5kg",
       "price": 230000,
-      "quantity": 10,
+      "quantity": 3,
       "_id": {
-        "$oid": "674fcee43e856e6f6d563094"
+        "$oid": "675c9084412392651b39b467"
       }
     },
     {
       "sizeName": "Hộp 3 kg",
       "price": 410000,
-      "quantity": 20,
+      "quantity": 15,
       "_id": {
-        "$oid": "674fcee43e856e6f6d563095"
+        "$oid": "675c9084412392651b39b468"
       }
     }
   ],
@@ -60,7 +61,8 @@
   },
   "description": "Thức ăn cho chó tốt nhất mà chúng tôi từng làm - giờ dành cho cả những chú chó nhỏ!\n\nChó con lớn nhanh, và nỗi lo lắng cũng vậy: chúng có nhận đủ dinh dưỡng cho quá trình phát triển đó không? Chúng tôi ở đây để giúp bạn giải quyết nỗi lo lắng đó, vì mọi thứ đều tốt đẹp khi bắt đầu tốt!\n\nGiới thiệu về Sara's Wholesome Food Puppy Meal: các bữa ăn hoàn toàn tự nhiên, không chất bảo quản, chế biến sẵn, làm từ các thành phần tươi, đạt chuẩn dành cho người. Được chế biến đặc biệt cho chó con trên 4 tuần tuổi, bữa ăn này được chế biến trong bếp hiện đại của chúng tôi bởi các chuyên gia dinh dưỡng cho chó và đóng vai trò là chế độ ăn cân bằng cho chó con ở mọi giai đoạn phát triển. Mỗi thành phần đều được chọn lọc thủ công và nấu chậm cẩn thận để đáp ứng nhu cầu dinh dưỡng hàng ngày của chó con.",
   "__v": 0,
-  "animals": "dog"
+  "animals": "dog",
+  "sold": 12
 },
 {
   "_id": {
@@ -72,9 +74,9 @@
     {
       "sizeName": "Hộp 1.5kg",
       "price": 420000,
-      "quantity": 5,
+      "quantity": 10,
       "_id": {
-        "$oid": "674fd20dff757a69ecbd07e1"
+        "$oid": "676051654e8d7889c60cd7b7"
       }
     },
     {
@@ -82,7 +84,7 @@
       "price": 620000,
       "quantity": 10,
       "_id": {
-        "$oid": "674fd20dff757a69ecbd07e2"
+        "$oid": "676051654e8d7889c60cd7b8"
       }
     }
   ],
@@ -92,21 +94,22 @@
   },
   "description": "Điều gì làm cho Hearty tốt hơn thức ăn viên truyền thống?\n\nĐó là một bữa ăn hoàn chỉnh và cân bằng\nĐược làm từ 100% thành phần thật, đạt chuẩn dành cho con người\nTất cả các thành phần đều có nguồn gốc có trách nhiệm, tươi từ trang trại\nÉp lạnh, nướng nhẹ từng mẻ nhỏ ở nhiệt độ thấp - giữ nguyên chất dinh dưỡng và giúp chó tiêu hóa dễ dàng hơn\nChứa đựng những lợi ích của thảo mộc Ấn Độ\n0% chất bảo quản nhân tạo, hương vị bổ sung, sản phẩm phụ hoặc chất ổn định\nKhông có GMO (Sinh vật biến đổi gen được nuôi trồng nhân tạo trong môi trường giàu hóa chất, phi đạo đức)\nKhông có ngô hoặc đậu nành - những loại ngũ cốc được biết là gây dị ứng ở chó\nHàm lượng thịt cao hơn - cung cấp lượng protein tối ưu, được cả những người kén ăn cũng yêu thích!\nHearty mang lại sự khác biệt gì cho sức khỏe của chó bạn?\n\nVới Thức ăn cho chó nướng trong lò Hearty Oven-Baked, chứa đầy đủ các thành phần có lợi, bạn sẽ thấy sự cải thiện rõ rệt về sức khỏe làn da và bộ lông , khả năng miễn dịch , tiêu hóa và mức năng lượng của chó .\n\nCông thức của Hearty được tối ưu hóa để duy trì sức khỏe tổng thể của chó và thúc đẩy tái tạo tế bào - tất cả đều giúp chó của bạn sống khỏe mạnh hơn, hạnh phúc hơn và lâu hơn!\n\nĐiều quan trọng là những gì bên trong .\n\nHearty là sự cân bằng của tất cả các nhóm thực phẩm tạo nên một bữa ăn hoàn chỉnh cho chú chó của bạn.\n\nTHỊT, TRỨNG & CÁ: Thịt gà, vịt, trứng và cá cơm chiếm 60% công thức Hearty - nhiều thịt hơn bất kỳ loại thức ăn viên nào khác! Hàm lượng protein và Omega-3 cao của chúng giúp duy trì sức khỏe của da và lông.\nNGŨ CỐC : Gạo lứt giàu chất xơ, hạt diêm mạch và yến mạch hỗ trợ tiêu hóa\nTRÁI CÂY: Táo và lựu, giàu khoáng chất và chất chống oxy hóa, giúp tăng cường khả năng miễn dịch\nRAU: Khoai lang, đậu Hà Lan, cà rốt, rau bina và bí ngô cung cấp các loại vitamin và khoáng chất thiết yếu và giúp cải thiện sức khỏe đường ruột",
   "__v": 0,
-  "animals": "dog"
+  "animals": "dog",
+  "sold": 15
 },
 {
   "_id": {
     "$oid": "67420734ca7db672bec239d5"
   },
   "img": "https://headsupfortails.com/cdn/shop/files/HUFT_Sara_s_Wholesome_Food_-_Grain-Free_Chicken_And_Turkey_Dog_Food_01.jpg?v=1725348977",
-  "name": "Thức ăn hạt cho chó",
+  "name": "Thức ăn cho chó không chứa ngũ cốc với thịt gà và gà tây",
   "size": [
     {
       "sizeName": "Hộp 1.5kg",
       "price": 350000,
-      "quantity": 10,
+      "quantity": 7,
       "_id": {
-        "$oid": "674f277429999f07457c4f78"
+        "$oid": "675c90aa412392651b39b4d4"
       }
     },
     {
@@ -114,7 +117,7 @@
       "price": 600000,
       "quantity": 20,
       "_id": {
-        "$oid": "674f277429999f07457c4f79"
+        "$oid": "675c90aa412392651b39b4d5"
       }
     }
   ],
@@ -124,7 +127,8 @@
   },
   "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
   "__v": 0,
-  "animals": "dog"
+  "animals": "dog",
+  "sold": 3
 },
 {
   "_id": {
@@ -144,7 +148,7 @@
     {
       "sizeName": "Hộp 3 kg",
       "price": 600000,
-      "quantity": 20,
+      "quantity": 8,
       "_id": {
         "$oid": "674f278029999f07457c4fa1"
       }
@@ -156,7 +160,8 @@
   },
   "description": "Các sản phẩm của 365 by Whole Foods Market mang đến cho bạn cảm giác như đang nhảy múa trên lối đi, lối đi ảo nữa! Phạm vi lựa chọn khổng lồ của chúng tôi với các thành phần cao cấp với mức giá bạn có thể chấp nhận khiến việc mua sắm tạp hóa trở nên thú vị hơn nhiều so với việc ném những thứ cơ bản vào giỏ hàng của bạn.",
   "__v": 0,
-  "animals": "cat"
+  "animals": "cat",
+  "sold": 12
 },
 {
   "_id": {
@@ -195,14 +200,14 @@
     "$oid": "674c52097d9f37cfa58edc9f"
   },
   "img": "https://headsupfortails.com/cdn/shop/files/SHN24-MAXI-AD-GRAVY-PACKSHOT-POUCH-B1_Editable_Version_1083220.jpg?v=1727417067",
-  "name": "Thức ăn hạt cho chó ",
+  "name": "Thức ăn khô cho chó trưởng thành Royal Canin",
   "size": [
     {
       "sizeName": "Hộp 1.5kg",
       "price": 350000,
-      "quantity": 10,
+      "quantity": 8,
       "_id": {
-        "$oid": "674f279c29999f07457c4fed"
+        "$oid": "675c90e2412392651b39b541"
       }
     },
     {
@@ -210,7 +215,7 @@
       "price": 600000,
       "quantity": 20,
       "_id": {
-        "$oid": "674f279c29999f07457c4fee"
+        "$oid": "675c90e2412392651b39b542"
       }
     }
   ],
@@ -220,21 +225,22 @@
   },
   "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 2
 },
 {
   "_id": {
     "$oid": "674c52387d9f37cfa58edcfa"
   },
   "img": "https://headsupfortails.com/cdn/shop/files/Fireflypouchmockup305801_1.jpg?v=1725435615",
-  "name": "Thức ăn hạt cho chó ",
+  "name": "Thức ăn cân bằng NutriWag với thịt gà, cơm và rau cho chó ",
   "size": [
     {
       "sizeName": "Hộp 1.5kg",
       "price": 350000,
-      "quantity": 10,
+      "quantity": 4,
       "_id": {
-        "$oid": "674f27a529999f07457c5012"
+        "$oid": "675c9159412392651b39b754"
       }
     },
     {
@@ -242,7 +248,7 @@
       "price": 600000,
       "quantity": 20,
       "_id": {
-        "$oid": "674f27a529999f07457c5013"
+        "$oid": "675c9159412392651b39b755"
       }
     }
   ],
@@ -252,7 +258,8 @@
   },
   "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 6
 },
 {
   "_id": {
@@ -296,7 +303,7 @@
     {
       "sizeName": "Hộp 1.5kg",
       "price": 350000,
-      "quantity": 10,
+      "quantity": 9,
       "_id": {
         "$oid": "674f27bd29999f07457c5059"
       }
@@ -316,21 +323,22 @@
   },
   "description": "Thông tin sản phẩm: Thức ăn hạt JIREHO cho cún mang đến bữa ăn hoàn chỉnh với đầy đủ chất dinh dưỡng, đảm bảo thú cưng luôn khỏe mạnh, năng động và sống hạnh phúc.  -  JirehO Cá hồi cho chó con: + Đa dạng Protein từ Cá hồi và Thịt gà, giúp tăng cường calo, hỗ trợ quá trình trao đổi chất trong giai đoạn phát triển của chó con. + Bổ sung lợi khuẩn đường ruột và nấm men, hỗ trợ cân bằng hệ vi sinh đường ruột cho thú cưng có hệ tiêu hoá nhạy cảm. + Cung cấp các chất dinh dưỡng thiết yếu để duy trì và phát triển sức khoẻ toàn diện của chó con. + Cá hồi cung cấp Omega-3 giúp cải thiện thị lực, tái tạo gia lông và cải thiện sức khoẻ tim mạch. Chứa nguồn Protein dồi dào cùng các dinh dưỡng thiết yếu như Vitamin B, Vitamin D và Vitamin E.",
   "animals": "cat",
-  "__v": 0
+  "__v": 0,
+  "sold": 1
 },
 {
   "_id": {
     "$oid": "674c52f27d9f37cfa58edf3d"
   },
   "img": "https://headsupfortails.com/cdn/shop/products/Tuna-in-jelly_eb3a8dc3-229d-437e-a401-0a29f25a3d60.jpg?v=1652700204",
-  "name": "Thức ăn khô cho mèo",
+  "name": "Thức ăn vặt cho mèo Sheba Melty Sasami hương gà ",
   "size": [
     {
       "sizeName": "Hộp 1.5kg",
       "price": 350000,
       "quantity": 10,
       "_id": {
-        "$oid": "674f27cc29999f07457c507b"
+        "$oid": "675c9238412392651b39b897"
       }
     },
     {
@@ -338,7 +346,7 @@
       "price": 600000,
       "quantity": 20,
       "_id": {
-        "$oid": "674f27cc29999f07457c507c"
+        "$oid": "675c9238412392651b39b898"
       }
     }
   ],
@@ -362,7 +370,7 @@
       "price": 200000,
       "quantity": 5,
       "_id": {
-        "$oid": "675007abb38676d8f8c5428b"
+        "$oid": "675c9249412392651b39b96d"
       }
     },
     {
@@ -370,13 +378,13 @@
       "price": 500000,
       "quantity": 10,
       "_id": {
-        "$oid": "675007abb38676d8f8c5428c"
+        "$oid": "675c9249412392651b39b96e"
       }
     }
   ],
   "status": "New",
   "type": {
-    "$oid": "673a71a335d8edceac0a6c4f"
+    "$oid": "674c54ce7d9f37cfa58ee080"
   },
   "description": "Đặc trưng:  Dầu gội dưỡng ẩm cho mèo Chứa hoa cúc, bơ hạt mỡ và vitamin E Tạo bọt tốt và có mùi thơm dễ chịu Công thức cân bằng pH Không chứa sulfat, paraben, silicone và cồn Không độc ác và thân thiện với người ăn chay Phù hợp với tất cả mèo và mèo con (12 tuần tuổi trở lên) Cách sử dụng: Làm ướt lông và thoa dầu gội. Tạo bọt và xả sạch bằng nước sạch. Bảo vệ mắt và tai khỏi nước hoặc dầu gội.  Phá vỡ bong bóng:  Bạn có biết rằng khi mèo tự chải chuốt, điều đó không có nghĩa là chúng không cần chải chuốt và tắm rửa thường xuyên không. Để bảo vệ bộ lông và làn da của mèo khỏi gàu, gàu và mùi hôi, hãy tắm cho chúng một cách nhẹ nhàng, có bọt để chúng có mùi thơm tuyệt vời!",
   "animals": "cat",
@@ -392,7 +400,7 @@
     {
       "sizeName": "200ml",
       "price": 200000,
-      "quantity": 5,
+      "quantity": 2,
       "_id": {
         "$oid": "674fd270ff757a69ecbd08b5"
       }
@@ -400,7 +408,7 @@
     {
       "sizeName": "1000ml",
       "price": 500000,
-      "quantity": 10,
+      "quantity": 5,
       "_id": {
         "$oid": "674fd270ff757a69ecbd08b6"
       }
@@ -412,7 +420,8 @@
   },
   "description": "Dầu gội cho chó Groom and Fresh là loại dầu gội khử mùi, không chứa sulfate dành cho chó được phát triển để loại bỏ mùi hôi của thú cưng và giữ cho thú cưng luôn thơm tho, sạch sẽ. Hương thơm độc đáo được chọn lọc từ các loại tinh dầu thơm tốt nhất. Loại dầu gội tạo bọt, đậm đặc này xả sạch nhanh chóng để không để lại cặn.\n\nCông thức của chúng tôi bao gồm protein đậu nành thủy phân, giúp tăng cường lớp lông và giúp lông mềm mại và bóng mượt, và lô hội, giúp thúc đẩy quá trình chữa lành đồng thời làm dịu và dưỡng ẩm cho da. Ngoài ra, chất tẩy rửa tự nhiên của chúng tôi có nguồn gốc từ dầu dừa và dầu hạt cọ có thể tái sinh và phân hủy sinh học 100%.\n\nDầu gội cho chó Groom and Fresh không thử nghiệm trên động vật, không chứa xà phòng và không chứa paraben, silicon và chất làm đặc nhân tạo, khiến loại dầu gội này an toàn cho chó con, mèo con và môi trường. Dầu gội cho chó Groom and Fresh cũng an toàn khi sử dụng với các phương pháp điều trị bọ chét và ve tại chỗ. Được các nhà lai tạo hàng đầu và thợ chải lông chuyên nghiệp trên toàn thế giới khuyên dùng.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 8
 },
 {
   "_id": {
@@ -424,7 +433,7 @@
     {
       "sizeName": "Hộp 2kg",
       "price": 350000,
-      "quantity": 10,
+      "quantity": 9,
       "_id": {
         "$oid": "674f286129999f07457c509d"
       }
@@ -444,7 +453,8 @@
   },
   "description": "Thức ăn cho chó tốt nhất mà chúng tôi từng làm - giờ dành cho cả những chú chó nhỏ!  Chó con lớn nhanh, và nỗi lo lắng cũng vậy: chúng có nhận đủ dinh dưỡng cho quá trình phát triển đó không? Chúng tôi ở đây để giúp bạn giải quyết nỗi lo lắng đó, vì mọi thứ đều tốt đẹp khi bắt đầu tốt!  Giới thiệu về Sara's Wholesome Food Puppy Meal: các bữa ăn hoàn toàn tự nhiên, không chất bảo quản, chế biến sẵn, làm từ các thành phần tươi, đạt chuẩn dành cho người. Được chế biến đặc biệt cho chó con trên 4 tuần tuổi, bữa ăn này được chế biến trong bếp hiện đại của chúng tôi bởi các chuyên gia dinh dưỡng cho chó và đóng vai trò là chế độ ăn cân bằng cho chó con ở mọi giai đoạn phát triển. Mỗi thành phần đều được chọn lọc thủ công và nấu chậm cẩn thận để đáp ứng nhu cầu dinh dưỡng hàng ngày của chó con.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 1
 },
 {
   "_id": {
@@ -520,7 +530,7 @@
     {
       "sizeName": "S",
       "price": 100000,
-      "quantity": 10,
+      "quantity": 5,
       "_id": {
         "$oid": "674f29cd29999f07457c519d"
       }
@@ -540,7 +550,8 @@
   },
   "description": "Lược thép hai mặt HUFT cho chó - Màu cam rất tuyệt vời để chải lông rụng/rụng và cũng có thể bắt được bọ chét (ở mặt hẹp hơn). Khi chải xong, chải nhẹ nhàng để phân phối đều dầu tự nhiên trên bộ lông.  Đặc trưng:  Lược chải lông hai mặt cho chó Kích thước: 21 x 7 cm Răng thưa giúp gỡ rối và làm sạch lông Răng thưa có khoảng cách hẹp giúp bắt bọ chét, mảnh vụn bọ chét và lông rụng Giúp gỡ rối, gỡ rối Tay cầm bằng cao su giúp cầm nắm tốt hơn Phù hợp với tất cả các giống chó lông trung bình và dài Nếu bạn không chắc chắn cách sử dụng, hãy tìm lời khuyên của chuyên gia  Mẹo HUFT: Chải theo hướng mọc của lông và tránh xa da. Chải lông theo từng phần để dễ hơn. Gỡ rối nhẹ nhàng, không kéo lông quá mạnh vì sẽ làm chó bị thương.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 5
 },
 {
   "_id": {
@@ -560,7 +571,7 @@
     {
       "sizeName": "200g",
       "price": 140000,
-      "quantity": 20,
+      "quantity": 10,
       "_id": {
         "$oid": "674f2a1829999f07457c51c8"
       }
@@ -572,7 +583,8 @@
   },
   "description": "Được truyền hương vị bạc hà tươi mát, Kem đánh răng cho chó Trixie này được làm đặc biệt cho những người bạn chó của chúng ta. Sử dụng để đánh răng cho thú cưng của bạn hàng ngày (hoặc theo chỉ dẫn của bác sĩ thú y) để có lợi cho vệ sinh răng miệng của thú cưng. Ngăn ngừa sự tích tụ cao răng giúp cải thiện vệ sinh răng miệng và cải thiện hơi thở của thú cưng.  Đặc trưng:  Trọng lượng: 100 g Hương vị bạc hà An toàn khi nuốt với số lượng rất nhỏ Hương bạc hà dễ chịu và bột xương bổ sung giúp tăng cường vệ sinh răng miệng Nếu thú cưng của bạn có bất kỳ bệnh tật hoặc tình trạng mãn tính nào, vui lòng tham khảo ý kiến ​​bác sĩ thú y trước khi sử dụng sản phẩm này Hướng dẫn sử dụng : Cho thú cưng của bạn làm quen với hương vị và cảm giác của kem đánh răng bằng cách chà một ít lên răng của chúng. Kem đánh răng này được sản xuất dành riêng cho chó và hoàn toàn an toàn khi chúng nuốt một lượng nhỏ.  Mẹo của HUFT: Một trong những khía cạnh bị bỏ quên nhất trong việc chải chuốt của các bậc phụ huynh nuôi thú cưng là vệ sinh răng miệng. Đây là lý do tại sao nhiều thú cưng có dấu hiệu mắc bệnh răng miệng khi đến tuổi trung niên. Điều quan trọng là phải giữ cho răng và nướu của thú cưng khỏe mạnh vì bệnh răng miệng cũng ảnh hưởng đến các cơ quan khác.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 10
 },
 {
   "_id": {
@@ -616,7 +628,7 @@
     {
       "sizeName": "450ml",
       "price": 1200000,
-      "quantity": 10,
+      "quantity": 8,
       "_id": {
         "$oid": "674f2ad429999f07457c521d"
       }
@@ -636,7 +648,8 @@
   },
   "description": "Dầu gội này chứa yến mạch, dừa, chanh, lô hội và cỏ roi ngựa chanh giúp làm dịu da bị kích ứng. Nó nuôi dưỡng làn da khô và giúp giảm ngứa. Sản phẩm cô đặc dịu nhẹ này không chứa hóa chất độc hại và thân thiện với làn da của thú cưng.  Đặc trưng:  Dầu gội cô đặc cho mèo Cực kỳ dịu nhẹ và không chứa hóa chất độc hại Chứa yến mạch, dừa, chanh, lô hội và cỏ roi ngựa chanh Thích hợp cho mèo có làn da nhạy cảm Nếu bạn không chắc chắn cách sử dụng, hãy tìm lời khuyên của chuyên gia Mẹo của HUFT: Không nên tắm cho mèo quá thường xuyên vì điều này sẽ làm mất hết lớp dầu tự nhiên trên da và khiến da bị khô. Hãy đầu tư vào loại dầu gội dịu nhẹ được làm từ các thành phần tự nhiên, thân thiện với da.",
   "animals": "cat",
-  "__v": 0
+  "__v": 0,
+  "sold": 2
 },
 {
   "_id": {
@@ -720,7 +733,7 @@
     {
       "sizeName": "M",
       "price": 300000,
-      "quantity": 20,
+      "quantity": 12,
       "_id": {
         "$oid": "674f2d0f29999f07457c5340"
       }
@@ -740,7 +753,8 @@
   },
   "description": "Được làm bằng gỗ thật, que thức ăn cho chó Petstages bền bỉ là một món đồ nhai hoàn hảo cho chú chó của bạn. Nó được làm bằng gỗ tự nhiên, có mùi gỗ và rãnh vỏ cây gỗ trong thiết kế. Nó được liên kết với vật liệu tổng hợp an toàn cho chó để làm cho nó trở thành một món đồ nhai lâu dài và không độc hại, không chứa chì và phthalate. Đồ chơi này an toàn và nó không chỉ hoạt động như một món đồ nhai mà còn giúp làm sạch răng, mát xa nướu và loại bỏ cao răng mềm.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 8
 },
 {
   "_id": {
@@ -760,7 +774,7 @@
     {
       "sizeName": "M",
       "price": 200000,
-      "quantity": 15,
+      "quantity": 7,
       "_id": {
         "$oid": "674f2d5929999f07457c53ae"
       }
@@ -780,7 +794,8 @@
   },
   "description": "Có hình dạng giống như một chiếc xương, Đồ chơi xương cho chó KONG Classic Goodie Bone sẽ giúp thú cưng của bạn bận rộn trong một thời gian. Có thể nhét đồ ăn vặt vào cả hai đầu vào tính năng Goodie Grippers được cấp bằng sáng chế của KONG. Trong khi thú cưng của bạn dành thời gian cố gắng lấy đồ ăn vặt ra, bạn có thể tận hưởng một khoảng thời gian yên tĩnh.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 8
 },
 {
   "_id": {
@@ -792,7 +807,7 @@
     {
       "sizeName": "S",
       "price": 100000,
-      "quantity": 10,
+      "quantity": 4,
       "_id": {
         "$oid": "674f2d8929999f07457c53e9"
       }
@@ -820,7 +835,8 @@
   },
   "description": "Một món đồ chơi đa năng, Outward Hound Orka Flyer có thể được nhai, nhặt và ném trong nhiều giờ vui vẻ. Thích hợp cho cả chơi trong nhà và ngoài trời, vành dày tăng thêm độ bền. Dễ cầm, bạn có thể dễ dàng ném cho thú cưng của mình nhặt. Chất liệu nhẹ nhàng với hàm của thú cưng. Các chấm nổi massage nướu.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 6
 },
 {
   "_id": {
@@ -840,7 +856,7 @@
     {
       "sizeName": "Gói 5",
       "price": 200000,
-      "quantity": 15,
+      "quantity": 5,
       "_id": {
         "$oid": "674f2dfb29999f07457c5426"
       }
@@ -860,7 +876,8 @@
   },
   "description": "GiGwi Ball Originals là một gói ba quả bóng tennis cổ điển với sự khác biệt. Làm mới thời gian chơi với những quả bóng GiGwi Original này - tiếng kêu bí ẩn giúp thú cưng của bạn luôn bận rộn và phấn khích. Bền bỉ, những quả bóng này rất tuyệt để chơi ngoài trời - tuyệt vời để đuổi bắt, ném và bắt bóng! Một loạt niềm vui được gói gọn trong một món đồ chơi tuyệt đỉnh dành cho chó",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 10
 },
 {
   "_id": {
@@ -872,7 +889,7 @@
     {
       "sizeName": "S",
       "price": 100000,
-      "quantity": 10,
+      "quantity": 6,
       "_id": {
         "$oid": "674f2e4729999f07457c5464"
       }
@@ -900,7 +917,8 @@
   },
   "description": "Chó tìm thấy niềm vui vô bờ bến khi chơi trò bắt, ném và trốn tìm. Để có niềm vui bất tận, chúng tôi có đồ chơi hoàn hảo cho thú cưng của bạn - Quả bóng tennis HUFT (Bộ 2 quả).  Được làm bằng cao su thiên nhiên, những quả bóng tennis này hoàn hảo cho thời gian chơi trong nhà và ngoài trời hàng ngày. Những quả bóng nhẹ này hữu ích cho mọi loại trò chơi mà chúng tôi biết chú chó của bạn rất thích. Màu cam tươi sáng với logo HUFT giúp chú chó của bạn bị thu hút và tập trung.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 4
 },
 {
   "_id": {
@@ -984,7 +1002,7 @@
     {
       "sizeName": "S",
       "price": 100000,
-      "quantity": 20,
+      "quantity": 11,
       "_id": {
         "$oid": "674f2f0229999f07457c55bd"
       }
@@ -1004,7 +1022,8 @@
   },
   "description": "Đồ chơi mèo tương tác này có tay cầm bằng nhựa chắc chắn, dây mềm dẻo và lông vũ nhiều màu sắc được thiết kế để mô phỏng chuyển động của loài chim, thu hút bản năng săn mồi tự nhiên của mèo. Hoàn hảo để vồ và đuổi bắt, đồ chơi này mang đến cho mèo của bạn nhiều giờ vui vẻ và rèn luyện. Lý tưởng để chơi tương tác, kích thích sự tò mò của mèo đồng thời tăng cường mối liên kết giữa bạn và người bạn mèo của mình.",
   "animals": "cat",
-  "__v": 0
+  "__v": 0,
+  "sold": 9
 },
 {
   "_id": {
@@ -1144,7 +1163,7 @@
     {
       "sizeName": "91X57X62cm",
       "price": 2000000,
-      "quantity": 10,
+      "quantity": 5,
       "_id": {
         "$oid": "674f32a929999f07457c585d"
       }
@@ -1164,7 +1183,8 @@
   },
   "description": "Chuồng chó bằng dây kim loại có thể gấp gọn được phủ lớp sơn tĩnh điện màu đen. Cách lý tưởng để đi du lịch và huấn luyện chó của bạn. Nhưng cũng có thể được sử dụng để phòng ngừa và hỗ trợ giải quyết các vấn đề về hành vi. Có 6 kích cỡ khác nhau: 50 cm, 61 cm, 76 cm, 91 cm, 107 cm và 118 cm. Chuồng chó 50 & 61 cm có cửa trước và cửa trên. Các kích cỡ khác có cửa trước và cửa bên.",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 5
 },
 {
   "_id": {
@@ -1522,15 +1542,15 @@
       "price": 100000,
       "quantity": 11,
       "_id": {
-        "$oid": "674f38d529999f07457c5eb9"
+        "$oid": "676051734e8d7889c60cd826"
       }
     },
     {
       "sizeName": "M",
       "price": 200000,
-      "quantity": 13,
+      "quantity": 12,
       "_id": {
-        "$oid": "674f38d529999f07457c5eba"
+        "$oid": "676051734e8d7889c60cd827"
       }
     },
     {
@@ -1538,15 +1558,15 @@
       "price": 300000,
       "quantity": 20,
       "_id": {
-        "$oid": "674f38d529999f07457c5ebb"
+        "$oid": "676051734e8d7889c60cd828"
       }
     },
     {
       "sizeName": "XL",
       "price": 310000,
-      "quantity": 0,
+      "quantity": 10,
       "_id": {
-        "$oid": "674f38d529999f07457c5ebc"
+        "$oid": "676051734e8d7889c60cd829"
       }
     }
   ],
@@ -1556,7 +1576,8 @@
   },
   "description": "Áo len Dash Dog Fuzz Friends đảm bảo chú chó của bạn luôn ấm áp và thoải mái bất kể thời tiết nào - vì vậy bạn không phải lo lắng! Được làm bằng vải siêu mềm, ấm và thoáng khí, chiếc áo len này nhẹ và dễ vận động. Thiết kế áo chui đầu dễ mặc giúp chú chó của bạn chỉ cần chui vào nơi thoải mái nhất. Cổ cao giúp ngăn gió lạnh. Bạn thậm chí không phải lo lắng về việc cởi áo ra khi trời lạnh để đi tiểu, nhờ thiết kế cắt cao ở bụng. Nếu áo bị bẩn một chút, đừng lo lắng! Áo rất dễ giặt sạch - chỉ cần cho vào máy giặt cùng với những chiếc áo có màu tương tự. Nhưng hãy đảm bảo phơi khô để áo không bị giãn. Vì vậy, hãy chuẩn bị chạy ra ngoài vô tư cho những cuộc phiêu lưu lớn hay nhỏ!",
   "animals": "dog",
-  "__v": 0
+  "__v": 0,
+  "sold": 1
 },
 {
   "_id": {
@@ -1568,7 +1589,7 @@
     {
       "sizeName": "Máy trắng",
       "price": 10000000,
-      "quantity": 10,
+      "quantity": 8,
       "_id": {
         "$oid": "675401eed1a074185947004f"
       }
@@ -1580,5 +1601,137 @@
   },
   "description": "Bộ dụng cụ chải lông thú cưng Trimz & Hút chân không là giải pháp chải lông và vệ sinh thú cưng toàn diện. Sản phẩm có công nghệ hút bụi khô giúp hút sạch 99% lông thú cưng trên nhiều bề mặt khác nhau, đảm bảo vệ sinh kỹ lưỡng mọi lúc. Bộ sản phẩm đi kèm năm dụng cụ chải lông và năm lược cắt có thể điều chỉnh, mang lại kết quả chính xác và tùy chỉnh. Sản phẩm có ba chế độ hút, lên đến 10 kPa, cho phép tùy chỉnh công suất làm sạch. Bộ sản phẩm được trang bị động cơ 350 watt mạnh mẽ, đảm bảo loại bỏ và vệ sinh lông thú cưng hiệu quả. Sản phẩm cũng bao gồm các dụng cụ chải lông đa năng, bao gồm đầu chải và dụng cụ khe hở, cho phép tùy chỉnh. Dung tích thùng chứa 2,5 lít giúp giảm thiểu nhu cầu đổ thường xuyên, cho phép vệ sinh nhiều hơn và ít phải đổ hơn. Bộ dụng cụ chải lông được thiết kế dành cho những người nuôi thú cưng, giúp việc chăm sóc thú cưng trở nên dễ dàng. Phù hợp với thú cưng ở mọi hình dạng và kích cỡ, Bộ dụng cụ chải lông thú cưng Trimz & Hút chân không là khoản đầu tư tuyệt vời cho những người nuôi thú cưng.\n\nCác tính năng chính:\n\nThiết kế di động\nThiết kế ống có thể tháo rời\nLực hút mạnh mẽ\nDung tích hộp chứa bụi 2,5 L\nKhông bừa bộn\nDễ sử dụng\nHiệu quả và giá cả phải chăng",
   "animals": "cat",
+  "__v": 0,
+  "sold": 2
+},
+{
+  "_id": {
+    "$oid": "675c9349412392651b39bb15"
+  },
+  "img": "https://headsupfortails.com/cdn/shop/products/IMG_9884.jpg?v=1657905805&width=823",
+  "name": "Xịt khử mùi hằng ngày Skout's Honor dành cho chó và mèo",
+  "size": [
+    {
+      "sizeName": "200ml",
+      "price": 200000,
+      "quantity": 20,
+      "_id": {
+        "$oid": "675c9349412392651b39bb16"
+      }
+    },
+    {
+      "sizeName": "1000ml",
+      "price": 500000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "675c9349412392651b39bb17"
+      }
+    }
+  ],
+  "status": "New",
+  "type": {
+    "$oid": "674c54ce7d9f37cfa58ee080"
+  },
+  "description": "Thành phần:\n\nNước (aqua), nước ép lá lô hội, triethyl citrate (chất tăng hương thơm tự nhiên), hỗn hợp men vi sinh (glycerin, isoeicosane, hansenula, kloeckera, lactobacillus, lactococcus, leuconostoc pediococcus, saccharomyces, men sung/chanh, oleate sorbitan, kẹo cao su cellulose và chitosan), axit citric, dầu persea gratissima (bơ), hương liệu*, phenoxyethanol. *Loại không hương liệu không chứa hương liệu\n\nPhương hướng\nThoa một lượng vừa đủ dầu xả này lên lông và để trong vòng 5 phút. Xả sạch và lau khô.\n\nSử dụng với:\n\nDầu gội và dầu xả Skout's Honor Probiotic cho kết quả tốt nhất.",
+  "animals": "cat",
+  "sold": 0,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6760545b7f0bd5736953d324"
+  },
+  "img": "https://missymomo.com/cdn/shop/products/CheckersCatPajamase_1024x1024@2x.jpg?v=1660919802",
+  "name": "Áo sơ mi Checkers Cat Lounge",
+  "size": [
+    {
+      "sizeName": "S",
+      "price": 100000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "6760545b7f0bd5736953d325"
+      }
+    },
+    {
+      "sizeName": "M",
+      "price": 200000,
+      "quantity": 20,
+      "_id": {
+        "$oid": "6760545b7f0bd5736953d326"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 300000,
+      "quantity": 30,
+      "_id": {
+        "$oid": "6760545b7f0bd5736953d327"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 310000,
+      "quantity": 40,
+      "_id": {
+        "$oid": "6760545b7f0bd5736953d328"
+      }
+    }
+  ],
+  "status": "New",
+  "type": {
+    "$oid": "674f365929999f07457c5b52"
+  },
+  "description": "Bạn đang tìm kiếm một cách mới để mang đến cho chú mèo cưng của mình một bộ đồ ngủ thời trang? Những chiếc áo sơ mi mặc ở nhà này chính là thứ bạn cần! Được làm từ cotton mềm mại và có họa tiết kẻ caro, những chiếc áo ngủ này sẽ giữ cho cục lông nhỏ của bạn ấm áp đồng thời khiến chúng trông thật bảnh bao.",
+  "animals": "cat",
+  "sold": 0,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "676054af7f0bd5736953d407"
+  },
+  "img": "https://missymomo.com/cdn/shop/products/BellaCatShirtf_1024x1024@2x.jpg?v=1659173152",
+  "name": "Áo thun Bella Cat",
+  "size": [
+    {
+      "sizeName": "S",
+      "price": 100000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "676054e07f0bd5736953d64b"
+      }
+    },
+    {
+      "sizeName": "M",
+      "price": 200000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "676054e07f0bd5736953d64c"
+      }
+    },
+    {
+      "sizeName": "L",
+      "price": 300000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "676054e07f0bd5736953d64d"
+      }
+    },
+    {
+      "sizeName": "XL",
+      "price": 310000,
+      "quantity": 10,
+      "_id": {
+        "$oid": "676054e07f0bd5736953d64e"
+      }
+    }
+  ],
+  "status": "Old",
+  "type": {
+    "$oid": "674f365929999f07457c5b52"
+  },
+  "description": "Bạn đang tìm kiếm một cách mới để mang đến cho chú mèo cưng của mình một bộ đồ ngủ thời trang? Những chiếc áo sơ mi mặc ở nhà này chính là thứ bạn cần! Được làm từ cotton mềm mại và có họa tiết kẻ caro, những chiếc áo ngủ này sẽ giữ cho cục lông nhỏ của bạn ấm áp đồng thời khiến chúng trông thật bảnh bao.",
+  "animals": "cat",
+  "sold": 0,
   "__v": 0
 }]

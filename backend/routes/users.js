@@ -192,10 +192,10 @@ router.post("/update", async (req, res) => {
       }
     );
     if (updateUser.matchedCount > 0) {
-      res.status(200).json({ response: "Update complete", type: true });
+      res.status(200).json({ response: "Cập nhật thành công", type: true });
       return;
     }
-    res.status(200).json({ response: "Error Update", type: false });
+    res.status(200).json({ response: "Lỗi cập nhật!", type: false });
   } catch (error) {
     console.log(error);
   }

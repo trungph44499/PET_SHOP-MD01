@@ -153,15 +153,6 @@ export default function NavigationPage({ child }) {
           >
             Quản lý tài khoản người dùng
           </MenuItem>
-          {isAdmin === "true" && (
-            <MenuItem
-              style={{ textAlign: "start" }}
-              icon={<FontAwesomeIcon icon={faStore} />}
-              onClick={() => navigator("/revenue-tatistics")}
-            >
-              Thống kê doanh thu
-            </MenuItem>
-          )}
           <MenuItem
             style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faProjectDiagram} />}
@@ -178,17 +169,26 @@ export default function NavigationPage({ child }) {
           </MenuItem>
           <MenuItem
             style={{ textAlign: "start" }}
-            icon={<FontAwesomeIcon icon={faHand} />}
-            onClick={() => navigator("/confirm-product")}
-          >
-            Dịch vụ đã đặt
-          </MenuItem>
-          <MenuItem
-            style={{ textAlign: "start" }}
             icon={<FontAwesomeIcon icon={faMoneyBill} />}
             onClick={() => navigator("/payment")}
           >
-            Đơn hàng đã đặt
+            Xác nhận đơn hàng
+          </MenuItem>
+          {isAdmin === "true" && (
+            <MenuItem
+              style={{ textAlign: "start" }}
+              icon={<FontAwesomeIcon icon={faStore} />}
+              onClick={() => navigator("/revenue-tatistics")}
+            >
+              Thống kê doanh thu
+            </MenuItem>
+          )}
+          <MenuItem
+            style={{ textAlign: "start" }}
+            icon={<FontAwesomeIcon icon={faHand} />}
+            onClick={() => navigator("/confirm-product")}
+          >
+            Xác nhận dịch vụ
           </MenuItem>
         </Menu>
         <div

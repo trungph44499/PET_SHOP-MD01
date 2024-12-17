@@ -22,6 +22,14 @@ router.post("/login", async (req, res) => {
     });
 
     if (findAdmin != null) {
+      // Kiểm tra trạng thái của admin, nếu status là false thì không cho phép đăng nhập
+      if (findAdmin.status === false) {
+        return res.status(403).json({
+          response: "Tài khoản của bạn đã bị khóa, không thể đăng nhập!",
+          type: false,
+        });
+      }
+
       // Kiểm tra loại người dùng (admin hay nhân viên)
       if (findAdmin.type == "admin") {
         // Trả về id của admin cùng với các thông tin khác
@@ -56,6 +64,7 @@ router.post("/login", async (req, res) => {
 });
 
 
+
 router.post("/add", async function (req, res) {
   const { fullname, username, password } = req.body;
 
@@ -74,11 +83,11 @@ router.post("/add", async function (req, res) {
     });
 
     if (addAdmin.length > 0) {
-      res.status(200).json({ response: "Add staff complete!", type: true });
+      res.status(200).json({ response: "Thêm nhân viên thành công", type: true });
       return;
     }
 
-    res.status(200).json({ response: "Error add staff!", type: false });
+    res.status(200).json({ response: "Lỗi thêm nhân viên!", type: false });
   } catch (error) {
     console.log(error);
   }
@@ -106,11 +115,11 @@ router.post("/update", async function (req, res) {
     );
 
     if (updateAdmin.matchedCount > 0) {
-      res.status(200).json({ response: "Update staff complete!", type: true });
+      res.status(200).json({ response: "Cập nhật nhân viên thành công!", type: true });
       return;
     }
 
-    res.status(200).json({ response: "Error update staff!", type: false });
+    res.status(200).json({ response: "Lỗi cập nhật nhân viên!", type: false });
   } catch (error) {
     console.log(error);
   }
@@ -122,11 +131,11 @@ router.post("/delete", async function (req, res) {
     const checkAdminExist = await adminModel.deleteOne({ username: username });
 
     if (checkAdminExist.deletedCount > 0) {
-      res.status(200).json({ response: "Delete complete!", type: true });
+      res.status(200).json({ response: "Xóa nhân viên thành công!", type: true });
       return;
     }
 
-    res.status(200).json({ response: "Error remove staff!", type: false });
+    res.status(200).json({ response: "Lỗi xóa nhân viên !", type: false });
   } catch (error) {
     console.log(error);
   }

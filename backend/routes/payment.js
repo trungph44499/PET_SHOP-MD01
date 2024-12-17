@@ -25,13 +25,22 @@ router.post("/update", async (req, res) => {
         const sizeToUpdate = queryProduct.size.find(
           (item) => item.sizeName === product.size
         );
-
+    
         if (sizeToUpdate) {
           sizeToUpdate.quantity -= product.quantity;
-          //số lượng đã bán
+          
+          // Kiểm tra nếu số lượng còn lại của sản phẩm nhỏ hơn hoặc bằng 0
+          if (sizeToUpdate.quantity <= 0) {
+            return res.status(200).json({
+              response: "Số lượng sản phẩm không đủ để thực hiện xác nhận.",
+              type: false,
+            });
+          }
+    
+          // Cập nhật số lượng đã bán
           queryProduct.sold += product.quantity;
         }
-
+    
         const updateProduct = await productModel.updateMany(
           { _id: product.id },
           {
@@ -39,9 +48,9 @@ router.post("/update", async (req, res) => {
             sold: queryProduct.sold,
           }
         );
-
+    
         if (updateProduct.matchedCount <= 0) {
-          return res.status(400).json({ response: "Cập nhật thông tin thất bại!", type: true });
+          return res.status(200).json({ response: "Cập nhật thông tin thất bại!", type: true });
         }
       }
     }
