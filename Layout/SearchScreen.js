@@ -4,6 +4,7 @@ import axios from 'axios';
 import { URL } from './HomeScreen'; // Đảm bảo URL đã được định nghĩa
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { numberUtils, upperCaseItem } from "./utils/stringUtils";
+import { RefreshControl } from "react-native";
 
 const SearchScreen = ({ navigation }) => {
   const [txtSearch, setTxtSearch] = useState('');
@@ -11,6 +12,8 @@ const SearchScreen = ({ navigation }) => {
   const [emailUser, setEmailUser] = useState('');
   const [loading, setLoading] = useState(false);
   const [ListSearch, setListSearch] = useState([]); // Lịch sử tìm kiếm
+
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const fetchUserEmail = async () => {
@@ -77,6 +80,34 @@ const SearchScreen = ({ navigation }) => {
     }
   };
 
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    try {
+      // Lấy lại lịch sử tìm kiếm
+      if (emailUser) {
+        const responseHistory = await axios.get(`${URL}/searchs/history`, {
+          params: { emailUser }
+        });
+        setListSearch(responseHistory.data || []);
+      }
+
+      // Nếu có từ khóa, tìm kiếm lại
+      if (txtSearch) {
+        const responseSearch = await axios.get(`${URL}/searchs/`, {
+          params: { txt: txtSearch, emailUser },
+        });
+        setProducts(responseSearch.data.response || []);
+      }
+    } catch (error) {
+      console.error("Lỗi refresh:", error);
+    }
+
+    setRefreshing(false);
+  }, [emailUser, txtSearch]);
+
+
   const resetSearch = useCallback(() => {
     setTxtSearch('');
     setProducts([]);
@@ -103,13 +134,23 @@ const SearchScreen = ({ navigation }) => {
           style={styles.searchInput}
         />
         <TouchableOpacity
-          // onPress={resetSearch}
+        // onPress={resetSearch}
         >
           <Image source={require('../Image/search.png')} style={styles.icon} />
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.listSearch}>
+      <ScrollView
+        style={styles.listSearch}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            
+          />
+        }
+      >
+
         {loading ? (
           <ActivityIndicator size="large" color="#A05E56" />
         ) : (
